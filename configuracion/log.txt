@@ -1,0 +1,4 @@
+[2017-3-24 17:40:17] [INFO] [CAPAS] Se abrio el archivo.
+[2017-3-24 17:40:17] [DEBBUG] [CAPAS] Se esta procensando
+[2017-3-24 17:40:17] [ERROR] [ENTIDADES] continua procesando
+[2017-3-24 17:40:17] [ERROR] [ENTIDADES] Se cerro el archivo.

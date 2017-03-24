@@ -19,7 +19,8 @@ src/Sonictp.d: ../src/Sonictp.cpp /usr/include/SDL2/SDL.h \
  /usr/include/SDL2/SDL_loadso.h /usr/include/SDL2/SDL_log.h \
  /usr/include/SDL2/SDL_messagebox.h /usr/include/SDL2/SDL_power.h \
  /usr/include/SDL2/SDL_render.h /usr/include/SDL2/SDL_system.h \
- /usr/include/SDL2/SDL_timer.h /usr/include/SDL2/SDL_version.h
+ /usr/include/SDL2/SDL_timer.h /usr/include/SDL2/SDL_version.h \
+ ../src/Logger.h ../src/Mensaje.h
 
 /usr/include/SDL2/SDL.h:
 
@@ -106,3 +107,7 @@ src/Sonictp.d: ../src/Sonictp.cpp /usr/include/SDL2/SDL.h \
 /usr/include/SDL2/SDL_timer.h:
 
 /usr/include/SDL2/SDL_version.h:
+
+../src/Logger.h:
+
+../src/Mensaje.h:
