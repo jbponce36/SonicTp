@@ -11,6 +11,7 @@
 using namespace std;
 #include <string>
 #include "Textura.h"
+#include "jventana.h"
 
 #ifndef VISTASDL_H_
 #define VISTASDL_H_
@@ -29,7 +30,7 @@ private:
 	int imgFlags;
 
 public:
-	VistaSDL();
+	VistaSDL(jventana *ventana);
 	void cargarImagen();
 	int obtenerAltoVentana();
 	int obtenerAnchoVentana();
