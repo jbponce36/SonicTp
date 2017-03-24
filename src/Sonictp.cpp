@@ -7,9 +7,13 @@
 //============================================================================
 
 #include <iostream>
+#include <jansson.h>
+#include </usr/include/SDL2/SDL.h>
+
 using namespace std;
 
 int main() {
+
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 	return 0;
 }

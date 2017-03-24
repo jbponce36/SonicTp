@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS :=
+LIBS := -ljansson -lSDL2 -lSDL2_image
 
