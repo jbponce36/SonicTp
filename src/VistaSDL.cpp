@@ -19,6 +19,8 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->anchoVentana= jventana->getancho();
 	this->velocidadScroll=jconfiguracion->getvelscroll();
 
+	this->constructorEntidades = ConstructorEntidades(jescenario);
+
 	//capas capa= new capas();
 	//capa.setid(8);
 	//capa.setindex(2);
@@ -132,6 +134,8 @@ void VistaSDL::mostrarVentana()
 			}
 			// dibuja en la ventana la textura mostrada en este caso capa0, los parametros son las coords donde renderiza la imagen
 			this->capaFondo->renderizar(0,0);
+
+			this->mostrarEntidades();
 			//actualizar ventana
 			SDL_RenderPresent( renderizador );
 		}
@@ -152,6 +156,11 @@ void VistaSDL::cerrar()
 VistaSDL::~VistaSDL()
 {
 	this->cerrar();
+}
+
+void VistaSDL::mostrarEntidades()
+{
+	constructorEntidades.mostrarEntidades(renderizador);
 }
 
 

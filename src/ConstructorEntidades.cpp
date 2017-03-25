@@ -16,8 +16,6 @@ ConstructorEntidades::ConstructorEntidades() {
 
 ConstructorEntidades::ConstructorEntidades(jescenario *jescenario)
 {
-	list<Rectangulo> rectangulos;
-	list<Circulo> circulos;
 	cargarEntidades(jescenario->getentidades(), &rectangulos, &circulos);
 }
 
@@ -75,6 +73,23 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> entidades, list<Rect
 		}
 	}
 
+}
+
+void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador)
+{
+	list<Rectangulo>::iterator posRect;
+
+	for(posRect = rectangulos.begin(); posRect != rectangulos.end(); posRect++)
+	{
+		(*posRect).dibujar(renderizador);
+	}
+
+	list<Circulo>::iterator posCirc;
+
+	for(posCirc = circulos.begin(); posCirc != circulos.end(); posCirc++)
+	{
+		(*posCirc).dibujar(renderizador);
+	}
 }
 
 } //Namespace
