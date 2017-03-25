@@ -20,7 +20,7 @@ int main() {
 
 	parseadorJson* parseador = new parseadorJson();
 	//jescenarioJuego* jparseador = parseador.
-	char* file= "f.json";
+	char *file=(char*)"f.json";
 
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
