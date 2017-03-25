@@ -31,7 +31,7 @@ int main() {
 
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
-	VistaSDL *vista = new VistaSDL(jparseador->getVentana());
+	VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario());
 	vista->cargarTexturas();
 	vista->mostrarVentana();
 	vista->cerrar();

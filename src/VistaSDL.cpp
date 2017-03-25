@@ -10,11 +10,26 @@
 using namespace std;
 #include <string>
 #include "VistaSDL.h"
+#include <list>
 
-VistaSDL::VistaSDL(jventana* jventana)
+VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario *jescenario)
 {
 	this->altoVentana =jventana->getalto();
 	this->anchoVentana= jventana->getancho();
+	this->velocidadScroll=jconfiguracion->getvelscroll();
+    this->altoescenario=jescenario->getalto();
+    this->anchoescenario=jescenario->getancho();
+
+    list<capas>::iterator pos;
+    list<capas>capal;
+
+    capal = jescenario->getcapas();
+
+    pos = capal.begin();
+
+
+	//aca poner la velocidad
+	//this->velocidadScroll =
 	this->superficiePantalla = NULL;
 	this->superficieACargar = NULL;
 
@@ -63,6 +78,7 @@ VistaSDL::VistaSDL(jventana* jventana)
 void VistaSDL::cargarTexturas()
 {
 	capaFondo = new Textura();
+
 	this->capaFondo->cargarImagen( "capa1r.png" ,renderizador);
 }
 
