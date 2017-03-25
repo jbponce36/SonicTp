@@ -9,15 +9,15 @@ using namespace std;
 #include "parseadorJson.h"
 #include "jescenarioJuego.h"
 #include "jventana.h"
+#include "Rectangulo.h"
+#include "Circulo.h"
 using namespace std;
 
 int main() {
 
-
-
 	parseadorJson* parseador = new parseadorJson();
 	//jescenarioJuego* jparseador = parseador.
-	char* file= "f.json";
+	char* file= "configuracion/f.json";
 
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 

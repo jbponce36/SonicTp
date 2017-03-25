@@ -79,7 +79,7 @@ void VistaSDL::cargarTexturas()
 {
 	capaFondo = new Textura();
 
-	this->capaFondo->cargarImagen( "capa1r.png" ,renderizador);
+	this->capaFondo->cargarImagen( "src/capa1r.png" ,renderizador);
 }
 
 int VistaSDL::obtenerAltoVentana()
