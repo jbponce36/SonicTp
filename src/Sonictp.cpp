@@ -31,7 +31,7 @@ int main() {
     list<Circulo> circulos;
     ConstructorEntidades constructorEntidades = ConstructorEntidades(jparseador->getEscenario(), &rectangulos, &circulos);
 
-    vista->cargarTexturas();
+    //vista->cargarTexturas();
 	vista->mostrarVentana();
 	vista->cerrar();
 

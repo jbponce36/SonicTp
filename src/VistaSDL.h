@@ -37,7 +37,6 @@ private:
 	int altoescenario;
 	int imgFlags;
 	capaEs vectorCapas[2];
-
 public:
 	VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion,jescenario *jescenario);
 	void cargarCapas(list<capas> aux);
