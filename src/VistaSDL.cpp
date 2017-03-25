@@ -10,11 +10,26 @@
 using namespace std;
 #include <string>
 #include "VistaSDL.h"
+#include <list>
 
-VistaSDL::VistaSDL()
+VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario *jescenario)
 {
-	this->altoVentana =480;
-	this->anchoVentana= 640;
+	this->altoVentana =jventana->getalto();
+	this->anchoVentana= jventana->getancho();
+	this->velocidadScroll=jconfiguracion->getvelscroll();
+    this->altoescenario=jescenario->getalto();
+    this->anchoescenario=jescenario->getancho();
+
+    list<capas>::iterator pos;
+    list<capas>capal;
+
+    capal = jescenario->getcapas();
+
+    pos = capal.begin();
+
+
+	//aca poner la velocidad
+	//this->velocidadScroll =
 	this->superficiePantalla = NULL;
 	this->superficieACargar = NULL;
 
@@ -34,7 +49,7 @@ VistaSDL::VistaSDL()
 			}
 			else
 			{      //creo render para la ventana
-				renderizador = SDL_CreateRenderer( ventana, -1, SDL_RENDERER_ACCELERATED );
+				renderizador = SDL_CreateRenderer( this->ventana, -1, SDL_RENDERER_ACCELERATED );
 				if( renderizador == NULL )
 				{
 					printf( "renderer no se pudo crear! SDL Error: %s\n", SDL_GetError() );
@@ -63,6 +78,7 @@ VistaSDL::VistaSDL()
 void VistaSDL::cargarTexturas()
 {
 	capaFondo = new Textura();
+
 	this->capaFondo->cargarImagen( "capa1r.png" ,renderizador);
 }
 

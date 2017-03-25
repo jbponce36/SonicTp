@@ -11,6 +11,10 @@
 using namespace std;
 #include <string>
 #include "Textura.h"
+#include "jventana.h"
+#include "jconfiguracion.h"
+#include "jescenario.h"
+#include "capas.h"
 
 #ifndef VISTASDL_H_
 #define VISTASDL_H_
@@ -22,14 +26,18 @@ private:
 	SDL_Renderer* renderizador;
 	SDL_Surface* superficiePantalla;
 	SDL_Surface* superficieACargar;
+	Textura texturas[2];
 	Textura* capaFondo;
 	Textura* capaNivel;
+	int velocidadScroll;
 	int anchoVentana;
 	int altoVentana;
+	int anchoescenario;
+	int altoescenario;
 	int imgFlags;
 
 public:
-	VistaSDL();
+	VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion,jescenario *jescenario);
 	void cargarImagen();
 	int obtenerAltoVentana();
 	int obtenerAnchoVentana();

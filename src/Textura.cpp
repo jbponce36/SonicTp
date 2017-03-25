@@ -94,5 +94,3 @@ Textura::~Textura()
 {
 	this->liberarTextura();
 }
-
-
