@@ -21,7 +21,7 @@ public:
 	Logger(char *fileName, int level);
 	virtual ~Logger();
 
-	char* getLevel() const;
+	string getLevel();
 	void setLevel(int level);
 
 	int validateFileName();

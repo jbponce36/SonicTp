@@ -12,6 +12,7 @@ Logger::Logger(char *fileName, int level){
 
 void Logger::setLevel(int level)
 {
+	string s = "ho";
 	switch(level)
 		{
 		    case 1: this->nivel = INFO;   break;
@@ -20,7 +21,7 @@ void Logger::setLevel(int level)
 		}
 }
 
-char* Logger::getLevel() const
+string Logger::getLevel()
 {
 	switch(this->nivel)
 	{
