@@ -11,22 +11,22 @@ using namespace std;
 #include <string>
 #include "VistaSDL.h"
 #include <list>
+#include "Textura.h"
 
 VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario *jescenario)
 {
 	this->altoVentana =jventana->getalto();
 	this->anchoVentana= jventana->getancho();
 	this->velocidadScroll=jconfiguracion->getvelscroll();
-    this->altoescenario=jescenario->getalto();
-    this->anchoescenario=jescenario->getancho();
 
-    list<capas>::iterator pos;
-    list<capas>capal;
+	//capas capa= new capas();
+	//capa.setid(8);
+	//capa.setindex(2);
+	//capa.setrutaimagen("");
 
-    capal = jescenario->getcapas();
-
-    pos = capal.begin();
-
+	//vectorCapas[1] = capas;
+	//vectorCapas[2] = capas;
+	//this->cargarCapas(jescenario->getcapas());
 
 	//aca poner la velocidad
 	//this->velocidadScroll =
@@ -75,11 +75,30 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 		}
 }
 
+void VistaSDL::cargarCapas(list<capas> lista)
+{
+	capaFondo=new Textura();
+
+	/*list<capas>::const_iterator pos;
+
+	pos = lista.begin();
+	int i=0;
+	for(pos = lista.begin(); pos!=lista.end(); pos++){
+
+		vectorCapas[i].setId(0);
+	//	cout<<(*pos).getid()<<endl;
+		vectorCapas[i].setIndex_z(9);
+		vectorCapas[i].setRutaImagen("src/capa0.png");
+		i++;
+	}*/
+
+}
+
 void VistaSDL::cargarTexturas()
 {
 	capaFondo = new Textura();
-
-	this->capaFondo->cargarImagen( "capa1r.png" ,renderizador);
+//	this->capaFondo->cargarImagen( this->vectorCapas[0].getRutaImagen() ,renderizador);
+	capaFondo->cargarImagen("capa0.png",this->renderizador);
 }
 
 int VistaSDL::obtenerAltoVentana()

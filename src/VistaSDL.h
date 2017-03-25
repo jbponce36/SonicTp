@@ -15,7 +15,8 @@ using namespace std;
 #include "jconfiguracion.h"
 #include "jescenario.h"
 #include "capas.h"
-
+#include "capaEs.h"
+#include <list>
 #ifndef VISTASDL_H_
 #define VISTASDL_H_
 
@@ -26,7 +27,7 @@ private:
 	SDL_Renderer* renderizador;
 	SDL_Surface* superficiePantalla;
 	SDL_Surface* superficieACargar;
-	Textura texturas[2];
+
 	Textura* capaFondo;
 	Textura* capaNivel;
 	int velocidadScroll;
@@ -35,13 +36,17 @@ private:
 	int anchoescenario;
 	int altoescenario;
 	int imgFlags;
+	capaEs vectorCapas[2];
 
 public:
 	VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion,jescenario *jescenario);
+	void cargarCapas(list<capas> aux);
 	void cargarImagen();
 	int obtenerAltoVentana();
 	int obtenerAnchoVentana();
 	void cargarTexturas();
+	list<capaEs>getcapaEs();
+	void setcapaEs(list<capaEs>);
 	void mostrarVentana();
 	void cerrar();
 	~VistaSDL();

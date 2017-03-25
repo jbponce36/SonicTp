@@ -70,7 +70,7 @@ void Textura::renderizar( int ancho, int alto )
 
 	//renderiza en la pantalla un bloque con las dimensiones pasadas por pantalla
 	SDL_Rect rectanguloRenderizacion = { ancho, alto, this->anchoTextura, this->altoTextura };
-	SDL_RenderCopy( renderizador, textura, NULL, &rectanguloRenderizacion );
+	SDL_RenderCopy( renderizador,this->textura, NULL, &rectanguloRenderizacion );
 }
 
 
