@@ -23,7 +23,7 @@
 			"color": "rojo",
 			"dimensiones": {"ancho": 40, "alto": 20},
 			"coordenada": {"x": 128, "y": 405},
-			"ruta_imagen": "/images/entidad1.png",
+			"ruta_imagen": "entidad1.png",
 			"index_z": 99
 		},
 		{
@@ -32,7 +32,7 @@
 			"color": "verde",
 			"dimensiones": {"ancho": 80, "alto": 35},
 			"coordenada": {"x": 2400, "y": 500},
-			"ruta_imagen": "/images/entidad2.png",
+			"ruta_imagen": "entidad2.png",
 			"index_z": 99
 		},
 		{
@@ -41,7 +41,7 @@
 			"color": "amarillo",
 			"dimensiones": {"radio": 15},
 			"coordenada": {"x": 3000, "y": 205},
-			"ruta_imagen": "/images/entidad3.png",
+			"ruta_imagen": "entidad3.png",
 			"index_z": 99
 		}]
 	}
