@@ -20,7 +20,7 @@ void Logger::setLevel(int level)
 		}
 }
 
-char* Logger::getLevel() const
+string Logger::getLevel()
 {
 	switch(this->nivel)
 	{
