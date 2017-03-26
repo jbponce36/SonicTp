@@ -103,7 +103,7 @@ void VistaSDL::cargarCapas(list<capas> lista)
 		vectorCapas[i].setId(0);
 		//cout<<(*pos).getid()<<endl;
 		vectorCapas[i].setIndex_z(9);
-		vectorCapas[i].setRutaImagen("capa0.png");
+		vectorCapas[i].setRutaImagen("images/capa0.png");
 		i++;
 
 	}
@@ -117,7 +117,7 @@ void VistaSDL::cargarTexturas()
 {
 	capaFondo = new Textura();
 
-	this->capaFondo->cargarImagen( "capa1r.png" ,renderizador);
+	this->capaFondo->cargarImagen( "images/capa1r.png" ,renderizador);
 }
 
 int VistaSDL::obtenerAltoVentana()

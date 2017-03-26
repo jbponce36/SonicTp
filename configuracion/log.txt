@@ -1,0 +1,2 @@
+[2017-3-26 13:13:22] [DEBBUG] [JSON] Se empieza a leer el archivo de confiuracion
+[2017-3-26 13:13:42] [DEBBUG] [JSON] Se empieza a leer el archivo de confiuracion
