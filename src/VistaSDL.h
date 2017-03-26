@@ -16,6 +16,7 @@ using namespace std;
 #include "jescenario.h"
 #include "capas.h"
 #include "capaEs.h"
+#include "ConstructorEntidades.h"
 #include <list>
 #ifndef VISTASDL_H_
 #define VISTASDL_H_
@@ -37,7 +38,7 @@ private:
 	int altoescenario;
 	int imgFlags;
 	capaEs vectorCapas[2];
-
+	ConstructorEntidades constructorEntidades;
 public:
 	VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion,jescenario *jescenario);
 	void cargarCapas(list<capas> aux);
@@ -50,6 +51,7 @@ public:
 	void mostrarVentana();
 	void cerrar();
 	~VistaSDL();
+	void mostrarEntidades();
 };
 
 

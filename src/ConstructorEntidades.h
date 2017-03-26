@@ -17,12 +17,16 @@
 namespace std{
 
 class ConstructorEntidades {
+private:
+	list<Rectangulo> rectangulos;
+	list<Circulo> circulos;
+
 public:
 	ConstructorEntidades();
 	ConstructorEntidades(jescenario *jescenario);
 	ConstructorEntidades(jescenario *jescenario, list<Rectangulo> *rectangulos, list<Circulo> *circulos);
 	void cargarEntidades(list<jentidades> entidades, list<Rectangulo> *rectangulos, list<Circulo> *circulos);
-
+	void mostrarEntidades(SDL_Renderer* renderizador);
 	virtual ~ConstructorEntidades();
 };
 

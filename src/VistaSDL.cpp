@@ -13,20 +13,14 @@ using namespace std;
 #include <list>
 #include "Textura.h"
 
+
 VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario *jescenario)
 {
 	this->altoVentana =jventana->getalto();
 	this->anchoVentana= jventana->getancho();
 	this->velocidadScroll=jconfiguracion->getvelscroll();
 
-	//capas capa= new capas();
-	//capa.setid(8);
-	//capa.setindex(2);
-	//capa.setrutaimagen("");
-
-	//vectorCapas[1] = capas;
-	//vectorCapas[2] = capas;
-	//this->cargarCapas(jescenario->getcapas());
+	this->constructorEntidades = ConstructorEntidades(jescenario);
 
 	//aca poner la velocidad
 	//this->velocidadScroll =
@@ -73,24 +67,49 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 			}
 
 		}
+
+	capaFondo=new Textura();
+
+		list<capas> lista = jescenario->getcapas();
+
+		list<capas>::iterator pos;
+
+		pos = lista.begin();
+		int i=0;
+
+		for(pos = lista.begin(); pos!=lista.end(); pos++){
+
+
+		vectorCapas[i].setId((*pos).getid());
+		vectorCapas[i].setIndex_z((*pos).getindex());
+		vectorCapas[i].setRutaImagen((*pos).getrutaimagen());
+		i++;
+		}
+		this->capaFondo->cargarImagen( vectorCapas[1].getRutaImagen() ,renderizador);
+
+
 }
 
 void VistaSDL::cargarCapas(list<capas> lista)
 {
 	capaFondo=new Textura();
 
-	/*list<capas>::const_iterator pos;
+	list<capas>::const_iterator pos;
 
 	pos = lista.begin();
 	int i=0;
 	for(pos = lista.begin(); pos!=lista.end(); pos++){
 
 		vectorCapas[i].setId(0);
-	//	cout<<(*pos).getid()<<endl;
+		//cout<<(*pos).getid()<<endl;
 		vectorCapas[i].setIndex_z(9);
-		vectorCapas[i].setRutaImagen("src/capa0.png");
+		vectorCapas[i].setRutaImagen("capa0.png");
 		i++;
-	}*/
+
+	}
+	capaFondo = new Textura();
+
+	this->capaFondo->cargarImagen( vectorCapas[1].getRutaImagen() ,renderizador);
 
 }
 
@@ -132,6 +151,8 @@ void VistaSDL::mostrarVentana()
 			}
 			// dibuja en la ventana la textura mostrada en este caso capa0, los parametros son las coords donde renderiza la imagen
 			this->capaFondo->renderizar(0,0);
+
+			this->mostrarEntidades();
 			//actualizar ventana
 			SDL_RenderPresent( renderizador );
 		}
@@ -152,6 +173,11 @@ void VistaSDL::cerrar()
 VistaSDL::~VistaSDL()
 {
 	this->cerrar();
+}
+
+void VistaSDL::mostrarEntidades()
+{
+	constructorEntidades.mostrarEntidades(renderizador);
 }
 
 

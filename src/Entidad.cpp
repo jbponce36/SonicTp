@@ -77,7 +77,7 @@ int Entidad::cargarImagen(SDL_Renderer *renderer)
 	}
 
 	SDL_Surface *imagenCargada = NULL;
-
+/////////////////TODO: Ver si tiene la / adelante de la ruta. Sacarla
 	imagenCargada=IMG_Load(rutaImagen.c_str()); //SDL_LoadBMP(rutaImagen.c_str()); //Para cargar BMP
 
 	if(imagenCargada == NULL)
