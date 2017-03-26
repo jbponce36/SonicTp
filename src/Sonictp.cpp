@@ -1,8 +1,8 @@
-#include <iostream>
-#include <jansson.h>
+
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
-using namespace std;
+#include <iostream>
+#include <jansson.h>
 #include <string>
 #include "VistaSDL.h"
 #include "Textura.h"
@@ -13,20 +13,30 @@ using namespace std;
 #include "Circulo.h"
 #include "jescenario.h"
 #include "ConstructorEntidades.h"
+#include "Logger.h"
 
 using namespace std;
 
-int main() {
+int main(int argc, char *argv[]) {
 
+
+	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
+	char *nivelLog = "2";
+	if(argc>1){
+		nivelLog = argv[1];
+	}
+
+	Logger *log = new Logger("log.txt", atoi( nivelLog));
+
+	//Se lee del json el nombre de la ventana
 	parseadorJson* parseador = new parseadorJson();
 	//jescenarioJuego* jparseador = parseador.
 	char *file=(char*)"f.json";
-
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
-
-
     VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario());
 
+
+    //Se muestran las entidades
     list<Rectangulo> rectangulos;
     list<Circulo> circulos;
     ConstructorEntidades constructorEntidades = ConstructorEntidades(jparseador->getEscenario(), &rectangulos, &circulos);

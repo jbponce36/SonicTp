@@ -1,7 +1,7 @@
 #include "Logger.h"
 
 Logger::Logger() {
-	this->nivel = DEBBUG;
+	this->nivel = MEDIO;
 }
 
 Logger::Logger(char *fileName, int level){
@@ -14,9 +14,9 @@ void Logger::setLevel(int level)
 {
 	switch(level)
 		{
-		    case 1: this->nivel = INFO;   break;
-		    case 2: this->nivel = DEBBUG; break;
-		    case 3: this->nivel = ERROR;  break;
+		    case 1: this->nivel = BAJO;   break;
+		    case 2: this->nivel = MEDIO; break;
+		    case 3: this->nivel = ALTO;  break;
 		}
 }
 
