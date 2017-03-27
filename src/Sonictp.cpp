@@ -15,7 +15,7 @@
 #include "Logger.h"
 #include "Personaje.h"
 using namespace std;
-
+/*
 const int MAXIMO_LARGO = 8098;
 const int MAXIMO_ANCHO = 1280;
 const int LARGO_VENTANA=640;
@@ -72,7 +72,7 @@ bool inicializacion(SDL_Renderer *render, SDL_Window *ventana){
 
 	return inicializacionCorrecta;
 }
-
+*/
 int main(int argc, char *argv[]) {
 
 	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO

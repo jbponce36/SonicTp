@@ -19,13 +19,16 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->altoVentana =jventana->getalto();
 	this->anchoVentana= jventana->getancho();
 	this->velocidadScroll=jconfiguracion->getvelscroll();
-
+	this->crearVentanaYrenderizador();
 	this->constructorEntidades = ConstructorEntidades(jescenario);
-
 	//aca poner la velocidad
 	//this->velocidadScroll =
 	this->superficiePantalla = NULL;
 	this->superficieACargar = NULL;
+	this->cargarCapas(jescenario);
+}
+
+void VistaSDL::crearVentanaYrenderizador(){
 
 	this->imgFlags = 0;
 	//Inicializa SDL
@@ -65,59 +68,29 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 					}
 				}
 			}
-
 		}
-
-	capaFondo=new Textura();
-
-		list<capas> lista = jescenario->getcapas();
-
-		list<capas>::iterator pos;
-
-		pos = lista.begin();
-		int i=0;
-
-		for(pos = lista.begin(); pos!=lista.end(); pos++){
-
-
-		vectorCapas[i].setId((*pos).getid());
-		vectorCapas[i].setIndex_z((*pos).getindex());
-		vectorCapas[i].setRutaImagen((*pos).getrutaimagen());
-		i++;
-		}
-		this->capaFondo->cargarImagen( vectorCapas[1].getRutaImagen() ,renderizador);
-
-
 }
 
-void VistaSDL::cargarCapas(list<capas> lista)
+void VistaSDL::cargarCapas(jescenario* jescenario)
 {
-	capaFondo=new Textura();
-
-	list<capas>::const_iterator pos;
-
-	pos = lista.begin();
-	int i=0;
-	for(pos = lista.begin(); pos!=lista.end(); pos++){
-
-		vectorCapas[i].setId(0);
-		//cout<<(*pos).getid()<<endl;
-		vectorCapas[i].setIndex_z(9);
-		vectorCapas[i].setRutaImagen("images/capa0.png");
-		i++;
-
-	}
-	capaFondo = new Textura();
-
-	this->capaFondo->cargarImagen( vectorCapas[1].getRutaImagen() ,renderizador);
-
+	//cargamos las capas desde el json en el vector de capas
+	list<capas> lista = jescenario->getcapas();
+		list<capas>::iterator pos;
+		pos = lista.begin();
+		int i=0;
+		for(pos = lista.begin(); pos!=lista.end(); pos++)
+		{
+			vectorCapas[i].setId((*pos).getid());
+			vectorCapas[i].setIndex_z((*pos).getindex());
+			vectorCapas[i].setRutaImagen((*pos).getrutaimagen());
+			this->capasFondo[i].cargarImagen( vectorCapas[i].getRutaImagen() ,renderizador);
+			i++;
+		}
 }
 
 void VistaSDL::cargarTexturas()
 {
-	capaFondo = new Textura();
 
-	this->capaFondo->cargarImagen( "images/capa1r.png" ,renderizador);
 }
 
 int VistaSDL::obtenerAltoVentana()
@@ -150,12 +123,19 @@ void VistaSDL::mostrarVentana()
 				}
 			}
 			// dibuja en la ventana la textura mostrada en este caso capa0, los parametros son las coords donde renderiza la imagen
-			this->capaFondo->renderizar(0,0);
-
+		//	this->capaFondo->renderizar(0,0);
+	  		this->mostrarCapas();
 			this->mostrarEntidades();
 			//actualizar ventana
 			SDL_RenderPresent( renderizador );
 		}
+}
+
+void VistaSDL::mostrarCapas(){
+
+	for(int i=0; i<2;i++ ){
+		this->capasFondo[i].renderizar(0,0);
+	}
 }
 
 void VistaSDL::cerrar()
@@ -179,6 +159,7 @@ void VistaSDL::mostrarEntidades()
 {
 	constructorEntidades.mostrarEntidades(renderizador);
 }
+
 
 
 
