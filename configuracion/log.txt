@@ -1,2 +1,8 @@
 [2017-3-26 13:13:22] [DEBBUG] [JSON] Se empieza a leer el archivo de confiuracion
 [2017-3-26 13:13:42] [DEBBUG] [JSON] Se empieza a leer el archivo de confiuracion
+[2017-3-26 18:32:31] [DEBBUG] [JSON] Se empieza a leer el archivo de confiuracion
+[2017-3-27 17:42:42] [DEBBUG] [JSON] Se empieza a leer el archivo de confiuracion
+[2017-3-27 18:53:9] [DEBBUG] [JSON] Se empieza a leer el archivo de confiuracion
+[2017-3-27 18:53:9] [DEBBUG] [PARSEADOR JSON] Se empezo a leer el archivo Json
+[2017-3-27 18:53:9] [DEBBUG] [PARSEADOR JSON] Se empezo a cargar la configuracion de la ventana desde el archivo Json
+[2017-3-27 18:53:9] [DEBBUG] [PARSEADOR JSON] Se termino de cargar la configuracion de la ventana desde el archivo Json

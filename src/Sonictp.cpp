@@ -84,10 +84,10 @@ int main(int argc, char *argv[]) {
 	char *archivoLog=(char*)"configuracion/log.txt";
 	char *nivel= (char*)nivelLog;
 	Logger *log = new Logger(archivoLog, atoi(nivel));
-	log->addLogMessage("JSON", "Se empieza a leer el archivo de confiuracion");
+	log->addLogMessage("JSON", "Se empieza a leer el archivo de configuracion");
 
 	//Se lee del json el nombre de la ventana
-	parseadorJson* parseador = new parseadorJson();
+	parseadorJson* parseador = new parseadorJson(log);
 	//jescenarioJuego* jparseador = parseador.
 	char *file=(char*)"configuracion/configuracion.json";
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
