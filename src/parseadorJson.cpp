@@ -63,14 +63,14 @@ namespace std
         json_t *jsonventanaalto;
         json_t *jsonventanaancho;
         jsonventana = json_object_get(raiz, "ventana");
-        log->addLogMessage("PARSEADOR JSON", "Se empezo a cargar la configuracion de la ventana desde el archivo Json");
+        log->addLogMessage("PARSEADOR JSON", "Se empieza a cargar la configuracion de la ventana.");
         jsonventana = json_object_get(jsonventana, "dimensiones");
         jsonventanaalto = json_object_get(jsonventana, "alto");
         jsonventanaancho = json_object_get(jsonventana, "ancho");
         jventana *ventana = new jventana();
         ventana->setalto(json_number_value(jsonventanaalto));
         ventana->setancho(json_number_value(jsonventanaancho));
-        log->addLogMessage("PARSEADOR JSON", "Se termino de cargar la configuracion de la ventana desde el archivo Json");
+        log->addLogMessage("PARSEADOR JSON", "Se termina de cargar la configuracion de la ventana.");
         return ventana;
     }
 
@@ -78,9 +78,11 @@ namespace std
     {
         json_t *jsonconfiguracion;
         jsonconfiguracion = json_object_get(raiz, "configuracion");
+        log->addLogMessage("PARSEADOR JSON", "Se empieza a cargar la configuracion de la velocidad de scroll.");
         jsonconfiguracion = json_object_get(jsonconfiguracion, "vel_scroll");
         jconfiguracion *configuracion = new jconfiguracion();
         configuracion->setvelscroll(json_number_value(jsonconfiguracion));
+        log->addLogMessage("PARSEADOR JSON", "Se termina de cargar la configuracion de la velocidad de scroll.");
         return configuracion;
     }
 
@@ -93,6 +95,7 @@ namespace std
         json_t *jcapas;
         jescenario *escenario = new jescenario();
         jsonescenario = json_object_get(raiz, "escenario");
+        log->addLogMessage("PARSEADOR JSON", "Se empezo a cargar la configuracion del escenario.");
         jdimensiones = json_object_get(jsonescenario, "dimensiones");
         jd_alto = json_object_get(jdimensiones, "alto");
         jd_ancho = json_object_get(jdimensiones, "ancho");
@@ -174,6 +177,7 @@ namespace std
         }
 
         escenario->setentidades(listaentidades);
+        log->addLogMessage("PARSEADOR JSON", "Se termino de cargar la configuracion del escenario.");
         return escenario;
     }
 
@@ -183,12 +187,12 @@ namespace std
         json_error_t error;
         json = json_load_file(nombreArchivo, 0, &error);
         if(!json) {
-           this->log->addLogMessage("PARSEADOR JSON","Error al intentar leer el archivo Json");
+           this->log->addLogMessage("PARSEADOR JSON","Error al intentar leer el archivo Json, no existe el archivo o directorio.");
 	       cout << "!!! hay  probremas!!!" << endl;
 	       cout << error.text << endl;
 	       return NULL;
 	  }
-        this->log->addLogMessage("PARSEADOR JSON","Se empezo a leer el archivo Json");
+        this->log->addLogMessage("PARSEADOR JSON","Se empieza a leer el archivo de configuracion.");
         jventana *ventana = cargarVentana(json);
         jconfiguracion *config = cargarConfiguracion(json);
         jescenario *escenario = cargarEscenario(json);
@@ -196,6 +200,7 @@ namespace std
         result->setVentana(ventana);
         result->setEscenario(escenario);
         result->setConfiguracion(config);
+        this->log->addLogMessage("PARSEADOR JSON","Se termina de leer el archivo de configuracion.");
         return result;
     }
 
