@@ -1,9 +1,9 @@
 {
     "prueba": 2,
-	"ventana": {"dimensiones": {"ancho": 800, "alto": 500}},
+	"ventana": {"dimensiones": {"ancho": 800, "alto": 400}},
 	"configuracion": {"vel_scroll": 20},
 	"escenario": {
-		"dimensiones": {"ancho": 3600, "alto": 600},
+		"dimensiones": {"ancho": 3600, "alto": 500},
 		"capas": [
 			{
 			"id": 1,

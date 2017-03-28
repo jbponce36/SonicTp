@@ -5,8 +5,7 @@
  *      Author: cristian
  */
 #include <iostream>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL.h>
+
 using namespace std;
 #include <string>
 #include "VistaSDL.h"
@@ -21,6 +20,11 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->velocidadScroll=jconfiguracion->getvelscroll();
 	this->crearVentanaYrenderizador();
 	this->constructorEntidades = ConstructorEntidades(jescenario);
+	this->anchoescenario=jescenario->getancho();
+	this->altoescenario=jescenario->getalto();
+	//this->renderizador = NULL;
+	this->ventana = NULL;
+	this->imgFlags=0;
 	//aca poner la velocidad
 	//this->velocidadScroll =
 	this->superficiePantalla = NULL;
@@ -55,6 +59,7 @@ void VistaSDL::crearVentanaYrenderizador(){
 				{
 					//Initialize renderer color
 					SDL_SetRenderDrawColor( renderizador, 0xFF, 0xFF, 0xFF, 0xFF );
+					SDL_RenderClear(this->renderizador);
 					//inicia carga PNG
 					int imgFlags = IMG_INIT_PNG;
 					if( !( IMG_Init( imgFlags ) & imgFlags ) )
@@ -93,9 +98,29 @@ void VistaSDL::cargarTexturas()
 
 }
 
+SDL_Renderer* VistaSDL::obtenerRender(){
+
+	return this->renderizador;
+}
+
+Textura VistaSDL::obtenerTextura(int numero){
+
+	return this->capasFondo[numero];
+}
+
 int VistaSDL::obtenerAltoVentana()
 {
 	return this->altoVentana;
+}
+
+int VistaSDL::obtenerAltoEscenario()
+{
+	return this->altoescenario;
+}
+
+int VistaSDL::obtenerAnchoEscenario()
+{
+	return this->anchoescenario;
 }
 
 int VistaSDL::obtenerAnchoVentana()
@@ -103,7 +128,12 @@ int VistaSDL::obtenerAnchoVentana()
 	return this->anchoVentana;
 }
 
-void VistaSDL::mostrarVentana()
+int VistaSDL::obtenerVelocidadDeScroll(){
+
+	return this->velocidadScroll;
+}
+
+/*void VistaSDL::mostrarVentana()
 {
 	//loop cerrar ventana si apretamos la cruz de la misma
 	bool quit = false;
@@ -134,10 +164,10 @@ void VistaSDL::mostrarVentana()
 void VistaSDL::mostrarCapas(){
 
 	for(int i=0; i<2;i++ ){
-		this->capasFondo[i].renderizar(0,0);
+		this->capasFondo[i].renderizar(0,0,);
 	}
 }
-
+*/
 void VistaSDL::cerrar()
 {
 	//destruir ventana render

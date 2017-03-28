@@ -1,19 +1,21 @@
-#include <SDL2/SDL.h>
-#include "Ctextura.h"
+#ifndef PERSONAJE_H_
+#define PERSONAJE_H_
+
+#include <SDL2/SDL_image.h>
 class Personaje
 {
     public:
 		//constructor
-		Personaje();
+		Personaje(int velocidad);
 
 		//toma las pulsaciones del teclado y ajusta la velocidad
-		void handleEvent( SDL_Event& e );
+		void procesarEvento( SDL_Event& e );
 
 		//mueve al personaje;
-		void move();
+		void mover(int maximoAncho,int maximoAlto);
 
 		//pinta el personaje en la pantalla
-		void render( int camX, int camY, Ctextura textura,SDL_Renderer *renderer);
+		//void render( int camX, int camY, Ctextura textura,SDL_Renderer *renderer);
 
 		int getPosicionX();
 		int getPosicionY();
@@ -33,3 +35,5 @@ class Personaje
 		//velocidad de X e Y
 		int velocidadX, velocidadY;
 };
+
+#endif

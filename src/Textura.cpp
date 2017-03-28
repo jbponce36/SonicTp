@@ -62,15 +62,18 @@ int Textura::obtenerAltoTextura()
 	return this->altoTextura;
 }
 
-void Textura::renderizar( int ancho, int alto )
+void Textura::renderizar( int ancho, int alto,SDL_Rect rectangulo )
 {
 	//asi se limpias la pantalla para poner algo nuevo no activar aca
 	//SDL_SetRenderDrawColor( renderizador, 0xFF, 0xFF, 0xFF, 0xFF );
 	//SDL_RenderClear( renderizador );
 
 	//renderiza en la pantalla un bloque con las dimensiones pasadas por pantalla
-	SDL_Rect rectanguloRenderizacion = { ancho, alto, this->anchoTextura, this->altoTextura };
-	SDL_RenderCopy( renderizador,this->textura, NULL, &rectanguloRenderizacion );
+	//SDL_Rect rectanguloRenderizacion = { 0, 0,800,400};
+	cout<<rectangulo.x;
+		cout<<"°°";
+		cout<<rectangulo.y<<endl;
+	SDL_RenderCopy( renderizador,this->textura, &rectangulo,NULL);
 }
 
 

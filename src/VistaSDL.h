@@ -49,8 +49,15 @@ public:
 	void crearVentanaYrenderizador();
 	list<capaEs>getcapaEs();
 	void setcapaEs(list<capaEs>);
+	int obtenerAltoEscenario();
+	int obtenerAnchoEscenario();
 	void mostrarCapas();
 	void mostrarVentana();
+
+	Textura obtenerTextura(int);
+	SDL_Renderer* obtenerRender();
+	int obtenerVelocidadDeScroll();
+
 	void cerrar();
 	~VistaSDL();
 	void mostrarEntidades();

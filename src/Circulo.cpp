@@ -36,8 +36,7 @@ void Circulo::dibujarColorSolido(SDL_Renderer *renderer)
 
 	//Para cada punto dentro del cuadrado que encierra al circulo
 	for (int xPunto=0; xPunto<diametro; xPunto++)
-	{
-		for (int yPunto=0; yPunto<diametro; yPunto++)
+	{		for (int yPunto=0; yPunto<diametro; yPunto++)
 		{
 			difX=radio-xPunto;
 			difY=radio-yPunto;

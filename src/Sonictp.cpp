@@ -14,6 +14,7 @@
 #include "ConstructorEntidades.h"
 #include "Logger.h"
 #include "Personaje.h"
+#include "Control.h"
 using namespace std;
 /*
 const int MAXIMO_LARGO = 8098;
@@ -92,6 +93,9 @@ int main(int argc, char *argv[]) {
 	char *file=(char*)"configuracion/configuracion.json";
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
     VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario());
+    Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll());
+    Control *control = new Control(0, 0);
+    control->ControlarJuego(vista,sonic);
 
 
     //Se muestran las entidades
@@ -100,7 +104,7 @@ int main(int argc, char *argv[]) {
     ConstructorEntidades constructorEntidades = ConstructorEntidades(jparseador->getEscenario(), &rectangulos, &circulos);
 
     //vista->cargarTexturas();
-	vista->mostrarVentana();
+	//vista->mostrarVentana();
 	vista->cerrar();
 
 	return 0;
