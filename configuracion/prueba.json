@@ -1,13 +1,14 @@
 {
-	"ventana": {"dimensiones": {"ancho": 100, "alto": 100}},
-	"configuracion": {"vel_scroll": 20},
+    "prueba": 2,
+	"ventana": {"dimensiones": {"ancho": 1345, "alto": 500}},
+	"configuracion": {"vel_scroll": 35},
 	"escenario": {
-		"dimensiones": {"ancho": 3600, "alto": 600},
+		"dimensiones": {"ancho": 600, "alto": 100},
 		"capas": [
 			{
 			"id": 1,
 			"index_z": 99,
-			"ruta_imagen":"/images/capa1.png"
+			"ruta_imagen":"capa0.png"
 			},
 			{
 			"id": 2,
