@@ -15,64 +15,8 @@
 #include "Logger.h"
 #include "Personaje.h"
 using namespace std;
-/*
-const int MAXIMO_LARGO = 8098;
-const int MAXIMO_ANCHO = 1280;
-const int LARGO_VENTANA=640;
-const int ANCHO_VENTANA=480;
 
-//cambiar despues a una funcion q tenga a toda la vista
-bool inicializacion(SDL_Renderer *render, SDL_Window *ventana){
-	bool inicializacionCorrecta = true;
 
-	//se fija si se pudo inicializar la libreria SDL
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
-	{
-		printf( "no se pudo inicializar SDL: %s\n", SDL_GetError() );
-		inicializacionCorrecta = false;
-	}
-	else
-	{
-		if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
-		{
-			printf( " no se pudo habilitgar el filtrado de textura" );
-		}
-
-		//crea la ventana
-		ventana = SDL_CreateWindow( "SONIC", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, LARGO_VENTANA, ANCHO_VENTANA, SDL_WINDOW_SHOWN );
-		if( ventana  == NULL )
-		{
-			printf( "no se pudo crear la ventana, SDL Error: %s\n", SDL_GetError() );
-			inicializacionCorrecta = false;
-		}
-		else
-		{
-			//asocia la ventana al render(pantalla)
-			render = SDL_CreateRenderer( ventana, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
-			if( render == NULL )
-			{
-				printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
-				inicializacionCorrecta = false;
-			}
-			else
-			{
-				//inicializa el color de dibujo
-				SDL_SetRenderDrawColor( render, 0xFF, 0xFF, 0xFF, 0xFF );
-
-				//Inicializa la libreria SDL_image
-				int imgFlags = IMG_INIT_PNG;
-				if( !( IMG_Init( imgFlags ) & imgFlags ) )
-				{
-					printf( "error en inicializacion libreria SDL_image : %s\n", IMG_GetError() );
-					inicializacionCorrecta = false;
-				}
-			}
-		}
-	}
-
-	return inicializacionCorrecta;
-}
-*/
 int main(int argc, char *argv[]) {
 
 	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
@@ -89,7 +33,7 @@ int main(int argc, char *argv[]) {
 	parseadorJson* parseador = new parseadorJson(log);
 	//jescenarioJuego* jparseador = parseador.
 	char *file=(char*)"configuracion/configuracion.json";
-	parseador->getLog()->addLogMessage("PRINCIPAL","Se empieza a ejecutar el juego",1);
+	parseador->getLog()->addLogMessage("PRINCIPAL","Se inicia el juego",1);
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
     VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario());
 
@@ -101,7 +45,7 @@ int main(int argc, char *argv[]) {
     //vista->cargarTexturas();
 	vista->mostrarVentana();
 	vista->cerrar();
-	parseador->getLog()->addLogMessage("PRINCIPAL","Se termina de ejecutar el juego",1);
+	parseador->getLog()->addLogMessage("PRINCIPAL","Se termina el juego",1);
 
 	return 0;
 }

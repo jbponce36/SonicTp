@@ -14,7 +14,7 @@ void Logger::setLevel(int level)
 {
 	switch(level)
 		{
-		    case 1: this->nivel = BAJO;   break;
+		    case 1: this->nivel = BAJO;  break;
 		    case 2: this->nivel = MEDIO; break;
 		    case 3: this->nivel = ALTO;  break;
 		}
@@ -24,11 +24,11 @@ string Logger::getLevel()
 {
 	switch(this->nivel)
 	{
-		case 1: return "INFO";
-		case 2: return "DEBBUG";
-		case 3: return "ERROR";
+		case 1: return "BAJO";
+		case 2: return "MEDIO";
+		case 3: return "ALTO";
 	}
-	return "SS";
+	return "MEDIO";
 }
 
 int Logger::validateFileName(){
