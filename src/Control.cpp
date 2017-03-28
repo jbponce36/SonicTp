@@ -16,27 +16,35 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 	bool salir = false;
 	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana());
 	while( !salir ){
-		//manejar eventos en la cola
-			while( SDL_PollEvent( &e ) != 0 )
+	//manejar eventos en la cola
+		while( SDL_PollEvent( &e ) != 0 )
+		{
+			//usuario pide cierre
+			if( e.type == SDL_QUIT )
 			{
-				//usuario pide cierre
-				if( e.type == SDL_QUIT )
-				{
-					salir = true;
-				}
-				sonic->procesarEvento( e );
+				salir = true;
 			}
-			sonic->mover(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
-			camara->actualizar(sonic,vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
+			sonic->procesarEvento( e );
+		}
+		//sonic->mover(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
+		//camara->actualizar(sonic,vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
+		sonic->mover(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
+		camara->actualizar(sonic,vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
 
-			vista->obtenerTextura(1).renderizar(0, 0,camara->devolverCamara());
-					//render( 0, 0, render,&camera );
+		SDL_SetRenderDrawColor(vista->obtenerRender(),0xff,0xff,0xff,0xff);
+		SDL_RenderClear(vista->obtenerRender());
+		vista->obtenerTextura(1)->renderizar(camara->devolverCamara());
 
-			//dibujo ek personaje
-			//sonic.render( camera.x, camera.y,texturaSonic,render );
 
-			//muestro la imagen
-			SDL_RenderPresent( vista->obtenerRender());
+
+		//render( 0, 0, render,&camera );
+
+		//dibujo ek personaje
+		//sonic.render( camera.x, camera.y,texturaSonic,render );
+
+		//muestro la imagen
+
+		SDL_RenderPresent( vista->obtenerRender());
 
 		}
 }

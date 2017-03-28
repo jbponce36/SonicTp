@@ -18,6 +18,7 @@ using namespace std;
 #include "capaEs.h"
 #include "ConstructorEntidades.h"
 #include <list>
+#include <vector>
 #ifndef VISTASDL_H_
 #define VISTASDL_H_
 
@@ -36,8 +37,8 @@ private:
 	int altoescenario;
 	int imgFlags;
 	capaEs vectorCapas[2];
-	Textura texturas[3];
-	Textura capasFondo[2];//son las dos capas del fondo del juego
+	vector <Textura*> texturas;
+	vector <Textura*> capasFondo;//son las dos capas del fondo del juego
 	ConstructorEntidades constructorEntidades;
 public:
 	VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion,jescenario *jescenario);
@@ -54,7 +55,7 @@ public:
 	void mostrarCapas();
 	void mostrarVentana();
 
-	Textura obtenerTextura(int);
+	Textura* obtenerTextura(int);
 	SDL_Renderer* obtenerRender();
 	int obtenerVelocidadDeScroll();
 

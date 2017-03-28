@@ -18,11 +18,11 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->altoVentana =jventana->getalto();
 	this->anchoVentana= jventana->getancho();
 	this->velocidadScroll=jconfiguracion->getvelscroll();
+	this->renderizador = NULL;
 	this->crearVentanaYrenderizador();
 	this->constructorEntidades = ConstructorEntidades(jescenario);
 	this->anchoescenario=jescenario->getancho();
 	this->altoescenario=jescenario->getalto();
-	//this->renderizador = NULL;
 	this->ventana = NULL;
 	this->imgFlags=0;
 	//aca poner la velocidad
@@ -50,7 +50,7 @@ void VistaSDL::crearVentanaYrenderizador(){
 			}
 			else
 			{      //creo render para la ventana
-				renderizador = SDL_CreateRenderer( this->ventana, -1, SDL_RENDERER_ACCELERATED );
+				renderizador = SDL_CreateRenderer( this->ventana, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 				if( renderizador == NULL )
 				{
 					printf( "renderer no se pudo crear! SDL Error: %s\n", SDL_GetError() );
@@ -85,10 +85,12 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 		int i=0;
 		for(pos = lista.begin(); pos!=lista.end(); pos++)
 		{
+			Textura *tex = new Textura();
 			vectorCapas[i].setId((*pos).getid());
 			vectorCapas[i].setIndex_z((*pos).getindex());
 			vectorCapas[i].setRutaImagen((*pos).getrutaimagen());
-			this->capasFondo[i].cargarImagen( vectorCapas[i].getRutaImagen() ,renderizador);
+			tex->cargarImagen( (*pos).getrutaimagen() ,renderizador);
+			this->capasFondo.push_back(tex);
 			i++;
 		}
 }
@@ -103,7 +105,7 @@ SDL_Renderer* VistaSDL::obtenerRender(){
 	return this->renderizador;
 }
 
-Textura VistaSDL::obtenerTextura(int numero){
+Textura* VistaSDL::obtenerTextura(int numero){
 
 	return this->capasFondo[numero];
 }
