@@ -33,6 +33,8 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->superficiePantalla = NULL;
 	this->superficieACargar = NULL;
 
+
+
 	this->imgFlags = 0;
 	//Inicializa SDL
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )

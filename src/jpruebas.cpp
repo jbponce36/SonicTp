@@ -49,15 +49,17 @@ void jpruebas::prueba(jescenarioJuego* parser){
 	cout << "ESCENARIO" << endl;
 	cout << "dimension-ancho:" << parser->getEscenario()->getancho() << endl;
 	cout << "dimension-ancho:" << parser->getEscenario()->getalto() << endl;
-
+*/
 	for(pos = capal.begin(); pos!=capal.end(); pos++){
 
         cout<< "escenario-id:" << (*pos).getid()<<endl;
         cout<< "escenario -index:" << (*pos).getindex()<<endl;
         cout<< "escenario -ruta: " << (*pos).getrutaimagen()<<endl;
+
+       int h =  (*pos).getid();
     }
 
-	cout << "ESCENARIO" << endl;
+	/*cout << "ESCENARIO" << endl;
 	cout << parser->getEscenario()->getentidades().size() << endl;
 	list<jentidades>::iterator iterEntidades;
 	list<jentidades> lentidades = parser->getEscenario()->getentidades();

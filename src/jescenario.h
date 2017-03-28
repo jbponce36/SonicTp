@@ -7,9 +7,10 @@
 
 #ifndef JESCENARIO_H_
 #define JESCENARIO_H_
+#include <list>
 #include "capas.h"
 #include "jentidades.h"
-#include <list>
+
 
 namespace std {
 

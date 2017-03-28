@@ -7,6 +7,7 @@
 
 #include "jescenario.h"
 #include "capas.h"
+#include "jentidades.h"
 
 namespace std {
 
@@ -39,6 +40,7 @@ void jescenario::setalto(int altoesc){
 list<capas> jescenario::getcapas(){
 	return this->c;
 }
+
 void jescenario::setcapas(list<capas> aux){
 	this->c = aux;
 }
@@ -50,4 +52,8 @@ list<jentidades> jescenario::getentidades(){
 void jescenario::setentidades(list<jentidades> aux){
 	this->je = aux;
 }
+
+
+
+
 } /* namespace std */

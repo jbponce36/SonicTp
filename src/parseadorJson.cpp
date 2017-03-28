@@ -38,37 +38,252 @@ parseadorJson::~parseadorJson() {
 
 jventana* parseadorJson::cargarVentana(json_t* raiz){
 
-    json_t *jsonventana;
-    json_t *jsonventanaalto;
-    json_t *jsonventanaancho;
+	    json_t *jsonventana;
+	    json_t *jsonventanaalto;
+	    json_t *jsonventanaancho;
+	    bool esvalido;
 
-    jsonventana = json_object_get(raiz, "ventana");
-    jsonventana = json_object_get(jsonventana,"dimensiones");
+	    jventana *ventana = new jventana();
 
-    jsonventanaalto = json_object_get(jsonventana,"alto");
-    jsonventanaancho = json_object_get(jsonventana,"ancho");
+	    esvalido = validarVentana(raiz,"ventana","dimensiones","alto","ancho");
+
+	    if(esvalido){
+
+	    jsonventana = json_object_get(raiz, "ventana");
+	    jsonventana = json_object_get(jsonventana,"dimensiones");
+
+	    jsonventanaalto = json_object_get(jsonventana,"alto");
+	    jsonventanaancho = json_object_get(jsonventana,"ancho");
 
 
-    jventana *ventana = new jventana();
+	    ventana->setalto(json_number_value(jsonventanaalto));
+	    ventana->setancho(json_number_value(jsonventanaancho));
 
-    ventana->setalto(json_number_value(jsonventanaalto));
-    ventana->setancho(json_number_value(jsonventanaancho));
+	    //cout<<"ventana archivo"<<endl;
+	    //cout<<ventana->getalto()<<endl;
+	    //cout<<ventana->getancho()<<endl;
 
-    return ventana;
+	    }
+	    else
+	    {
 
+	      ventana->setalto(600);
+	      ventana->setancho(3600);
+	      //cout<<"ventana defecto"<<endl;
+	      //cout<<ventana->getalto()<<endl;
+	      //cout<<ventana->getancho()<<endl;
+	    }
+
+	    return ventana;
+}
+
+bool parseadorJson::leerValorVentana(json_t* dimension, const char* ancho,const char* alto){
+ json_t * jsonancho;
+ json_t * jsonalto;
+ bool validarvent = true;
+
+ jsonancho = json_object_get(dimension,ancho);
+ jsonalto = json_object_get(dimension,alto);
+
+ if((!jsonancho)&&(!jsonalto)){
+
+ 	validarvent = false;
+   }
+ if((!json_is_number(jsonancho)) && (!(json_is_number(jsonalto)))){
+	 validarvent = false;
+ }
+
+ return validarvent;
+}
+
+double parseadorJson::leerValorEntero(json_t* padre, const char* nombre,int valorPorDefecto){
+	json_t *elemento;
+
+	elemento = json_object_get(padre,nombre);
+
+	if (!elemento){
+		return valorPorDefecto;
+	}
+
+	if (!json_is_number(elemento)){
+		return valorPorDefecto;
+	}
+
+	return json_number_value(elemento);
+
+}
+
+
+bool parseadorJson::validarVentana(json_t* raiz,const char* nomvent,const char* nomdim,const char* nomancho,const char* nomalto){
+
+
+	json_t *jsonventana;
+    json_t *jsondimension;
+    json_t *jsonancho;
+    json_t *jsonalto;
+    bool validarvent = true;
+
+	jsonventana = json_object_get(raiz,nomvent);
+	jsondimension = json_object_get(jsonventana,nomdim);
+	jsonancho = json_object_get(jsondimension,nomancho);
+	jsonalto = 	json_object_get(jsondimension,nomalto);
+
+
+	if((!jsonventana)&&(!jsondimension)){
+
+		validarvent = false;
+	}
+	else{
+		validarvent = true;
+
+	}
+
+  if(json_number_value(jsonancho) && json_number_value(jsonalto)){
+	  validarvent = true;
+   }
+  else{
+	  validarvent = false;
+  }
+
+    return validarvent;
+}
+
+void parseadorJson::validarEntidadesEscenario(json_t* raizentidad,const char* id,const char* tipo,const char* color,const char* dim,const char* coor,const char* ruta,const char* index){
+
+	json_t *jsonentidades;
+    json_t *jsonid;
+    json_t *jsontipo;
+    json_t *jsoncolor;
+    json_t *jsondimensiones;
+    json_t *jsoncoordenadas;
+    json_t *jsonrutaimagen;
+    json_t *jsonindex;
+
+
+
+
+    bool validarentesc = true;
+
+	//VER QUE PASA CON ENTIDADES SI ESTA MAL!!!
+	jsonentidades = json_object_get(raizentidad, "entidades");
+	jsonid = json_object_get(jsonentidades,id);
+	jsontipo = json_object_get(jsonentidades,tipo);
+	jsoncolor = json_object_get(jsonentidades,color);
+	jsondimensiones = json_object_get(jsonentidades,dim);
+	jsoncoordenadas = json_object_get(jsoncoordenadas,coor);
+	jsonrutaimagen = json_object_get(jsoncoordenadas,ruta);
+	jsonindex = json_object_get(jsoncoordenadas,index);
+
+	if((!jsonid)&&(!jsontipo)&&(jsoncolor)&&(jsondimensiones)&&(jsoncoordenadas)&&(jsonrutaimagen)&&(jsonindex)){
+		validarentesc = false;
+
+	}
+	else{
+		validarentesc = true;
+	}
+
+	 //if(json_number_value(jsonancho) && (json_number_value(jsonalto))){
+}
+
+bool parseadorJson::validarEscenario(json_t*raiz,const char* nomesce,const char* nomdim,const char* ancho,const char* alto){
+
+	json_t *jsonescenario;
+    json_t *jsondimensiones;
+    json_t *jsonalto;
+    json_t *jsonancho;
+
+
+    bool valesce = true;
+
+	jsonescenario = json_object_get(raiz,nomesce);
+	jsondimensiones = json_object_get(jsonescenario,nomdim);
+
+    jsonalto = json_object_get(jsondimensiones,alto);
+	jsonancho = json_object_get(jsondimensiones,ancho);
+
+	if((!jsonescenario)&&(!jsondimensiones)){
+		valesce =false;
+
+
+	}
+	else{
+		valesce = true;
+
+	}
+
+	 if(json_number_value(jsonancho) && (json_number_value(jsonalto))){
+		 valesce = true;
+
+
+	 }
+	 else{
+		 valesce =false;
+
+	 }
+
+    return valesce;
+
+}
+
+bool parseadorJson::validarConfiguracion(json_t* raiz,const char* config,const char* velscroll){
+
+	json_t* jsonconfiguracion;
+	json_t* jsonvelscroll;
+	bool valconfig = true;
+
+
+    jsonconfiguracion = json_object_get(raiz,config);
+    jsonvelscroll = json_object_get(jsonconfiguracion,velscroll);
+
+    if((!jsonconfiguracion)&&(!jsonvelscroll)){
+
+    	valconfig =false;
+
+    }
+
+    else{
+
+    	valconfig = true;
+    }
+
+    if(json_number_value(jsonvelscroll)){
+
+    	valconfig = true;
+    }
+    else{
+
+    	valconfig = false;
+    }
+    return valconfig;
 }
 
 jconfiguracion* parseadorJson::cargarConfiguracion(json_t* raiz){
 
-	 json_t *jsonconfiguracion;
 
-	 jsonconfiguracion = json_object_get(raiz, "configuracion");
-	 jsonconfiguracion = json_object_get(jsonconfiguracion, "vel_scroll");
+	 json_t *jsonconfiguracion;
+	 json_t *jsonvelscrol;
 
 	 jconfiguracion *configuracion = new jconfiguracion();
 
-	 configuracion->setvelscroll(json_number_value( jsonconfiguracion));
 
+     jsonconfiguracion = json_object_get(raiz, "configuracion");
+     jsonvelscrol = json_object_get(jsonconfiguracion, "vel_scroll");
+
+      if((jsonconfiguracion)&&(jsonvelscrol)){
+
+
+      configuracion->setvelscroll(this->leerValorEntero(jsonconfiguracion,"vel_scroll",20));
+
+
+       //cout<< "valor configuracion archivo"<<endl;
+       //cout<<configuracion->getvelscroll()<<endl;
+     }
+      else{
+
+    	  configuracion->setvelscroll(20);
+    	  //cout<< "valor configuracion def"<<endl;
+    	 // cout<<configuracion->getvelscroll()<<endl;
+       }
 	 return configuracion;
 }
 
@@ -92,15 +307,15 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 	escenario->setalto(json_number_value(jd_alto));
 	escenario->setancho(json_number_value(jd_ancho));
 
-	//cout<<escenario->getalto()<<endl;
-	//cout<<escenario->getancho()<<endl;
+		//cout<<escenario->getalto()<<endl;
+		//cout<<escenario->getancho()<<endl;
 
 	jcapas = json_object_get(jsonescenario, "capas");
 
-	//lista de capas
-	list<capas> capalista;
-	//iterador de capas
-	list<capas>::iterator pos;
+		//lista de capas
+		list<capas> capalista;
+		//iterador de capas
+		list<capas>::iterator pos;
 
 
 	for( int i = 0; i < json_array_size(jcapas); i++ ){
@@ -130,102 +345,103 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 	}
 
 
-	 // agrego la lista total al escenario
+		 // agrego la lista total al escenario
 
 	 escenario->setcapas(capalista);
 
 
 
 
-	  //ENTIDADES (viene de escenario)
+		  //ENTIDADES (viene de escenario)
 
-	  json_t *jsonentidades;
+	 json_t *jsonentidades;
 
-	  jsonentidades = json_object_get(jsonescenario, "entidades");
+     jsonentidades = json_object_get(jsonescenario, "entidades");
 
-	  list<jentidades> listaentidades;
-	   for( int i = 0; i < json_array_size(jsonentidades); i++ ){
+     list<jentidades> listaentidades;
+     for( int i = 0; i < json_array_size(jsonentidades); i++ ){
 
-		   json_t *entidadi;
+	    json_t *entidadi;
 
-		   json_t *id;
-		   json_t *tipo;
-		   json_t *color;
-		   json_t *ruta_imagen;
-		   json_t *index_z;
-		   json_t *dimensiones;
-		   json_t *ancho;
-		   json_t *alto;
-		   json_t *radio;
-		   json_t *coordenada;
-		   json_t *coorx;
-		   json_t *coory;
+	    json_t *id;
+	    json_t *tipo;
+	    json_t *color;
+	    json_t *ruta_imagen;
+		json_t *index_z;
+	    json_t *dimensiones;
+	    json_t *ancho;
+	    json_t *alto;
+	    json_t *radio;
+		json_t *coordenada;
+		json_t *coorx;
+		json_t *coory;
 
-	              //voy creando nuevos objetos entidades
-	       jentidades *entidades = new jentidades();
+		 //voy creando nuevos objetos entidades
+		 jentidades *entidades = new jentidades();
 
-	       entidadi = json_array_get(jsonentidades, i);
+		 entidadi = json_array_get(jsonentidades, i);
 
-	       id = json_object_get(entidadi,"id");
-	       entidades->setid(json_number_value(id));
+		 id = json_object_get(entidadi,"id");
+		 entidades->setid(json_number_value(id));
 
-	       tipo = json_object_get(entidadi,"tipo");
-	       entidades->settipo(json_string_value(tipo));
+		 tipo = json_object_get(entidadi,"tipo");
+		 entidades->settipo(json_string_value(tipo));
 
-	       color = json_object_get(entidadi,"color");
-	       entidades->setcolor(json_string_value(color));
+		 color = json_object_get(entidadi,"color");
+		 entidades->setcolor(json_string_value(color));
 
-	       dimensiones= json_object_get(entidadi,"dimensiones");
-	              // devuelve 0...si eel elemento no tiene algun atributo
-	       ancho = json_object_get(dimensiones,"ancho");
-	       alto = json_object_get(dimensiones,"alto");
-	       radio = json_object_get(dimensiones,"radio");
+		 dimensiones= json_object_get(entidadi,"dimensiones");
+		              // devuelve 0...si eel elemento no tiene algun atributo
+		 ancho = json_object_get(dimensiones,"ancho");
+		 alto = json_object_get(dimensiones,"alto");
+		 radio = json_object_get(dimensiones,"radio");
 
-	       if (strcmp(json_string_value(tipo), "rectangulo") == 0){
-            const char* rect = "rectangulo";
-
-
-	           jrectangulo* rectangulo = new jrectangulo();
-	           rectangulo->setalto(json_number_value(alto));
-	           rectangulo->setancho(json_number_value(ancho));
-	           rectangulo->settipo2(rect);
-               entidades->setDim(rectangulo);
+		  if (strcmp(json_string_value(tipo), "rectangulo") == 0){
+	         const char* rect = "rectangulo";
 
 
-	        }
-
-	       if(strcmp(json_string_value(tipo),"circulo") == 0){
-	    	   const char* circ = "circulo";
-	    	   jcirculo*  circulo = new jcirculo();
-	    	   circulo->setradio(json_number_value(radio));
-	    	   circulo->settipo2(circ);
-               entidades->setDim(circulo);
-
-	        }
-
-	        coordenada = json_object_get(entidadi,"coordenada");
-	        coorx = json_object_get(coordenada,"x");
-	        entidades->setcoorx(json_number_value(coorx));
-
-	        coory = json_object_get(coordenada,"y");
-	        entidades->setcoory((json_number_value(coory)));
-
-	        ruta_imagen = json_object_get(entidadi,"ruta_imagen");
-	        entidades->setruta(json_string_value(ruta_imagen));
-
-	        index_z= json_object_get(entidadi,"index_z");
-	        entidades->setindex(json_number_value(index_z));
-
-	        listaentidades.push_back(*entidades);
+		       jrectangulo* rectangulo = new jrectangulo();
+		       rectangulo->setalto(json_number_value(alto));
+		       rectangulo->setancho(json_number_value(ancho));
+		       rectangulo->settipo2(rect);
+	           entidades->setDim(rectangulo);
 
 
+		    }
 
-	          }
+		       if(strcmp(json_string_value(tipo),"circulo") == 0){
+		    	   const char* circ = "circulo";
+		    	   jcirculo*  circulo = new jcirculo();
+		    	   circulo->setradio(json_number_value(radio));
+		    	   circulo->settipo2(circ);
+	               entidades->setDim(circulo);
+
+		        }
+
+		        coordenada = json_object_get(entidadi,"coordenada");
+		        coorx = json_object_get(coordenada,"x");
+		        entidades->setcoorx(json_number_value(coorx));
+
+		        coory = json_object_get(coordenada,"y");
+		        entidades->setcoory((json_number_value(coory)));
+
+		        ruta_imagen = json_object_get(entidadi,"ruta_imagen");
+		        entidades->setruta(json_string_value(ruta_imagen));
+
+		        index_z= json_object_get(entidadi,"index_z");
+		        entidades->setindex(json_number_value(index_z));
+
+		        listaentidades.push_back(*entidades);
 
 
-	           escenario->setentidades(listaentidades);
 
-	           return escenario;
+		          }
+
+
+		           escenario->setentidades(listaentidades);
+
+		           return escenario;
+
 
 }
 
@@ -235,7 +451,6 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
 	 json_error_t error;
 
 	 json = json_load_file(nombreArchivo,0,&error);
-
 
 
 	  if(!json) {
