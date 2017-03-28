@@ -12,7 +12,7 @@ class Logger {
 
 private:
 	char* archivo; //archivo donde el logger va a escribir todos los mensajes
-	enum Nivel {INFO = 1, DEBBUG=2, ERROR=3 };
+	enum Nivel {BAJO = 1, MEDIO=2, ALTO=3 };
 	Nivel nivel;
 	vector<string> logMessages;
 

@@ -1,8 +1,7 @@
-#include <iostream>
-#include <jansson.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
-using namespace std;
+#include <iostream>
+#include <jansson.h>
 #include <string>
 #include "VistaSDL.h"
 #include "Textura.h"
@@ -13,25 +12,39 @@ using namespace std;
 #include "Circulo.h"
 #include "jescenario.h"
 #include "ConstructorEntidades.h"
-
+#include "Logger.h"
+#include "Personaje.h"
 using namespace std;
 
-int main() {
 
-	parseadorJson* parseador = new parseadorJson();
+int main(int argc, char *argv[]) {
+
+	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
+	char *nivelLog = (char*)"2";
+	if(argc>1){
+		nivelLog = argv[1];
+	}
+
+	char *archivoLog=(char*)"configuracion/log.txt";
+	char *nivel= (char*)nivelLog;
+	Logger *log = new Logger(archivoLog, atoi(nivel));
+
+	//Se lee del json el nombre de la ventana
+	parseadorJson* parseador = new parseadorJson(log);
 	//jescenarioJuego* jparseador = parseador.
-    char* file= "./configuracion/aux.json";
+	char *file=(char*)"configuracion/configuracion.json";
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
+    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario());
 
-//    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario());
 
-  //  list<Rectangulo> rectangulos;
-    //list<Circulo> circulos;
-    //ConstructorEntidades constructorEntidades = ConstructorEntidades(jparseador->getEscenario(), &rectangulos, &circulos);
+    //Se muestran las entidades
+    list<Rectangulo> rectangulos;
+    list<Circulo> circulos;
+    ConstructorEntidades constructorEntidades = ConstructorEntidades(jparseador->getEscenario(), &rectangulos, &circulos);
 
     //vista->cargarTexturas();
-	//vista->mostrarVentana();
-	//vista->cerrar();
+	vista->mostrarVentana();
+	vista->cerrar();
 
 	return 0;
 }

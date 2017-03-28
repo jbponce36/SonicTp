@@ -30,6 +30,10 @@ parseadorJson::parseadorJson() {
 	//jconexion conexion2 = *conexion2.getinstance();
 }
 
+parseadorJson::parseadorJson(Logger *log) {
+	this->log = log;
+}
+
 parseadorJson::~parseadorJson() {
 	// TODO Auto-generated destructor stub
 }
@@ -403,8 +407,8 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 		       jrectangulo* rectangulo = new jrectangulo();
 		       rectangulo->setalto(json_number_value(alto));
 		       rectangulo->setancho(json_number_value(ancho));
-		       rectangulo->settipo2(rect);
-	           entidades->setDim(rectangulo);
+		           rectangulo->settipo2(rect);
+	               entidades->setDim(rectangulo);
 
 
 		    }

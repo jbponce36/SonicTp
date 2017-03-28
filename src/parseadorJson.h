@@ -9,8 +9,11 @@
 #define PARSEADORJSON_H_
 
 #include <string>
-
+#include "Logger.h"
 #include "jescenarioJuego.h"
+#include <jansson.h>
+#include "jcirculo.h"
+#include "jrectangulo.h"
 
 
 
@@ -21,6 +24,7 @@ class parseadorJson {
 public:
 
 	parseadorJson();
+	parseadorJson(Logger *log);
 	virtual ~parseadorJson();
 	jescenarioJuego* parsearArchivo(char*  nombreArchivo);
 	bool validarVentana(json_t* raiz,const char* nomvent,const char* nomdim,const char* nomancho,const char* nomalto);
@@ -29,9 +33,12 @@ public:
     void validarEntidadesEscenario(json_t* raizentidad,const char* id,const char* tipo,const char* color,const char* dim,const char* coor,const char* ruta,const char* index);
 	//char* getFiguraparser() const;
 	//void setFiguraparse(int level);
+
+    Logger *getLog() const;
+    void setLog(Logger *log);
+
 private:
-
-
+	Logger *log;
 	jventana* cargarVentana(json_t* raiz);
 	jconfiguracion* cargarConfiguracion(json_t* raiz);
 	jescenario* cargarEscenario(json_t* raiz);
