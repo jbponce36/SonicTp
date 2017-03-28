@@ -89,9 +89,9 @@ int main(int argc, char *argv[]) {
 	parseadorJson* parseador = new parseadorJson(log);
 	//jescenarioJuego* jparseador = parseador.
 	char *file=(char*)"configuracion/configuracion.json";
+	parseador->getLog()->addLogMessage("PRINCIPAL","Se empieza a ejecutar el juego",1);
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
     VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario());
-
 
     //Se muestran las entidades
     list<Rectangulo> rectangulos;
@@ -101,6 +101,7 @@ int main(int argc, char *argv[]) {
     //vista->cargarTexturas();
 	vista->mostrarVentana();
 	vista->cerrar();
+	parseador->getLog()->addLogMessage("PRINCIPAL","Se termina de ejecutar el juego",1);
 
 	return 0;
 }

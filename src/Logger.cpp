@@ -50,8 +50,8 @@ void Logger::setArchivo(char *archivo)
     this->archivo = archivo;
 }
 
-int Logger::addLogMessage(string modulo,string logMessage){
-	if (validateFileName() == 0){
+int Logger::addLogMessage(string modulo,string logMessage, int nivel){
+	if (this->nivel >= nivel){
 		ofstream myfile;
 		myfile.open(this->archivo, ios_base::app);
 
