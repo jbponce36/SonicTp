@@ -34,6 +34,14 @@ parseadorJson::parseadorJson(Logger *log) {
 
 }
 
+Logger* parseadorJson::getLog() const {
+	return log;
+}
+
+void parseadorJson::setLog(Logger* log) {
+	this->log = log;
+}
+
 parseadorJson::~parseadorJson() {
 	// TODO Auto-generated destructor stub
 }

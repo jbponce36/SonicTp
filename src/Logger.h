@@ -26,7 +26,7 @@ public:
 
 	int validateFileName();
 	int validateLevel();
-	int addLogMessage(string modulo,string logMessage);
+	int addLogMessage(string modulo,string logMessage, int nivel);
     char *getArchivo() const;
     void setArchivo(char *archivo);
 

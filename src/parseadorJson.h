@@ -16,7 +16,6 @@
 #include "jrectangulo.h"
 
 
-
 namespace std {
 
 class parseadorJson {
@@ -33,6 +32,9 @@ public:
 	char* getFiguraparser() const;
 	void setFiguraparse(int level);
     void ValidarCapas(json_t* raiz,list<capas>ca);
+	Logger* getLog() const;
+
+	void setLog(Logger* log);
 
 private:
 	Logger *log;
