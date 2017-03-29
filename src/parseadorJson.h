@@ -8,12 +8,15 @@
 #ifndef PARSEADORJSON_H_
 #define PARSEADORJSON_H_
 
-#include <string>
+
+#include <iostream>
+#include <string.h>
 #include "Logger.h"
 #include "jescenarioJuego.h"
 #include <jansson.h>
 #include "jcirculo.h"
 #include "jrectangulo.h"
+#include "jventana.h"
 
 
 namespace std {

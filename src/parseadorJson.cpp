@@ -1,49 +1,5 @@
-
-/*
- * parseadorJson.cpp
- *
- *  Created on: 20 mar. 2017
- *      Author: pato
- */
-
-#include <iostream>
-#include </usr/include/SDL2/SDL.h>
-#include <jansson.h>
-#include "jventana.h"
 #include "parseadorJson.h"
-//	virtual void settipo(int) = 0;
-//virtual int gettipo() = 0;
-//int tipo;
-// id
-//tipo
-// color
-// dimension ancho
-//int getancho();
-//void setancho(int);
-// dimension alto
-//int getalto();
-//void setalto(int);
-// coordenada x
-// coordenada y
-//rutaimagen
-//index
-//ancho
-//alto
-//capas
-//entidades
-/* CAPAS_H_ */
-//archivo donde el logger va a escribir todos los mensajes
-/* JESCENARIOJUEGO_H_ */
-//radio
-//metodos virtuales
-//	void settipo(int);
-//int gettipo();
-//metodos virtuales
-//ancho
-//alto
-// int tipo;
-//char* getFiguraparser() const;
-//void setFiguraparse(int level);
+
 namespace std
 {
     parseadorJson::parseadorJson()
@@ -72,10 +28,12 @@ namespace std
             jsonventana = json_object_get(raiz, "ventana");
             jsonventana = json_object_get(jsonventana, "dimensiones");
             jsonventanaalto = json_object_get(jsonventana, "alto");
+        	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Seteando alto.", 3);
             jsonventanaancho = json_object_get(jsonventana, "ancho");
+        	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Seteando ancho.", 3);
             ventana->setalto(json_number_value(jsonventanaalto));
             ventana->setancho(json_number_value(jsonventanaancho));
-            this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Terminado", 2);
+            this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Terminado.", 2);
         }else{
         	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] No se han encontrado los atributos correctos, se cargaran valores por defecto", 1);
             ventana->setalto(600);
@@ -105,8 +63,9 @@ namespace std
             validarvent = false;
         }
         if((!json_is_number(jsonancho)) && (!(json_is_number(jsonalto)))){
-	 validarvent = false;
- }
+        	validarvent = false;
+        	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Error obteniendo el valor de las dimensiones de la ventana", 1);
+        }
         return validarvent;
     }
 
@@ -254,7 +213,7 @@ namespace std
         list<capas> capalista;
         list<capas>::iterator pos;
 
-        this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LAS CAPAS] Iniciado ", 2);
+        this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LAS CAPAS] Iniciado. ", 2);
 
         for(int i = 0;i < json_array_size(jcapas);i++){
             json_t *capai;
@@ -272,13 +231,13 @@ namespace std
             capalista.push_back(*jcapas);
         }
         escenario->setcapas(capalista);
-        this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LAS CAPAS] Terminado ", 2);
+        this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LAS CAPAS] Terminado. ", 2);
 
         json_t *jsonentidades;
         jsonentidades = json_object_get(jsonescenario, "entidades");
         list<jentidades> listaentidades;
 
-        this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LAS ENTIDADES] Iniciado ", 2);
+        this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LAS ENTIDADES] Iniciado. ", 2);
 
         for(int i = 0;i < json_array_size(jsonentidades);i++){
             json_t *entidadi;
@@ -334,7 +293,7 @@ namespace std
         }
 
         escenario->setentidades(listaentidades);
-        this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LAS ENTIDADES] Iniciado ", 2);
+        this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LAS ENTIDADES] Terminado, ", 2);
 
         return escenario;
     }
@@ -357,7 +316,7 @@ namespace std
         result->setVentana(ventana);
         result->setEscenario(escenario);
         result->setConfiguracion(config);
-        this->log->addLogMessage("PARSEADOR JSON","Se termino de leer el archivo de configuracion", 2);
+        this->log->addLogMessage("PARSEADOR JSON","Se termino de leer el archivo de configuracion.", 2);
         return result;
     }
 
