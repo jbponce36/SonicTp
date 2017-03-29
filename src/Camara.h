@@ -4,14 +4,14 @@
 #include "Personaje.h"
 
 class Camara {
-	int posicionX;
-	int posicionY;
-	int ancho;
-	int alto;
+	SDL_Rect *camaraImagen;
 public:
 	Camara(int posicionx, int osiciony, int alto, int ancho);
 	void actualizar(Personaje *sonic, int maximoAncho, int maximoLargo);
-	SDL_Rect devolverCamara();
+	SDL_Rect *devolverCamara();
+
+	int getPosicionX();
+	int getPosicionY();
 	virtual ~Camara();
 };
 

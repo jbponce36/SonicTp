@@ -26,21 +26,29 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 			}
 			sonic->procesarEvento( e );
 		}
-		//sonic->mover(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
-		//camara->actualizar(sonic,vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
 		sonic->mover(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
+		camara->actualizar(sonic,vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
+
 		camara->actualizar(sonic,vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
 
 		SDL_SetRenderDrawColor(vista->obtenerRender(),0xff,0xff,0xff,0xff);
 		SDL_RenderClear(vista->obtenerRender());
+
+		/*//despues sacar
+		SDL_Rect capa0;
+		capa0.x = 0;
+		capa0.y = 0;
+		capa0.w = 800;
+		capa0.h = 500;
+		//..
+		*/
+		vista->obtenerTextura(0)->renderizar(camara->devolverCamara());
 		vista->obtenerTextura(1)->renderizar(camara->devolverCamara());
 
-
-
-		//render( 0, 0, render,&camera );
+		//vista->mostrarEntidades();
 
 		//dibujo ek personaje
-		//sonic.render( camera.x, camera.y,texturaSonic,render );
+		sonic->render(camara->getPosicionX(), camara->getPosicionY());
 
 		//muestro la imagen
 

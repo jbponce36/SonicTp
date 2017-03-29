@@ -27,7 +27,7 @@ public:
 	void cargarImagen(std::string path,SDL_Renderer* render);
 	int obtenerAltoTextura();
 	int obtenerAnchoTextura();
-	void renderizar(SDL_Rect rectangulo);
+	void renderizar(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVentana = NULL);
 	void liberarTextura();
 	SDL_Texture* obtenerTextura();
 	~Textura();

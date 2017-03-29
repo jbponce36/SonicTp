@@ -1,43 +1,45 @@
 #include "Camara.h"
 
 Camara::Camara(int posicionx, int posiciony, int alto, int ancho) {
-	this->posicionX = posicionx;
-	this->posicionY = posiciony;
-	this->alto = alto;
-	this->ancho = ancho;
+	camaraImagen = new SDL_Rect();
+	this->camaraImagen->x = posicionx;
+	this->camaraImagen->y = posiciony;
+	this->camaraImagen->h = alto;
+	this->camaraImagen->w = ancho;
 }
 void Camara::actualizar(Personaje *sonic, int maximoAncho, int maximoAlto){
 
 
-	this->posicionX = ( sonic->getPosicionX() + sonic->getLargo() / 2 ) - this->alto / 2;
-	this->posicionY = ( sonic->getPosicionY() + sonic->getAncho() / 2 ) - this->ancho / 2;
+	this->camaraImagen->x = ( sonic->getPosicionX() + sonic->getAncho() / 2 ) - camaraImagen->w / 2;
+	this->camaraImagen->y = ( sonic->getPosicionY() + sonic->getAlto() / 2 ) - this->camaraImagen->h / 2;
 
 
-	if( this->posicionX < 0 )
+	if( this->camaraImagen->x < 0 )
 	{
-		this->posicionX = 0;
+		this->camaraImagen->x = 0;
 	}
-	if( this->posicionY < 0 )
+	if( this->camaraImagen->y < 0 )
 	{
-		this->posicionY = 0;
+		this->camaraImagen->y = 0;
 	}
-	if( this->posicionX > maximoAncho - this->ancho )
+	if( this->camaraImagen->x > maximoAncho - this->camaraImagen->w )
 	{
-		this->posicionX = maximoAncho - this->ancho;
+		this->camaraImagen->x = maximoAncho - this->camaraImagen->w;
 	}
-	if( this->posicionY > maximoAlto - this->alto )
+	if( this->camaraImagen->y > maximoAlto - this->camaraImagen->h )
 	{
-		this->posicionY = maximoAlto - this->alto;
+		this->camaraImagen->y = maximoAlto - this->camaraImagen->h;
 	}
 
 }
-SDL_Rect Camara::devolverCamara(){
-	SDL_Rect camara = {0, 0 , 0, 0};
-	camara.x = this->posicionX;
-	camara.y = this->posicionY;
-	camara.h = this->alto;
-	camara.w = this->ancho;
-	return camara;
+SDL_Rect *Camara::devolverCamara(){
+	return this->camaraImagen;
+}
+int Camara::getPosicionX(){
+	return this->camaraImagen->x;
+}
+int Camara::getPosicionY(){
+	return this->camaraImagen->y;
 }
 Camara::~Camara() {
 	// TODO Auto-generated destructor stub

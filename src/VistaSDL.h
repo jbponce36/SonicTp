@@ -40,6 +40,7 @@ private:
 	vector <Textura*> texturas;
 	vector <Textura*> capasFondo;//son las dos capas del fondo del juego
 	ConstructorEntidades constructorEntidades;
+
 public:
 	VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion,jescenario *jescenario);
 	void cargarImagen();

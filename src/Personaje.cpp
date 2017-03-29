@@ -9,12 +9,12 @@ const int POSICION_INICIALX = 0;
 const int POSICION_INICIALY = 0;
 const int NUMERO_DE_SPRITES = 1;
 
-Personaje::Personaje(int velocidad){
-
-
+Personaje::Personaje(int velocidad,SDL_Renderer *render){
+	this->texturaSonic = new Textura();
+	this->texturaSonic->cargarImagen("images/sonicSprite.bmp",render);
 	//dimensiones del personaje por defecto
-	this->personajeLargo = 20;
-	this->personajeAncho = 20;
+	this->personajeAncho = 40;
+	this->personajeAlto= 40;
 	//
 
 	this->personajeVelocidad = velocidad;
@@ -69,7 +69,7 @@ void Personaje::mover(int maximoAncho,int maximoAlto )
     this->posicionX += this->velocidadX;
 
     //se fija si se paso los limites de la pantalla
-    if( ( posicionX < 0 ) || ( posicionX + this->personajeLargo >  maximoAncho ) )
+    if( ( posicionX < 0 ) || ( posicionX + this->personajeAncho >  maximoAncho ) )
     {
 
         posicionX -= velocidadX;
@@ -78,18 +78,31 @@ void Personaje::mover(int maximoAncho,int maximoAlto )
     posicionY += velocidadY;
 
     //se fija si se paso los limites
-    if( ( posicionY < 0 ) || ( posicionY + this->personajeAncho > maximoAlto ) )
+    if( ( posicionY < 0 ) || ( posicionY + this->personajeAlto > maximoAlto ) )
     {
 
         this->posicionY -= velocidadY;
     }
 }
+void Personaje::cargarSpriteSonic(){
 
-/*void Personaje::render( int camX, int camY, Ctextura textura, SDL_Renderer *renderer){
-
-	textura.render( this->posicionX - camX, this->posicionY - camY,renderer);
 }
-*/
+void Personaje::render( int camX, int camY){
+
+	SDL_Rect sprite;
+	sprite.x=0;
+	sprite.y=0;
+	sprite.w=this->personajeAncho;
+	sprite.h=this->personajeAlto;
+	SDL_Rect cuadroDeVentana;
+
+	cuadroDeVentana.x=(this->posicionX-camX);
+	cuadroDeVentana.y=(this->posicionY-camY);
+	cuadroDeVentana.w=this->personajeAncho;
+	cuadroDeVentana.h=this->personajeAlto;
+	this->texturaSonic->renderizar(&sprite,&cuadroDeVentana);
+}
+
 int Personaje::getPosicionX()
 {
 	return this->posicionX;
@@ -99,9 +112,9 @@ int Personaje::getPosicionY()
 {
 	return this->posicionY;
 }
-int Personaje::getLargo(){
-	return this->personajeLargo;
-}
 int Personaje::getAncho(){
 	return this->personajeAncho;
+}
+int Personaje::getAlto(){
+	return this->personajeAlto;
 }
