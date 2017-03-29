@@ -444,6 +444,12 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 
 
 	//VECTOR POR DEFECTO DE ENTIDADES
+      jentidades* obje = new jentidades[2];
+      obje[0].setid(1);
+      obje[0].settipo("rectangulo");
+
+
+
 
 	//
 

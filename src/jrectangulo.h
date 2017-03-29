@@ -28,6 +28,8 @@ public:
  	int getvalor2();
  	const char* getnombrevalor2();
 
+
+
 	//ancho
 	void setancho(int);
 	int  getancho();
