@@ -28,23 +28,28 @@ public:
 	virtual ~parseadorJson();
 	jescenarioJuego* parsearArchivo(char*  nombreArchivo);
 	bool validarVentana(json_t* raiz,const char* nomvent,const char* nomdim,const char* nomancho,const char* nomalto);
-	bool validarConfiguracion(json_t* raiz,const char* config,const char* velscroll);
 	bool validarEscenario(json_t* raiz,const char* nomesce,const char* nomdim,const char* ancho,const char* alto);
     void validarEntidadesEscenario(json_t* raizentidad,const char* id,const char* tipo,const char* color,const char* dim,const char* coor,const char* ruta,const char* index);
-	//char* getFiguraparser() const;
-	//void setFiguraparse(int level);
-
-    Logger *getLog() const;
-    void setLog(Logger *log);
+	char* getFiguraparser() const;
+	void setFiguraparse(int level);
+    void ValidarCapas(json_t* raiz,list<capas>ca);
 
 private:
 	Logger *log;
+	int banderacapas;
 	jventana* cargarVentana(json_t* raiz);
 	jconfiguracion* cargarConfiguracion(json_t* raiz);
 	jescenario* cargarEscenario(json_t* raiz);
-
+    list<double>validadores;
 	double leerValorEntero(json_t* padre, const char* nombre,int valorPorDefecto);
-    bool  leerValorVentana(json_t* dimension, const char* ancho,const char* alto);
+	double leerValorEnteroaux(json_t* padre, const char* nombre,int valorPorDefecto);
+    std::string leerValorStringCapas(json_t* padre,const char* nombre,std::string valorPorDefecto);
+    int leerEntidadid(json_t* entidad,const char* nombre);
+    int leerEntidadtipo(json_t* entidad,const char* nombre);
+    int leerEntidadcolor(json_t* entidad,const char* nombre);
+    int leerEntidaddimensionr(json_t* entidad,const char* nombred,const char* nombrean,const char* nombreal);
+    int leerEntidaddimensionc(json_t* entidad,const char* nombred,const char* nombrer);
+    int leerEntidadrutaimagen(json_t* entidad,const char* nombre);
 
 };
 

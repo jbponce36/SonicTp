@@ -34,17 +34,18 @@ int main(int argc, char *argv[]) {
 	//jescenarioJuego* jparseador = parseador.
 	char *file=(char*)"configuracion/configuracion.json";
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
-    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario());
+
+    //VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario());
 
 
     //Se muestran las entidades
-    list<Rectangulo> rectangulos;
-    list<Circulo> circulos;
-    ConstructorEntidades constructorEntidades = ConstructorEntidades(jparseador->getEscenario(), &rectangulos, &circulos);
+    //list<Rectangulo> rectangulos;
+    //list<Circulo> circulos;
+    //ConstructorEntidades constructorEntidades = ConstructorEntidades(jparseador->getEscenario(), &rectangulos, &circulos);
 
     //vista->cargarTexturas();
-	vista->mostrarVentana();
-	vista->cerrar();
+	//vista->mostrarVentana();
+	//vista->cerrar();
 
 	return 0;
 }
