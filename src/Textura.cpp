@@ -17,6 +17,7 @@ Textura::Textura()
 	this->textura = NULL;
 	this->anchoTextura = 0;
 	this->altoTextura = 0;
+	this->renderizador = NULL;
 }
 
 void Textura::cargarImagen(std::string path,SDL_Renderer* render)
@@ -32,7 +33,7 @@ void Textura::cargarImagen(std::string path,SDL_Renderer* render)
 	else
 	{
 		//Color key image
-//		SDL_SetColorKey( superficie, SDL_TRUE, SDL_MapRGB( superficie->format, 0, 0xFF, 0xFF ) );
+		SDL_SetColorKey( superficie, SDL_TRUE, SDL_MapRGB( superficie->format, 0, 0xFF, 0xFF ) );
 		//Create texture from surface pixels
         textura = SDL_CreateTextureFromSurface( renderizador, superficie );
 
@@ -62,15 +63,19 @@ int Textura::obtenerAltoTextura()
 	return this->altoTextura;
 }
 
-void Textura::renderizar( int ancho, int alto )
+void Textura::renderizar(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVentana )
 {
 	//asi se limpias la pantalla para poner algo nuevo no activar aca
 	//SDL_SetRenderDrawColor( renderizador, 0xFF, 0xFF, 0xFF, 0xFF );
 	//SDL_RenderClear( renderizador );
 
 	//renderiza en la pantalla un bloque con las dimensiones pasadas por pantalla
-	SDL_Rect rectanguloRenderizacion = { ancho, alto, this->anchoTextura, this->altoTextura };
-	SDL_RenderCopy( renderizador,this->textura, NULL, &rectanguloRenderizacion );
+	//SDL_Rect rectanguloRenderizacion = { 0, 0,800,400};
+	//cout<<rectanguloImagen.x;
+	//cout<<"--";
+	//cout<<rectanguloImagen.y<<endl;
+
+	SDL_RenderCopy( renderizador,this->textura, rectanguloImagen, rectanguloVentana);
 }
 
 

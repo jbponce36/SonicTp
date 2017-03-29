@@ -14,6 +14,7 @@
 #include "ConstructorEntidades.h"
 #include "Logger.h"
 #include "Personaje.h"
+#include "Control.h"
 using namespace std;
 
 
@@ -36,6 +37,10 @@ int main(int argc, char *argv[]) {
 	parseador->getLog()->addLogMessage("PRINCIPAL","Se inicia el juego.",1);
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
     VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario());
+    Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender());
+    Control *control = new Control(0, 0);
+
+    control->ControlarJuego(vista,sonic);
 
     //Se muestran las entidades
     list<Rectangulo> rectangulos;
@@ -43,7 +48,7 @@ int main(int argc, char *argv[]) {
     ConstructorEntidades constructorEntidades = ConstructorEntidades(jparseador->getEscenario(), &rectangulos, &circulos, log);
 
     //vista->cargarTexturas();
-	vista->mostrarVentana();
+	//vista->mostrarVentana();
 	vista->cerrar();
 	parseador->getLog()->addLogMessage("PRINCIPAL","Se termina el juego.",1);
 

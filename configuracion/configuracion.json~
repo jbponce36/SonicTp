@@ -1,5 +1,10 @@
 {
+<<<<<<< HEAD
 	"ventana": {"dimensiones": {"ancho": 800, "alto": 500}},
+=======
+    "prueba": 2,
+	"ventana": {"dimensiones": {"ancho": 800, "alto": 400}},
+>>>>>>> 01b03293de0142b161d75fdccc00f985d7303358
 	"configuracion": {"vel_scroll": 20},
 	"escenario": {
 		"dimensiones": {"ancho": 3600, "alto": 500},
