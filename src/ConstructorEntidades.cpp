@@ -16,16 +16,21 @@ ConstructorEntidades::ConstructorEntidades() {
 
 ConstructorEntidades::ConstructorEntidades(jescenario *jescenario)
 {
-	cargarEntidades(jescenario->getentidades(), &rectangulos, &circulos);
+	//this->cargarEntidades(jescenario->getentidades(), &rectangulos, &circulos);
 }
 
 ConstructorEntidades::ConstructorEntidades(jescenario *jescenario, list<Rectangulo> *rectangulos, list<Circulo> *circulos)
 {
-	cargarEntidades(jescenario->getentidades(), rectangulos, circulos);
+	//cargarEntidades(jescenario->getentidades(), rectangulos, circulos);
 }
 
 ConstructorEntidades::~ConstructorEntidades() {
 	// TODO Auto-generated destructor stub
+}
+
+void ConstructorEntidades::cargarEntidades(list<jentidades> entidades)
+{
+
 }
 
 void ConstructorEntidades::cargarEntidades(list<jentidades> entidades, list<Rectangulo> *rectangulos, list<Circulo> *circulos)
@@ -75,20 +80,20 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> entidades, list<Rect
 
 }
 
-void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador)
+void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara)
 {
 	list<Rectangulo>::iterator posRect;
 
 	for(posRect = rectangulos.begin(); posRect != rectangulos.end(); posRect++)
 	{
-		(*posRect).dibujar(renderizador);
+		(*posRect).dibujar(renderizador, camara);
 	}
 
 	list<Circulo>::iterator posCirc;
 
 	for(posCirc = circulos.begin(); posCirc != circulos.end(); posCirc++)
 	{
-		(*posCirc).dibujar(renderizador);
+		(*posCirc).dibujar(renderizador, camara);
 	}
 }
 

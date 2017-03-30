@@ -1,5 +1,7 @@
 #include "Circulo.h"
 
+namespace std{
+
 Circulo::Circulo() : radio()
 {
 
@@ -15,7 +17,7 @@ Circulo::~Circulo() {
 	// TODO Auto-generated destructor stub
 }
 
-void Circulo::dibujar(SDL_Renderer *renderer)
+void Circulo::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
 {
 	if (tieneRutaImagen())
 	{
@@ -91,4 +93,6 @@ void Circulo::dibujarImagen(SDL_Renderer *renderer)
 			}
 		}
 	}
+}
+
 }

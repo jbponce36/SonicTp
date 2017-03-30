@@ -20,7 +20,7 @@ private:
 public:
 	Entidad();
 	Entidad(unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ);
-	virtual void dibujar(SDL_Renderer *renderer) = 0;
+	virtual void dibujar(SDL_Renderer *renderer, SDL_Rect *camara) = 0;
 	void setearColor(SDL_Renderer *renderer);
 	virtual ~Entidad();
 	int obtenerX();

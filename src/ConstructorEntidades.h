@@ -26,7 +26,8 @@ public:
 	ConstructorEntidades(jescenario *jescenario);
 	ConstructorEntidades(jescenario *jescenario, list<Rectangulo> *rectangulos, list<Circulo> *circulos);
 	void cargarEntidades(list<jentidades> entidades, list<Rectangulo> *rectangulos, list<Circulo> *circulos);
-	void mostrarEntidades(SDL_Renderer* renderizador);
+	void cargarEntidades(list<jentidades> entidades);
+	void mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara);
 	virtual ~ConstructorEntidades();
 };
 

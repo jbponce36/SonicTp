@@ -1,5 +1,7 @@
 #include "Rectangulo.h"
 
+namespace std{
+
 Rectangulo::Rectangulo() : ancho(), alto()
 {
 
@@ -18,7 +20,7 @@ Rectangulo::~Rectangulo() {
 	// TODO Auto-generated destructor stub
 }
 
-void Rectangulo::dibujar(SDL_Renderer *renderer)
+void Rectangulo::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
 {
 	if (tieneRutaImagen())
 	{
@@ -93,5 +95,7 @@ void Rectangulo::mostrarImagen(SDL_Renderer *renderer)
 
 		return;
 	}
+}
+
 }
 

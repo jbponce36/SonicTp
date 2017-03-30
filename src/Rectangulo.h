@@ -3,6 +3,8 @@
 
 #include "Entidad.h"
 
+namespace std{
+
 class Rectangulo : public Entidad
 {
 private:
@@ -14,11 +16,12 @@ public:
 	Rectangulo();
 	Rectangulo(int ancho, int alto, unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ);
 	virtual ~Rectangulo();
-	void dibujar(SDL_Renderer *renderer);
+	void dibujar(SDL_Renderer *renderer, SDL_Rect *camara);
 	void mostrarImagen(SDL_Renderer *renderer);
 
 private:
 
 };
 
+}
 #endif

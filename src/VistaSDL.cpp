@@ -11,6 +11,7 @@ using namespace std;
 #include "VistaSDL.h"
 #include <list>
 #include "Textura.h"
+#include "ConstructorEntidades.h"
 
 
 VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario *jescenario)
@@ -21,6 +22,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->renderizador = NULL;
 	this->crearVentanaYrenderizador();
 	this->constructorEntidades = ConstructorEntidades(jescenario);
+	constructorEntidades.cargarEntidades(jescenario->getentidades());
 	this->anchoescenario=jescenario->getancho();
 	this->altoescenario=jescenario->getalto();
 	this->ventana = NULL;
@@ -187,9 +189,9 @@ VistaSDL::~VistaSDL()
 	this->cerrar();
 }
 
-void VistaSDL::mostrarEntidades()
+void VistaSDL::mostrarEntidades(SDL_Rect *camara)
 {
-	constructorEntidades.mostrarEntidades(renderizador);
+	constructorEntidades.mostrarEntidades(renderizador, camara);
 }
 
 

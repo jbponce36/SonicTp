@@ -62,7 +62,7 @@ public:
 
 	void cerrar();
 	~VistaSDL();
-	void mostrarEntidades();
+	void mostrarEntidades(SDL_Rect *camara);
 };
 
 
