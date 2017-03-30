@@ -28,8 +28,7 @@ public:
 	SDL_Texture* obtenerImagen();
 	bool tieneRutaImagen();
 	int cargarImagen(SDL_Renderer *renderer);
-
-
+	bool indexZMenorA(const Entidad *otraEntidad) const;
 
 private:
 	SDL_Color convertirColor(std::string color);

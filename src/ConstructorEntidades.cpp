@@ -82,6 +82,8 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades)
 		}
 	}
 
+	ordenarSegunIndexZ();
+
 	this->log->addLogMessage("ENTIDADES", "[CARGA DE ENTIDADES] Terminado.", 2);
 }
 
@@ -97,6 +99,16 @@ void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect
 	}
 
 	this->log->addLogMessage("ENTIDADES", "[MOSTRAR RECTANGULOS] Terminado.", 2);
+}
+
+bool compararIndexZ(const Entidad *primera, const Entidad *segunda)
+{
+	return primera->indexZMenorA(segunda);
+}
+
+void ConstructorEntidades::ordenarSegunIndexZ()
+{
+	entidades.sort(compararIndexZ);
 }
 
 }

@@ -77,8 +77,19 @@ int Entidad::cargarImagen(SDL_Renderer *renderer)
 	}
 
 	SDL_Surface *imagenCargada = NULL;
-/////////////////TODO: Ver si tiene la / adelante de la ruta. Sacarla
-	imagenCargada=IMG_Load(rutaImagen.c_str()); //SDL_LoadBMP(rutaImagen.c_str()); //Para cargar BMP
+	std::string rutaSinBarra;
+	const char* barra = "/";
+
+	//Si la rutaImagen empieza con una / se la saca
+	if (strncmp(rutaImagen.c_str(), barra, 1) == 0)
+	{
+		rutaSinBarra = rutaImagen.substr(1, rutaImagen.length() - 1);
+		imagenCargada=IMG_Load(rutaSinBarra.c_str());
+	}
+	else
+	{
+		imagenCargada=IMG_Load(rutaImagen.c_str());
+	}
 
 	if(imagenCargada == NULL)
 	{
@@ -100,4 +111,12 @@ void Entidad::destruirImagen()
 	}
 }
 
+bool Entidad::indexZMenorA(const Entidad *otraEntidad) const
+{
+	if (indexZ < otraEntidad->indexZ)
+	{
+		return true;
+	}
+	return false;
+}
 

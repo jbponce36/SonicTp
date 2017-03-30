@@ -28,7 +28,12 @@ public:
 	void cargarEntidades(list<jentidades> entidades);
 	void mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara);
 	virtual ~ConstructorEntidades();
+	void ordenarSegunIndexZ();
+
 };
 
 }
+
+
+
 #endif /* CONSTRUCTORENTIDADES_H_ */
