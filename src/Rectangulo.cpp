@@ -18,12 +18,12 @@ Rectangulo::~Rectangulo() {
 	// TODO Auto-generated destructor stub
 }
 
-void Rectangulo::dibujar(SDL_Renderer *renderer)
+void Rectangulo::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
 {
 	if (tieneRutaImagen())
 	{
 		cargarImagen(renderer);
-		mostrarImagen(renderer);
+		mostrarImagen(renderer, camara);
 	}
 	else
 	{
@@ -32,7 +32,7 @@ void Rectangulo::dibujar(SDL_Renderer *renderer)
 	}
 }
 
-void Rectangulo::mostrarImagen(SDL_Renderer *renderer)
+void Rectangulo::mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara)
 {
 	if (obtenerImagen() == NULL)
 	{
@@ -47,7 +47,8 @@ void Rectangulo::mostrarImagen(SDL_Renderer *renderer)
 	{
 		//Recorta la imagen
 		SDL_Rect recorte = {0, 0, ancho, alto}; //Toma desde la esquina superior izquierda de la imagen
-		SDL_RenderCopy(renderer, obtenerImagen(), &recorte, &rectanguloSDL);
+		SDL_Rect destino = {obtenerX() - camara->x, obtenerY() - camara->y, ancho, alto};
+		SDL_RenderCopy(renderer, obtenerImagen(), &recorte, &destino);
 		return;
 	}
 	else
@@ -57,14 +58,14 @@ void Rectangulo::mostrarImagen(SDL_Renderer *renderer)
 		if (ancho > anchoImagen)
 		{
 			//Rellena a la derecha de la imagen
-			SDL_Rect relleno = {obtenerX() + anchoImagen, obtenerY(), ancho - anchoImagen, alto};
+			SDL_Rect relleno = {obtenerX() + anchoImagen - camara->x, obtenerY() - camara->y, ancho - anchoImagen, alto};
 			SDL_RenderFillRect(renderer, &relleno);
 		}
 
 		if (alto > altoImagen)
 		{
 			//Rellena abajo de la imagen
-			SDL_Rect relleno = {obtenerX(), obtenerY() + altoImagen, ancho, alto - altoImagen};
+			SDL_Rect relleno = {obtenerX() - camara->x, obtenerY() + altoImagen - camara->y, ancho, alto - altoImagen};
 			SDL_RenderFillRect(renderer, &relleno);
 		}
 
@@ -73,21 +74,21 @@ void Rectangulo::mostrarImagen(SDL_Renderer *renderer)
 		{
 			//Muestra toda la imagen
 			SDL_Rect recorte = {0, 0, anchoImagen, altoImagen};
-			SDL_Rect destino = {obtenerX(), obtenerY(), anchoImagen, altoImagen};
+			SDL_Rect destino = {obtenerX() - camara->x, obtenerY() - camara->y, anchoImagen, altoImagen};
 			SDL_RenderCopy(renderer, obtenerImagen(), &recorte, &destino);
 		}
 		else if (ancho > anchoImagen)
 		{
 			//Muestra la parte superior de la imagen
 			SDL_Rect recorte = {0, 0, anchoImagen, alto};
-			SDL_Rect destino = {obtenerX(), obtenerY(), anchoImagen, alto};
+			SDL_Rect destino = {obtenerX() - camara->x, obtenerY() - camara->y, anchoImagen, alto};
 			SDL_RenderCopy(renderer, obtenerImagen(), &recorte, &destino);
 		}
 		else if (alto > altoImagen)
 		{
 			//Muestra la parte izquierda de la imagen
 			SDL_Rect recorte = {0, 0, ancho, altoImagen};
-			SDL_Rect destino = {obtenerX(), obtenerY(), ancho, altoImagen};
+			SDL_Rect destino = {obtenerX() - camara->x, obtenerY() - camara->y, ancho, altoImagen};
 			SDL_RenderCopy(renderer, obtenerImagen(), &recorte, &destino);
 		}
 

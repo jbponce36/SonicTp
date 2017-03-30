@@ -36,16 +36,11 @@ int main(int argc, char *argv[]) {
 	char *file=(char*)"configuracion/configuracion.json";
 	parseador->getLog()->addLogMessage("PRINCIPAL","Se inicia el juego.",1);
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
-    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario());
+    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
     Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender());
     Control *control = new Control(0, 0);
 
     control->ControlarJuego(vista,sonic);
-
-    //Se muestran las entidades
-    list<Rectangulo> rectangulos;
-    list<Circulo> circulos;
-    ConstructorEntidades constructorEntidades = ConstructorEntidades(jparseador->getEscenario(), &rectangulos, &circulos, log);
 
     //vista->cargarTexturas();
 	//vista->mostrarVentana();
