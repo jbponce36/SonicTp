@@ -14,7 +14,7 @@ int Control::getPosicionInicialY(){
 void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 	SDL_Event e;
 	bool salir = false;
-	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,400,200);
+	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana());
 	while( !salir ){
 	//manejar eventos en la cola
 		while( SDL_PollEvent( &e ) != 0 )
