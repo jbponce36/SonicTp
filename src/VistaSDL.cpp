@@ -88,18 +88,16 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 		for(pos = lista.begin(); pos!=lista.end(); pos++)
 		{
 			Textura *tex = new Textura();
-			vectorCapas[i].setId((*pos).getid());
-			vectorCapas[i].setIndex_z((*pos).getindex());
-			vectorCapas[i].setRutaImagen((*pos).getrutaimagen());
+			tex->setId((*pos).getid());
+			tex->setIndex_z((*pos).getindex());
+			tex->setRuta((*pos).getrutaimagen());
+			//vectorCapas[i].setId((*pos).getid());
+			//vectorCapas[i].setIndex_z((*pos).getindex());
+			//vectorCapas[i].setRutaImagen((*pos).getrutaimagen());
 			tex->cargarImagen( (*pos).getrutaimagen() ,renderizador);
 			this->capasFondo.push_back(tex);
 			i++;
 		}
-}
-
-void VistaSDL::cargarTexturas()
-{
-
 }
 
 SDL_Renderer* VistaSDL::obtenerRender(){
@@ -137,41 +135,11 @@ int VistaSDL::obtenerVelocidadDeScroll(){
 	return this->velocidadScroll;
 }
 
-/*void VistaSDL::mostrarVentana()
-{
-	//loop cerrar ventana si apretamos la cruz de la misma
-	bool quit = false;
+int VistaSDL::cantidadCapasCargadas(){
 
-	//manejar eventos
-	SDL_Event e;
-	//mientras corre la aplicacion
-	while( !quit )
-		{
-		//manejar eventos en la cola
-	  		while( SDL_PollEvent( &e ) != 0 )
-			{
-				//usuario pide cierre
-				if( e.type == SDL_QUIT )
-				{
-					quit = true;
-				}
-			}
-			// dibuja en la ventana la textura mostrada en este caso capa0, los parametros son las coords donde renderiza la imagen
-		//	this->capaFondo->renderizar(0,0);
-	  		this->mostrarCapas();
-			this->mostrarEntidades();
-			//actualizar ventana
-			SDL_RenderPresent( renderizador );
-		}
+	return this->capasFondo.size();
 }
 
-void VistaSDL::mostrarCapas(){
-
-	for(int i=0; i<2;i++ ){
-		this->capasFondo[i].renderizar(0,0,);
-	}
-}
-*/
 void VistaSDL::cerrar()
 {
 	//destruir ventana render

@@ -95,6 +95,31 @@ SDL_Texture* Textura::obtenerTextura()
 	return textura;
 }
 
+void Textura::setId(int identificacion){
+
+	this->id = identificacion;
+}
+void Textura::setRuta(std::string rutaa){
+
+	this->ruta = rutaa.c_str();
+}
+void Textura::setIndex_z(int indice){
+
+	this->index_z = indice;
+}
+int Textura::getId(){
+
+	return this->id;
+}
+std::string Textura::getRuta(){
+
+	return this->ruta;
+}
+int Textura::getIndex_z(){
+
+	return this->index_z;
+}
+
 Textura::~Textura()
 {
 	this->liberarTextura();

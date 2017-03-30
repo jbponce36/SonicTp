@@ -15,7 +15,6 @@ using namespace std;
 #include "jconfiguracion.h"
 #include "jescenario.h"
 #include "capas.h"
-#include "capaEs.h"
 #include "ConstructorEntidades.h"
 #include <list>
 #include <vector>
@@ -36,7 +35,6 @@ private:
 	int anchoescenario;
 	int altoescenario;
 	int imgFlags;
-	capaEs vectorCapas[2];
 	vector <Textura*> texturas;
 	vector <Textura*> capasFondo;//son las dos capas del fondo del juego
 	ConstructorEntidades constructorEntidades;
@@ -47,15 +45,12 @@ public:
 	int obtenerAltoVentana();
 	void cargarCapas(jescenario *escenario);
 	int obtenerAnchoVentana();
-	void cargarTexturas();
+
 	void crearVentanaYrenderizador();
-	list<capaEs>getcapaEs();
-	void setcapaEs(list<capaEs>);
 	int obtenerAltoEscenario();
 	int obtenerAnchoEscenario();
 	void mostrarCapas();
-	void mostrarVentana();
-
+	int cantidadCapasCargadas();
 	Textura* obtenerTextura(int);
 	SDL_Renderer* obtenerRender();
 	int obtenerVelocidadDeScroll();

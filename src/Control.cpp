@@ -14,7 +14,7 @@ int Control::getPosicionInicialY(){
 void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 	SDL_Event e;
 	bool salir = false;
-	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana());
+	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,400,200);
 	while( !salir ){
 	//manejar eventos en la cola
 		while( SDL_PollEvent( &e ) != 0 )
@@ -42,10 +42,12 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 		capa0.h = 500;
 		//..
 		*/
-		vista->obtenerTextura(0)->renderizar(camara->devolverCamara());
-		vista->obtenerTextura(1)->renderizar(camara->devolverCamara());
+		for(int contador = 0; contador < vista->cantidadCapasCargadas(); contador++)
+		{
+			vista->obtenerTextura(contador)->renderizar(camara->devolverCamara());
+		}
 
-		vista->mostrarEntidades(camara->devolverCamara());
+		//vista->mostrarEntidades(camara->devolverCamara());
 
 		//dibujo ek personaje
 		sonic->render(camara->getPosicionX(), camara->getPosicionY());
