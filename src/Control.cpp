@@ -28,9 +28,6 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 		}
 		sonic->mover(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
 		camara->actualizar(sonic,vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
-
-		camara->actualizar(sonic,vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
-
 		SDL_SetRenderDrawColor(vista->obtenerRender(),0xff,0xff,0xff,0xff);
 		SDL_RenderClear(vista->obtenerRender());
 

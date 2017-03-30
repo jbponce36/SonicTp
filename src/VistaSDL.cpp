@@ -98,12 +98,31 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 			this->capasFondo.push_back(tex);
 			i++;
 		}
+		//Textura aux[10];
+
+		Textura *aux=NULL;
+		for (int i=1;i<capasFondo.size();i++)
+		{
+			for (int y=0;y< capasFondo.size()-1;y++)
+			{
+				if(capasFondo[y+1]->getIndex_z() > capasFondo[y]->getIndex_z())
+				{
+					aux=capasFondo[y];
+					capasFondo[y]= capasFondo[y+1];
+					capasFondo[y+1]=aux;
+				}
+
+			}
+		}
+		aux=NULL;
 }
 
 SDL_Renderer* VistaSDL::obtenerRender(){
 
 	return this->renderizador;
 }
+
+
 
 Textura* VistaSDL::obtenerTextura(int numero){
 
@@ -155,6 +174,10 @@ void VistaSDL::cerrar()
 VistaSDL::~VistaSDL()
 {
 	this->cerrar();
+	for (int i =0; i<0;  i++)
+	{
+	this->capasFondo[i]->liberarTextura();
+	}
 }
 
 void VistaSDL::mostrarEntidades(SDL_Rect *camara)
