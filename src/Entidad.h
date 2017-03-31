@@ -5,6 +5,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "Logger.h"
 
 class Entidad {
 
@@ -20,16 +21,15 @@ private:
 public:
 	Entidad();
 	Entidad(unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ);
-	virtual void dibujar(SDL_Renderer *renderer) = 0;
+	virtual void dibujar(SDL_Renderer *renderer, SDL_Rect *camara) = 0;
 	void setearColor(SDL_Renderer *renderer);
 	virtual ~Entidad();
 	int obtenerX();
 	int obtenerY();
 	SDL_Texture* obtenerImagen();
 	bool tieneRutaImagen();
-	int cargarImagen(SDL_Renderer *renderer);
-
-
+	int cargarImagen(SDL_Renderer *renderer, Logger *log);
+	bool indexZMenorA(const Entidad *otraEntidad) const;
 
 private:
 	SDL_Color convertirColor(std::string color);

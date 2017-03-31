@@ -45,7 +45,7 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 		vista->obtenerTextura(0)->renderizar(camara->devolverCamara());
 		vista->obtenerTextura(1)->renderizar(camara->devolverCamara());
 
-		//vista->mostrarEntidades();
+		vista->mostrarEntidades(camara->devolverCamara());
 
 		//dibujo ek personaje
 		sonic->render(camara->getPosicionX(), camara->getPosicionY());

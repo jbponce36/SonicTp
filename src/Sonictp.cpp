@@ -38,24 +38,13 @@ int main(int argc, char *argv[]) {
 	parseador->getLog()->addLogMessage("PRINCIPAL","Se inicia el juego.",1);
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
-   // jpruebas* p = new jpruebas();
-   // p->prueba(jparseador);
-   // delete p;
+    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
 
-
-   VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario());
     Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender());
     Control *control = new Control(0, 0);
 
     control->ControlarJuego(vista,sonic);
 
-    //Se muestran las entidades
-    list<Rectangulo> rectangulos;
-    list<Circulo> circulos;
-    ConstructorEntidades constructorEntidades = ConstructorEntidades(jparseador->getEscenario(), &rectangulos, &circulos, log);
-
-  //  vista->cargarTexturas();
-//	vista->mostrarVentana();
 
 	vista->cerrar();
 	parseador->getLog()->addLogMessage("PRINCIPAL","Se termina el juego.",1);

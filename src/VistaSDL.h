@@ -39,10 +39,10 @@ private:
 	capaEs vectorCapas[2];
 	vector <Textura*> texturas;
 	vector <Textura*> capasFondo;//son las dos capas del fondo del juego
-	ConstructorEntidades constructorEntidades;
+	ConstructorEntidades *constructorEntidades;
 
 public:
-	VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion,jescenario *jescenario);
+	VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion,jescenario *jescenario, Logger *logger);
 	void cargarImagen();
 	int obtenerAltoVentana();
 	void cargarCapas(jescenario *escenario);
@@ -62,7 +62,7 @@ public:
 
 	void cerrar();
 	~VistaSDL();
-	void mostrarEntidades();
+	void mostrarEntidades(SDL_Rect *camara);
 };
 
 

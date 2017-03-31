@@ -19,20 +19,24 @@ namespace std{
 
 class ConstructorEntidades {
 private:
-	list<Rectangulo> rectangulos;
-	list<Circulo> circulos;
+	list<Entidad*> entidades;
 	Logger *log;
 
 public:
 	ConstructorEntidades();
-	ConstructorEntidades(jescenario *jescenario);
-	ConstructorEntidades(jescenario *jescenario, list<Rectangulo> *rectangulos, list<Circulo> *circulos, Logger *log);
-	void cargarEntidades(list<jentidades> entidades, list<Rectangulo> *rectangulos, list<Circulo> *circulos);
-	void mostrarEntidades(SDL_Renderer* renderizador);
+	ConstructorEntidades(Logger *log);
+	void cargarEntidades(list<jentidades> entidades, SDL_Renderer *renderizador);
+	void mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara);
 	virtual ~ConstructorEntidades();
-    Logger *getLog() const;
-    void setLog(Logger *log);
+
+private:
+	void ordenarSegunIndexZ();
+	void cargarImagenes(SDL_Renderer *renderizador);
+
 };
 
 }
+
+
+
 #endif /* CONSTRUCTORENTIDADES_H_ */

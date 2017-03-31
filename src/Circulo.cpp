@@ -15,20 +15,19 @@ Circulo::~Circulo() {
 	// TODO Auto-generated destructor stub
 }
 
-void Circulo::dibujar(SDL_Renderer *renderer)
+void Circulo::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
 {
 	if (tieneRutaImagen())
 	{
-		cargarImagen(renderer);
-		dibujarImagen(renderer);
+		dibujarImagen(renderer, camara);
 	}
 	else
 	{
-		dibujarColorSolido(renderer);
+		dibujarColorSolido(renderer, camara);
 	}
 }
 
-void Circulo::dibujarColorSolido(SDL_Renderer *renderer)
+void Circulo::dibujarColorSolido(SDL_Renderer *renderer, SDL_Rect *camara)
 {
 	setearColor(renderer);
 	int diametro=radio*2;
@@ -42,13 +41,13 @@ void Circulo::dibujarColorSolido(SDL_Renderer *renderer)
 			difY=radio-yPunto;
 			if ((difX*difX + difY*difY) <= (radio*radio)) //Si el punto esta dentro del circulo
 			{
-				SDL_RenderDrawPoint(renderer, obtenerX()+difX, obtenerY()+difY);
+				SDL_RenderDrawPoint(renderer, obtenerX()+difX -camara->x, obtenerY()+difY -camara->y);
 			}
 		}
 	}
 }
 
-void Circulo::dibujarImagen(SDL_Renderer *renderer)
+void Circulo::dibujarImagen(SDL_Renderer *renderer, SDL_Rect *camara)
 {
 	int diametro=radio*2;
 	int difX, difY=0;
@@ -75,8 +74,8 @@ void Circulo::dibujarImagen(SDL_Renderer *renderer)
 				puntoADibujar.w = 1;
 				puntoADibujar.h = 1;
 
-				puntoDestino.x = obtenerX()-radio+xPunto;
-				puntoDestino.y = obtenerY()-radio+yPunto;
+				puntoDestino.x = obtenerX()-radio+xPunto-camara->x;
+				puntoDestino.y = obtenerY()-radio+yPunto-camara->y;
 				puntoDestino.w = 1;
 				puntoDestino.h = 1;
 
