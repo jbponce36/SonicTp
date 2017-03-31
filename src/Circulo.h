@@ -3,6 +3,8 @@
 
 #include "Entidad.h"
 
+namespace std{
+
 class Circulo : public Entidad
 {
 private:
@@ -16,8 +18,10 @@ public:
 	void dibujarColorSolido(SDL_Renderer *renderer, SDL_Rect *camara);
 	void dibujarImagen(SDL_Renderer *renderer, SDL_Rect *camara);
 
+
 private:
 
 };
 
+}
 #endif

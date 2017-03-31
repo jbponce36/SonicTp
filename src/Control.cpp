@@ -28,9 +28,6 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 		}
 		sonic->mover(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
 		camara->actualizar(sonic,vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
-
-		camara->actualizar(sonic,vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
-
 		SDL_SetRenderDrawColor(vista->obtenerRender(),0xff,0xff,0xff,0xff);
 		SDL_RenderClear(vista->obtenerRender());
 
@@ -42,10 +39,13 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 		capa0.h = 500;
 		//..
 		*/
-		vista->obtenerTextura(0)->renderizar(camara->devolverCamara());
-		vista->obtenerTextura(1)->renderizar(camara->devolverCamara());
+		for(int contador = 0; contador < vista->cantidadCapasCargadas(); contador++)
+		{
+			vista->obtenerTextura(contador)->renderizar(camara->devolverCamara());
+		}
 
 		vista->mostrarEntidades(camara->devolverCamara());
+
 
 		//dibujo ek personaje
 		sonic->render(camara->getPosicionX(), camara->getPosicionY());

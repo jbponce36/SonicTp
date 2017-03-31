@@ -20,7 +20,9 @@ private:
 	SDL_Renderer* renderizador;
 	int anchoTextura;
 	int altoTextura;
-
+	int index_z;
+	std::string ruta;
+	int id;
 
 public:
 	Textura();
@@ -30,6 +32,12 @@ public:
 	void renderizar(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVentana = NULL);
 	void liberarTextura();
 	SDL_Texture* obtenerTextura();
+	void setId(int);
+	void setRuta(std::string ruta);
+	void setIndex_z(int);
+	int getId();
+	std::string getRuta();
+	int getIndex_z();
 	~Textura();
 };
 

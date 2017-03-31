@@ -1,5 +1,7 @@
 #include "Rectangulo.h"
 
+namespace std{
+
 Rectangulo::Rectangulo() : ancho(), alto()
 {
 
@@ -93,5 +95,7 @@ void Rectangulo::mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara)
 
 		return;
 	}
+}
+
 }
 

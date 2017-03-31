@@ -30,6 +30,7 @@ ConstructorEntidades::~ConstructorEntidades()
 	entidades.clear();
 }
 
+
 void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Renderer *renderizador)
 {
 	list<jentidades>::iterator pos;
@@ -88,6 +89,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 	this->log->addLogMessage("ENTIDADES", "[CARGA DE ENTIDADES] Terminado.", 2);
 }
 
+
 void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 {
 	list<Entidad*>::iterator pos;
@@ -104,7 +106,6 @@ void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 
 	this->log->addLogMessage("ENTIDADES", "[MOSTRAR ENTIDADES] Terminado.", 2);
 }
-
 void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara)
 {
 	list<Entidad*>::iterator pos;

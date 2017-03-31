@@ -1,5 +1,7 @@
 #include "Circulo.h"
 
+namespace std{
+
 Circulo::Circulo() : radio()
 {
 
@@ -90,4 +92,6 @@ void Circulo::dibujarImagen(SDL_Renderer *renderer, SDL_Rect *camara)
 			}
 		}
 	}
+}
+
 }
