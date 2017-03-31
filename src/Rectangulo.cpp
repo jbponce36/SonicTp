@@ -22,7 +22,6 @@ void Rectangulo::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
 {
 	if (tieneRutaImagen())
 	{
-		cargarImagen(renderer);
 		mostrarImagen(renderer, camara);
 	}
 	else

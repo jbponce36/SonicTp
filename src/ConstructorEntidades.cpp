@@ -30,7 +30,7 @@ ConstructorEntidades::~ConstructorEntidades()
 	entidades.clear();
 }
 
-void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades)
+void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Renderer *renderizador)
 {
 	list<jentidades>::iterator pos;
 	int id;
@@ -60,7 +60,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades)
 
 			entidades.push_back(rectangulo);
 
-			this->log->addLogMessage("ENTIDADES", "[CARGA DE ENTIDADES] Procesando rectangulo.", 2);
+			this->log->addLogMessage("ENTIDADES", "[CARGA DE ENTIDADES] Fin proceso rectangulo.", 2);
 		}
 
 		if((*pos).gettipo() == "circulo")
@@ -78,27 +78,45 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades)
 
 			entidades.push_back(circulo);
 
-			this->log->addLogMessage("ENTIDADES", "[CARGA DE ENTIDADES] Procesando circulo.", 2);
+			this->log->addLogMessage("ENTIDADES", "[CARGA DE ENTIDADES] Fin proceso circulo.", 2);
 		}
 	}
 
+	cargarImagenes(renderizador);
 	ordenarSegunIndexZ();
 
 	this->log->addLogMessage("ENTIDADES", "[CARGA DE ENTIDADES] Terminado.", 2);
+}
+
+void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
+{
+	list<Entidad*>::iterator pos;
+
+	this->log->addLogMessage("ENTIDADES", "[MOSTRAR ENTIDADES] Iniciado.", 2);
+
+	for(pos = entidades.begin(); pos != entidades.end(); pos++)
+	{
+		if ((*pos)->tieneRutaImagen())
+		{
+			(*pos)->cargarImagen(renderizador, log);
+		}
+	}
+
+	this->log->addLogMessage("ENTIDADES", "[MOSTRAR ENTIDADES] Terminado.", 2);
 }
 
 void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara)
 {
 	list<Entidad*>::iterator pos;
 
-	this->log->addLogMessage("ENTIDADES", "[MOSTRAR RECTANGULOS] Iniciado.", 2);
+	this->log->addLogMessage("ENTIDADES", "[MOSTRAR ENTIDADES] Iniciado.", 2);
 
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
 		(*pos)->dibujar(renderizador, camara);
 	}
 
-	this->log->addLogMessage("ENTIDADES", "[MOSTRAR RECTANGULOS] Terminado.", 2);
+	this->log->addLogMessage("ENTIDADES", "[MOSTRAR ENTIDADES] Terminado.", 2);
 }
 
 bool compararIndexZ(const Entidad *primera, const Entidad *segunda)

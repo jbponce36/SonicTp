@@ -68,12 +68,13 @@ bool Entidad::tieneRutaImagen()
 		return true;
 }
 
-int Entidad::cargarImagen(SDL_Renderer *renderer)
+int Entidad::cargarImagen(SDL_Renderer *renderer, Logger *log)
 {
+	int error = 0;
 	if ((rutaImagen != "") && (imagen != NULL))
 	{
 		//Imagen ya cargada
-		return 0;
+		return error;
 	}
 
 	SDL_Surface *imagenCargada = NULL;
@@ -93,14 +94,20 @@ int Entidad::cargarImagen(SDL_Renderer *renderer)
 
 	if(imagenCargada == NULL)
 	{
-		std::cout << "Error: " << SDL_GetError() << std::endl;
-		return 1;
+		//std::cout << "Error: " << SDL_GetError() << std::endl;
+		rutaImagen = "images/default.png";
+		imagenCargada=IMG_Load(rutaImagen.c_str());
+
+		std::string mensaje = "[CARGAR IMAGEN ENTIDAD] Se cargo una imagen por default. Id: "+id;
+		log->addLogMessage("ENTIDAD", mensaje, 2);
+
+		error = 1;
 	}
 
 	imagen = SDL_CreateTextureFromSurface(renderer, imagenCargada);
 	SDL_FreeSurface(imagenCargada);
 
-	return 0;
+	return error;
 }
 
 void Entidad::destruirImagen()

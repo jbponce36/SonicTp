@@ -5,6 +5,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "Logger.h"
 
 class Entidad {
 
@@ -27,7 +28,7 @@ public:
 	int obtenerY();
 	SDL_Texture* obtenerImagen();
 	bool tieneRutaImagen();
-	int cargarImagen(SDL_Renderer *renderer);
+	int cargarImagen(SDL_Renderer *renderer, Logger *log);
 	bool indexZMenorA(const Entidad *otraEntidad) const;
 
 private:

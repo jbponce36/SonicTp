@@ -21,7 +21,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->renderizador = NULL;
 	this->crearVentanaYrenderizador();
 	this->constructorEntidades = new ConstructorEntidades(logger);
-	constructorEntidades->cargarEntidades(jescenario->getentidades());
+	constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
 	this->anchoescenario=jescenario->getancho();
 	this->altoescenario=jescenario->getalto();
 	this->ventana = NULL;

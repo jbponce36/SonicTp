@@ -19,7 +19,6 @@ void Circulo::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
 {
 	if (tieneRutaImagen())
 	{
-		cargarImagen(renderer);
 		dibujarImagen(renderer, camara);
 	}
 	else
