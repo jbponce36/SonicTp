@@ -1,19 +1,23 @@
 {
+<<<<<<< HEAD
+	"ventana": {"dimensiones": {"ancho": 800, "alto": 500}},
+=======
     "prueba": 2,
-	"ventana": {"dimensiones": {"ancho": 1345, "alto": 500}},
-	"configuracion": {"vel_scroll": 35},
+	"ventana": {"dimensiones": {"ancho": 800, "alto": 400}},
+>>>>>>> 01b03293de0142b161d75fdccc00f985d7303358
+	"configuracion": {"vel_scroll": 20},
 	"escenario": {
-		"dimensiones": {"ancho": 600, "alto": 100},
+		"dimensiones": {"ancho": 3600, "alto": 500},
 		"capas": [
 			{
 			"id": 1,
 			"index_z": 99,
-			"ruta_imagen":"capa0.png"
+			"ruta_imagen":"images/capa0.png"
 			},
 			{
 			"id": 2,
 			"index_z": 98,
-			"ruta_imagen":"/images/capa2.png"
+			"ruta_imagen":"images/capa1r.png"
 			}
 		],
 		"entidades": [
@@ -23,7 +27,7 @@
 			"color": "rojo",
 			"dimensiones": {"ancho": 40, "alto": 20},
 			"coordenada": {"x": 128, "y": 405},
-			"ruta_imagen": "/images/entidad1.png",
+			"ruta_imagen": "images/entidad1.png",
 			"index_z": 99
 		},
 		{
@@ -32,7 +36,7 @@
 			"color": "verde",
 			"dimensiones": {"ancho": 80, "alto": 35},
 			"coordenada": {"x": 2400, "y": 500},
-			"ruta_imagen": "/images/entidad2.png",
+			"ruta_imagen": "images/entidad2.png",
 			"index_z": 99
 		},
 		{
@@ -41,7 +45,7 @@
 			"color": "amarillo",
 			"dimensiones": {"radio": 15},
 			"coordenada": {"x": 3000, "y": 205},
-			"ruta_imagen": "/images/entidad3.png",
+			"ruta_imagen": "images/entidad3.png",
 			"index_z": 99
 		}]
 	}

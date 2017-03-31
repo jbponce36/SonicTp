@@ -21,12 +21,13 @@ private:
 	int anchoTextura;
 	int altoTextura;
 
+
 public:
 	Textura();
 	void cargarImagen(std::string path,SDL_Renderer* render);
 	int obtenerAltoTextura();
 	int obtenerAnchoTextura();
-	void renderizar(int ancho,int alto);
+	void renderizar(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVentana = NULL);
 	void liberarTextura();
 	SDL_Texture* obtenerTextura();
 	~Textura();

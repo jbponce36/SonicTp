@@ -43,44 +43,43 @@ void jpruebas::prueba(jescenarioJuego* parser){
 	cout << "ancho:" << parser->getVentana()->getancho() << endl;
 	cout << "alto:" << parser->getVentana()->getalto() << endl;
 
-	/*cout << "CONFIGURACION" << endl;
+	cout << "CONFIGURACION" << endl;
 	cout << "vel_scroll:" << parser->getConfiguracion()->getvelscroll() << endl;
 
 	cout << "ESCENARIO" << endl;
 	cout << "dimension-ancho:" << parser->getEscenario()->getancho() << endl;
 	cout << "dimension-ancho:" << parser->getEscenario()->getalto() << endl;
-*/
+
+	cout << "CAPAS" << endl;
 	for(pos = capal.begin(); pos!=capal.end(); pos++){
 
-        cout<< "escenario-id:" << (*pos).getid()<<endl;
-        cout<< "escenario -index:" << (*pos).getindex()<<endl;
-        cout<< "escenario -ruta: " << (*pos).getrutaimagen()<<endl;
+        cout<< "capa-id:" << (*pos).getid()<<endl;
+        cout<< "capa-index:" << (*pos).getindex()<<endl;
+        cout<< "capa-ruta: " << (*pos).getrutaimagen()<<endl;
 
-       int h =  (*pos).getid();
+
     }
 
-	/*cout << "ESCENARIO" << endl;
-	cout << parser->getEscenario()->getentidades().size() << endl;
+	cout << "ESCENARIO" << endl;
+
 	list<jentidades>::iterator iterEntidades;
 	list<jentidades> lentidades = parser->getEscenario()->getentidades();
 	for(iterEntidades = lentidades.begin(); iterEntidades!=lentidades.end(); iterEntidades++){
-
-        cout<< "entidad-id:" << (*iterEntidades).getid()<<endl;
-        cout<< "entidad -tipo:" << (*iterEntidades).gettipo() <<endl;
-        cout<< "entidad -nombre valor1: " << (*iterEntidades).getDim()->getnombrevalor1()<<endl;
-        cout<< "entidad -valor1: " << (*iterEntidades).getDim()->getvalor1()<<endl;
-        cout<< "entidad -nombre valor2: " << (*iterEntidades).getDim()->getnombrevalor2()<<endl;
-        cout<< "entidad -valor2: " << (*iterEntidades).getDim()->getvalor2()<<endl;
-        cout<< "entidad -color: " << (*iterEntidades).getcolor()<<endl;
-        cout<< "entidad -coordenada x: " << (*iterEntidades).getcoorx()<<endl;
-        cout<< "entidad -coordenada y: " << (*iterEntidades).getcoory()<<endl;
-        cout<< "entidad -ruta imagen: " << (*iterEntidades).getruta()<<endl;
-        cout<< "entidad -index z: " << (*iterEntidades).getindex()<<endl;
+		cout<< "-----------------------------------" <<endl;
+        cout<< "id:" << (*iterEntidades).getid()<<endl;
+        cout<< "tipo:" << (*iterEntidades).gettipo() <<endl;
+        cout<< "nombre valor1: " << (*iterEntidades).getDim()->getnombrevalor1()<<endl;
+        cout<< "valor1: " << (*iterEntidades).getDim()->getvalor1()<<endl;
+        cout<< "nombre valor1: " << (*iterEntidades).getDim()->getnombrevalor2()<<endl;
+        cout<< "valor1: " << (*iterEntidades).getDim()->getvalor2()<<endl;
+        cout<< "color: " << (*iterEntidades).getcolor()<<endl;
+        cout<< "coordenada x: " << (*iterEntidades).getcoorx()<<endl;
+        cout<< "coordenada y: " << (*iterEntidades).getcoory()<<endl;
+        cout<< "ruta imagen: " << (*iterEntidades).getruta()<<endl;
+        cout<< "index z: " << (*iterEntidades).getindex()<<endl;
     }
 
 
-*/
-
-}
+	}
 
 } /* namespace std */

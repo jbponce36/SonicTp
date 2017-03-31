@@ -1,8 +1,8 @@
 {
-	"ventana": {"dimensiones": {"ancho": 800, "alto": 500}},
+	"ventana": {"dimensiones": {"ancho": "dddd", "alto": 500}},
 	"configuracion": {"vel_scroll": 20},
 	"escenario": {
-		"dimensiones": {"ancho": 3600, "alto": 600},
+		"dimensiones": {"ancho": 15, "alto": 600},
 		"capas": [
 			{
 			"id": 1,

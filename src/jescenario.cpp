@@ -13,11 +13,11 @@ namespace std {
 
 jescenario::jescenario() {
 	// TODO Auto-generated constructor stub
-
+	this->cargarDimensionPorDefecto();
 }
 
 jescenario::~jescenario() {
-
+	cargarDimensionPorDefecto();
 	// TODO Auto-generated destructor stub
 }
 //ancho
@@ -49,11 +49,18 @@ void jescenario::setcapas(list<capas> aux){
 list<jentidades> jescenario::getentidades(){
 	return this->je;
 }
+
 void jescenario::setentidades(list<jentidades> aux){
 	this->je = aux;
+}
+
+void jescenario::cargarDimensionPorDefecto() {
+	this->setancho(3600);
+	this->setalto(600);
 }
 
 
 
 
 } /* namespace std */
+

@@ -14,7 +14,6 @@ private:
 	char* archivo; //archivo donde el logger va a escribir todos los mensajes
 	enum Nivel {BAJO = 1, MEDIO=2, ALTO=3 };
 	Nivel nivel;
-	vector<string> logMessages;
 
 public:
 	Logger();

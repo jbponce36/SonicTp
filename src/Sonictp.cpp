@@ -13,7 +13,9 @@
 #include "jescenario.h"
 #include "ConstructorEntidades.h"
 #include "Logger.h"
+#include "jpruebas.h"
 #include "Personaje.h"
+#include "Control.h"
 using namespace std;
 
 
@@ -33,20 +35,30 @@ int main(int argc, char *argv[]) {
 	parseadorJson* parseador = new parseadorJson(log);
 	//jescenarioJuego* jparseador = parseador.
 	char *file=(char*)"configuracion/configuracion.json";
-	parseador->getLog()->addLogMessage("PRINCIPAL","Se inicia el juego",1);
+	parseador->getLog()->addLogMessage("PRINCIPAL","Se inicia el juego.",1);
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
-    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario());
+   // jpruebas* p = new jpruebas();
+   // p->prueba(jparseador);
+   // delete p;
+
+
+   VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario());
+    Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender());
+    Control *control = new Control(0, 0);
+
+    control->ControlarJuego(vista,sonic);
 
     //Se muestran las entidades
     list<Rectangulo> rectangulos;
     list<Circulo> circulos;
-    ConstructorEntidades constructorEntidades = ConstructorEntidades(jparseador->getEscenario(), &rectangulos, &circulos);
+    ConstructorEntidades constructorEntidades = ConstructorEntidades(jparseador->getEscenario(), &rectangulos, &circulos, log);
 
-    vista->cargarTexturas();
-	vista->mostrarVentana();
+  //  vista->cargarTexturas();
+//	vista->mostrarVentana();
+
 	vista->cerrar();
-	parseador->getLog()->addLogMessage("PRINCIPAL","Se termina el juego",1);
+	parseador->getLog()->addLogMessage("PRINCIPAL","Se termina el juego.",1);
 
 	return 0;
 }
