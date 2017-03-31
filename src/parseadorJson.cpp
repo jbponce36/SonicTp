@@ -46,8 +46,8 @@ namespace std {
             this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Terminado.", 2);
         }else{
         	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] No se han encontrado los atributos correctos, se cargaran valores por defecto", 1);
-            ventana->setalto(600);
-            ventana->setancho(3600);
+            ventana->setalto(480);
+            ventana->setancho(640);
 
 
         }
@@ -182,13 +182,13 @@ jconfiguracion* parseadorJson::cargarConfiguracion(json_t* raiz){
       if((jsonconfiguracion)){
 
 
-      configuracion->setvelscroll(this->leerValorEntero(jsonconfiguracion,"vel_scroll",20));
+      configuracion->setvelscroll(this->leerValorEntero(jsonconfiguracion,"vel_scroll",5));
 
 
      }
       else{
 
-    	  configuracion->setvelscroll(20);
+    	  configuracion->setvelscroll(5);
 
 
        }
@@ -274,7 +274,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 
 				   jcapas->setid(this->leerValorEntero(capai,"id", 1));
 				   jcapas->setindex(this->leerValorEntero(capai,"index_z",99));
-				   jcapas->setrutaimagen(this->leerValorStringCapas(capai,"ruta_imagen","/images/capa1.png"));
+				   jcapas->setrutaimagen(this->leerValorStringCapas(capai,"ruta_imagen","/images/capa1r.png"));
 
 				   capalista.push_back(*jcapas);
 			   }

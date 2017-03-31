@@ -55,8 +55,8 @@ void jescenario::setentidades(list<jentidades> aux){
 }
 
 void jescenario::cargarDimensionPorDefecto() {
-	this->setancho(3600);
-	this->setalto(600);
+	this->setancho(4000);
+	this->setalto(500);
 }
 
 

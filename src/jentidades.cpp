@@ -19,7 +19,7 @@ jentidades::jentidades() {
 	this->setcoorx(-1);
 	this->setcoory(-1);
 	this->setcolor("rojo");
-	this->setruta("/imagenes/entidad1.png");
+	this->setruta("/images/entidad1.png");
 }
 
 jentidades::~jentidades() {
