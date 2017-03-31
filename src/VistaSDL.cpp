@@ -13,14 +13,15 @@ using namespace std;
 #include "Textura.h"
 
 
-VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario *jescenario)
+VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario *jescenario, Logger *logger)
 {
 	this->altoVentana =jventana->getalto();
 	this->anchoVentana= jventana->getancho();
 	this->velocidadScroll=jconfiguracion->getvelscroll();
 	this->renderizador = NULL;
 	this->crearVentanaYrenderizador();
-	this->constructorEntidades = ConstructorEntidades(jescenario);
+	this->constructorEntidades = new ConstructorEntidades(logger);
+	constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
 	this->anchoescenario=jescenario->getancho();
 	this->altoescenario=jescenario->getalto();
 	this->ventana = NULL;
@@ -179,6 +180,7 @@ void VistaSDL::cerrar()
 	SDL_DestroyWindow( this->ventana );
 	this->ventana = NULL;
 	this->renderizador = NULL;
+	delete this->constructorEntidades;
 	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
@@ -189,9 +191,9 @@ VistaSDL::~VistaSDL()
 	this->cerrar();
 }
 
-void VistaSDL::mostrarEntidades()
+void VistaSDL::mostrarEntidades(SDL_Rect *camara)
 {
-	constructorEntidades.mostrarEntidades(renderizador);
+	constructorEntidades->mostrarEntidades(renderizador, camara);
 }
 
 

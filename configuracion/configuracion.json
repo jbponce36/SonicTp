@@ -21,7 +21,7 @@
 			"tipo": "rectangulo",
 			"color": "rojo",
 			"dimensiones": {"ancho": 40, "alto": 20},
-			"coordenada": {"x": 128, "y": 405},
+			"coordenada": {"x": 300, "y": 300},
 			"ruta_imagen": "images/entidad1.png",
 			"index_z": 99
 		},
@@ -30,7 +30,7 @@
 			"tipo": "rectangulo",
 			"color": "verde",
 			"dimensiones": {"ancho": 80, "alto": 35},
-			"coordenada": {"x": 2400, "y": 500},
+			"coordenada": {"x": 200, "y": 100},
 			"ruta_imagen": "images/entidad2.png",
 			"index_z": 99
 		},
@@ -39,7 +39,7 @@
 			"tipo": "circulo",
 			"color": "amarillo",
 			"dimensiones": {"radio": 15},
-			"coordenada": {"x": 3000, "y": 205},
+			"coordenada": {"x": 300, "y": 100},
 			"ruta_imagen": "images/entidad3.png",
 			"index_z": 99
 		}]

@@ -68,28 +68,46 @@ bool Entidad::tieneRutaImagen()
 		return true;
 }
 
-int Entidad::cargarImagen(SDL_Renderer *renderer)
+int Entidad::cargarImagen(SDL_Renderer *renderer, Logger *log)
 {
+	int error = 0;
 	if ((rutaImagen != "") && (imagen != NULL))
 	{
 		//Imagen ya cargada
-		return 0;
+		return error;
 	}
 
 	SDL_Surface *imagenCargada = NULL;
-/////////////////TODO: Ver si tiene la / adelante de la ruta. Sacarla
-	imagenCargada=IMG_Load(rutaImagen.c_str()); //SDL_LoadBMP(rutaImagen.c_str()); //Para cargar BMP
+	std::string rutaSinBarra;
+	const char* barra = "/";
+
+	//Si la rutaImagen empieza con una / se la saca
+	if (strncmp(rutaImagen.c_str(), barra, 1) == 0)
+	{
+		rutaSinBarra = rutaImagen.substr(1, rutaImagen.length() - 1);
+		imagenCargada=IMG_Load(rutaSinBarra.c_str());
+	}
+	else
+	{
+		imagenCargada=IMG_Load(rutaImagen.c_str());
+	}
 
 	if(imagenCargada == NULL)
 	{
-		std::cout << "Error: " << SDL_GetError() << std::endl;
-		return 1;
+		//std::cout << "Error: " << SDL_GetError() << std::endl;
+		rutaImagen = "images/default.png";
+		imagenCargada=IMG_Load(rutaImagen.c_str());
+
+		std::string mensaje = "[CARGAR IMAGEN ENTIDAD] Se cargo una imagen por default. Id: "+id;
+		log->addLogMessage("ENTIDAD", mensaje, 2);
+
+		error = 1;
 	}
 
 	imagen = SDL_CreateTextureFromSurface(renderer, imagenCargada);
 	SDL_FreeSurface(imagenCargada);
 
-	return 0;
+	return error;
 }
 
 void Entidad::destruirImagen()
@@ -100,4 +118,12 @@ void Entidad::destruirImagen()
 	}
 }
 
+bool Entidad::indexZMenorA(const Entidad *otraEntidad) const
+{
+	if (indexZ < otraEntidad->indexZ)
+	{
+		return true;
+	}
+	return false;
+}
 
