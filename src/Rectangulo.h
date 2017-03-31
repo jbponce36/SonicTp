@@ -3,6 +3,8 @@
 
 #include "Entidad.h"
 
+namespace std{
+
 class Rectangulo : public Entidad
 {
 private:
@@ -21,4 +23,5 @@ private:
 
 };
 
+}
 #endif

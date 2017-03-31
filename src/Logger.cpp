@@ -79,6 +79,10 @@ int Logger::addLogMessage(string modulo,string logMessage, int nivel){
 	return -1;
 }
 
+int Logger::addLogMessage(string logMessage, string valor){
+	return 0;
+}
+
 Logger::~Logger() {
 	// TODO Auto-generated destructor stub
 }

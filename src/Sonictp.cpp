@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <jansson.h>
-#include <string>
+#include <string.h>
 #include "VistaSDL.h"
 #include "Textura.h"
 #include "parseadorJson.h"
@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
     VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
 
     Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender());
+	parseador->getLog()->addLogMessage("PRINCIPAL","Se carga la vista.",1);
     Control *control = new Control(0, 0);
 
     control->ControlarJuego(vista,sonic);

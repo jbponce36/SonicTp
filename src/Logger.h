@@ -14,6 +14,7 @@ private:
 	char* archivo; //archivo donde el logger va a escribir todos los mensajes
 	enum Nivel {BAJO = 1, MEDIO=2, ALTO=3 };
 	Nivel nivel;
+	string modulo;
 
 public:
 	Logger();
@@ -26,6 +27,7 @@ public:
 	int validateFileName();
 	int validateLevel();
 	int addLogMessage(string modulo,string logMessage, int nivel);
+	int addLogMessage(string logMessage, string valor);
     char *getArchivo() const;
     void setArchivo(char *archivo);
 
