@@ -50,7 +50,6 @@ private:
 	jventana* cargarVentana(json_t* raiz);
 	jconfiguracion* cargarConfiguracion(json_t* raiz);
 	jescenario* cargarEscenario(json_t* raiz);
-	jescenarioJuego *juego;
 	double leerValorEntero(json_t* padre, const char* nombre,int valorPorDefecto);
 	bool tryLeerValorEntero(json_t* padre, const char* nombre, double* valorLeido);
     std::string leerValorStringCapas(json_t* padre,const char* nombre,std::string valorPorDefecto);

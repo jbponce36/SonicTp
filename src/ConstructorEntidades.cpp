@@ -128,4 +128,4 @@ void ConstructorEntidades::ordenarSegunIndexZ()
 	entidades.sort(compararIndexZ);
 }
 
-}
+
