@@ -24,9 +24,10 @@ using namespace std;
 #define ALTO_VENTANA_POR_DEFECTO 480
 #define MIN_ANCHO_VENTANA_PERMITIDO 300
 #define MIN_ALTO_VENTANA_PERMITIDO 300
-#define MAXIMO_ANCHO_ESCENARIO 2000
+#define MAXIMO_ANCHO_ESCENARIO 4000  //ESTE DEPENDE DEL NUMERO DEL FOTOSHOP
 #define MAXIMO_ALTO_ESCENARIO 500
-
+#define ANCHO_ESCENARIO_POR_DEFAULT 4000
+#define ALTO_ESCENARIO_POR_DEFAULT 500
 
 class VistaSDL{
 
@@ -52,6 +53,7 @@ public:
 	int obtenerAltoVentana();
 	void cargarCapas(jescenario *escenario);
 	int obtenerAnchoVentana();
+	void validacionesEscenario(jescenario *jescenario);
     void crearVentanaYrenderizador();
 	int obtenerAltoEscenario();
 	int obtenerAnchoEscenario();
@@ -60,7 +62,7 @@ public:
 	Textura* obtenerTextura(int);
 	SDL_Renderer* obtenerRender();
 	int obtenerVelocidadDeScroll();
-
+	void validacionesVentana();
 	void cerrar();
 	~VistaSDL();
 	void mostrarEntidades(SDL_Rect *camara);
