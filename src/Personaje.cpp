@@ -9,7 +9,7 @@ const int POSICION_INICIALX = 0;
 const int POSICION_INICIALY = 0;
 const int NUMERO_DE_SPRITES = 1;
 
-Personaje::Personaje(int velocidad,SDL_Renderer *render){
+Personaje::Personaje(int velocidad,SDL_Renderer *render,int altoEscenario){
 	this->texturaSonic = new Textura();
 	this->texturaSonic->cargarImagen("images/sonicSprite.bmp",render);
 	//dimensiones del personaje por defecto
@@ -21,7 +21,7 @@ Personaje::Personaje(int velocidad,SDL_Renderer *render){
 
 	//posicion por defecto
     this->posicionX = POSICION_INICIALX;
-    this->posicionY = POSICION_INICIALY;
+    this->posicionY = altoEscenario / 2;
 
     this->velocidadX = 0;
     this->velocidadY = 0;
@@ -35,10 +35,10 @@ void Personaje::procesarEvento( SDL_Event& e )
         //ajusta la velocidad
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: this->velocidadY -= this->personajeVelocidad;
-            	break;
-            case SDLK_DOWN: this->velocidadY += this->personajeVelocidad;
-            	break;
+            //case SDLK_UP: this->velocidadY -= this->personajeVelocidad;
+            	//break;
+            //case SDLK_DOWN: this->velocidadY += this->personajeVelocidad;
+            	//break;
             case SDLK_LEFT: this->velocidadX-= this->personajeVelocidad;
             	break;
             case SDLK_RIGHT: this->velocidadX += this->personajeVelocidad;
@@ -51,10 +51,10 @@ void Personaje::procesarEvento( SDL_Event& e )
         //ajuta la velocidad
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: this->velocidadY += this->personajeVelocidad;
-            break;
-            case SDLK_DOWN: this->velocidadY -= this->personajeVelocidad;
-            break;
+            //case SDLK_UP: this->velocidadY += this->personajeVelocidad;
+            //break;
+            //case SDLK_DOWN: this->velocidadY -= this->personajeVelocidad;
+            //break;
             case SDLK_LEFT: this->velocidadX += this->personajeVelocidad;
             break;
             case SDLK_RIGHT: this->velocidadX -= this->personajeVelocidad;

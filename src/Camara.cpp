@@ -11,25 +11,25 @@ void Camara::actualizar(Personaje *sonic, int maximoAncho, int maximoAlto){
 
 
 	this->camaraImagen->x = ( sonic->getPosicionX() + sonic->getAncho() / 2 ) - camaraImagen->w / 2;
-	this->camaraImagen->y = ( sonic->getPosicionY() + sonic->getAlto() / 2 ) - this->camaraImagen->h / 2;
+	//this->camaraImagen->y = ( sonic->getPosicionY() + sonic->getAlto() / 2 ) - this->camaraImagen->h / 2;
 
 
 	if( this->camaraImagen->x < 0 )
 	{
 		this->camaraImagen->x = 0;
 	}
-	if( this->camaraImagen->y < 0 )
+	/*if( this->camaraImagen->y < 0 )
 	{
 		this->camaraImagen->y = 0;
-	}
+	}*/
 	if( this->camaraImagen->x > maximoAncho - this->camaraImagen->w )
 	{
 		this->camaraImagen->x = maximoAncho - this->camaraImagen->w;
 	}
-	if( this->camaraImagen->y > maximoAlto - this->camaraImagen->h )
+	/*if( this->camaraImagen->y > maximoAlto - this->camaraImagen->h )
 	{
 		this->camaraImagen->y = maximoAlto - this->camaraImagen->h;
-	}
+	}*/
 
 }
 SDL_Rect *Camara::devolverCamara(){

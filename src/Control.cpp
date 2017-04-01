@@ -12,6 +12,14 @@ int Control::getPosicionInicialY(){
 	return this->posicionInicialY;
 }
 void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
+	SDL_Rect camaraMostrar;
+
+
+	camaraMostrar.x = 0;
+	camaraMostrar.y = 0;
+	camaraMostrar.w = vista->obtenerAnchoEscenario();
+	camaraMostrar.h = vista->obtenerAltoEscenario();
+
 	SDL_Event e;
 	bool salir = false;
 	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana());
@@ -24,10 +32,14 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 			{
 				salir = true;
 			}
+			//if(e.key.keysym.sym == )
+
 			sonic->procesarEvento( e );
 		}
 		sonic->mover(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
 		camara->actualizar(sonic,vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
+		camaraMostrar.x = camara->getPosicionX();
+		camaraMostrar.y = camara->getPosicionY();
 		SDL_SetRenderDrawColor(vista->obtenerRender(),0xff,0xff,0xff,0xff);
 		SDL_RenderClear(vista->obtenerRender());
 
@@ -41,7 +53,8 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 		*/
 		for(int contador = 0; contador < vista->cantidadCapasCargadas(); contador++)
 		{
-			vista->obtenerTextura(contador)->renderizar(camara->devolverCamara());
+			camaraMostrar.w = vista->obtenerTextura()
+			vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),&camaraMostrar);
 		}
 
 		vista->mostrarEntidades(camara->devolverCamara());
@@ -56,6 +69,7 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 
 		}
 }
+
 Control::~Control() {
 	// TODO Auto-generated destructor stub
 }
