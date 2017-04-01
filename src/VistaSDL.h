@@ -21,6 +21,13 @@ using namespace std;
 #include <vector>
 #ifndef VISTASDL_H_
 #define VISTASDL_H_
+#define ANCHO_VENTANA_POR_DEFECTO 640
+#define ALTO_VENTANA_POR_DEFECTO 480
+#define MIN_ANCHO_VENTANA_PERMITIDO 300
+#define MIN_ALTO_VENTANA_PERMITIDO 300
+#define MAXIMO_ANCHO_ESCENARIO 2000
+#define MAXIMO_ALTO_ESCENARIO 500
+
 
 class VistaSDL{
 
@@ -46,8 +53,7 @@ public:
 	int obtenerAltoVentana();
 	void cargarCapas(jescenario *escenario);
 	int obtenerAnchoVentana();
-
-	void crearVentanaYrenderizador();
+    void crearVentanaYrenderizador();
 	int obtenerAltoEscenario();
 	int obtenerAnchoEscenario();
 	void mostrarCapas();
