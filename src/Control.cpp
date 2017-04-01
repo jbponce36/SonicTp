@@ -12,13 +12,11 @@ int Control::getPosicionInicialY(){
 	return this->posicionInicialY;
 }
 void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
-	SDL_Rect camaraMostrar;
 
-
-	camaraMostrar.x = 0;
-	camaraMostrar.y = 0;
-	camaraMostrar.w = vista->obtenerAnchoEscenario();
-	camaraMostrar.h = vista->obtenerAltoEscenario();
+	SDL_Rect imagenMostrar;
+	imagenMostrar.x = 0;
+	imagenMostrar.y = 0;
+	imagenMostrar.w = vista->obtenerAnchoVentana();
 
 	SDL_Event e;
 	bool salir = false;
@@ -32,33 +30,25 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 			{
 				salir = true;
 			}
-			//if(e.key.keysym.sym == )
+			if(e.key.keysym.sym == SDLK_ESCAPE ){
+				salir = true;
+			}
 
 			sonic->procesarEvento( e );
 		}
 		sonic->mover(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
 		camara->actualizar(sonic,vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
-		camaraMostrar.x = camara->getPosicionX();
-		camaraMostrar.y = camara->getPosicionY();
 		SDL_SetRenderDrawColor(vista->obtenerRender(),0xff,0xff,0xff,0xff);
 		SDL_RenderClear(vista->obtenerRender());
 
-		/*//despues sacar
-		SDL_Rect capa0;
-		capa0.x = 0;
-		capa0.y = 0;
-		capa0.w = 800;
-		capa0.h = 500;
-		//..
-		*/
+
 		for(int contador = 0; contador < vista->cantidadCapasCargadas(); contador++)
 		{
-			camaraMostrar.w = vista->obtenerTextura()
-			vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),&camaraMostrar);
+			imagenMostrar.h = vista->obtenerTextura(contador)->getAltoTextura();
+			vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),&imagenMostrar);
 		}
 
 		vista->mostrarEntidades(camara->devolverCamara());
-
 
 		//dibujo ek personaje
 		sonic->render(camara->getPosicionX(), camara->getPosicionY());

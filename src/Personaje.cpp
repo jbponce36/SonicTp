@@ -71,18 +71,17 @@ void Personaje::mover(int maximoAncho,int maximoAlto )
     //se fija si se paso los limites de la pantalla
     if( ( posicionX < 0 ) || ( posicionX + this->personajeAncho >  maximoAncho ) )
     {
-
         posicionX -= velocidadX;
     }
 
-    posicionY += velocidadY;
+    /*posicionY += velocidadY;
 
     //se fija si se paso los limites
     if( ( posicionY < 0 ) || ( posicionY + this->personajeAlto > maximoAlto ) )
     {
 
         this->posicionY -= velocidadY;
-    }
+    }*/
 }
 void Personaje::cargarSpriteSonic(){
 
