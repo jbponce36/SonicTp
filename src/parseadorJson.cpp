@@ -354,7 +354,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 					 if (dimensiones){
 								  // devuelve 0...si eel elemento no tiene algun atributo
 						 //if (strcmp(entidades->gettipo()., "rectangulo") == 0){
-						 if (entidades->gettipo().compare("rectangulo") == 0){
+						 if ((entidades->gettipo().compare("rectangulo") == 0)|| (entidades->gettipo().compare("cuadrado") == 0)  ){
 
 							 double ancho;
 							 double alto;
