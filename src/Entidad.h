@@ -17,6 +17,7 @@ private:
 	int y;
 	unsigned int indexZ;
 	SDL_Texture *imagen;
+	Logger *log;
 
 public:
 	Entidad();
@@ -31,6 +32,9 @@ public:
 	int cargarImagen(SDL_Renderer *renderer, Logger *log);
 	bool indexZMenorA(const Entidad *otraEntidad) const;
 	bool indexZes(int otroIndexZ);
+    Logger *getLog() const;
+    void setLog(Logger *log);
+
 
 private:
 	SDL_Color convertirColor(std::string color);

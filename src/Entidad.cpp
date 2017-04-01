@@ -1,4 +1,5 @@
 #include "Entidad.h"
+#define MODULO 'ENTIDAD'
 
 Entidad::Entidad() : id(), rutaImagen(""), x(), y(), indexZ(), imagen(NULL)
 {
@@ -95,7 +96,7 @@ int Entidad::cargarImagen(SDL_Renderer *renderer, Logger *log)
 	if(imagenCargada == NULL)
 	{
 		std::string mensaje = "[CARGAR IMAGEN ENTIDAD] No existe imagen. Se muestra de color solido. Id: "+id;
-		log->addLogMessage("ENTIDAD", mensaje, 2);
+		log->addLogMessage(mensaje, 2);
 
 		rutaImagen = "";
 
@@ -106,6 +107,17 @@ int Entidad::cargarImagen(SDL_Renderer *renderer, Logger *log)
 	SDL_FreeSurface(imagenCargada);
 
 	return error;
+}
+
+Logger *Entidad::getLog() const
+{
+    return log;
+}
+
+void Entidad::setLog(Logger *log)
+{
+    this->log = log;
+    this->log->setModulo("ENTIDAD");
 }
 
 void Entidad::destruirImagen()

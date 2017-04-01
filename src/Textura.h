@@ -36,6 +36,8 @@ public:
 	void setRuta(std::string ruta);
 	void setIndex_z(int);
 	int getId();
+	int getAnchoTextura();
+	int getAltoTextura();
 	std::string getRuta();
 	int getIndex_z();
 	~Textura();

@@ -7,6 +7,7 @@
 #include <iostream>
 
 using namespace std;
+#define MODULO 'VISTA SDL'
 #include <string>
 #include "VistaSDL.h"
 #include <list>
@@ -18,13 +19,15 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 {
 	this->altoVentana =jventana->getalto();
 	this->anchoVentana= jventana->getancho();
+	
+	//validamos escenario si tiene numeris negativos o excesivos ponemos valores por defecto
+	this->validacionesEscenario(jescenario);
+	//this->altoescenario=jescenario->getalto();
 	this->velocidadScroll=jconfiguracion->getvelscroll();
 	this->renderizador = NULL;
 	this->crearVentanaYrenderizador();
 	this->constructorEntidades = new ConstructorEntidades(logger);
 	constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
-	this->anchoescenario=jescenario->getancho();
-	this->altoescenario=jescenario->getalto();
 	this->ventana = NULL;
 	this->imgFlags=0;
 	//aca poner la velocidad
@@ -32,6 +35,55 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->superficiePantalla = NULL;
 	this->superficieACargar = NULL;
 	this->cargarCapas(jescenario);
+
+}
+
+void VistaSDL::validacionesEscenario(jescenario *jescenario)
+{
+	if(jescenario->getancho() < MAXIMO_ANCHO_ESCENARIO )//|| jescenario->getancho()>jventana->getancho())
+	{
+		this->anchoescenario=jescenario->getancho();
+	}
+	else
+	{
+		this->anchoescenario = MAXIMO_ANCHO_ESCENARIO;
+	}
+	if(jescenario->getalto() < MAXIMO_ALTO_ESCENARIO )//|| jescenario->getalto()>jventana->getalto())
+	{
+		this->altoescenario=jescenario->getalto();
+	}
+	else
+	{
+		this->altoescenario = MAXIMO_ALTO_ESCENARIO;
+	}
+
+
+	if ( jescenario->getancho() <= 0 )
+	{
+		this->anchoescenario = ANCHO_ESCENARIO_POR_DEFAULT;
+	}
+	if (jescenario->getalto() <= 0)
+	{
+		this->altoescenario = ALTO_ESCENARIO_POR_DEFAULT;
+	}
+
+}
+
+void VistaSDL::validacionesVentana(){
+
+	if( this->anchoVentana < MIN_ANCHO_VENTANA_PERMITIDO || this->altoVentana < MIN_ALTO_VENTANA_PERMITIDO )
+		{
+			this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
+			this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
+		}
+		if ( anchoVentana <= 0 )
+		{
+			this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
+		}
+		if ( altoVentana <= 0 )
+		{
+			this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
+		}
 }
 
 void VistaSDL::crearVentanaYrenderizador(){
@@ -44,8 +96,9 @@ void VistaSDL::crearVentanaYrenderizador(){
 	{
 			printf( "SDL no pudo iniciar! SDL Error: %s\n", SDL_GetError() );
 	}
-		else
-		{
+		else 
+		{	//validamos los datos del json ventana negativa o con dimenciones muy pequeñas abrimos ventana con tamaño por defecto
+			this->validacionesVentana();
 			//Crea ventana
 			this->ventana = SDL_CreateWindow( "Juego Sonic", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->anchoVentana, this->altoVentana, SDL_WINDOW_SHOWN );
 			if( this->ventana == NULL )

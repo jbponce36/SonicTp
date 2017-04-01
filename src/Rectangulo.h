@@ -2,6 +2,7 @@
 #define RECTANGULO
 
 #include "Entidad.h"
+#include "Logger.h"
 
 namespace std{
 
@@ -11,6 +12,7 @@ private:
 	int ancho;
 	int alto;
 	SDL_Rect rectanguloSDL;
+	Logger *log;
 
 public:
 	Rectangulo();
@@ -18,6 +20,8 @@ public:
 	virtual ~Rectangulo();
 	void dibujar(SDL_Renderer *renderer, SDL_Rect *camara);
 	void mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara);
+    Logger *getLog() const;
+    void setLog(Logger *log);
 
 private:
 

@@ -5,31 +5,33 @@
  *      Author: julieta
  */
 
+#define MODULO 'PARSEADOR JSON'
 #include "ConstructorEntidades.h"
+
 
 namespace std
 {
 
-ConstructorEntidades::ConstructorEntidades() : log()
+ConstructorEntidades::ConstructorEntidades()
+:log()
 {
 
 }
 
-ConstructorEntidades::ConstructorEntidades(Logger *log) : log(log)
+ConstructorEntidades::ConstructorEntidades(Logger *log)
 {
-
+	this->log = log;
+	this->log->setModulo("CONSTRUCTOR ENTIDADES");
 }
 
 ConstructorEntidades::~ConstructorEntidades()
 {
 	list<Entidad*>::iterator pos;
-	for(pos = entidades.begin(); pos != entidades.end(); pos++)
-	{
+	for(pos = entidades.begin();pos != entidades.end();pos++){
 		delete (*pos);
 	}
 	entidades.clear();
 }
-
 
 void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Renderer *renderizador)
 {
@@ -41,13 +43,13 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 	std::string rutaImagen;
 	int radio;
 
-	this->log->addLogMessage("ENTIDADES", "[CARGA DE ENTIDADES] Iniciado.", 2);
+	this->log->addLogMessage("[CARGA DE ENTIDADES] Iniciado.", 2);
 
 	for(pos = jEntidades.begin();pos != jEntidades.end();pos++)
 	{
 		if(((*pos).gettipo() == "rectangulo") || ((*pos).gettipo() == "cuadrado"))
 		{
-			this->log->addLogMessage("ENTIDADES", "[CARGA DE ENTIDADES] Procesando rectangulo.", 2);
+			this->log->addLogMessage("[CARGA DE ENTIDADES] Procesando rectangulo.", 2);
 			id = (*pos).getid();
 			color = (*pos).getcolor();
 			ancho = (*pos).getDim()->getvalor1();
@@ -69,12 +71,12 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 
 			entidades.push_back(rectangulo);
 
-			this->log->addLogMessage("ENTIDADES", "[CARGA DE ENTIDADES] Fin proceso rectangulo.", 2);
+			this->log->addLogMessage("[CARGA DE ENTIDADES] Fin proceso rectangulo.", 2);
 		}
 
 		if((*pos).gettipo() == "circulo")
 		{
-			this->log->addLogMessage("ENTIDADES", "[CARGA DE ENTIDADES] Procesando circulo.", 2);
+			this->log->addLogMessage("[CARGA DE ENTIDADES] Procesando circulo.", 2);
 			id = (*pos).getid();
 			color = (*pos).getcolor();
 			radio = (*pos).getDim()->getvalor1();
@@ -90,22 +92,31 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 
 			entidades.push_back(circulo);
 
-			this->log->addLogMessage("ENTIDADES", "[CARGA DE ENTIDADES] Fin proceso circulo.", 2);
+			 this->log->addLogMessage("[CARGA DE ENTIDADES] Fin proceso circulo.", 2);
 		}
 	}
 
 	cargarImagenes(renderizador);
 	ordenarSegunIndexZ();
 
-	this->log->addLogMessage("ENTIDADES", "[CARGA DE ENTIDADES] Terminado.", 2);
+	this->log->addLogMessage("[CARGA DE ENTIDADES] Terminado.", 2);
 }
 
+Logger *ConstructorEntidades::getLog() const
+{
+	return log;
+}
+
+void ConstructorEntidades::setLog(Logger *log)
+{
+	this->log = log;
+}
 
 void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 {
 	list<Entidad*>::iterator pos;
 
-	this->log->addLogMessage("ENTIDADES", "[MOSTRAR ENTIDADES] Iniciado.", 2);
+	this->log->addLogMessage( "[MOSTRAR ENTIDADES] Iniciado.", 2);
 
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
@@ -115,14 +126,13 @@ void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 		}
 	}
 
-	this->log->addLogMessage("ENTIDADES", "[MOSTRAR ENTIDADES] Terminado.", 2);
+	this->log->addLogMessage("[MOSTRAR ENTIDADES] Terminado.", 2);
 }
 void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ)
 {
 	list<Entidad*>::iterator pos;
 
-	std::string mensaje = "[MOSTRAR ENTIDADES] Index Z: "+ indexZ;
-	log->addLogMessage("ENTIDAD", mensaje, 2);
+	this->log->addLogMessage("[MOSTRAR ENTIDADES] Iniciado.", 2);
 
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
@@ -132,7 +142,7 @@ void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect
 		}
 	}
 
-	this->log->addLogMessage("ENTIDADES", "[MOSTRAR ENTIDADES] Terminado.", 2);
+	this->log->addLogMessage( "[MOSTRAR ENTIDADES] Terminado.", 2);
 }
 
 bool compararIndexZ(const Entidad *primera, const Entidad *segunda)

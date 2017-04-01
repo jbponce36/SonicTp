@@ -19,6 +19,7 @@ private:
 public:
 	Logger();
 	Logger(char *fileName, int level);
+	Logger(char *fileName, int level,  string modulo);
 	virtual ~Logger();
 
 	string getLevel();
@@ -26,10 +27,12 @@ public:
 
 	int validateFileName();
 	int validateLevel();
-	int addLogMessage(string modulo,string logMessage, int nivel);
-	int addLogMessage(string logMessage, string valor);
+	int addLogMessage(string logMessage, int nivel);
+	int addLogMessage(string logMessage, int x,int y, string logMessage2,int valor);
     char *getArchivo() const;
     void setArchivo(char *archivo);
+    string getModulo() const;
+    void setModulo(string modulo);
 
 };
 
