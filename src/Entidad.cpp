@@ -1,4 +1,5 @@
 #include "Entidad.h"
+#define MODULO 'ENTIDAD'
 
 Entidad::Entidad() : id(), rutaImagen(""), x(), y(), indexZ(), imagen(NULL)
 {
@@ -99,7 +100,7 @@ int Entidad::cargarImagen(SDL_Renderer *renderer, Logger *log)
 		imagenCargada=IMG_Load(rutaImagen.c_str());
 
 		std::string mensaje = "[CARGAR IMAGEN ENTIDAD] Se cargo una imagen por default. Id: "+id;
-		log->addLogMessage("ENTIDAD", mensaje, 2);
+		log->addLogMessage(mensaje, 2);
 
 		error = 1;
 	}
@@ -108,6 +109,17 @@ int Entidad::cargarImagen(SDL_Renderer *renderer, Logger *log)
 	SDL_FreeSurface(imagenCargada);
 
 	return error;
+}
+
+Logger *Entidad::getLog() const
+{
+    return log;
+}
+
+void Entidad::setLog(Logger *log)
+{
+    this->log = log;
+    this->log->setModulo("ENTIDAD");
 }
 
 void Entidad::destruirImagen()

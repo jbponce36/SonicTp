@@ -7,6 +7,7 @@
 #include <iostream>
 
 using namespace std;
+#define MODULO 'VISTA SDL'
 #include <string>
 #include "VistaSDL.h"
 #include <list>
@@ -32,6 +33,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->superficiePantalla = NULL;
 	this->superficieACargar = NULL;
 	this->cargarCapas(jescenario);
+
 }
 
 void VistaSDL::crearVentanaYrenderizador(){

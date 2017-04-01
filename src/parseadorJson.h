@@ -35,6 +35,8 @@ public:
     void validarEntidadesEscenario(json_t* raizentidad,const char* id,const char* tipo,const char* color,const char* dim,const char* coor,const char* ruta,const char* index);
     Logger *getLog() const;
     void setLog(Logger *log);
+    jescenarioJuego *getJuego() const;
+    void setJuego(jescenarioJuego *juego);
 
 
 private:
@@ -42,7 +44,7 @@ private:
 	jventana* cargarVentana(json_t* raiz);
 	jconfiguracion* cargarConfiguracion(json_t* raiz);
 	jescenario* cargarEscenario(json_t* raiz);
-
+	jescenarioJuego *juego;
 	double leerValorEntero(json_t* padre, const char* nombre,int valorPorDefecto);
     bool  leerValorVentana(json_t* dimension, const char* ancho,const char* alto);
 

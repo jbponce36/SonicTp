@@ -1,5 +1,6 @@
-
 #include "Control.h"
+#define MODULO 'CONTROL'
+
 Control::Control(int posicionx, int posiciony) {
 	this->posicionInicialX = posicionx;
 	this->posicionInicialY = posiciony;

@@ -16,6 +16,7 @@ using namespace std;
 #include "jescenario.h"
 #include "capas.h"
 #include "ConstructorEntidades.h"
+#include "Logger.h"
 #include <list>
 #include <vector>
 #ifndef VISTASDL_H_
@@ -38,6 +39,7 @@ private:
 	vector <Textura*> texturas;
 	vector <Textura*> capasFondo;//son las dos capas del fondo del juego
 	ConstructorEntidades *constructorEntidades;
+	Logger *log;
 
 public:
 	VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion,jescenario *jescenario, Logger *logger);

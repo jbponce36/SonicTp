@@ -1,5 +1,42 @@
 #include "parseadorJson.h"
+#define MODULO 'PARSEADOR JSON'
 
+/* LOGGER_H_ */
+//ancho
+//alto
+//id
+//index_z
+//rutaimagen
+/* CAPAS_H_ */
+//	virtual void settipo(int) = 0;
+//virtual int gettipo() = 0;
+//int tipo;
+// id
+//tipo
+// color
+// dimension ancho
+//int getancho();
+//void setancho(int);
+// dimension alto
+//int getalto();
+//void setalto(int);
+// coordenada x
+// coordenada y
+//rutaimagen
+//index
+//ancho
+//alto
+//capas
+//entidades
+/* JESCENARIOJUEGO_H_ */
+//radio
+//metodos virtuales
+//	void settipo(int);
+//int gettipo();
+//metodos virtuales
+//ancho
+//alto
+// int tipo;
 namespace std
 {
     parseadorJson::parseadorJson()
@@ -9,6 +46,7 @@ namespace std
     parseadorJson::parseadorJson(Logger *log)
     {
         this->log = log;
+        this->log->setModulo("PARSEADOR JSON");
     }
 
     parseadorJson::~parseadorJson()
@@ -24,18 +62,18 @@ namespace std
         jventana *ventana = new jventana();
         esvalido = validarVentana(raiz, "ventana", "dimensiones", "alto", "ancho");
         if(esvalido){
-        	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Iniciado.", 2);
+            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Iniciado.", 2);
             jsonventana = json_object_get(raiz, "ventana");
             jsonventana = json_object_get(jsonventana, "dimensiones");
             jsonventanaalto = json_object_get(jsonventana, "alto");
-        	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Seteando alto.", 3);
+            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Seteando alto.", 3);
             jsonventanaancho = json_object_get(jsonventana, "ancho");
-        	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Seteando ancho.", 3);
+            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Seteando ancho.", 3);
             ventana->setalto(json_number_value(jsonventanaalto));
             ventana->setancho(json_number_value(jsonventanaancho));
-            this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Terminado.", 2);
+            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Terminado.", 2);
         }else{
-        	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] No se han encontrado los atributos correctos, se cargaran valores por defecto", 1);
+            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] No se han encontrado los atributos correctos, se cargaran valores por defecto", 1);
             ventana->setalto(600);
             ventana->setancho(3600);
         }
@@ -52,6 +90,16 @@ namespace std
         this->log = log;
     }
 
+    jescenarioJuego *parseadorJson::getJuego() const
+    {
+        return juego;
+    }
+
+    void parseadorJson::setJuego(jescenarioJuego *juego)
+    {
+        this->juego = juego;
+    }
+
     bool parseadorJson::leerValorVentana(json_t *dimension, const char *ancho, const char *alto)
     {
         json_t *jsonancho;
@@ -64,7 +112,7 @@ namespace std
         }
         if((!json_is_number(jsonancho)) && (!(json_is_number(jsonalto)))){
         	validarvent = false;
-        	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Error obteniendo el valor de las dimensiones de la ventana", 1);
+        	this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Error obteniendo el valor de las dimensiones de la ventana", 1);
         }
         return validarvent;
     }
@@ -184,13 +232,13 @@ namespace std
         jsonconfiguracion = json_object_get(raiz, "configuracion");
         jsonvelscrol = json_object_get(jsonconfiguracion, "vel_scroll");
         if((jsonconfiguracion) && (jsonvelscrol)){
-        	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VELOCIDAD DE SCROLL] Iniciado.", 2);
+        	this->log->addLogMessage("[CONFIGURACION DE LA VELOCIDAD DE SCROLL] Iniciado.", 2);
             configuracion->setvelscroll(this->leerValorEntero(jsonconfiguracion, "vel_scroll", 20));
-            this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VELOCIDAD DE SCROLL] Velocidad de scroll ", 3);
-            this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VELOCIDAD DE SCROLL] Terminado.", 2);
+            this->log->addLogMessage("[CONFIGURACION DE LA VELOCIDAD DE SCROLL] Velocidad de scroll ", 3);
+            this->log->addLogMessage("[CONFIGURACION DE LA VELOCIDAD DE SCROLL] Terminado.", 2);
         }else{
             configuracion->setvelscroll(20);
-            this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VELOCIDAD DE SCROLL] No se ha encontrado el atributo correctamente, se cargo un valor por defecto ", 3);
+            this->log->addLogMessage("[CONFIGURACION DE LA VELOCIDAD DE SCROLL] No se ha encontrado el atributo correctamente, se cargo un valor por defecto ", 3);
         }
         return configuracion;
     }
@@ -213,7 +261,7 @@ namespace std
         list<capas> capalista;
         list<capas>::iterator pos;
 
-        this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LAS CAPAS] Iniciado. ", 2);
+        this->log->addLogMessage("[CONFIGURACION DE LAS CAPAS] Iniciado. ", 2);
 
         for(int i = 0;i < json_array_size(jcapas);i++){
             json_t *capai;
@@ -231,13 +279,13 @@ namespace std
             capalista.push_back(*jcapas);
         }
         escenario->setcapas(capalista);
-        this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LAS CAPAS] Terminado. ", 2);
+        this->log->addLogMessage("[CONFIGURACION DE LAS CAPAS] Terminado. ", 2);
 
         json_t *jsonentidades;
         jsonentidades = json_object_get(jsonescenario, "entidades");
         list<jentidades> listaentidades;
 
-        this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LAS ENTIDADES] Iniciado. ", 2);
+        this->log->addLogMessage("[CONFIGURACION DE LAS ENTIDADES] Iniciado. ", 2);
 
         for(int i = 0;i < json_array_size(jsonentidades);i++){
             json_t *entidadi;
@@ -293,7 +341,7 @@ namespace std
         }
 
         escenario->setentidades(listaentidades);
-        this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LAS ENTIDADES] Terminado, ", 2);
+        this->log->addLogMessage("[CONFIGURACION DE LAS ENTIDADES] Terminado, ", 2);
 
         return escenario;
     }
@@ -304,7 +352,7 @@ namespace std
         json_error_t error;
         json = json_load_file(nombreArchivo, 0, &error);
         if(!json) {
-        	this->log->addLogMessage("PARSEADOR JSON","Error al intentar leer el archivo Json, no existe el archivo o directorio.",1);
+        	this->log->addLogMessage("Error al intentar leer el archivo Json, no existe el archivo o directorio.",1);
         	cout << "!!! hay  probremas!!!" << endl;
         	cout << error.text << endl;
 	       return NULL;
@@ -316,7 +364,7 @@ namespace std
         result->setVentana(ventana);
         result->setEscenario(escenario);
         result->setConfiguracion(config);
-        this->log->addLogMessage("PARSEADOR JSON","Se termino de leer el archivo de configuracion.", 2);
+        this->log->addLogMessage("Se termino de leer el archivo de configuracion.", 2);
         return result;
     }
 
