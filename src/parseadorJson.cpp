@@ -43,8 +43,8 @@ namespace std {
             this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Terminado.", 2);
         }else{
             this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] No se han encontrado los atributos correctos, se cargaran valores por defecto", 1);
-            ventana->setalto(640);
-            ventana->setancho(480);
+            ventana->setalto(480);
+            ventana->setancho(640);
 
         }
         return ventana;
