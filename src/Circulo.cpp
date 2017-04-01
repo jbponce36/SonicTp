@@ -49,6 +49,17 @@ void Circulo::dibujarColorSolido(SDL_Renderer *renderer, SDL_Rect *camara)
 	}
 }
 
+    Logger *Circulo::getLog() const
+    {
+        return log;
+    }
+
+    void Circulo::setLog(Logger *log)
+    {
+        this->log = log;
+        this->log->setModulo("CIRCULO");
+    }
+
 void Circulo::dibujarImagen(SDL_Renderer *renderer, SDL_Rect *camara)
 {
 	int diametro=radio*2;

@@ -28,11 +28,12 @@ public:
 	void cargarEntidades(list<jentidades> entidades, SDL_Renderer *renderizador);
 	void mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara);
 	virtual ~ConstructorEntidades();
+    Logger *getLog() const;
+    void setLog(Logger *log);
 
 private:
 	void ordenarSegunIndexZ();
 	void cargarImagenes(SDL_Renderer *renderizador);
-
 };
 
 }
