@@ -66,7 +66,7 @@ public:
 	void validacionesVentana();
 	void cerrar();
 	~VistaSDL();
-	void mostrarEntidades(SDL_Rect *camara);
+	void mostrarEntidades(SDL_Rect *camara, int indexZ);
 };
 
 

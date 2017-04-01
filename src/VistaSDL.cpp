@@ -19,10 +19,9 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 {
 	this->altoVentana =jventana->getalto();
 	this->anchoVentana= jventana->getancho();
-	
-	//validamos escenario si tiene numeris negativos o excesivos ponemos valores por defecto
+	//validamos escenario si tiene numeros negativos o excesivos ponemos valores por defecto
 	this->validacionesEscenario(jescenario);
-	//this->altoescenario=jescenario->getalto();
+
 	this->velocidadScroll=jconfiguracion->getvelscroll();
 	this->renderizador = NULL;
 	this->crearVentanaYrenderizador();
@@ -30,8 +29,6 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
 	this->ventana = NULL;
 	this->imgFlags=0;
-	//aca poner la velocidad
-	//this->velocidadScroll =
 	this->superficiePantalla = NULL;
 	this->superficieACargar = NULL;
 	this->cargarCapas(jescenario);
@@ -69,27 +66,27 @@ void VistaSDL::validacionesEscenario(jescenario *jescenario)
 
 }
 
-void VistaSDL::validacionesVentana(){
+void VistaSDL::validacionesVentana()
+{
 
+	if ( this->anchoVentana < 0 )
+	{
+		this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
+	}
+	if ( this->altoVentana < 0 )
+	{
+		this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
+	}
 	if( this->anchoVentana < MIN_ANCHO_VENTANA_PERMITIDO || this->altoVentana < MIN_ALTO_VENTANA_PERMITIDO )
-		{
-			this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
-			this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
-		}
-		if ( anchoVentana <= 0 )
-		{
-			this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
-		}
-		if ( altoVentana <= 0 )
-		{
-			this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
-		}
+	{
+		this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
+		this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
+	}
+
 }
 
-void VistaSDL::crearVentanaYrenderizador(){
-
-
-
+void VistaSDL::crearVentanaYrenderizador()
+{
 	this->imgFlags = 0;
 	//Inicializa SDL
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
@@ -135,45 +132,45 @@ void VistaSDL::crearVentanaYrenderizador(){
 
 void VistaSDL::cargarCapas(jescenario* jescenario)
 {
-	//cargamos las capas desde el json en el vector de capas
-	list<capas> lista = jescenario->getcapas();
-		list<capas>::iterator pos;
-		pos = lista.begin();
-		int i=0;
-		for(pos = lista.begin(); pos!=lista.end(); pos++)
-		{
-			Textura *tex = new Textura();
-			tex->setId((*pos).getid());
-			tex->setIndex_z((*pos).getindex());
-			tex->setRuta((*pos).getrutaimagen());
-			//vectorCapas[i].setId((*pos).getid());
-			//vectorCapas[i].setIndex_z((*pos).getindex());
-			//vectorCapas[i].setRutaImagen((*pos).getrutaimagen());
-			tex->cargarImagen( (*pos).getrutaimagen() ,renderizador);
-			this->capasFondo.push_back(tex);
-			i++;
-		}
-		//Textura aux[10];
+//cargamos las capas desde el json en el vector de capas
+list<capas> lista = jescenario->getcapas();
+	list<capas>::iterator pos;
+	pos = lista.begin();
+	int i=0;
+	for(pos = lista.begin(); pos!=lista.end(); pos++)
+	{
+		Textura *tex = new Textura();
+		tex->setId((*pos).getid());
+		tex->setIndex_z((*pos).getindex());
+		tex->setRuta((*pos).getrutaimagen());
+		//vectorCapas[i].setId((*pos).getid());
+		//vectorCapas[i].setIndex_z((*pos).getindex());
+		//vectorCapas[i].setRutaImagen((*pos).getrutaimagen());
+		tex->cargarImagen( (*pos).getrutaimagen() ,renderizador);
+		this->capasFondo.push_back(tex);
+		i++;
+	}
+	//Textura aux[10];
 
-		Textura *aux=NULL;
-		for (int i=1;i<capasFondo.size();i++)
+	Textura *aux=NULL;
+	for (int i=1;i<capasFondo.size();i++)
+	{
+		for (int y=0;y< capasFondo.size()-1;y++)
 		{
-			for (int y=0;y< capasFondo.size()-1;y++)
+			if(capasFondo[y+1]->getIndex_z() > capasFondo[y]->getIndex_z())
 			{
-				if(capasFondo[y+1]->getIndex_z() > capasFondo[y]->getIndex_z())
-				{
-					aux=capasFondo[y];
-					capasFondo[y]= capasFondo[y+1];
-					capasFondo[y+1]=aux;
-				}
-
+				aux=capasFondo[y];
+				capasFondo[y]= capasFondo[y+1];
+				capasFondo[y+1]=aux;
 			}
+
 		}
-		aux=NULL;
+	}
+	aux=NULL;
 }
 
-SDL_Renderer* VistaSDL::obtenerRender(){
-
+SDL_Renderer* VistaSDL::obtenerRender()
+{
 	return this->renderizador;
 }
 
@@ -222,7 +219,7 @@ void VistaSDL::cerrar()
 	this->ventana = NULL;
 	this->renderizador = NULL;
 	delete this->constructorEntidades;
-	//Quit SDL subsystems
+	//cerrar SDL subsistemas
 	IMG_Quit();
 	SDL_Quit();
 }
@@ -232,14 +229,13 @@ VistaSDL::~VistaSDL()
 	this->cerrar();
 	for (int i =0; i<0;  i++)
 	{
-	this->capasFondo[i]->liberarTextura();
+		this->capasFondo[i]->liberarTextura();
 	}
 }
 
-void VistaSDL::mostrarEntidades(SDL_Rect *camara)
+void VistaSDL::mostrarEntidades(SDL_Rect *camara, int indexZ)
 {
-	constructorEntidades->mostrarEntidades(renderizador, camara);
-
+	constructorEntidades->mostrarEntidades(renderizador, camara, indexZ);
 }
 
 
