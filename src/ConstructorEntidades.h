@@ -26,7 +26,7 @@ public:
 	ConstructorEntidades();
 	ConstructorEntidades(Logger *log);
 	void cargarEntidades(list<jentidades> entidades, SDL_Renderer *renderizador);
-	void mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara);
+	void mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
 	virtual ~ConstructorEntidades();
 
 private:

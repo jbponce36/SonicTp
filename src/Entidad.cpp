@@ -34,8 +34,8 @@ SDL_Color Entidad::convertirColor(std::string color)
 	}
 	else
 	{
-		//Color por default: azul
-		colorSDL.r = 0; colorSDL.g = 0; colorSDL.b = 255; colorSDL.a = 255;
+		//Color por default: rojo
+		colorSDL.r = 255; colorSDL.g = 0; colorSDL.b = 0; colorSDL.a = 255;
 	}
 	return colorSDL;
 }
@@ -125,5 +125,10 @@ bool Entidad::indexZMenorA(const Entidad *otraEntidad) const
 		return true;
 	}
 	return false;
+}
+
+bool Entidad::indexZes(int otroIndexZ)
+{
+	return (indexZ == otroIndexZ);
 }
 

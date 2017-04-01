@@ -106,15 +106,19 @@ void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 
 	this->log->addLogMessage("ENTIDADES", "[MOSTRAR ENTIDADES] Terminado.", 2);
 }
-void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara)
+void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ)
 {
 	list<Entidad*>::iterator pos;
 
-	this->log->addLogMessage("ENTIDADES", "[MOSTRAR ENTIDADES] Iniciado.", 2);
+	std::string mensaje = "[MOSTRAR ENTIDADES] Index Z: "+ indexZ;
+	log->addLogMessage("ENTIDAD", mensaje, 2);
 
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
-		(*pos)->dibujar(renderizador, camara);
+		if ((*pos)->indexZes(indexZ))
+		{
+			(*pos)->dibujar(renderizador, camara);
+		}
 	}
 
 	this->log->addLogMessage("ENTIDADES", "[MOSTRAR ENTIDADES] Terminado.", 2);

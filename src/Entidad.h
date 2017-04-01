@@ -30,6 +30,7 @@ public:
 	bool tieneRutaImagen();
 	int cargarImagen(SDL_Renderer *renderer, Logger *log);
 	bool indexZMenorA(const Entidad *otraEntidad) const;
+	bool indexZes(int otroIndexZ);
 
 private:
 	SDL_Color convertirColor(std::string color);

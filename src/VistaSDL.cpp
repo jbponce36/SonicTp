@@ -179,14 +179,13 @@ VistaSDL::~VistaSDL()
 	this->cerrar();
 	for (int i =0; i<0;  i++)
 	{
-	this->capasFondo[i]->liberarTextura();
+		this->capasFondo[i]->liberarTextura();
 	}
 }
 
-void VistaSDL::mostrarEntidades(SDL_Rect *camara)
+void VistaSDL::mostrarEntidades(SDL_Rect *camara, int indexZ)
 {
-	constructorEntidades->mostrarEntidades(renderizador, camara);
-
+	constructorEntidades->mostrarEntidades(renderizador, camara, indexZ);
 }
 
 
