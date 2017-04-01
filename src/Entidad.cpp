@@ -94,12 +94,10 @@ int Entidad::cargarImagen(SDL_Renderer *renderer, Logger *log)
 
 	if(imagenCargada == NULL)
 	{
-		//std::cout << "Error: " << SDL_GetError() << std::endl;
-		rutaImagen = "images/default.png";
-		imagenCargada=IMG_Load(rutaImagen.c_str());
-
-		std::string mensaje = "[CARGAR IMAGEN ENTIDAD] Se cargo una imagen por default. Id: "+id;
+		std::string mensaje = "[CARGAR IMAGEN ENTIDAD] No existe imagen. Se muestra de color solido. Id: "+id;
 		log->addLogMessage("ENTIDAD", mensaje, 2);
+
+		rutaImagen = "";
 
 		error = 1;
 	}
