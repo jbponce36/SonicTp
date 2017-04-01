@@ -16,6 +16,8 @@
 #include "jpruebas.h"
 #include "Personaje.h"
 #include "Control.h"
+
+#define MODULO 'PRINCIPAL'
 using namespace std;
 
 
@@ -29,14 +31,14 @@ int main(int argc, char *argv[]) {
 
 	char *archivoLog=(char*)"configuracion/log.txt";
 	char *nivel= (char*)nivelLog;
-	Logger *log = new Logger(archivoLog, atoi(nivel));
+	Logger *log = new Logger(archivoLog, atoi(nivel), "PRINCIPAL");
 
 	//Se lee del json el nombre de la ventana
 	parseadorJson* parseador = new parseadorJson(log);
 
 
 	char *file=(char*)"configuracion/configuracion.json";
-	parseador->getLog()->addLogMessage("PRINCIPAL","Se inicia el juego.",1);
+	parseador->getLog()->addLogMessage("Se inicia el juego.",1);
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
     jpruebas* jpru = new jpruebas();
@@ -45,14 +47,15 @@ int main(int argc, char *argv[]) {
     VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
 
     Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender());
-	parseador->getLog()->addLogMessage("PRINCIPAL","Se carga la vista.",1);
+    parseador->getLog()->setModulo("PRINCIPAL");
+	parseador->getLog()->addLogMessage("Se carga la vista.",1);
     Control *control = new Control(0, 0);
 
     control->ControlarJuego(vista,sonic);
 
 
 	vista->cerrar();
-	parseador->getLog()->addLogMessage("PRINCIPAL","Se termina el juego.",1);
+	parseador->getLog()->addLogMessage("Se termina el juego.",1);
 
 	return 0;
 }

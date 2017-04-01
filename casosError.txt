@@ -1,0 +1,8 @@
+Si  Json bien formado:
+	Si no encuentra un nombre del atributo(no existe ancho): entra a una funcion que setea valores iniciales.
+	Si encuentra el nombre del atributo pero el valor esta vacio: entra a una funcion que setea valores iniciales.
+	Si el valor del
+	Si el atributo esta mal, tipo, valor egativo: entra a una funcion que setea valores iniciales.
+	Si el tipo del valor del atributo no es el correcto: entra a una funcion que setea valores iniciales.
+Si esta mal formado:
+	el json con atributos invalidos: carga el default.json

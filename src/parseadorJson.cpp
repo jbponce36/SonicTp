@@ -1,4 +1,3 @@
-
 /*
  * parseadorJson.cpp
  *
@@ -21,7 +20,6 @@
 #include "jcirculo.h"
 
 
-
 namespace std {
     jventana *parseadorJson::cargarVentana(json_t *raiz)
     {
@@ -33,22 +31,20 @@ namespace std {
         esvalido = validarVentana(raiz, "ventana", "dimensiones", "alto", "ancho");
 
         if(esvalido){
-        	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Iniciado.", 2);
+            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Iniciado.", 2);
             jsonventana = json_object_get(raiz, "ventana");
             jsonventana = json_object_get(jsonventana, "dimensiones");
             jsonventanaalto = json_object_get(jsonventana, "alto");
-        	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Seteando alto.", 3);
+            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Seteando alto.", 3);
             jsonventanaancho = json_object_get(jsonventana, "ancho");
-        	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Seteando ancho.", 3);
+            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Seteando ancho.", 3);
             ventana->setalto(json_number_value(jsonventanaalto));
             ventana->setancho(json_number_value(jsonventanaancho));
-
-            this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Terminado.", 2);
+            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Terminado.", 2);
         }else{
-        	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] No se han encontrado los atributos correctos, se cargaran valores por defecto", 1);
-            ventana->setalto(480);
-            ventana->setancho(640);
-
+            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] No se han encontrado los atributos correctos, se cargaran valores por defecto", 1);
+            ventana->setalto(640);
+            ventana->setancho(480);
 
         }
         return ventana;
@@ -77,7 +73,6 @@ parseadorJson::~parseadorJson() {
 	// TODO Auto-generated destructor stub
 }
 
-
 bool parseadorJson::leerValorVentana(json_t *dimension, const char *ancho, const char *alto)
     {
         json_t *jsonancho;
@@ -90,7 +85,7 @@ bool parseadorJson::leerValorVentana(json_t *dimension, const char *ancho, const
         }
         if((!json_is_number(jsonancho)) && (!(json_is_number(jsonalto)))){
         	validarvent = false;
-        	this->log->addLogMessage("PARSEADOR JSON","[CONFIGURACION DE LA VENTANA] Error obteniendo el valor de las dimensiones de la ventana", 1);
+        	this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Error obteniendo el valor de las dimensiones de la ventana", 1);
         }
         return validarvent;
     }
@@ -136,7 +131,6 @@ bool parseadorJson::tryLeerValorEntero(json_t* padre,
 
 bool parseadorJson::validarVentana(json_t* raiz,const char* nomvent,const char* nomdim,const char* nomancho,const char* nomalto){
 
-
 	json_t *jsonventana;
     json_t *jsondimension;
     json_t *jsonancho;
@@ -164,6 +158,7 @@ bool parseadorJson::validarVentana(json_t* raiz,const char* nomvent,const char* 
    else{
 	  validarvent = false;
    }
+
 
     return validarvent;
 }
@@ -264,18 +259,22 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 
 		if (jcapas){
 			for( int i = 0; i < json_array_size(jcapas); i++ ){
-
-
 			   json_t *capai;
 
 			   capai = json_array_get(jcapas, i);
 
 			   if (capai){
 				   capas *jcapas = new capas();
-
 				   jcapas->setid(this->leerValorEntero(capai,"id", 1));
 				   jcapas->setindex(this->leerValorEntero(capai,"index_z",99));
-				   jcapas->setrutaimagen(this->leerValorStringCapas(capai,"ruta_imagen","/images/capa1r.png"));
+				   string ruta;
+				   if (i == 0){
+					   ruta = "images/capa0.png";
+				   }
+				   if (i == 1){
+					   ruta = "images/capa1r.png";
+				   }
+				   jcapas->setrutaimagen(this->leerValorStringCapas(capai,"ruta_imagen",ruta));
 
 				   capalista.push_back(*jcapas);
 			   }
@@ -302,26 +301,14 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 
 		  jsonentidades = json_object_get(jsonescenario, "entidades");
 
-
 		  list<jentidades> listaentidades;
 		  if ((jsonentidades)){
 
 			  for( int i = 0; i < json_array_size(jsonentidades); i++ ){
 
 				 json_t *entidadi;
-
-				 json_t *id;
-				 json_t *tipo;
-				 json_t *color;
-				 json_t *ruta_imagen;
-				 json_t *index_z;
 				 json_t *dimensiones;
-				 json_t *ancho;
-				 json_t *alto;
-				 json_t *radio;
 				 json_t *coordenada;
-				 json_t *coorx;
-				 json_t *coory;
 
 							  //voy creando nuevos objetos entidades
 				 jentidades *entidades = new jentidades();
@@ -452,7 +439,7 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
         result->setVentana(ventana);
         result->setEscenario(escenario);
         result->setConfiguracion(config);
-        this->log->addLogMessage("PARSEADOR JSON","Se termino de leer el archivo de configuracion.", 2);
+        this->log->addLogMessage("Se termino de leer el archivo de configuracion.", 2);
         return result;
     }
 

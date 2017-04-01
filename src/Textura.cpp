@@ -26,30 +26,31 @@ void Textura::cargarImagen(std::string path,SDL_Renderer* render)
 	//en caso que hubiera una textura creada, la libero para podeer crear otra
 	this->liberarTextura();
 	SDL_Surface* superficie = IMG_Load( path.c_str() );
-	if( superficie == NULL )
+	if( superficie == NULL  )
 	{
-		printf( "incapaz de crear imagen %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
+		superficie = IMG_Load( "images/entidad1.png" );
+		//printf( "incapaz de crear imagen %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
+	}
+
+
+	//Color key image
+	SDL_SetColorKey( superficie, SDL_TRUE, SDL_MapRGB( superficie->format, 0, 0xFF, 0xFF ) );
+	//Create texture from surface pixels
+    textura = SDL_CreateTextureFromSurface( renderizador, superficie );
+
+	if( textura == NULL )
+	{
+		printf( "incapaz de crear textura %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
 	}
 	else
 	{
-		//Color key image
-		SDL_SetColorKey( superficie, SDL_TRUE, SDL_MapRGB( superficie->format, 0, 0xFF, 0xFF ) );
-		//Create texture from surface pixels
-        textura = SDL_CreateTextureFromSurface( renderizador, superficie );
-
-        if( textura == NULL )
-		{
-			printf( "incapaz de crear textura %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
-		}
-		else
-		{
-			//Get image dimensions
-			anchoTextura = superficie->w;
-			altoTextura = superficie->h;
-		}
-		//liberar memoria de superficie creada
-		SDL_FreeSurface( superficie );
+		//Get image dimensions
+		anchoTextura = superficie->w;
+		altoTextura = superficie->h;
 	}
+	//liberar memoria de superficie creada
+	SDL_FreeSurface( superficie );
+
 }
 
 int Textura::obtenerAnchoTextura()
@@ -111,10 +112,20 @@ int Textura::getId(){
 
 	return this->id;
 }
+
+int Textura::getAnchoTextura(){
+	return this->anchoTextura;
+}
+
+int Textura::getAltoTextura(){
+		return this->altoTextura;
+}
+
 std::string Textura::getRuta(){
 
 	return this->ruta;
 }
+
 int Textura::getIndex_z(){
 
 	return this->index_z;
