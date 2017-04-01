@@ -33,10 +33,14 @@ int main(int argc, char *argv[]) {
 
 	//Se lee del json el nombre de la ventana
 	parseadorJson* parseador = new parseadorJson(log);
-	//jescenarioJuego* jparseador = parseador.
+
+
 	char *file=(char*)"configuracion/configuracion.json";
 	parseador->getLog()->addLogMessage("PRINCIPAL","Se inicia el juego.",1);
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
+
+    jpruebas* jpru = new jpruebas();
+    jpru->prueba(jparseador);
 
     VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
 

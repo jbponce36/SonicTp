@@ -35,9 +35,11 @@ public:
 	Logger* getLog() const;
 	void setLog(Logger* log);
 	bool leerValorVentana(json_t *dimension, const char *ancho, const char *alto);
+	jescenarioJuego* getescenario();
 
 private:
 	Logger *log;
+	jescenarioJuego *juego;
 	jventana* cargarVentana(json_t* raiz);
 	jconfiguracion* cargarConfiguracion(json_t* raiz);
 	jescenario* cargarEscenario(json_t* raiz);

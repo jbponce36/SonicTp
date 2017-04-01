@@ -45,7 +45,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 
 	for(pos = jEntidades.begin();pos != jEntidades.end();pos++)
 	{
-		if((*pos).gettipo() == "rectangulo")
+		if(((*pos).gettipo() == "rectangulo")||((*pos).gettipo() == "cuadrado"))
 		{
 			this->log->addLogMessage("ENTIDADES", "[CARGA DE ENTIDADES] Procesando rectangulo.", 2);
 			id = (*pos).getid();
