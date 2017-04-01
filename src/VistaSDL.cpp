@@ -69,19 +69,20 @@ void VistaSDL::validacionesEscenario(jescenario *jescenario)
 void VistaSDL::validacionesVentana()
 {
 
+	if ( this->anchoVentana < 0 )
+	{
+		this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
+	}
+	if ( this->altoVentana < 0 )
+	{
+		this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
+	}
 	if( this->anchoVentana < MIN_ANCHO_VENTANA_PERMITIDO || this->altoVentana < MIN_ALTO_VENTANA_PERMITIDO )
-		{
-			this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
-			this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
-		}
-		if ( anchoVentana <= 0 )
-		{
-			this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
-		}
-		if ( altoVentana <= 0 )
-		{
-			this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
-		}
+	{
+		this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
+		this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
+	}
+
 }
 
 void VistaSDL::crearVentanaYrenderizador()
