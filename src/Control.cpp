@@ -21,7 +21,7 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 		while( SDL_PollEvent( &e ) != 0 )
 		{
 			//usuario pide cierre
-			if( e.type == SDL_QUIT )
+			if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE )
 			{
 				salir = true;
 			}
@@ -32,14 +32,6 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 		SDL_SetRenderDrawColor(vista->obtenerRender(),0xff,0xff,0xff,0xff);
 		SDL_RenderClear(vista->obtenerRender());
 
-		/*//despues sacar
-		SDL_Rect capa0;
-		capa0.x = 0;
-		capa0.y = 0;
-		capa0.w = 800;
-		capa0.h = 500;
-		//..
-		*/
 		for(int contador = 0; contador < vista->cantidadCapasCargadas(); contador++)
 		{
 			vista->obtenerTextura(contador)->renderizar(camara->devolverCamara());
@@ -47,15 +39,11 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 			vista->mostrarEntidades(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
 		}
 
-
 		//dibujo ek personaje
 		sonic->render(camara->getPosicionX(), camara->getPosicionY());
-
 		//muestro la imagen
-
 		SDL_RenderPresent( vista->obtenerRender());
-
-		}
+	}
 }
 Control::~Control() {
 	// TODO Auto-generated destructor stub

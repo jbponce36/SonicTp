@@ -60,6 +60,7 @@ parseadorJson::parseadorJson(Logger *log) {
 
 }
 
+
 Logger* parseadorJson::getLog() const {
 	return log;
 }
@@ -177,13 +178,13 @@ jconfiguracion* parseadorJson::cargarConfiguracion(json_t* raiz){
       if((jsonconfiguracion)){
 
 
-      configuracion->setvelscroll(this->leerValorEntero(jsonconfiguracion,"vel_scroll",5));
+      configuracion->setvelscroll(this->leerValorEntero(jsonconfiguracion,"vel_scroll",15));
 
 
      }
       else{
 
-    	  configuracion->setvelscroll(5);
+    	  configuracion->setvelscroll(15);
 
 
        }
@@ -340,7 +341,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 					 if (dimensiones){
 								  // devuelve 0...si eel elemento no tiene algun atributo
 						 //if (strcmp(entidades->gettipo()., "rectangulo") == 0){
-						 if (entidades->gettipo().compare("rectangulo") == 0){
+						 if ((entidades->gettipo().compare("rectangulo") == 0)|| (entidades->gettipo().compare("cuadrado") == 0)  ){
 
 							 double ancho;
 							 double alto;
@@ -418,7 +419,6 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
 	 json = json_load_file(nombreArchivo,0,&error);
 
 	  if(!json) {
-
 	       cout << "!!! hay  probremas!!!" << endl;
 	       cout << error.text << endl;
 	       cout << "Cargando archivo por defecto" << endl;
@@ -450,13 +450,13 @@ list<capas> parseadorJson::DevolverCapasPorDefecto(){
 	capas *jcapas1 = new capas();
 	capas *jcapas2 = new capas();
 
-	jcapas1->setid(11);
-	jcapas1->setindex(98);
-	jcapas1->setrutaimagen("/images/capa1.png");
+	jcapas1->setid(1);
+	jcapas1->setindex(99);
+	jcapas1->setrutaimagen("images/capa0.png");
 
-	jcapas2->setid(12);
-	jcapas2->setindex(99);
-	jcapas2->setrutaimagen("/images/capa2.png");
+	jcapas2->setid(2);
+	jcapas2->setindex(98);
+	jcapas2->setrutaimagen("images/capa1r.png");
 
 	capasdefault.push_back(*jcapas1);
 	capasdefault.push_back(*jcapas2);
@@ -483,9 +483,9 @@ list<jentidades> parseadorJson::DevolverEntidadesPorDefecto(){
 	rectangulo1->settipo2("rectangulo");
 	entidades1->setDim(rectangulo1);
 
-    entidades1->setcoorx(128);
-    entidades1->setcoory(405);
-    entidades1->setruta("/imagenes/entidad1.png");
+    entidades1->setcoorx(100);
+    entidades1->setcoory(100);
+    entidades1->setruta("/images/entidad1.png");
     entidades1->setindex(99);
 
     entidadesdefault.push_back(*entidades1);
@@ -500,9 +500,9 @@ list<jentidades> parseadorJson::DevolverEntidadesPorDefecto(){
     rectangulo2->settipo2("rectangulo");
     entidades2->setDim(rectangulo2);
 
-    entidades2->setcoorx(2400);
-    entidades2->setcoory(500);
-    entidades2->setruta("/imagenes/entidad2.png");
+    entidades2->setcoorx(200);
+    entidades2->setcoory(200);
+    entidades2->setruta("/images/entidad2.png");
     entidades2->setindex(99);
 
     entidadesdefault.push_back(*entidades2);
@@ -516,14 +516,16 @@ list<jentidades> parseadorJson::DevolverEntidadesPorDefecto(){
     circulo->settipo2("circulo");
     entidades3->setDim(circulo);
 
-    entidades3->setcoorx(3000);
-    entidades3->setcoory(205);
-    entidades3->setruta("/imagenes/entidad3.png");
+    entidades3->setcoorx(300);
+    entidades3->setcoory(300);
+    entidades3->setruta("/images/entidad3.png");
     entidades3->setindex(99);
 
     entidadesdefault.push_back(*entidades3);
 
     return entidadesdefault;
 }
-
+jescenarioJuego* parseadorJson::getescenario(){
+	return juego;
+}
 } /* namespace std */
