@@ -45,7 +45,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 
 	for(pos = jEntidades.begin();pos != jEntidades.end();pos++)
 	{
-		if((*pos).gettipo() == "rectangulo")
+		if(((*pos).gettipo() == "rectangulo") || ((*pos).gettipo() == "cuadrado"))
 		{
 			this->log->addLogMessage("ENTIDADES", "[CARGA DE ENTIDADES] Procesando rectangulo.", 2);
 			id = (*pos).getid();
@@ -57,6 +57,14 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			rutaImagen = (*pos).getruta();
 			indexZ = (*pos).getindex();
 
+			validarDatosNumericos(id, coordX, coordY, indexZ);
+			validar(ancho, 0, MAX_ANCHO);
+			validar(alto, 0, MAX_ALTO);
+
+			if ((*pos).gettipo() == "cuadrado")
+			{
+				validarCuadrado(ancho, alto);
+			}
 			Rectangulo *rectangulo = new Rectangulo(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ);
 
 			entidades.push_back(rectangulo);
@@ -74,6 +82,9 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			coordY = (*pos).getcoory();
 			rutaImagen = (*pos).getruta();
 			indexZ = (*pos).getindex();
+
+			validarDatosNumericos(id, coordX, coordY, indexZ);
+			validar(radio, 0, MAX_RADIO);
 
 			Circulo *circulo = new Circulo(radio, id, color, rutaImagen, coordX, coordY, indexZ);
 
@@ -132,6 +143,35 @@ bool compararIndexZ(const Entidad *primera, const Entidad *segunda)
 void ConstructorEntidades::ordenarSegunIndexZ()
 {
 	entidades.sort(compararIndexZ);
+}
+
+void ConstructorEntidades::validarDatosNumericos(int &id, int &coordX, int &coordY, int &indexZ)
+{
+	validar(id, 0, MAX_ID);
+	validar(coordX, 0, MAX_COORDX);
+	validar(coordY, 0, MAX_COORDY);
+	validar(indexZ, 0, MAX_INDEXZ);
+}
+
+void ConstructorEntidades::validar(int &numero, int minimo, int maximo)
+{
+	if (numero < minimo)
+	{
+		numero = (-numero);
+	}
+	else if (numero > maximo)
+	{
+		numero = maximo;
+	}
+}
+
+void ConstructorEntidades::validarCuadrado(int &ancho, int &alto)
+{
+	//El cuadrado es de dimensiones ancho x ancho
+	if (ancho != alto)
+	{
+		alto = ancho;
+	}
 }
 
 }
