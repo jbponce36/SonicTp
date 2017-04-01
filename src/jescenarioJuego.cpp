@@ -12,7 +12,6 @@ namespace std {
 jescenarioJuego::jescenarioJuego() {
 
 
-
 }
 
 jescenarioJuego::~jescenarioJuego() {

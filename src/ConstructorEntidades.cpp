@@ -42,7 +42,7 @@ namespace std
         int radio;
         this->log->addLogMessage("[CARGA DE ENTIDADES] Iniciado.", 2);
         for(pos = jEntidades.begin();pos != jEntidades.end();pos++){
-            if((*pos).gettipo() == "rectangulo"){
+            if((((*pos).gettipo() == "rectangulo") || (*pos).gettipo() == "cuadrado")){
                 this->log->addLogMessage("[CARGA DE ENTIDADES] Procesando rectangulo.", 2);
                 id = (*pos).getid();
                 color = (*pos).getcolor();
@@ -84,6 +84,7 @@ namespace std
     void ConstructorEntidades::setLog(Logger *log)
     {
         this->log = log;
+    }
 }
 
 
@@ -127,4 +128,4 @@ void ConstructorEntidades::ordenarSegunIndexZ()
 	entidades.sort(compararIndexZ);
 }
 
-}
+
