@@ -16,6 +16,7 @@ using namespace std;
 #include "jescenario.h"
 #include "capas.h"
 #include "ConstructorEntidades.h"
+#include "Logger.h"
 #include <list>
 #include <vector>
 #ifndef VISTASDL_H_
@@ -24,9 +25,10 @@ using namespace std;
 #define ALTO_VENTANA_POR_DEFECTO 480
 #define MIN_ANCHO_VENTANA_PERMITIDO 300
 #define MIN_ALTO_VENTANA_PERMITIDO 300
-#define MAXIMO_ANCHO_ESCENARIO 2000
+#define MAXIMO_ANCHO_ESCENARIO 4000  //ESTE DEPENDE DEL NUMERO DEL FOTOSHOP
 #define MAXIMO_ALTO_ESCENARIO 500
-
+#define ANCHO_ESCENARIO_POR_DEFAULT 4000
+#define ALTO_ESCENARIO_POR_DEFAULT 500
 
 class VistaSDL{
 
@@ -35,7 +37,6 @@ private:
 	SDL_Renderer* renderizador;
 	SDL_Surface* superficiePantalla;
 	SDL_Surface* superficieACargar;
-
 	int velocidadScroll;
 	int anchoVentana;
 	int altoVentana;
@@ -45,6 +46,7 @@ private:
 	vector <Textura*> texturas;
 	vector <Textura*> capasFondo;//son las dos capas del fondo del juego
 	ConstructorEntidades *constructorEntidades;
+	Logger *log;
 
 public:
 	VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion,jescenario *jescenario, Logger *logger);
@@ -52,6 +54,7 @@ public:
 	int obtenerAltoVentana();
 	void cargarCapas(jescenario *escenario);
 	int obtenerAnchoVentana();
+	void validacionesEscenario(jescenario *jescenario);
     void crearVentanaYrenderizador();
 	int obtenerAltoEscenario();
 	int obtenerAnchoEscenario();
@@ -60,10 +63,10 @@ public:
 	Textura* obtenerTextura(int);
 	SDL_Renderer* obtenerRender();
 	int obtenerVelocidadDeScroll();
-
+	void validacionesVentana();
 	void cerrar();
 	~VistaSDL();
-	void mostrarEntidades(SDL_Rect *camara);
+	void mostrarEntidades(SDL_Rect *camara, int indexZ);
 };
 
 

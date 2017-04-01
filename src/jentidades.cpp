@@ -149,6 +149,9 @@ bool jentidades::esValida() {
 		tipoBien = true;
 	}
 
+	if (this->gettipo().compare("cuadrado") == 0){
+			tipoBien = true;
+		}
 	if (!tipoBien){
 		return false;
 	}

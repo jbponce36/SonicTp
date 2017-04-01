@@ -24,6 +24,7 @@ namespace std {
 
 class jpruebas {
 public:
+
 	jpruebas();
 	virtual ~jpruebas();
     void prueba(jescenarioJuego* escenario);

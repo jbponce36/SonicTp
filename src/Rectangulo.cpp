@@ -33,6 +33,17 @@ void Rectangulo::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
 	}
 }
 
+    Logger *Rectangulo::getLog() const
+    {
+        return log;
+    }
+
+    void Rectangulo::setLog(Logger *log)
+    {
+        this->log = log;
+        this->log->setModulo("RECTANGULO");
+    }
+
 void Rectangulo::mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara)
 {
 	if (obtenerImagen() == NULL)

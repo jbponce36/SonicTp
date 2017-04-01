@@ -1,4 +1,5 @@
 #include "Entidad.h"
+#define MODULO 'ENTIDAD'
 
 Entidad::Entidad() : id(), rutaImagen(""), x(), y(), indexZ(), imagen(NULL)
 {
@@ -34,8 +35,8 @@ SDL_Color Entidad::convertirColor(std::string color)
 	}
 	else
 	{
-		//Color por default: azul
-		colorSDL.r = 0; colorSDL.g = 0; colorSDL.b = 255; colorSDL.a = 255;
+		//Color por default: rojo
+		colorSDL.r = 255; colorSDL.g = 0; colorSDL.b = 0; colorSDL.a = 255;
 	}
 	return colorSDL;
 }
@@ -94,12 +95,10 @@ int Entidad::cargarImagen(SDL_Renderer *renderer, Logger *log)
 
 	if(imagenCargada == NULL)
 	{
-		//std::cout << "Error: " << SDL_GetError() << std::endl;
-		rutaImagen = "images/default.png";
-		imagenCargada=IMG_Load(rutaImagen.c_str());
+		std::string mensaje = "[CARGAR IMAGEN ENTIDAD] No existe imagen. Se muestra de color solido. Id: "+id;
+		log->addLogMessage(mensaje, 2);
 
-		std::string mensaje = "[CARGAR IMAGEN ENTIDAD] Se cargo una imagen por default. Id: "+id;
-		log->addLogMessage("ENTIDAD", mensaje, 2);
+		rutaImagen = "";
 
 		error = 1;
 	}
@@ -108,6 +107,17 @@ int Entidad::cargarImagen(SDL_Renderer *renderer, Logger *log)
 	SDL_FreeSurface(imagenCargada);
 
 	return error;
+}
+
+Logger *Entidad::getLog() const
+{
+    return log;
+}
+
+void Entidad::setLog(Logger *log)
+{
+    this->log = log;
+    this->log->setModulo("ENTIDAD");
 }
 
 void Entidad::destruirImagen()
@@ -125,5 +135,10 @@ bool Entidad::indexZMenorA(const Entidad *otraEntidad) const
 		return true;
 	}
 	return false;
+}
+
+bool Entidad::indexZes(int otroIndexZ)
+{
+	return (indexZ == otroIndexZ);
 }
 

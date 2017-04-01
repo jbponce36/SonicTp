@@ -1,5 +1,6 @@
-
 #include "Control.h"
+#define MODULO 'CONTROL'
+
 Control::Control(int posicionx, int posiciony) {
 	this->posicionInicialX = posicionx;
 	this->posicionInicialY = posiciony;
@@ -26,7 +27,7 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 		while( SDL_PollEvent( &e ) != 0 )
 		{
 			//usuario pide cierre
-			if( e.type == SDL_QUIT )
+			if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE )
 			{
 				salir = true;
 			}
@@ -46,18 +47,14 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 		{
 			imagenMostrar.h = vista->obtenerTextura(contador)->getAltoTextura();
 			vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),&imagenMostrar);
+			vista->mostrarEntidades(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
 		}
-
-		vista->mostrarEntidades(camara->devolverCamara());
 
 		//dibujo ek personaje
 		sonic->render(camara->getPosicionX(), camara->getPosicionY());
-
 		//muestro la imagen
-
 		SDL_RenderPresent( vista->obtenerRender());
-
-		}
+	}
 }
 
 Control::~Control() {
