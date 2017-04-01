@@ -35,9 +35,10 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 		for(int contador = 0; contador < vista->cantidadCapasCargadas(); contador++)
 		{
 			vista->obtenerTextura(contador)->renderizar(camara->devolverCamara());
+
+			vista->mostrarEntidades(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
 		}
 
-		vista->mostrarEntidades(camara->devolverCamara());
 		//dibujo ek personaje
 		sonic->render(camara->getPosicionX(), camara->getPosicionY());
 		//muestro la imagen
