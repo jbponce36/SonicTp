@@ -12,7 +12,8 @@ namespace std {
 
 jrectangulo::jrectangulo() {
 	// TODO Auto-generated constructor stub
-
+	this->setalto(20);
+	this->setancho(40);
 }
 
 jrectangulo::~jrectangulo() {

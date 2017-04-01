@@ -35,6 +35,8 @@ public:
     list<jentidades>getentidades();
     void setentidades(list<jentidades>);
 
+    void cargarDimensionPorDefecto();
+
 private:
 	int ancho;
     int alto;

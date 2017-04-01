@@ -23,6 +23,8 @@ public:
  	virtual int getvalor1() = 0;
  	virtual const char* getnombrevalor2() = 0;
  	virtual int getvalor2() = 0;
+
+ //	virtual void setvalor1(int) = 0;
  	//virtual int gettipo() = 0;
 
 	dimensiones();

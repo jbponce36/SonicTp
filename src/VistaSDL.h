@@ -29,7 +29,6 @@ private:
 	SDL_Renderer* renderizador;
 	SDL_Surface* superficiePantalla;
 	SDL_Surface* superficieACargar;
-
 	int velocidadScroll;
 	int anchoVentana;
 	int altoVentana;

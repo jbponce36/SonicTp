@@ -9,6 +9,7 @@
 #define JENTIDADES_H_
 #include <string>
 #include "dimensiones.h"
+#include <jansson.h>
 
 namespace std {
 
@@ -55,6 +56,7 @@ public:
 	int getindex();
 	void setindex(int);
 
+	bool esValida();
 
 
 private:
@@ -68,6 +70,7 @@ private:
 	std::string ruta;
 	int index;
 	dimensiones* dim;
+	bool hasEnding (string const &fullString, string const &ending);
 };
 
 } /* namespace std */

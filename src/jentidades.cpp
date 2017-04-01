@@ -7,6 +7,8 @@
 
 #include "jentidades.h"
 #include "dimensiones.h"
+#include <stdio.h>
+#include <string.h>
 
 
 namespace std {
@@ -14,6 +16,10 @@ namespace std {
 jentidades::jentidades() {
 	// TODO Auto-generated constructor stub
 	this->dim = NULL;
+	this->setcoorx(-1);
+	this->setcoory(-1);
+	this->setcolor("rojo");
+	this->setruta("/images/entidad1.png");
 }
 
 jentidades::~jentidades() {
@@ -41,7 +47,13 @@ std::string jentidades::getcolor(){
 	return color;
 }
 void jentidades:: setcolor(std::string colorent){
-	color = colorent;
+	if ( (colorent.compare("rojo")==0)
+		 || (colorent.compare("verde")==0)
+		 || (colorent.compare("amarillo")==0)
+		 || (colorent.compare("azul")==0) ) {
+
+		color = colorent;
+	}
 }
 
 dimensiones* jentidades::getDim(){
@@ -89,7 +101,24 @@ std::string jentidades::getruta(){
 	return ruta;
 }
 void jentidades::setruta(std::string rutaent){
-	ruta = rutaent;
+	string extensionpng = "png";
+	string extensionbmp = "bmp";
+	if (this->hasEnding(rutaent, extensionpng) || this->hasEnding(rutaent, extensionbmp)){
+		ruta = rutaent;
+	}
+	//
+	//validacion ruta
+	//char cadena[]=rutaent;
+	//char *frase = strtok(cadena,".");
+
+	// char *ptr = frase;
+
+	//while(ptr != NULL){
+		//cout << ptr << endl;
+		//ptr = strtok(NULL, ".");
+	//}
+	//
+
 }
 
 //index
@@ -98,6 +127,45 @@ int jentidades::getindex(){
 }
 void jentidades::setindex(int indexent){
 	index = indexent;
+}
+
+bool jentidades::esValida() {
+
+	if (this->getcoorx() == -1){
+		return false;
+	}
+
+	if (this->getcoory() == -1){
+		return false;
+	}
+
+	//Validamos el tipo
+	bool tipoBien = false;
+	if (this->gettipo().compare("rectangulo") == 0){
+		tipoBien = true;
+	}
+
+	if (this->gettipo().compare("circulo") == 0){
+		tipoBien = true;
+	}
+
+	if (!tipoBien){
+		return false;
+	}
+
+
+
+	return true;
+}
+
+
+bool jentidades::hasEnding(const string& fullString, const string& ending) {
+
+	    if (fullString.length() >= ending.length()) {
+	        return (0 == fullString.compare (fullString.length() - ending.length(), ending.length(), ending));
+	    } else {
+	        return false;
+	    }
 }
 
 } /* namespace std */

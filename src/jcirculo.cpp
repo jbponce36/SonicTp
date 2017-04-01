@@ -11,7 +11,7 @@ namespace std {
 
 jcirculo::jcirculo() {
 	// TODO Auto-generated constructor stub
-
+	this->setradio(15);
 }
 
 jcirculo::~jcirculo() {

@@ -13,6 +13,7 @@
 #include "jescenario.h"
 #include "ConstructorEntidades.h"
 #include "Logger.h"
+#include "jpruebas.h"
 #include "Personaje.h"
 #include "Control.h"
 
@@ -48,8 +49,7 @@ int main(int argc, char *argv[]) {
 
     control->ControlarJuego(vista,sonic);
 
-    //vista->cargarTexturas();
-	//vista->mostrarVentana();
+
 	vista->cerrar();
 	parseador->getLog()->addLogMessage("Se termina el juego.",1);
 
