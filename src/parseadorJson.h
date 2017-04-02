@@ -42,6 +42,7 @@ public:
 	void setFiguraparse(int level);
 	bool leerValorVentana(json_t *dimension, const char *ancho, const char *alto);
 	jescenarioJuego* getescenario();
+	void validarDimensionesVentana(jescenarioJuego *escenarioJuego);
 
 
 private:
