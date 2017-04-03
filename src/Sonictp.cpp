@@ -44,8 +44,7 @@ int main(int argc, char *argv[]) {
 	char *file=(char*)"configuracion/configuracion.json";
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
-    jpruebas* jpru = new jpruebas();
-    jpru->prueba(jparseador);
+
 
     log->setModulo("PRINCIPAL");
 	log->addLogMessage("Se empieza a cargar la vista.",1);
