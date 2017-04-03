@@ -87,7 +87,6 @@ void Logger::iniciarLog(){
 	myfile<<"INICIANDO LOGGER EN NIVEL:"<< this->getLevel()<<endl;
 	myfile<<"-------------------------------------------------------------------------------------------"<<endl;
 	myfile.close();
-
 }
 
 int Logger::addLogMessage(string logMessage, int nivel){
