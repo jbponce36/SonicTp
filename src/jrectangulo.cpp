@@ -51,10 +51,6 @@ const char* jrectangulo::getnombrevalor2() {
 int jrectangulo::getalto(){
 	return alto;
 }
-
-
-} /* namespace std */
-
 int std::jrectangulo::getvalor1() {
 	return this->ancho;
 }
@@ -62,3 +58,7 @@ int std::jrectangulo::getvalor1() {
 int std::jrectangulo::getvalor2() {
 	return this->alto;
 }
+
+} /* namespace std */
+
+

@@ -18,6 +18,7 @@
 #include "dimensiones.h"
 #include "jrectangulo.h"
 #include "jcirculo.h"
+#include "jcuadrado.h"
 
 
 namespace std {
@@ -339,9 +340,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 
 					 dimensiones= json_object_get(entidadi,"dimensiones");
 					 if (dimensiones){
-								  // devuelve 0...si eel elemento no tiene algun atributo
-						 //if (strcmp(entidades->gettipo()., "rectangulo") == 0){
-						 if ((entidades->gettipo().compare("rectangulo") == 0)|| (entidades->gettipo().compare("cuadrado") == 0)  ){
+						 if ((entidades->gettipo().compare("rectangulo") == 0)){
 
 							 double ancho;
 							 double alto;
@@ -357,9 +356,31 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 
 							  rectangulo->settipo2("rectangulo");
 							  entidades->setDim(rectangulo);
-						  }
 
-						  //if(strcmp(json_string_value(tipo),"circulo") == 0){
+						  }
+						 //
+						 //aca va el cuadrado
+
+						  if (entidades->gettipo().compare("cuadrado") == 0){
+							  double ancho;
+							  double alto;
+
+							  jcuadrado* cuadrado = new jcuadrado();
+
+							  if (this->tryLeerValorEntero(dimensiones, "ancho", &ancho)
+							  	  && this->tryLeerValorEntero(dimensiones, "alto", &alto)){
+							  	  cuadrado->setalto(ancho);
+							  	  cuadrado->setancho(alto);
+							  }
+
+							  cuadrado->settipo2("cuadrado");
+							  entidades->setDim(cuadrado);
+
+
+						  }
+						 //fin cuadrado
+
+
 						 if (entidades->gettipo().compare("circulo") == 0){
 
 							 double radio;
@@ -385,6 +406,16 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 							 circulo->settipo2("circulo");
 							 entidades->setDim(circulo);
 						  }
+						 //cuadrado
+						 if(entidades->gettipo().compare("cuadrado") == 0){
+							 jcuadrado* cuadrado = new jcuadrado();
+
+                             cuadrado->settipo2("cuadrado");
+                             entidades->setDim(cuadrado);
+
+						 }//fin cuadrado
+
+
 
 					 }
 

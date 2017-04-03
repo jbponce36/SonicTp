@@ -16,6 +16,7 @@
 #include <jansson.h>
 #include "jcirculo.h"
 #include "jrectangulo.h"
+#include "jcuadrado.h"
 #include "jventana.h"
 
 
