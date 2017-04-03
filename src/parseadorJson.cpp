@@ -439,6 +439,8 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
         result->setVentana(ventana);
         result->setEscenario(escenario);
         result->setConfiguracion(config);
+
+        validarDimensionesVentana(result);
         this->log->addLogMessage("Se termino de leer el archivo de configuracion.", 2);
         return result;
     }
@@ -527,5 +529,11 @@ list<jentidades> parseadorJson::DevolverEntidadesPorDefecto(){
 }
 jescenarioJuego* parseadorJson::getescenario(){
 	return juego;
+}
+
+void parseadorJson::validarDimensionesVentana(jescenarioJuego *escenarioJuego){
+    if(escenarioJuego->getEscenario()->getancho() < escenarioJuego->getVentana()->getancho()){
+    	escenarioJuego->getEscenario()->setancho(escenarioJuego->getVentana()->getancho());
+    }
 }
 } /* namespace std */
