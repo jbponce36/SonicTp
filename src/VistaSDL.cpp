@@ -17,27 +17,30 @@ using namespace std;
 
 VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario *jescenario, Logger *logger)
 {
-	this->altoVentana =jventana->getalto();
-	this->anchoVentana= jventana->getancho();
-	//validamos escenario si tiene numeros negativos o excesivos ponemos valores por defecto
-	this->validacionesEscenario(jescenario);
-
-	this->velocidadScroll=jconfiguracion->getvelscroll();
 	this->renderizador = NULL;
-	this->crearVentanaYrenderizador();
-	this->constructorEntidades = new ConstructorEntidades(logger);
-	constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
 	this->ventana = NULL;
 	this->imgFlags=0;
 	this->superficiePantalla = NULL;
 	this->superficieACargar = NULL;
+
+	this->altoVentana =jventana->getalto();
+	this->anchoVentana= jventana->getancho();
+
+	//validamos escenario si tiene numeros negativos o excesivos ponemos valores por defecto
+	this->validacionesVentana();
+	this->validacionesEscenario(jescenario);
+	this->crearVentanaYrenderizador();
+
+	this->velocidadScroll=jconfiguracion->getvelscroll();
+	this->constructorEntidades = new ConstructorEntidades(logger);
+	constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
 	this->cargarCapas(jescenario);
 
 }
 
 void VistaSDL::validacionesEscenario(jescenario *jescenario)
 {
-	if(jescenario->getancho() < MAXIMO_ANCHO_ESCENARIO )//|| jescenario->getancho()>jventana->getancho())
+	if(jescenario->getancho() <= MAXIMO_ANCHO_ESCENARIO )//|| jescenario->getancho()>jventana->getancho())
 	{
 		this->anchoescenario=jescenario->getancho();
 	}
@@ -45,7 +48,7 @@ void VistaSDL::validacionesEscenario(jescenario *jescenario)
 	{
 		this->anchoescenario = MAXIMO_ANCHO_ESCENARIO;
 	}
-	if(jescenario->getalto() < MAXIMO_ALTO_ESCENARIO )//|| jescenario->getalto()>jventana->getalto())
+	if(jescenario->getalto() <= MAXIMO_ALTO_ESCENARIO )//|| jescenario->getalto()>jventana->getalto())
 	{
 		this->altoescenario=jescenario->getalto();
 	}
@@ -55,13 +58,13 @@ void VistaSDL::validacionesEscenario(jescenario *jescenario)
 	}
 
 
-	if ( jescenario->getancho() <= 0 )
+	if ( jescenario->getancho() <= this->anchoVentana )
 	{
-		this->anchoescenario = ANCHO_ESCENARIO_POR_DEFAULT;
+		this->anchoescenario = this->anchoVentana;
 	}
-	if (jescenario->getalto() <= 0)
+	if (jescenario->getalto() <= this->altoVentana)
 	{
-		this->altoescenario = ALTO_ESCENARIO_POR_DEFAULT;
+		this->altoescenario = this->altoVentana;
 	}
 
 }
@@ -75,17 +78,11 @@ void VistaSDL::validacionesVentana()
 		this->altoVentana = MAX_ALTO_VENTANA;
 	}
 
-	if ( this->altoVentana < 0 )
-	{
-		this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
-	}
 	if( this->anchoVentana < MIN_ANCHO_VENTANA_PERMITIDO || this->altoVentana < MIN_ALTO_VENTANA_PERMITIDO )
 	{
 		this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
 		this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
 	}
-
-
 }
 
 void VistaSDL::crearVentanaYrenderizador()
@@ -97,13 +94,11 @@ void VistaSDL::crearVentanaYrenderizador()
 			printf( "SDL no pudo iniciar! SDL Error: %s\n", SDL_GetError() );
 	}
 		else 
-		{	//validamos los datos del json ventana negativa o con dimenciones muy pequeñas abrimos ventana con tamaño por defecto
-			this->validacionesVentana();
-			//Crea ventana
+		{	//Crea ventana
 			this->ventana = SDL_CreateWindow( "Juego Sonic", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->anchoVentana, this->altoVentana, SDL_WINDOW_SHOWN );
 			if( this->ventana == NULL )
 			{
-				printf( "ventana no se pudo crear! SDL Error: %s\n", SDL_GetError() );
+				printf( "ventana no se pudo crear ventana! SDL Error: %s\n", SDL_GetError() );
 			}
 			else
 			{      //creo render para la ventana
@@ -146,15 +141,10 @@ list<capas> lista = jescenario->getcapas();
 		tex->setId((*pos).getid());
 		tex->setIndex_z((*pos).getindex());
 		tex->setRuta((*pos).getrutaimagen());
-		//vectorCapas[i].setId((*pos).getid());
-		//vectorCapas[i].setIndex_z((*pos).getindex());
-		//vectorCapas[i].setRutaImagen((*pos).getrutaimagen());
 		tex->cargarImagen( (*pos).getrutaimagen() ,renderizador);
 		this->capasFondo.push_back(tex);
 		i++;
 	}
-	//Textura aux[10];
-
 	Textura *aux=NULL;
 	for (int i=1;i<capasFondo.size();i++)
 	{
