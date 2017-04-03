@@ -8,6 +8,8 @@
 #ifndef JENTIDADES_H_
 #define JENTIDADES_H_
 #include <string>
+#include <iostream>
+#include <sstream>
 #include "dimensiones.h"
 #include <jansson.h>
 
@@ -57,7 +59,7 @@ public:
 	void setindex(int);
 
 	bool esValida();
-
+	string toString();
 
 private:
 	int id;
@@ -71,6 +73,8 @@ private:
 	int index;
 	dimensiones* dim;
 	bool hasEnding (string const &fullString, string const &ending);
+	std::string intToString(int number);
+
 };
 
 } /* namespace std */

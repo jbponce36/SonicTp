@@ -21,7 +21,7 @@ class Personaje
 
     public:
 		//constructor
-		Personaje(int velocidad,SDL_Renderer *render, int altoEscenario);
+		Personaje(int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log);
 
 		//toma las pulsaciones del teclado y ajusta la velocidad
 		void procesarEvento( SDL_Event& e );

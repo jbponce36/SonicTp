@@ -24,11 +24,14 @@ using namespace std;
 #define ANCHO_VENTANA_POR_DEFECTO 640
 #define ALTO_VENTANA_POR_DEFECTO 480
 #define MIN_ANCHO_VENTANA_PERMITIDO 300
-#define MIN_ALTO_VENTANA_PERMITIDO 300
+#define MIN_ALTO_VENTANA_PERMITIDO 500
 #define MAXIMO_ANCHO_ESCENARIO 4000  //ESTE DEPENDE DEL NUMERO DEL FOTOSHOP
 #define MAXIMO_ALTO_ESCENARIO 500
 #define ANCHO_ESCENARIO_POR_DEFAULT 4000
 #define ALTO_ESCENARIO_POR_DEFAULT 500
+#define MAX_ALTO_VENTANA 500
+#define MAX_ANCHO_VENTANA 900
+
 
 class VistaSDL{
 
@@ -44,29 +47,30 @@ private:
 	int altoescenario;
 	int imgFlags;
 	vector <Textura*> texturas;
-	vector <Textura*> capasFondo;//son las dos capas del fondo del juego
-	ConstructorEntidades *constructorEntidades;
-	Logger *log;
-
+	vector <Textura*> capasFondo;
+    ConstructorEntidades *constructorEntidades;
+    Logger *log;
 public:
-	VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion,jescenario *jescenario, Logger *logger);
-	void cargarImagen();
-	int obtenerAltoVentana();
-	void cargarCapas(jescenario *escenario);
-	int obtenerAnchoVentana();
-	void validacionesEscenario(jescenario *jescenario);
+    VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion, jescenario *jescenario, Logger *logger);
+    void cargarImagen();
+    int obtenerAltoVentana();
+    void cargarCapas(jescenario *escenario);
+    int obtenerAnchoVentana();
+    void validacionesEscenario(jescenario *jescenario);
     void crearVentanaYrenderizador();
-	int obtenerAltoEscenario();
-	int obtenerAnchoEscenario();
-	void mostrarCapas();
-	int cantidadCapasCargadas();
-	Textura* obtenerTextura(int);
-	SDL_Renderer* obtenerRender();
-	int obtenerVelocidadDeScroll();
-	void validacionesVentana();
-	void cerrar();
-	~VistaSDL();
-	void mostrarEntidades(SDL_Rect *camara, int indexZ);
+    int obtenerAltoEscenario();
+    int obtenerAnchoEscenario();
+    void mostrarCapas();
+    int cantidadCapasCargadas();
+    Textura *obtenerTextura(int);
+    SDL_Renderer *obtenerRender();
+    int obtenerVelocidadDeScroll();
+    void validacionesVentana();
+    void cerrar();
+    ~VistaSDL();
+    void mostrarEntidades(SDL_Rect *camara, int indexZ);
+    Logger *getLog() const;
+    void setLog(Logger *log);
 };
 
 

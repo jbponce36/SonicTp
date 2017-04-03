@@ -17,76 +17,77 @@ using namespace std;
 
 VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario *jescenario, Logger *logger)
 {
-	this->altoVentana =jventana->getalto();
-	this->anchoVentana= jventana->getancho();
-	//validamos escenario si tiene numeros negativos o excesivos ponemos valores por defecto
-	this->validacionesEscenario(jescenario);
-
-	this->velocidadScroll=jconfiguracion->getvelscroll();
 	this->renderizador = NULL;
-	this->crearVentanaYrenderizador();
-	this->constructorEntidades = new ConstructorEntidades(logger);
-	constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
 	this->ventana = NULL;
 	this->imgFlags=0;
 	this->superficiePantalla = NULL;
 	this->superficieACargar = NULL;
+
+	this->altoVentana =jventana->getalto();
+	this->anchoVentana= jventana->getancho();
+	this->log = logger;
+	this->log->setModulo("VISTA SDL");
+	//validamos escenario si tiene numeros negativos o excesivos ponemos valores por defecto
+	this->validacionesVentana();
+	this->validacionesEscenario(jescenario);
+	this->crearVentanaYrenderizador();
+	this->velocidadScroll=jconfiguracion->getvelscroll();
+	this->constructorEntidades = new ConstructorEntidades(logger);
+	constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
 	this->cargarCapas(jescenario);
 
 }
 
 void VistaSDL::validacionesEscenario(jescenario *jescenario)
 {
-	if(jescenario->getancho() < MAXIMO_ANCHO_ESCENARIO )//|| jescenario->getancho()>jventana->getancho())
-	{
-		this->anchoescenario=jescenario->getancho();
-	}
-	else
+
+	this->anchoescenario=jescenario->getancho();
+	this->altoescenario=jescenario->getalto();
+	this->log->addLogMessage("[VALIDACIONES ESCENARIO] Iniciado",2);
+
+	if(jescenario->getancho() > MAXIMO_ANCHO_ESCENARIO)
 	{
 		this->anchoescenario = MAXIMO_ANCHO_ESCENARIO;
 	}
-	if(jescenario->getalto() < MAXIMO_ALTO_ESCENARIO )//|| jescenario->getalto()>jventana->getalto())
+	else if(jescenario->getancho() < this->anchoVentana)
 	{
-		this->altoescenario=jescenario->getalto();
+		this->anchoescenario = this->anchoVentana;
 	}
-	else
+	if(jescenario->getalto() > MAXIMO_ALTO_ESCENARIO)
 	{
 		this->altoescenario = MAXIMO_ALTO_ESCENARIO;
 	}
-
-
-	if ( jescenario->getancho() <= 0 )
+	else if(jescenario->getalto() < this->altoVentana)
 	{
-		this->anchoescenario = ANCHO_ESCENARIO_POR_DEFAULT;
+		this->altoescenario = this->altoVentana;
 	}
-	if (jescenario->getalto() <= 0)
-	{
-		this->altoescenario = ALTO_ESCENARIO_POR_DEFAULT;
-	}
-
+	this->log->addLogMessage("[VALIDACIONES ESCENARIO] Terminado",2);
 }
 
 void VistaSDL::validacionesVentana()
 {
-
-	if ( this->anchoVentana < 0 )
+	this->log->addLogMessage("[VALIDACIONES VENTANA] Iniciado.",2);
+	if ( this->anchoVentana > MAX_ANCHO_VENTANA || this->altoVentana > MAX_ALTO_VENTANA  )
 	{
-		this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
-	}
-	if ( this->altoVentana < 0 )
-	{
-		this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
-	}
-	if( this->anchoVentana < MIN_ANCHO_VENTANA_PERMITIDO || this->altoVentana < MIN_ALTO_VENTANA_PERMITIDO )
-	{
-		this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
-		this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
+		this->anchoVentana = MAX_ANCHO_VENTANA;
+		this->altoVentana = MAX_ALTO_VENTANA;
+		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Ancho:",MAX_ANCHO_VENTANA);
+		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Alto:",MAX_ALTO_VENTANA);
 	}
 
+	else if( this->anchoVentana < MIN_ANCHO_VENTANA_PERMITIDO || this->altoVentana < MIN_ALTO_VENTANA_PERMITIDO )
+	{
+		this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
+		this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
+		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Ancho:",ANCHO_VENTANA_POR_DEFECTO);
+		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Alto:",ALTO_VENTANA_POR_DEFECTO);
+	}
+	this->log->addLogMessage("[VALIDACIONES VENTANA] Terminado.",2);
 }
 
 void VistaSDL::crearVentanaYrenderizador()
 {
+	this->log->addLogMessage("[CREAR VENTANA Y RENDERIZADOR] Iniciado.",2);
 	this->imgFlags = 0;
 	//Inicializa SDL
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
@@ -94,13 +95,11 @@ void VistaSDL::crearVentanaYrenderizador()
 			printf( "SDL no pudo iniciar! SDL Error: %s\n", SDL_GetError() );
 	}
 		else 
-		{	//validamos los datos del json ventana negativa o con dimenciones muy pequeñas abrimos ventana con tamaño por defecto
-			this->validacionesVentana();
-			//Crea ventana
+		{	//Crea ventana
 			this->ventana = SDL_CreateWindow( "Juego Sonic", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->anchoVentana, this->altoVentana, SDL_WINDOW_SHOWN );
 			if( this->ventana == NULL )
 			{
-				printf( "ventana no se pudo crear! SDL Error: %s\n", SDL_GetError() );
+				printf( "ventana no se pudo crear ventana! SDL Error: %s\n", SDL_GetError() );
 			}
 			else
 			{      //creo render para la ventana
@@ -128,12 +127,14 @@ void VistaSDL::crearVentanaYrenderizador()
 				}
 			}
 		}
+	this->log->addLogMessage("[CREAR VENTANA Y RENDERIZADOR] Terminado.",2);
 }
 
 void VistaSDL::cargarCapas(jescenario* jescenario)
 {
-//cargamos las capas desde el json en el vector de capas
-list<capas> lista = jescenario->getcapas();
+	this->log->addLogMessage("[CARGAR CAPAS] Iniciado.",2);
+	//cargamos las capas desde el json en el vector de capas
+	list<capas> lista = jescenario->getcapas();
 	list<capas>::iterator pos;
 	pos = lista.begin();
 	int i=0;
@@ -143,15 +144,10 @@ list<capas> lista = jescenario->getcapas();
 		tex->setId((*pos).getid());
 		tex->setIndex_z((*pos).getindex());
 		tex->setRuta((*pos).getrutaimagen());
-		//vectorCapas[i].setId((*pos).getid());
-		//vectorCapas[i].setIndex_z((*pos).getindex());
-		//vectorCapas[i].setRutaImagen((*pos).getrutaimagen());
-		tex->cargarImagen( (*pos).getrutaimagen() ,renderizador);
+		tex->cargarImagen( (*pos).getrutaimagen() ,renderizador, this->log);
 		this->capasFondo.push_back(tex);
 		i++;
 	}
-	//Textura aux[10];
-
 	Textura *aux=NULL;
 	for (int i=1;i<capasFondo.size();i++)
 	{
@@ -167,6 +163,7 @@ list<capas> lista = jescenario->getcapas();
 		}
 	}
 	aux=NULL;
+	this->log->addLogMessage("[CARGAR CAPAS] Terminado.",2);
 }
 
 SDL_Renderer* VistaSDL::obtenerRender()
@@ -213,6 +210,7 @@ int VistaSDL::cantidadCapasCargadas(){
 
 void VistaSDL::cerrar()
 {
+	this->log->addLogMessage("[CERRAR] Iniciado",2);
 	//destruir ventana render
 	SDL_DestroyRenderer( this->renderizador );
 	SDL_DestroyWindow( this->ventana );
@@ -222,6 +220,7 @@ void VistaSDL::cerrar()
 	//cerrar SDL subsistemas
 	IMG_Quit();
 	SDL_Quit();
+	this->log->addLogMessage("[CERRAR] Terminado",2);
 }
 
 VistaSDL::~VistaSDL()
@@ -238,6 +237,15 @@ void VistaSDL::mostrarEntidades(SDL_Rect *camara, int indexZ)
 	constructorEntidades->mostrarEntidades(renderizador, camara, indexZ);
 }
 
+Logger *VistaSDL::getLog() const
+{
+    return log;
+}
+
+void VistaSDL::setLog(Logger *log)
+{
+    this->log = log;
+}
 
 
 

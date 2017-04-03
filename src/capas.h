@@ -8,6 +8,8 @@
 #ifndef CAPAS_H_
 #define CAPAS_H_
 #include <string>
+#include <iostream>
+#include <sstream>
 
 namespace std {
 
@@ -27,11 +29,12 @@ public:
 	//rutaimagen
 	std::string getrutaimagen();
 	void setrutaimagen(std::string);
-
+	std::string toString();
 private:
 	int id;
 	int index_z;
 	std::string ruta_imagen;
+	std::string intToString(int number);
 };
 
 } /* namespace std */

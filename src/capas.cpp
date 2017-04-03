@@ -42,4 +42,15 @@ std::string capas::getrutaimagen(){
 void capas::setrutaimagen(std::string rutimagen){
 	ruta_imagen = rutimagen;
 }
+
+std::string capas::intToString(int number)
+{
+  ostringstream oss;
+  oss<< number;
+  return oss.str();
+}
+
+std::string capas::toString(){
+	return "id: " + intToString(id) +", " + "index_z: "+ intToString(index_z)+", " + "ruta_imagen: "+ ruta_imagen;
+}
 } /* namespace std */

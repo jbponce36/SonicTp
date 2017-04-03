@@ -171,4 +171,17 @@ bool jentidades::hasEnding(const string& fullString, const string& ending) {
 	    }
 }
 
+std::string jentidades::intToString(int number)
+{
+  ostringstream oss;
+  oss<< number;
+  return oss.str();
+}
+
+std::string jentidades::toString(){
+	return "id: " + intToString(id) +", tipo: " +tipo+", color: "+color+ ", dimensiones-> ancho: "+
+			intToString(ancho)+", alto: "+ intToString(alto)+ ", coordenadas-> x:"+intToString(coorx)+
+			", y: "+intToString(coory)+", index_z: "+ intToString(index)+", ruta_imagen: "+ ruta;
+}
+
 } /* namespace std */

@@ -19,6 +19,7 @@
 #include "jrectangulo.h"
 #include "jcirculo.h"
 #include "jcuadrado.h"
+#include <string>
 
 
 namespace std {
@@ -32,21 +33,20 @@ namespace std {
         esvalido = validarVentana(raiz, "ventana", "dimensiones", "alto", "ancho");
 
         if(esvalido){
-            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Iniciado.", 2);
+            this->log->addLogMessage("[CARGAR VENTANA] Iniciado.", 2);
             jsonventana = json_object_get(raiz, "ventana");
             jsonventana = json_object_get(jsonventana, "dimensiones");
             jsonventanaalto = json_object_get(jsonventana, "alto");
-            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Seteando alto.", 3);
             jsonventanaancho = json_object_get(jsonventana, "ancho");
-            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Seteando ancho.", 3);
             ventana->setalto(json_number_value(jsonventanaalto));
+            this->log->imprimirMensajeNivelAlto("[CARGAR VENTANA] Alto: ",json_number_value(jsonventanaalto) );
             ventana->setancho(json_number_value(jsonventanaancho));
-            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Terminado.", 2);
+            this->log->imprimirMensajeNivelAlto("[CARGAR VENTANA] Ancho: ",json_number_value(jsonventanaancho) );
+            this->log->addLogMessage("[CARGAR VENTANA] Terminado.", 2);
         }else{
-            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] No se han encontrado los atributos correctos, se cargaran valores por defecto", 1);
-            ventana->setalto(640);
-            ventana->setancho(480);
-
+            ventana->setalto(480);
+            ventana->setancho(640);
+            this->log->addLogMessage("[CARGAR VENTANA] Alto: 480, Ancho:640.", 3);
         }
         return ventana;
     }
@@ -58,7 +58,7 @@ parseadorJson::parseadorJson() {
 
 parseadorJson::parseadorJson(Logger *log) {
 	this->log = log;
-
+	this->log->setModulo("PARSEADOR JSON");
 }
 
 
@@ -68,6 +68,7 @@ Logger* parseadorJson::getLog() const {
 
 void parseadorJson::setLog(Logger* log) {
 	this->log = log;
+	this->log->setModulo("PARSEADOR JSON");
 }
 
 parseadorJson::~parseadorJson() {
@@ -106,7 +107,6 @@ double parseadorJson::leerValorEntero(json_t* padre, const char* nombre,int valo
 	}
 
 	return json_number_value(elemento);
-
 }
 
 bool parseadorJson::tryLeerValorEntero(json_t* padre,
@@ -138,19 +138,18 @@ bool parseadorJson::validarVentana(json_t* raiz,const char* nomvent,const char* 
     json_t *jsonalto;
     bool validarvent = true;
 
+    this->log->addLogMessage("[VALIDAR VENTANA] Iniciado.", 2);
 	jsonventana = json_object_get(raiz,nomvent);
 	jsondimension = json_object_get(jsonventana,nomdim);
 	jsonancho = json_object_get(jsondimension,nomancho);
 	jsonalto = 	json_object_get(jsondimension,nomalto);
 
-
 	if((!jsonventana)&&(!jsondimension)){
-
+		this->log->addLogMessage("[VALIDAR VENTANA] ERROR. No se encontro el atributo dimensiones dentro de ventana. Se cargaron dimensiones por defecto.", 1);
 		validarvent = false;
 	}
 	else{
 		validarvent = true;
-
 	}
 
    if(json_number_value(jsonancho) && json_number_value(jsonalto)){
@@ -160,8 +159,8 @@ bool parseadorJson::validarVentana(json_t* raiz,const char* nomvent,const char* 
 	  validarvent = false;
    }
 
-
-    return validarvent;
+   this->log->addLogMessage("[VALIDAR VENTANA] Terminado.", 2);
+   return validarvent;
 }
 
 jconfiguracion* parseadorJson::cargarConfiguracion(json_t* raiz){
@@ -171,24 +170,21 @@ jconfiguracion* parseadorJson::cargarConfiguracion(json_t* raiz){
 
 	 jconfiguracion *configuracion = new jconfiguracion();
 
-
      jsonconfiguracion = json_object_get(raiz, "configuracion");
+     this->log->addLogMessage("[CARGAR VELOCIDAD DE SCROLL] Iniciado.", 2);
+
   //   jsonvelscrol = json_object_get(jsonconfiguracion, "vel_scroll");
 
-
-      if((jsonconfiguracion)){
-
-
-      configuracion->setvelscroll(this->leerValorEntero(jsonconfiguracion,"vel_scroll",15));
-
-
+     if((jsonconfiguracion)){
+    	 configuracion->setvelscroll(this->leerValorEntero(jsonconfiguracion,"vel_scroll",15));
      }
-      else{
+     else{
+    	 this->log->addLogMessage("[CARGAR VELOCIDAD DE SCROLL] Error, no se encontro el atributo configuracion. Se carga un valor de velocidad de scroll por defecto.", 1);
+    	 configuracion->setvelscroll(15);
+     }
 
-    	  configuracion->setvelscroll(15);
-
-
-       }
+     this->log->imprimirMensajeNivelAlto("[CARGAR VELOCIDAD DE SCROLL] Velocidad de scroll: ", configuracion->getvelscroll());
+     this->log->addLogMessage("[CARGAR VELOCIDAD DE SCROLL] Terminado.", 2);
 	 return configuracion;
 }
 
@@ -215,150 +211,129 @@ std::string parseadorJson::leerValorStringCapas(json_t* padre,const char* nombre
 }
 
 jescenario* parseadorJson::cargarEscenario(json_t* raiz){
+	json_t *jsonescenario;
+	json_t *jdimensiones;
+	json_t *jcapas;
 
-	    json_t *jsonescenario;
+	jsonescenario = json_object_get(raiz, "escenario");
+	this->log->addLogMessage("[CARGAR ESCENARIO] Iniciado.",2);
+	jescenario *escenario = new jescenario();
+	//VALIDO QUE ESTE BIEN EL ESCENARIO,DIMENSION,ANCHO Y ALTO
 
-		json_t *jdimensiones;
+	if (jsonescenario){
+		jdimensiones = json_object_get(jsonescenario,"dimensiones");
+		if (jdimensiones){
+			//Validacion:Si uno de los dos esta mal tiene que dejar los dos por defecto
+			double alto, ancho;
 
-
-		json_t *jcapas;
-
-
-		jsonescenario = json_object_get(raiz, "escenario");
-
-		jescenario *escenario = new jescenario();
-		//VALIDO QUE ESTE BIEN EL ESCENARIO,DIMENSION,ANCHO Y ALTO
-
-
-		jsonescenario = json_object_get(raiz, "escenario");
-
-		if (jsonescenario){
-
-			jdimensiones = json_object_get(jsonescenario,"dimensiones");
-			if (jdimensiones){
-				//Validacion:
-				//Si uno de los dos esta mal tiene que dejar los dos por defecto
-				double alto;
-				double ancho;
-
-				if (this->tryLeerValorEntero(jdimensiones,"alto",&alto)
-				    && this->tryLeerValorEntero(jdimensiones,"ancho", &ancho) )
-				{
-					escenario->setalto(alto);
-					escenario->setancho(ancho);
-				}
+			if (this->tryLeerValorEntero(jdimensiones,"alto",&alto)
+				&& this->tryLeerValorEntero(jdimensiones,"ancho", &ancho) ){
+				escenario->setalto(alto);
+				escenario->setancho(ancho);
 			}
 		}
-		//Verificr lo que falta
+	}
+	else{
+		this->log->addLogMessage("[CARGAR ESCENARIO] Error, no se encontro el atributo dimensiones dentro de escenario. Se cargaran sus dimensiones por defecto.",1);
+	}
 
+	this->log->imprimirMensajeNivelAlto("[CARGAR ESCENARIO] Alto:",escenario->getalto());
+	this->log->imprimirMensajeNivelAlto("[CARGAR ESCENARIO] Ancho:",escenario->getancho());
 
-		jcapas = json_object_get(jsonescenario, "capas");
+	//Verificr lo que falta
+	jcapas = json_object_get(jsonescenario, "capas");
+	this->log->addLogMessage("[CARGAR CAPAS] Iniciado.",2);
+	list<capas> capalista;
 
-		//lista de capas
+	if (jcapas){
+		for( int i = 0; i < json_array_size(jcapas); i++ ){
+		   json_t *capai;
+		   capai = json_array_get(jcapas, i);
 
-		list<capas> capalista;
+		   if (capai){
+			   capas *jcapas = new capas();
+			   int id = 0, index_z = 0; string ruta = "";
 
-		if (jcapas){
-			for( int i = 0; i < json_array_size(jcapas); i++ ){
-			   json_t *capai;
-
-			   capai = json_array_get(jcapas, i);
-
-			   if (capai){
-				   capas *jcapas = new capas();
-				   jcapas->setid(this->leerValorEntero(capai,"id", 1));
-				   jcapas->setindex(this->leerValorEntero(capai,"index_z",99));
-				   string ruta;
-				   if (i == 0){
-					   ruta = "images/capa0.png";
-				   }
-				   if (i == 1){
-					   ruta = "images/capa1r.png";
-				   }
-				   jcapas->setrutaimagen(this->leerValorStringCapas(capai,"ruta_imagen",ruta));
-
-				   capalista.push_back(*jcapas);
+			   if (i == 0){
+				   ruta = "images/capa0.png";
+				   index_z = 99;
+			   }
+			   if (i == 1){
+				   ruta = "images/capa1r.png";
+				   index_z = 98;
 			   }
 
-		 	}
-			escenario->setcapas(capalista);
-	    }
-
-
-		if (escenario->getcapas().size() == 0){
-		      //si no encuentra la capa carga las dos capas por defecto
-		      capalista = this->DevolverCapasPorDefecto();
-		      escenario->setcapas(capalista);
+			   jcapas->setid(this->leerValorEntero(capai,"id", id));
+			   jcapas->setindex(this->leerValorEntero(capai,"index_z",index_z));
+			   jcapas->setrutaimagen(this->leerValorStringCapas(capai,"ruta_imagen",ruta));
+			   capalista.push_back(*jcapas);
+			   this->log->addLogMessage("[CARGAR CAPAS]" + jcapas->toString(),3);
+			   //this->log->addLogMessage("[CARGAR CAPAS] "+jcapas->toString(),3);
+			   //this->log->imprimirMensajeNivelAlto("[CARGAR CAPAS] Capa 1-> index_z:", jcapas->getindex());
+		   }
 		}
+		escenario->setcapas(capalista);
+	}
 
+	if (escenario->getcapas().size() == 0){
+		this->log->addLogMessage("[CARGAR CAPAS] Error, no se encontro el atributo capas dentro de escenario. Se cargaran capas por defecto.", 1);
+		//si no encuentra la capa carga las dos capas por defecto
+		capalista = this->DevolverCapasPorDefecto();
+		escenario->setcapas(capalista);
+	}
+	this->log->addLogMessage("[CARGAR CAPAS] Terminado.",2);
+	// agrego la lista total al escenario
 
-		// agrego la lista total al escenario
+	//ENTIDADES (viene de escenario)
+	json_t *jsonentidades;
+	jsonentidades = json_object_get(jsonescenario, "entidades");
+	this->log->addLogMessage("[CARGAR ENTIDADES] Iniciado.",2);
+	list<jentidades> listaentidades;
+	if ((jsonentidades)){
+		for( int i = 0; i < json_array_size(jsonentidades); i++ ){
+			json_t *entidadi;
+			json_t *dimensiones;
+			json_t *coordenada;
 
+			//voy creando nuevos objetos entidades
+			jentidades *entidades = new jentidades();
 
+			entidadi = json_array_get(jsonentidades, i);
+			if (entidadi){
+				entidades->setid(this->leerValorEntero(entidadi, "id", 1));
+				entidades->settipo(this->leerValorStringCapas(entidadi, "tipo", ""));
+				entidades->setcolor(this->leerValorStringCapas(entidadi, "color", "rojo"));
+				coordenada = json_object_get(entidadi,"coordenada");
 
-		 //ENTIDADES (viene de escenario)
+				if (coordenada){
+					double cordx,cordy;
 
-		  json_t *jsonentidades;
+					if (this->tryLeerValorEntero(coordenada, "x", &cordx)
+					&& this->tryLeerValorEntero(coordenada, "y", &cordy)){
+					 entidades->setcoorx(cordx);
+					 entidades->setcoory(cordy);
+					}
+				}
 
-		  jsonentidades = json_object_get(jsonescenario, "entidades");
+				dimensiones= json_object_get(entidadi,"dimensiones");
+				if (dimensiones){
+						  // devuelve 0...si eel elemento no tiene algun atributo
+				 //if (strcmp(entidades->gettipo()., "rectangulo") == 0){
+					if ((entidades->gettipo().compare("rectangulo") == 0)|| (entidades->gettipo().compare("cuadrado") == 0)  ){
+						double ancho;
+						double alto;
 
-		  list<jentidades> listaentidades;
-		  if ((jsonentidades)){
+						jrectangulo* rectangulo = new jrectangulo();
+						if (this->tryLeerValorEntero(dimensiones, "ancho", &ancho)
+						  && this->tryLeerValorEntero(dimensiones, "alto", &alto)){
+						  rectangulo->setalto(ancho);
+						  rectangulo->setancho(alto);
+						}
 
-			  for( int i = 0; i < json_array_size(jsonentidades); i++ ){
-
-				 json_t *entidadi;
-				 json_t *dimensiones;
-				 json_t *coordenada;
-
-							  //voy creando nuevos objetos entidades
-				 jentidades *entidades = new jentidades();
-
-				 entidadi = json_array_get(jsonentidades, i);
-
-				 if (entidadi){
-
-					 entidades->setid(this->leerValorEntero(entidadi, "id", 1));
-					 entidades->settipo(this->leerValorStringCapas(entidadi, "tipo", ""));
-					 entidades->setcolor(this->leerValorStringCapas(entidadi, "color", "rojo"));
-
-					 coordenada = json_object_get(entidadi,"coordenada");
-					 if (coordenada){
-						 double cordx;
-						 double cordy;
-
-						 if (this->tryLeerValorEntero(coordenada, "x", &cordx)
-						     && this->tryLeerValorEntero(coordenada, "y", &cordy)){
-
-							 entidades->setcoorx(cordx);
-  						     entidades->setcoory(cordy);
-						 }
-					 }
-
-
-
-
-					 dimensiones= json_object_get(entidadi,"dimensiones");
-					 if (dimensiones){
-						 if ((entidades->gettipo().compare("rectangulo") == 0)){
-
-							 double ancho;
-							 double alto;
-
-							 jrectangulo* rectangulo = new jrectangulo();
-
-
-							  if (this->tryLeerValorEntero(dimensiones, "ancho", &ancho)
-								  && this->tryLeerValorEntero(dimensiones, "alto", &alto)){
-								  rectangulo->setalto(ancho);
-								  rectangulo->setancho(alto);
-							  }
-
-							  rectangulo->settipo2("rectangulo");
-							  entidades->setDim(rectangulo);
-
-						  }
-						 //
+						rectangulo->settipo2("rectangulo");
+						entidades->setDim(rectangulo);
+					}
+											 //
 						 //aca va el cuadrado
 
 						  if (entidades->gettipo().compare("cuadrado") == 0){
@@ -420,26 +395,29 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 					 }
 
 
+				entidades->setruta(this->leerValorStringCapas(entidadi,"ruta_imagen", "/imagenes/entidad1.png"));
+				entidades->setindex(this->leerValorEntero(entidadi, "index_z", 99));
 
-					 entidades->setruta(this->leerValorStringCapas(entidadi,"ruta_imagen", "/imagenes/entidad1.png"));
-  				     entidades->setindex(this->leerValorEntero(entidadi, "index_z", 99));
+				if (entidades->esValida()){
+					listaentidades.push_back(*entidades);
+					this->log->addLogMessage("[CARGAR ENTIDADES] "+entidades->toString(),3);
+				}
+			}//if etidadi
+		}//for
 
-					 if (entidades->esValida()){
-					   listaentidades.push_back(*entidades);
-					}
-				 }//if etidadi
-			  }//for
+		escenario->setentidades(listaentidades);
 
-			  escenario->setentidades(listaentidades);
+	}//if ((jsonentidades))
 
-		  }//if ((jsonentidades))
+	if (escenario->getentidades().size() == 0){
+		this->log->addLogMessage("[CARGAR ENTIDADES] Error, no se encontro el atributo entidades dentro de escenario. Se cargaran entidades por defecto.",1);
+		listaentidades = this->DevolverEntidadesPorDefecto();
+		escenario->setentidades(listaentidades);
+	}
 
-		  if (escenario->getentidades().size() == 0){
-			  listaentidades = this->DevolverEntidadesPorDefecto();
-			  escenario->setentidades(listaentidades);
-		  }
-
-		  return escenario;
+	this->log->addLogMessage("[CARGAR ENTIDADES] Terminado.",2);
+	this->log->addLogMessage("[CARGAR ESCENARIO] Terminado.",2);
+	return escenario;
 }
 
 jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
@@ -447,18 +425,20 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
 	 json_t *json;
 	 json_error_t error;
 
+	 this->log->addLogMessage("[PARSEAR ARCHIVO] Iniciado.", 2);
 	 json = json_load_file(nombreArchivo,0,&error);
 
 	  if(!json) {
 	       cout << "!!! hay  probremas!!!" << endl;
 	       cout << error.text << endl;
+	       this->log->addLogMessage("[PARSEAR ARCHIVO] [ERROR] No se encontro el archivo o directorio.", 1);
 	       cout << "Cargando archivo por defecto" << endl;
 	       json = json_load_file("configuracion/default.json",0,&error);
+	       this->log->addLogMessage("[PARSEAR ARCHIVO] Se carga un archivo por defecto: configuracion/default.json .", 1);
 	       if (!json){
 		       cout << "!!! no existe el archivo por defecto!!!" << endl;
 		       cout << error.text << endl;
-		       cout << "Cargando archivo por defecto" << endl;
-
+		       this->log->addLogMessage("[PARSEAR ARCHIVO] No existe el archivo o directorio por defecto.", 1);
 		       return NULL;
 	       }
 	  }
@@ -470,7 +450,9 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
         result->setVentana(ventana);
         result->setEscenario(escenario);
         result->setConfiguracion(config);
-        this->log->addLogMessage("Se termino de leer el archivo de configuracion.", 2);
+
+        validarDimensionesVentana(result);
+        this->log->addLogMessage("[PARSEAR ARCHIVO] Terminado.", 2);
         return result;
     }
 
@@ -484,10 +466,12 @@ list<capas> parseadorJson::DevolverCapasPorDefecto(){
 	jcapas1->setid(1);
 	jcapas1->setindex(99);
 	jcapas1->setrutaimagen("images/capa0.png");
+	this->log->addLogMessage("[CARGAS CAPAS] Capa 1: id:1, index_z: 99, ruta_imagen: images/capa0.png  ", 3);
 
 	jcapas2->setid(2);
 	jcapas2->setindex(98);
 	jcapas2->setrutaimagen("images/capa1r.png");
+	this->log->addLogMessage("[CARGAS CAPAS] Capa 2: id:2, index_z: 98, ruta_imagen: images/capa1r.png  ", 3);
 
 	capasdefault.push_back(*jcapas1);
 	capasdefault.push_back(*jcapas2);
@@ -520,6 +504,7 @@ list<jentidades> parseadorJson::DevolverEntidadesPorDefecto(){
     entidades1->setindex(99);
 
     entidadesdefault.push_back(*entidades1);
+    this->log->addLogMessage("[CARGAR ENTIDADES] Entidad 1-> id: 1, tipo: rectangulo, color: rojo, dimesiones->( alto: 20, ancho: 40), (coordenadas-> x:100, y:100)",3);
 
     entidades2->setid(2);
     entidades2->settipo("rectangulo");
@@ -537,6 +522,7 @@ list<jentidades> parseadorJson::DevolverEntidadesPorDefecto(){
     entidades2->setindex(99);
 
     entidadesdefault.push_back(*entidades2);
+    this->log->addLogMessage("[CARGAR ENTIDADES] Entidad 2-> id: 2, tipo: rectangulo, color: verde, dimesiones->( alto: 35, ancho: 80), (coordenadas-> x:200, y:200)",3);
 
     entidades3->setid(3);
     entidades3->settipo("circulo");
@@ -553,10 +539,22 @@ list<jentidades> parseadorJson::DevolverEntidadesPorDefecto(){
     entidades3->setindex(99);
 
     entidadesdefault.push_back(*entidades3);
+    this->log->addLogMessage("[CARGAR ENTIDADES] Entidad 1-> id: 3, tipo: circulo, color: amarillo, dimesiones-> radio: 15, (coordenadas-> x:300, y:300)",3);
 
     return entidadesdefault;
 }
 jescenarioJuego* parseadorJson::getescenario(){
 	return juego;
+}
+
+void parseadorJson::validarDimensionesVentana(jescenarioJuego *escenarioJuego){
+	this->log->addLogMessage("[VALIDAR DIMENSIONES DE LA VENTANA] Iniciado.", 2 );
+    if(escenarioJuego->getEscenario()->getancho() < escenarioJuego->getVentana()->getancho()){
+
+    	//escenarioJuego->getEscenario()->setancho(escenarioJuego->getVentana()->getancho());
+   }
+
+	this->log->addLogMessage("[VALIDAR DIMENSIONES DE LA VENTANA] Terminado.", 2 );
+
 }
 } /* namespace std */
