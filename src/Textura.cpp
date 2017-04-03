@@ -26,9 +26,14 @@ void Textura::cargarImagen(std::string path,SDL_Renderer* render)
 	//en caso que hubiera una textura creada, la libero para podeer crear otra
 	this->liberarTextura();
 	SDL_Surface* superficie = IMG_Load( path.c_str() );
-	if( superficie == NULL  )
+	if( superficie == NULL && this->index_z == 99 )
 	{
-		superficie = IMG_Load( "images/entidad1.png" );
+		superficie = IMG_Load( "images/capa0default.png" );
+		//printf( "incapaz de crear imagen %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
+	}
+	if( superficie == NULL && this->index_z == 98 )
+	{
+		superficie = IMG_Load( "images/capa1default.png" );
 		//printf( "incapaz de crear imagen %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
 	}
 

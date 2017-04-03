@@ -40,33 +40,26 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 
 void VistaSDL::validacionesEscenario(jescenario *jescenario)
 {
-	if(jescenario->getancho() <= MAXIMO_ANCHO_ESCENARIO )//|| jescenario->getancho()>jventana->getancho())
-	{
-		this->anchoescenario=jescenario->getancho();
-	}
-	else
+	this->anchoescenario=jescenario->getancho();
+	this->altoescenario=jescenario->getalto();
+
+	if(jescenario->getancho() > MAXIMO_ANCHO_ESCENARIO)
 	{
 		this->anchoescenario = MAXIMO_ANCHO_ESCENARIO;
 	}
-	if(jescenario->getalto() <= MAXIMO_ALTO_ESCENARIO )//|| jescenario->getalto()>jventana->getalto())
-	{
-		this->altoescenario=jescenario->getalto();
-	}
-	else
-	{
-		this->altoescenario = MAXIMO_ALTO_ESCENARIO;
-	}
-
-
-	if ( jescenario->getancho() <= this->anchoVentana )
+	else if(jescenario->getancho() < this->anchoVentana)
 	{
 		this->anchoescenario = this->anchoVentana;
 	}
-	if (jescenario->getalto() <= this->altoVentana)
+
+	if(jescenario->getalto() > MAXIMO_ALTO_ESCENARIO)
+	{
+		this->altoescenario = MAXIMO_ALTO_ESCENARIO;
+	}
+	else if(jescenario->getalto() < this->altoVentana)
 	{
 		this->altoescenario = this->altoVentana;
 	}
-
 }
 
 void VistaSDL::validacionesVentana()
@@ -78,7 +71,7 @@ void VistaSDL::validacionesVentana()
 		this->altoVentana = MAX_ALTO_VENTANA;
 	}
 
-	if( this->anchoVentana < MIN_ANCHO_VENTANA_PERMITIDO || this->altoVentana < MIN_ALTO_VENTANA_PERMITIDO )
+	else if( this->anchoVentana < MIN_ANCHO_VENTANA_PERMITIDO || this->altoVentana < MIN_ALTO_VENTANA_PERMITIDO )
 	{
 		this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
 		this->altoVentana = ALTO_VENTANA_POR_DEFECTO;

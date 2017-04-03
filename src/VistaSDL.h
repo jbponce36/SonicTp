@@ -32,6 +32,7 @@ using namespace std;
 #define MAX_ALTO_VENTANA 500
 #define MAX_ANCHO_VENTANA 900
 
+
 class VistaSDL{
 
 private:

@@ -533,7 +533,7 @@ jescenarioJuego* parseadorJson::getescenario(){
 
 void parseadorJson::validarDimensionesVentana(jescenarioJuego *escenarioJuego){
     if(escenarioJuego->getEscenario()->getancho() < escenarioJuego->getVentana()->getancho()){
-    	escenarioJuego->getEscenario()->setancho(escenarioJuego->getVentana()->getancho());
-    }
+    	//escenarioJuego->getEscenario()->setancho(escenarioJuego->getVentana()->getancho());
+   }
 }
 } /* namespace std */
