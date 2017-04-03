@@ -27,8 +27,9 @@ public:
 
 	int validateFileName();
 	int validateLevel();
+	void iniciarLog();
 	int addLogMessage(string logMessage, int nivel);
-	int addLogMessage(string logMessage, int x,int y, string logMessage2,int valor);
+	void imprimirMensajeNivelAlto(string logMessage,int valor);
     char *getArchivo() const;
     void setArchivo(char *archivo);
     string getModulo() const;

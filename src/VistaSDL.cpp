@@ -21,7 +21,6 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->anchoVentana= jventana->getancho();
 	//validamos escenario si tiene numeros negativos o excesivos ponemos valores por defecto
 	this->validacionesEscenario(jescenario);
-
 	this->velocidadScroll=jconfiguracion->getvelscroll();
 	this->renderizador = NULL;
 	this->crearVentanaYrenderizador();
@@ -32,7 +31,8 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->superficiePantalla = NULL;
 	this->superficieACargar = NULL;
 	this->cargarCapas(jescenario);
-
+	this->log = logger;
+	this->log->setModulo("VISTA SDL");
 }
 
 void VistaSDL::validacionesEscenario(jescenario *jescenario)
@@ -241,6 +241,15 @@ void VistaSDL::mostrarEntidades(SDL_Rect *camara, int indexZ)
 	constructorEntidades->mostrarEntidades(renderizador, camara, indexZ);
 }
 
+Logger *VistaSDL::getLog() const
+{
+    return log;
+}
+
+void VistaSDL::setLog(Logger *log)
+{
+    this->log = log;
+}
 
 
 

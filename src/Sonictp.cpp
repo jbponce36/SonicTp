@@ -20,42 +20,44 @@
 #define MODULO 'PRINCIPAL'
 using namespace std;
 
-
-int main(int argc, char *argv[]) {
-
+int getNivelLogger(int argc, char *argv[]){
 	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
+
 	char *nivelLog = (char*)"2";
 	if(argc>1){
 		nivelLog = argv[1];
 	}
 
-	char *archivoLog=(char*)"configuracion/log.txt";
 	char *nivel= (char*)nivelLog;
-	Logger *log = new Logger(archivoLog, atoi(nivel), "PRINCIPAL");
+	return atoi(nivel);
+}
+
+int main(int argc, char *argv[]) {
+
+	char *archivoLog=(char*)"configuracion/log.txt";
+	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "PRINCIPAL");
+	log->iniciarLog();
 
 	//Se lee del json el nombre de la ventana
 	parseadorJson* parseador = new parseadorJson(log);
 
-
 	char *file=(char*)"configuracion/configuracion.json";
-	parseador->getLog()->addLogMessage("Se inicia el juego.",1);
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
-    jpruebas* jpru = new jpruebas();
-    jpru->prueba(jparseador);
+    //jpruebas* jpru = new jpruebas();
+    //jpru->prueba(jparseador);
 
+    log->setModulo("PRINCIPAL");
+	log->addLogMessage("Se empieza a cargar la vista.",1);
     VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
 
-    Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario());
-    parseador->getLog()->setModulo("PRINCIPAL");
-	parseador->getLog()->addLogMessage("Se carga la vista.",1);
+	Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario());
     Control *control = new Control(0, 0);
-
     control->ControlarJuego(vista,sonic);
 
-
+	parseador->getLog()->addLogMessage("Se termina de cargar la vista.",1);
 	vista->cerrar();
-	parseador->getLog()->addLogMessage("Se termina el juego.",1);
+	log->iniciarLog();
 
 	return 0;
 }

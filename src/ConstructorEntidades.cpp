@@ -8,7 +8,6 @@
 #define MODULO 'PARSEADOR JSON'
 #include "ConstructorEntidades.h"
 
-
 namespace std
 {
 
@@ -49,7 +48,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 	{
 		if(((*pos).gettipo() == "rectangulo") || ((*pos).gettipo() == "cuadrado"))
 		{
-			this->log->addLogMessage("[CARGA DE ENTIDADES] Procesando rectangulo.", 2);
+
 			id = (*pos).getid();
 			color = (*pos).getcolor();
 			ancho = (*pos).getDim()->getvalor1();
@@ -68,15 +67,12 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 				validarCuadrado(ancho, alto);
 			}
 			Rectangulo *rectangulo = new Rectangulo(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ);
-
 			entidades.push_back(rectangulo);
-
-			this->log->addLogMessage("[CARGA DE ENTIDADES] Fin proceso rectangulo.", 2);
 		}
 
 		if((*pos).gettipo() == "circulo")
 		{
-			this->log->addLogMessage("[CARGA DE ENTIDADES] Procesando circulo.", 2);
+
 			id = (*pos).getid();
 			color = (*pos).getcolor();
 			radio = (*pos).getDim()->getvalor1();
@@ -89,10 +85,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			validar(radio, 0, MAX_RADIO);
 
 			Circulo *circulo = new Circulo(radio, id, color, rutaImagen, coordX, coordY, indexZ);
-
 			entidades.push_back(circulo);
-
-			 this->log->addLogMessage("[CARGA DE ENTIDADES] Fin proceso circulo.", 2);
 		}
 	}
 
@@ -115,9 +108,6 @@ void ConstructorEntidades::setLog(Logger *log)
 void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 {
 	list<Entidad*>::iterator pos;
-
-	this->log->addLogMessage( "[MOSTRAR ENTIDADES] Iniciado.", 2);
-
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
 		if ((*pos)->tieneRutaImagen())
@@ -126,13 +116,11 @@ void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 		}
 	}
 
-	this->log->addLogMessage("[MOSTRAR ENTIDADES] Terminado.", 2);
+
 }
 void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ)
 {
 	list<Entidad*>::iterator pos;
-
-	this->log->addLogMessage("[MOSTRAR ENTIDADES] Iniciado.", 2);
 
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
@@ -141,8 +129,6 @@ void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect
 			(*pos)->dibujar(renderizador, camara);
 		}
 	}
-
-	this->log->addLogMessage( "[MOSTRAR ENTIDADES] Terminado.", 2);
 }
 
 bool compararIndexZ(const Entidad *primera, const Entidad *segunda)

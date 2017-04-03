@@ -31,21 +31,21 @@ namespace std {
         esvalido = validarVentana(raiz, "ventana", "dimensiones", "alto", "ancho");
 
         if(esvalido){
-            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Iniciado.", 2);
+            this->log->addLogMessage("[CARGAR VENTANA] Iniciado.", 2);
             jsonventana = json_object_get(raiz, "ventana");
             jsonventana = json_object_get(jsonventana, "dimensiones");
             jsonventanaalto = json_object_get(jsonventana, "alto");
-            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Seteando alto.", 3);
             jsonventanaancho = json_object_get(jsonventana, "ancho");
-            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Seteando ancho.", 3);
             ventana->setalto(json_number_value(jsonventanaalto));
+            this->log->imprimirMensajeNivelAlto("[CARGAR VENTANA] Alto: ",json_number_value(jsonventanaalto) );
             ventana->setancho(json_number_value(jsonventanaancho));
-            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] Terminado.", 2);
+            this->log->imprimirMensajeNivelAlto("[CARGAR VENTANA] Ancho: ",json_number_value(jsonventanaancho) );
+            this->log->addLogMessage("[CARGAR VENTANA] Terminado.", 2);
         }else{
-            this->log->addLogMessage("[CONFIGURACION DE LA VENTANA] No se han encontrado los atributos correctos, se cargaran valores por defecto", 1);
+            this->log->addLogMessage("[CARGAR VENTANA] No se han encontrado los atributos correctos.", 1);
             ventana->setalto(480);
             ventana->setancho(640);
-
+            this->log->addLogMessage("[CARGAR VENTANA] Se cargaron dimensiones por defecto, alto: 480 y ancho:640.", 1);
         }
         return ventana;
     }
@@ -57,7 +57,7 @@ parseadorJson::parseadorJson() {
 
 parseadorJson::parseadorJson(Logger *log) {
 	this->log = log;
-
+	this->log->setModulo("PARSEADOR JSON");
 }
 
 
@@ -67,6 +67,7 @@ Logger* parseadorJson::getLog() const {
 
 void parseadorJson::setLog(Logger* log) {
 	this->log = log;
+	this->log->setModulo("PARSEADOR JSON");
 }
 
 parseadorJson::~parseadorJson() {
@@ -105,7 +106,6 @@ double parseadorJson::leerValorEntero(json_t* padre, const char* nombre,int valo
 	}
 
 	return json_number_value(elemento);
-
 }
 
 bool parseadorJson::tryLeerValorEntero(json_t* padre,
@@ -137,19 +137,17 @@ bool parseadorJson::validarVentana(json_t* raiz,const char* nomvent,const char* 
     json_t *jsonalto;
     bool validarvent = true;
 
+    this->log->addLogMessage("[VALIDAR VENTANA] Iniciado.", 2);
 	jsonventana = json_object_get(raiz,nomvent);
 	jsondimension = json_object_get(jsonventana,nomdim);
 	jsonancho = json_object_get(jsondimension,nomancho);
 	jsonalto = 	json_object_get(jsondimension,nomalto);
 
-
 	if((!jsonventana)&&(!jsondimension)){
-
 		validarvent = false;
 	}
 	else{
 		validarvent = true;
-
 	}
 
    if(json_number_value(jsonancho) && json_number_value(jsonalto)){
@@ -159,8 +157,8 @@ bool parseadorJson::validarVentana(json_t* raiz,const char* nomvent,const char* 
 	  validarvent = false;
    }
 
-
-    return validarvent;
+   this->log->addLogMessage("[VALIDAR VENTANA] Terminado.", 2);
+   return validarvent;
 }
 
 jconfiguracion* parseadorJson::cargarConfiguracion(json_t* raiz){
@@ -170,24 +168,20 @@ jconfiguracion* parseadorJson::cargarConfiguracion(json_t* raiz){
 
 	 jconfiguracion *configuracion = new jconfiguracion();
 
-
      jsonconfiguracion = json_object_get(raiz, "configuracion");
+     this->log->addLogMessage("[CARGAR VELOCIDAD DE SCROLL] Iniciado.", 2);
+
   //   jsonvelscrol = json_object_get(jsonconfiguracion, "vel_scroll");
 
-
-      if((jsonconfiguracion)){
-
-
-      configuracion->setvelscroll(this->leerValorEntero(jsonconfiguracion,"vel_scroll",15));
-
-
+     if((jsonconfiguracion)){
+    	 configuracion->setvelscroll(this->leerValorEntero(jsonconfiguracion,"vel_scroll",15));
      }
-      else{
+     else{
+    	 configuracion->setvelscroll(15);
+     }
 
-    	  configuracion->setvelscroll(15);
-
-
-       }
+     this->log->imprimirMensajeNivelAlto("[CARGAR VELOCIDAD DE SCROLL] Velocidad de scroll ", configuracion->getvelscroll());
+     this->log->addLogMessage("[CARGAR VELOCIDAD DE SCROLL] Terminado.", 2);
 	 return configuracion;
 }
 
@@ -214,37 +208,27 @@ std::string parseadorJson::leerValorStringCapas(json_t* padre,const char* nombre
 }
 
 jescenario* parseadorJson::cargarEscenario(json_t* raiz){
-
 	    json_t *jsonescenario;
-
 		json_t *jdimensiones;
-
-
 		json_t *jcapas;
 
-
 		jsonescenario = json_object_get(raiz, "escenario");
-
+		this->log->addLogMessage("[CARGAR ESCENARIO] Iniciado.",2);
 		jescenario *escenario = new jescenario();
 		//VALIDO QUE ESTE BIEN EL ESCENARIO,DIMENSION,ANCHO Y ALTO
 
-
-		jsonescenario = json_object_get(raiz, "escenario");
-
 		if (jsonescenario){
-
 			jdimensiones = json_object_get(jsonescenario,"dimensiones");
 			if (jdimensiones){
-				//Validacion:
-				//Si uno de los dos esta mal tiene que dejar los dos por defecto
-				double alto;
-				double ancho;
+				//Validacion:Si uno de los dos esta mal tiene que dejar los dos por defecto
+				double alto, ancho;
 
 				if (this->tryLeerValorEntero(jdimensiones,"alto",&alto)
-				    && this->tryLeerValorEntero(jdimensiones,"ancho", &ancho) )
-				{
+				    && this->tryLeerValorEntero(jdimensiones,"ancho", &ancho) ){
 					escenario->setalto(alto);
+					this->log->imprimirMensajeNivelAlto("[CARGAR ESCENARIO] Alto:",alto);
 					escenario->setancho(ancho);
+					this->log->imprimirMensajeNivelAlto("[CARGAR ESCENARIO] Ancho:",ancho);
 				}
 			}
 		}
@@ -252,15 +236,12 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 
 
 		jcapas = json_object_get(jsonescenario, "capas");
-
 		//lista de capas
-
 		list<capas> capalista;
 
 		if (jcapas){
 			for( int i = 0; i < json_array_size(jcapas); i++ ){
 			   json_t *capai;
-
 			   capai = json_array_get(jcapas, i);
 
 			   if (capai){
@@ -275,10 +256,8 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 					   ruta = "images/capa1r.png";
 				   }
 				   jcapas->setrutaimagen(this->leerValorStringCapas(capai,"ruta_imagen",ruta));
-
 				   capalista.push_back(*jcapas);
 			   }
-
 		 	}
 			escenario->setcapas(capalista);
 	    }
@@ -303,7 +282,6 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 
 		  list<jentidades> listaentidades;
 		  if ((jsonentidades)){
-
 			  for( int i = 0; i < json_array_size(jsonentidades); i++ ){
 
 				 json_t *entidadi;
@@ -408,6 +386,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 			  escenario->setentidades(listaentidades);
 		  }
 
+		  this->log->addLogMessage("[CARGAR ESCENARIO] Terminado.",2);
 		  return escenario;
 }
 
@@ -416,18 +395,20 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
 	 json_t *json;
 	 json_error_t error;
 
+	 this->log->addLogMessage("[PARSEAR ARCHIVO] Iniciado.", 2);
 	 json = json_load_file(nombreArchivo,0,&error);
 
 	  if(!json) {
 	       cout << "!!! hay  probremas!!!" << endl;
 	       cout << error.text << endl;
+	       this->log->addLogMessage("[PARSEAR ARCHIVO] [ERROR] No se encontro el archivo o directorio.", 1);
 	       cout << "Cargando archivo por defecto" << endl;
 	       json = json_load_file("configuracion/default.json",0,&error);
+	       this->log->addLogMessage("[PARSEAR ARCHIVO] Se carga un archivo por defecto: configuracion/default.json .", 1);
 	       if (!json){
 		       cout << "!!! no existe el archivo por defecto!!!" << endl;
 		       cout << error.text << endl;
-		       cout << "Cargando archivo por defecto" << endl;
-
+		       this->log->addLogMessage("[PARSEAR ARCHIVO] No existe el archivo o directorio por defecto.", 1);
 		       return NULL;
 	       }
 	  }
@@ -441,7 +422,7 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
         result->setConfiguracion(config);
 
         validarDimensionesVentana(result);
-        this->log->addLogMessage("Se termino de leer el archivo de configuracion.", 2);
+        this->log->addLogMessage("[PARSEAR ARCHIVO] Terminado.", 2);
         return result;
     }
 
