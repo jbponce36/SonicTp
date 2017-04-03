@@ -509,8 +509,11 @@ jescenarioJuego* parseadorJson::getescenario(){
 }
 
 void parseadorJson::validarDimensionesVentana(jescenarioJuego *escenarioJuego){
+	this->log->addLogMessage("[VALIDAR DIMENSIONES DE LA VENTANA] Iniciado.", 2 );
     if(escenarioJuego->getEscenario()->getancho() < escenarioJuego->getVentana()->getancho()){
     	escenarioJuego->getEscenario()->setancho(escenarioJuego->getVentana()->getancho());
+    	this->log->addLogMessage("[VALIDAR DIMENSIONES DE LA VENTANA] El ancho del escenario es menor que el de la ventana, se cambio el ancho del escenario al mismo que de la ventana", 3 );
     }
+	this->log->addLogMessage("[VALIDAR DIMENSIONES DE LA VENTANA] Terminado.", 2 );
 }
 } /* namespace std */

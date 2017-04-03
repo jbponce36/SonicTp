@@ -49,6 +49,7 @@ int main(int argc, char *argv[]) {
 
     log->setModulo("PRINCIPAL");
 	log->addLogMessage("Se empieza a cargar la vista.",1);
+	log->setLevel(getNivelLogger(argc, argv));
     VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
 
 	Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario());

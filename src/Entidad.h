@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <sstream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "Logger.h"
@@ -18,6 +19,7 @@ private:
 	unsigned int indexZ;
 	SDL_Texture *imagen;
 	Logger *log;
+	string intToString(int number);
 
 public:
 	Entidad();
@@ -34,6 +36,7 @@ public:
 	bool indexZes(int otroIndexZ);
     Logger *getLog() const;
     void setLog(Logger *log);
+	string toString();
 
 
 private:
