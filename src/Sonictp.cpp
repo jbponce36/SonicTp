@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 
 	char *archivoLog=(char*)"configuracion/log.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "PRINCIPAL");
-	log->iniciarLog();
+	log->iniciarLog("INICAR LOGGER");
 
 	//Se lee del json el nombre de la ventana
 	parseadorJson* parseador = new parseadorJson(log);
@@ -44,8 +44,8 @@ int main(int argc, char *argv[]) {
 	char *file=(char*)"configuracion/configuracion.json";
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
-    //jpruebas* jpru = new jpruebas();
-    //jpru->prueba(jparseador);
+    jpruebas* jpru = new jpruebas();
+    jpru->prueba(jparseador);
 
     log->setModulo("PRINCIPAL");
 	log->addLogMessage("Se empieza a cargar la vista.",1);
@@ -55,9 +55,10 @@ int main(int argc, char *argv[]) {
     Control *control = new Control(0, 0);
     control->ControlarJuego(vista,sonic);
 
-	parseador->getLog()->addLogMessage("Se termina de cargar la vista.",1);
+    log->setModulo("PRINCIPAL");
+	log->addLogMessage("Se termina de cargar la vista.",1);
 	vista->cerrar();
-	log->iniciarLog();
+	log->iniciarLog("TERMINAR LOGGER");
 
 	return 0;
 }

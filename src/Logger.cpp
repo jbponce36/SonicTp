@@ -65,7 +65,7 @@ void Logger::setArchivo(char *archivo)
     this->archivo = archivo;
 }
 
-void Logger::iniciarLog(){
+void Logger::iniciarLog(string mensaje){
 	ofstream myfile;
 	myfile.open(this->archivo, ios_base::app);
 
@@ -84,7 +84,7 @@ void Logger::iniciarLog(){
 		 <<  now->tm_sec
 		 <<"] ";
 
-	myfile<<"INICIANDO LOGGER EN NIVEL:"<< this->getLevel()<<endl;
+	myfile<<mensaje<<" EN NIVEL: "<< this->getLevel()<<endl;
 	myfile<<"-------------------------------------------------------------------------------------------"<<endl;
 	myfile.close();
 }
