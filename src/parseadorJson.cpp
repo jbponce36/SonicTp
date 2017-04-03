@@ -42,10 +42,9 @@ namespace std {
             this->log->imprimirMensajeNivelAlto("[CARGAR VENTANA] Ancho: ",json_number_value(jsonventanaancho) );
             this->log->addLogMessage("[CARGAR VENTANA] Terminado.", 2);
         }else{
-            this->log->addLogMessage("[CARGAR VENTANA] No se han encontrado los atributos correctos.", 1);
             ventana->setalto(480);
             ventana->setancho(640);
-            this->log->addLogMessage("[CARGAR VENTANA] Se cargaron dimensiones por defecto, alto: 480 y ancho:640.", 1);
+            this->log->addLogMessage("[CARGAR VENTANA] Alto: 480, Ancho:640.", 3);
         }
         return ventana;
     }
@@ -144,6 +143,7 @@ bool parseadorJson::validarVentana(json_t* raiz,const char* nomvent,const char* 
 	jsonalto = 	json_object_get(jsondimension,nomalto);
 
 	if((!jsonventana)&&(!jsondimension)){
+		this->log->addLogMessage("[VALIDAR VENTANA] ERROR. No se encontro el atributo dimensiones dentro de ventana. Se cargaron dimensiones por defecto.", 1);
 		validarvent = false;
 	}
 	else{
@@ -177,12 +177,11 @@ jconfiguracion* parseadorJson::cargarConfiguracion(json_t* raiz){
     	 configuracion->setvelscroll(this->leerValorEntero(jsonconfiguracion,"vel_scroll",15));
      }
      else{
-    	 this->log->addLogMessage("[CARGAR VELOCIDAD DE SCROLL] Error, no se encontro el atributo configuracion", 1);
+    	 this->log->addLogMessage("[CARGAR VELOCIDAD DE SCROLL] Error, no se encontro el atributo configuracion. Se carga un valor de velocidad de scroll por defecto.", 1);
     	 configuracion->setvelscroll(15);
-    	 this->log->imprimirMensajeNivelAlto("[CARGAR VELOCIDAD DE SCROLL] Se setea un valor de velocidad por defecto.", configuracion->getvelscroll());
      }
 
-     this->log->imprimirMensajeNivelAlto("[CARGAR VELOCIDAD DE SCROLL] Velocidad de scroll ", configuracion->getvelscroll());
+     this->log->imprimirMensajeNivelAlto("[CARGAR VELOCIDAD DE SCROLL] Velocidad de scroll: ", configuracion->getvelscroll());
      this->log->addLogMessage("[CARGAR VELOCIDAD DE SCROLL] Terminado.", 2);
 	 return configuracion;
 }
@@ -237,7 +236,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 	}
 
 	this->log->imprimirMensajeNivelAlto("[CARGAR ESCENARIO] Alto:",escenario->getalto());
-	this->log->imprimirMensajeNivelAlto("[CARGAR ESCENARIO] Alto:",escenario->getancho());
+	this->log->imprimirMensajeNivelAlto("[CARGAR ESCENARIO] Ancho:",escenario->getancho());
 
 	//Verificr lo que falta
 	jcapas = json_object_get(jsonescenario, "capas");
@@ -266,8 +265,8 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 			   jcapas->setindex(this->leerValorEntero(capai,"index_z",index_z));
 			   jcapas->setrutaimagen(this->leerValorStringCapas(capai,"ruta_imagen",ruta));
 			   capalista.push_back(*jcapas);
-			   this->log->imprimirMensajeNivelAlto("[CARGAR CAPAS]" ,jcapas->getid() );
-			   this->log->imprimirMensajeNivelAlto("[CARGAR CAPAS]", jcapas->getindex());
+			   this->log->addLogMessage("[CARGAR CAPAS] "+jcapas->toString(),3);
+			   //this->log->imprimirMensajeNivelAlto("[CARGAR CAPAS] Capa 1-> index_z:", jcapas->getindex());
 		   }
 		}
 		escenario->setcapas(capalista);
@@ -355,7 +354,6 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 					 circulo->settipo2("circulo");
 					 entidades->setDim(circulo);
 					}
-
 				}
 
 				entidades->setruta(this->leerValorStringCapas(entidadi,"ruta_imagen", "/imagenes/entidad1.png"));
@@ -363,6 +361,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 
 				if (entidades->esValida()){
 					listaentidades.push_back(*entidades);
+					this->log->addLogMessage("[CARGAR ENTIDADES] "+entidades->toString(),3);
 				}
 			}//if etidadi
 		}//for
@@ -372,7 +371,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 	}//if ((jsonentidades))
 
 	if (escenario->getentidades().size() == 0){
-		this->log->addLogMessage("[CARGAR ESCENARIO] Error, no se encontro el atributo entidades dentro de escenario. Se cargaran entidades por defecto.",1);
+		this->log->addLogMessage("[CARGAR ENTIDADES] Error, no se encontro el atributo entidades dentro de escenario. Se cargaran entidades por defecto.",1);
 		listaentidades = this->DevolverEntidadesPorDefecto();
 		escenario->setentidades(listaentidades);
 	}
@@ -426,18 +425,14 @@ list<capas> parseadorJson::DevolverCapasPorDefecto(){
 	capas *jcapas2 = new capas();
 
 	jcapas1->setid(1);
-	this->log->imprimirMensajeNivelAlto("[CARGAS CAPAS] Id: ", 1);
 	jcapas1->setindex(99);
-	this->log->imprimirMensajeNivelAlto("[CARGAS CAPAS] Index_z: ", 99);
 	jcapas1->setrutaimagen("images/capa0.png");
-	this->log->imprimirMensajeNivelAlto("[CARGAS CAPAS] Ruta_imagen: ", 1);
+	this->log->addLogMessage("[CARGAS CAPAS] Capa 1: id:1, index_z: 99, ruta_imagen: images/capa0.png  ", 3);
 
 	jcapas2->setid(2);
-	this->log->imprimirMensajeNivelAlto("[CARGAS CAPAS] Id: ", 2);
 	jcapas2->setindex(98);
-	this->log->imprimirMensajeNivelAlto("[CARGAS CAPAS] Index_z: ", 98);
 	jcapas2->setrutaimagen("images/capa1r.png");
-	this->log->imprimirMensajeNivelAlto("[CARGAS CAPAS] Ruta_imagen: ", 1);
+	this->log->addLogMessage("[CARGAS CAPAS] Capa 2: id:2, index_z: 98, ruta_imagen: images/capa1r.png  ", 3);
 
 	capasdefault.push_back(*jcapas1);
 	capasdefault.push_back(*jcapas2);
@@ -470,6 +465,7 @@ list<jentidades> parseadorJson::DevolverEntidadesPorDefecto(){
     entidades1->setindex(99);
 
     entidadesdefault.push_back(*entidades1);
+    this->log->addLogMessage("[CARGAR ENTIDADES] Entidad 1-> id: 1, tipo: rectangulo, color: rojo, dimesiones->( alto: 20, ancho: 40), (coordenadas-> x:100, y:100)",3);
 
     entidades2->setid(2);
     entidades2->settipo("rectangulo");
@@ -487,6 +483,7 @@ list<jentidades> parseadorJson::DevolverEntidadesPorDefecto(){
     entidades2->setindex(99);
 
     entidadesdefault.push_back(*entidades2);
+    this->log->addLogMessage("[CARGAR ENTIDADES] Entidad 2-> id: 2, tipo: rectangulo, color: verde, dimesiones->( alto: 35, ancho: 80), (coordenadas-> x:200, y:200)",3);
 
     entidades3->setid(3);
     entidades3->settipo("circulo");
@@ -503,6 +500,7 @@ list<jentidades> parseadorJson::DevolverEntidadesPorDefecto(){
     entidades3->setindex(99);
 
     entidadesdefault.push_back(*entidades3);
+    this->log->addLogMessage("[CARGAR ENTIDADES] Entidad 1-> id: 3, tipo: circulo, color: amarillo, dimesiones-> radio: 15, (coordenadas-> x:300, y:300)",3);
 
     return entidadesdefault;
 }
