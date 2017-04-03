@@ -27,13 +27,11 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 		while( SDL_PollEvent( &e ) != 0 )
 		{
 			//usuario pide cierre
-			if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE )
+			if( e.type == SDL_QUIT )
 			{
 				salir = true;
 			}
-			if(e.key.keysym.sym == SDLK_ESCAPE ){
-				salir = true;
-			}
+
 
 			sonic->procesarEvento( e );
 		}
