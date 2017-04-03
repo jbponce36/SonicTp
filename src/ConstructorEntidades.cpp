@@ -8,7 +8,6 @@
 #define MODULO 'PARSEADOR JSON'
 #include "ConstructorEntidades.h"
 
-
 namespace std
 {
 
@@ -49,7 +48,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 	{
 		if(((*pos).gettipo() == "rectangulo") || ((*pos).gettipo() == "cuadrado"))
 		{
-			this->log->addLogMessage("[CARGA DE ENTIDADES] Procesando rectangulo.", 2);
+
 			id = (*pos).getid();
 			color = (*pos).getcolor();
 			ancho = (*pos).getDim()->getvalor1();
@@ -68,15 +67,12 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 				validarCuadrado(ancho, alto);
 			}
 			Rectangulo *rectangulo = new Rectangulo(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ);
-
 			entidades.push_back(rectangulo);
-
-			this->log->addLogMessage("[CARGA DE ENTIDADES] Fin proceso rectangulo.", 2);
 		}
 
 		if((*pos).gettipo() == "circulo")
 		{
-			this->log->addLogMessage("[CARGA DE ENTIDADES] Procesando circulo.", 2);
+
 			id = (*pos).getid();
 			color = (*pos).getcolor();
 			radio = (*pos).getDim()->getvalor1();
@@ -89,10 +85,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			validar(radio, 0, MAX_RADIO);
 
 			Circulo *circulo = new Circulo(radio, id, color, rutaImagen, coordX, coordY, indexZ);
-
 			entidades.push_back(circulo);
-
-			 this->log->addLogMessage("[CARGA DE ENTIDADES] Fin proceso circulo.", 2);
 		}
 	}
 
@@ -114,10 +107,8 @@ void ConstructorEntidades::setLog(Logger *log)
 
 void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 {
+	this->log->addLogMessage("[CARGAR IMAGENES] Iniciado",2);
 	list<Entidad*>::iterator pos;
-
-	this->log->addLogMessage( "[MOSTRAR ENTIDADES] Iniciado.", 2);
-
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
 		if ((*pos)->tieneRutaImagen())
@@ -125,15 +116,13 @@ void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 			(*pos)->cargarImagen(renderizador, log);
 		}
 	}
+	this->log->addLogMessage("[CARGAR IMAGENES] Terminado",2);
 
-	this->log->addLogMessage("[MOSTRAR ENTIDADES] Terminado.", 2);
 }
 void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ)
 {
 	list<Entidad*>::iterator pos;
-
-	this->log->addLogMessage("[MOSTRAR ENTIDADES] Iniciado.", 2);
-
+	//this->log->addLogMessage("[MOSTRAR IMAGENES] Iniciado",2);
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
 		if ((*pos)->indexZes(indexZ))
@@ -142,7 +131,7 @@ void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect
 		}
 	}
 
-	this->log->addLogMessage( "[MOSTRAR ENTIDADES] Terminado.", 2);
+	//this->log->addLogMessage("[MOSTRAR IMAGENES] Terminado",2);
 }
 
 bool compararIndexZ(const Entidad *primera, const Entidad *segunda)
@@ -157,10 +146,14 @@ void ConstructorEntidades::ordenarSegunIndexZ()
 
 void ConstructorEntidades::validarDatosNumericos(int &id, int &coordX, int &coordY, int &indexZ)
 {
+	this->log->addLogMessage("[VALIDAR DATOS NUMERICOS] Iniciado",2);
+
 	validar(id, 0, MAX_ID);
 	validar(coordX, 0, MAX_COORDX);
 	validar(coordY, 0, MAX_COORDY);
 	validar(indexZ, 0, MAX_INDEXZ);
+
+	this->log->addLogMessage("[VALIDAR DATOS NUMERICOS] Terminado",2);
 }
 
 void ConstructorEntidades::validar(int &numero, int minimo, int maximo)

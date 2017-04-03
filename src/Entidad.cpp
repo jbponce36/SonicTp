@@ -142,3 +142,14 @@ bool Entidad::indexZes(int otroIndexZ)
 	return (indexZ == otroIndexZ);
 }
 
+string Entidad::intToString(int number)
+{
+  ostringstream oss;
+  oss<< number;
+  return oss.str();
+}
+
+string Entidad::toString(){
+	return "id";
+}
+

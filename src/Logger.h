@@ -21,14 +21,13 @@ public:
 	Logger(char *fileName, int level);
 	Logger(char *fileName, int level,  string modulo);
 	virtual ~Logger();
-
 	string getLevel();
 	void setLevel(int level);
-
 	int validateFileName();
 	int validateLevel();
+	void iniciarLog(string mensaje);
 	int addLogMessage(string logMessage, int nivel);
-	int addLogMessage(string logMessage, int x,int y, string logMessage2,int valor);
+	void imprimirMensajeNivelAlto(string logMessage,int valor);
     char *getArchivo() const;
     void setArchivo(char *archivo);
     string getModulo() const;

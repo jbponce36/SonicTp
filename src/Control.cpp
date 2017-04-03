@@ -12,8 +12,10 @@ int Control::getPosicionInicialX(){
 int Control::getPosicionInicialY(){
 	return this->posicionInicialY;
 }
-void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
+void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic, Logger *log){
 
+	this->log = log;
+	this->log->setModulo("CONTROL");
 	SDL_Rect imagenMostrar;
 	imagenMostrar.x = 0;
 	imagenMostrar.y = 0;

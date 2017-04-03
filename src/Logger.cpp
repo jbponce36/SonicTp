@@ -65,6 +65,30 @@ void Logger::setArchivo(char *archivo)
     this->archivo = archivo;
 }
 
+void Logger::iniciarLog(string mensaje){
+	ofstream myfile;
+	myfile.open(this->archivo, ios_base::app);
+
+	//imprime la fecha actual
+	time_t t = time(0);   // get time now
+	struct tm *now = localtime( & t );
+	myfile<<"["
+		 <<(now->tm_year + 1900) << '-'
+		 << (now->tm_mon + 1) << '-'
+		 <<  now->tm_mday
+		 <<  " "
+		 <<  now->tm_hour
+		 <<  ":"
+		 <<  now->tm_min
+		 <<  ":"
+		 <<  now->tm_sec
+		 <<"] ";
+
+	myfile<<mensaje<<" EN NIVEL: "<< this->getLevel()<<endl;
+	myfile<<"-------------------------------------------------------------------------------------------"<<endl;
+	myfile.close();
+}
+
 int Logger::addLogMessage(string logMessage, int nivel){
 	if (this->nivel >= nivel){
 		ofstream myfile;
@@ -86,42 +110,37 @@ int Logger::addLogMessage(string logMessage, int nivel){
 	         <<  "] ";
 
 	    // imprime el nivel+ mensaje
-		myfile <<"["<< this->getLevel()<<"] "<<"["<<this->modulo<<"] "<<logMessage<< endl;
+		myfile <<"["<<this->modulo<<"] "<<logMessage<< endl;
 		myfile.close();
 		return 0;
 	}
-
 	return -1;
 }
 
-int Logger::addLogMessage(string logMessage, int x,int y, string logMessage2, int valor){
+void Logger::imprimirMensajeNivelAlto(string logMessage, int valor){
+	if(this->nivel == 3){
+		ofstream myfile;
+		myfile.open(this->archivo, ios_base::app);
 
-	ofstream myfile;
-	myfile.open(this->archivo, ios_base::app);
+		//imprime la fecha actual
+		time_t t = time(0);   // get time now
+		struct tm *now = localtime( & t );
+		myfile <<"["
+			 <<	(now->tm_year + 1900) << '-'
+			 << (now->tm_mon + 1) << '-'
+			 <<  now->tm_mday
+			 <<  " "
+			 <<  now->tm_hour
+			 <<  ":"
+			 <<  now->tm_min
+			 <<  ":"
+			 <<  now->tm_sec
+			 <<  "] ";
 
-	//imprime la fecha actual
-	time_t t = time(0);   // get time now
-	struct tm *now = localtime( & t );
-	myfile <<"["
-		 <<	(now->tm_year + 1900) << '-'
-		 << (now->tm_mon + 1) << '-'
-		 <<  now->tm_mday
-		 <<  " "
-		 <<  now->tm_hour
-		 <<  ":"
-		 <<  now->tm_min
-		 <<  ":"
-		 <<  now->tm_sec
-		 <<  "] ";
-
-	// imprime el nivel+ mensaje
-	myfile <<"["<< this->getLevel()<<"] "<<"["<<this->modulo<<"] "<<logMessage<< x<<","<<y;
-	if (valor != 0){
-		myfile<< logMessage2<<valor<<endl;
+		// imprime el nivel+ mensaje
+		myfile<<"["<<this->modulo<<"] "<<logMessage<< valor<<"."<<endl;
+		myfile.close();
 	}
-
-	myfile.close();
-	return 0;
 }
 
 Logger::~Logger() {

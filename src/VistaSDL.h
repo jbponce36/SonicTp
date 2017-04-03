@@ -47,29 +47,30 @@ private:
 	int altoescenario;
 	int imgFlags;
 	vector <Textura*> texturas;
-	vector <Textura*> capasFondo;//son las dos capas del fondo del juego
-	ConstructorEntidades *constructorEntidades;
-	Logger *log;
-
+	vector <Textura*> capasFondo;
+    ConstructorEntidades *constructorEntidades;
+    Logger *log;
 public:
-	VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion,jescenario *jescenario, Logger *logger);
-	void cargarImagen();
-	int obtenerAltoVentana();
-	void cargarCapas(jescenario *escenario);
-	int obtenerAnchoVentana();
-	void validacionesEscenario(jescenario *jescenario);
+    VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion, jescenario *jescenario, Logger *logger);
+    void cargarImagen();
+    int obtenerAltoVentana();
+    void cargarCapas(jescenario *escenario);
+    int obtenerAnchoVentana();
+    void validacionesEscenario(jescenario *jescenario);
     void crearVentanaYrenderizador();
-	int obtenerAltoEscenario();
-	int obtenerAnchoEscenario();
-	void mostrarCapas();
-	int cantidadCapasCargadas();
-	Textura* obtenerTextura(int);
-	SDL_Renderer* obtenerRender();
-	int obtenerVelocidadDeScroll();
-	void validacionesVentana();
-	void cerrar();
-	~VistaSDL();
-	void mostrarEntidades(SDL_Rect *camara, int indexZ);
+    int obtenerAltoEscenario();
+    int obtenerAnchoEscenario();
+    void mostrarCapas();
+    int cantidadCapasCargadas();
+    Textura *obtenerTextura(int);
+    SDL_Renderer *obtenerRender();
+    int obtenerVelocidadDeScroll();
+    void validacionesVentana();
+    void cerrar();
+    ~VistaSDL();
+    void mostrarEntidades(SDL_Rect *camara, int indexZ);
+    Logger *getLog() const;
+    void setLog(Logger *log);
 };
 
 
