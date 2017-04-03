@@ -7,6 +7,7 @@
 #include <iostream>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
+#include "Logger.h"
 using namespace std;
 #include <string>
 
@@ -26,7 +27,7 @@ private:
 
 public:
 	Textura();
-	void cargarImagen(std::string path,SDL_Renderer* render);
+	void cargarImagen(std::string path,SDL_Renderer* render, Logger *log);
 	int obtenerAltoTextura();
 	int obtenerAnchoTextura();
 	void renderizar(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVentana = NULL);

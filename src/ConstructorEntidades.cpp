@@ -107,6 +107,7 @@ void ConstructorEntidades::setLog(Logger *log)
 
 void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 {
+	this->log->addLogMessage("[CARGAR IMAGENES] Iniciado",2);
 	list<Entidad*>::iterator pos;
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
@@ -115,13 +116,13 @@ void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 			(*pos)->cargarImagen(renderizador, log);
 		}
 	}
-
+	this->log->addLogMessage("[CARGAR IMAGENES] Terminado",2);
 
 }
 void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ)
 {
 	list<Entidad*>::iterator pos;
-
+	//this->log->addLogMessage("[MOSTRAR IMAGENES] Iniciado",2);
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
 		if ((*pos)->indexZes(indexZ))
@@ -129,6 +130,8 @@ void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect
 			(*pos)->dibujar(renderizador, camara);
 		}
 	}
+
+	//this->log->addLogMessage("[MOSTRAR IMAGENES] Terminado",2);
 }
 
 bool compararIndexZ(const Entidad *primera, const Entidad *segunda)
@@ -143,10 +146,14 @@ void ConstructorEntidades::ordenarSegunIndexZ()
 
 void ConstructorEntidades::validarDatosNumericos(int &id, int &coordX, int &coordY, int &indexZ)
 {
+	this->log->addLogMessage("[VALIDAR DATOS NUMERICOS] Iniciado",2);
+
 	validar(id, 0, MAX_ID);
 	validar(coordX, 0, MAX_COORDX);
 	validar(coordY, 0, MAX_COORDY);
 	validar(indexZ, 0, MAX_INDEXZ);
+
+	this->log->addLogMessage("[VALIDAR DATOS NUMERICOS] Terminado",2);
 }
 
 void ConstructorEntidades::validar(int &numero, int minimo, int maximo)

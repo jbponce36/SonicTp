@@ -150,7 +150,7 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 		tex->setId((*pos).getid());
 		tex->setIndex_z((*pos).getindex());
 		tex->setRuta((*pos).getrutaimagen());
-		tex->cargarImagen( (*pos).getrutaimagen() ,renderizador);
+		tex->cargarImagen( (*pos).getrutaimagen() ,renderizador, this->log);
 		this->capasFondo.push_back(tex);
 		i++;
 	}
@@ -216,6 +216,7 @@ int VistaSDL::cantidadCapasCargadas(){
 
 void VistaSDL::cerrar()
 {
+	this->log->addLogMessage("[CERRAR] Iniciado",2);
 	//destruir ventana render
 	SDL_DestroyRenderer( this->renderizador );
 	SDL_DestroyWindow( this->ventana );
@@ -225,6 +226,7 @@ void VistaSDL::cerrar()
 	//cerrar SDL subsistemas
 	IMG_Quit();
 	SDL_Quit();
+	this->log->addLogMessage("[CERRAR] Terminado",2);
 }
 
 VistaSDL::~VistaSDL()

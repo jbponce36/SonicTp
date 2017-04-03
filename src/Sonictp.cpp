@@ -52,9 +52,9 @@ int main(int argc, char *argv[]) {
 	log->setLevel(getNivelLogger(argc, argv));
     VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
 
-	Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario());
+	Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
     Control *control = new Control(0, 0);
-    control->ControlarJuego(vista,sonic);
+    control->ControlarJuego(vista,sonic, log);
 
     log->setModulo("PRINCIPAL");
 	log->addLogMessage("Se termina de cargar la vista.",1);

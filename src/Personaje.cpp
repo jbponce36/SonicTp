@@ -9,9 +9,9 @@ const int POSICION_INICIALX = 0;
 const int POSICION_INICIALY = 0;
 const int NUMERO_DE_SPRITES = 1;
 
-Personaje::Personaje(int velocidad,SDL_Renderer *render,int altoEscenario){
+Personaje::Personaje(int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log){
 	this->texturaSonic = new Textura();
-	this->texturaSonic->cargarImagen("images/sonicSprite.bmp",render);
+	this->texturaSonic->cargarImagen("images/sonicSprite.bmp",render, log);
 	//dimensiones del personaje por defecto
 	this->personajeAncho = 40;
 	this->personajeAlto= 40;
