@@ -12,7 +12,7 @@
 # Librerias
     SDL2 (FALTA VERSION Y LINK)
     SDL2_IMAGE (FALTA VERSION Y LINK)
-    Jannson (FALTA VERSION Y LINK)
+    Jannson, version 2.10, link : http://www.digip.org/jansson/releases/
   
 # Compilación por consola
     g++ src/capas.cpp src/Circulo.cpp src/ConstructorEntidades.cpp src/Control.cpp src/Camara.cpp src/dimensiones.cpp 
