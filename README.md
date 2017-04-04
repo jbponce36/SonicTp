@@ -4,14 +4,14 @@
     Dimasi Patricia, 
     Ponce Julieta,
     Quino Julián 94224,
-    Villani Cristian,
+    Villani Cristian 93358,
 
 # Sistema Operativo 
   Linux, Ubuntu.  
   
 # Librerias
-    SDL2 (FALTA VERSION Y LINK)
-    SDL2_IMAGE (FALTA VERSION Y LINK)
+    SDL2 version 2.0.5, link : http://packages.ubuntu.com/search?keywords=sdl2
+    SDL2_IMAGE version 2.0, link : https://www.libsdl.org/projects/SDL_image/
     Jannson, version 2.10, link : http://www.digip.org/jansson/releases/
     STL
   
