@@ -19,7 +19,7 @@
     src/Personaje.cpp src/Rectangulo.cpp src/Sonictp.cpp src/Textura.cpp  src/VistaSDL.cpp -lSDL2 -lSDL2_image -ljansson 
     -o sonictp
 
-#Ejucución
+# Ejecución
     ./sonictp 1
 
 1 es esl nivel del logger, puede ser 2 o 3.
