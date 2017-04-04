@@ -12,10 +12,10 @@ private:
 	Logger *log;
 
 public:
-	Control(int altura, int anchura);
+	Control(int altura, int anchura, Logger *log);
 	int getPosicionInicialX();
 	int getPosicionInicialY();
-	void ControlarJuego(VistaSDL *vista, Personaje *sonic, Logger *log);
+	void ControlarJuego(VistaSDL *vista, Personaje *sonic);
 
 	virtual ~Control();
 };

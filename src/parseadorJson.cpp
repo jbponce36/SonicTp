@@ -18,7 +18,6 @@
 #include "dimensiones.h"
 #include "jrectangulo.h"
 #include "jcirculo.h"
-#include "jcuadrado.h"
 #include <string>
 
 
@@ -267,7 +266,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 			   jcapas->setindex(this->leerValorEntero(capai,"index_z",index_z));
 			   jcapas->setrutaimagen(this->leerValorStringCapas(capai,"ruta_imagen",ruta));
 			   capalista.push_back(*jcapas);
-			   this->log->addLogMessage("[CARGAR CAPAS]" + jcapas->toString(),3);
+			   this->log->addLogMessage("[CARGAR CAPAS] Capa-> " + jcapas->toString(),3);
 			   //this->log->addLogMessage("[CARGAR CAPAS] "+jcapas->toString(),3);
 			   //this->log->imprimirMensajeNivelAlto("[CARGAR CAPAS] Capa 1-> index_z:", jcapas->getindex());
 		   }
@@ -281,7 +280,8 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 		capalista = this->DevolverCapasPorDefecto();
 		escenario->setcapas(capalista);
 	}
-	this->log->addLogMessage("[CARGAR CAPAS] Terminado.",2);
+	this->log->setModulo("PARSEADOR JSON");
+	this->log->addLogMessage("[CARGAR CAPAS] Terminado.\n",2);
 	// agrego la lista total al escenario
 
 	//ENTIDADES (viene de escenario)
@@ -400,7 +400,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 
 				if (entidades->esValida()){
 					listaentidades.push_back(*entidades);
-					this->log->addLogMessage("[CARGAR ENTIDADES] "+entidades->toString(),3);
+					this->log->addLogMessage("[CARGAR ENTIDADES] Entidad-> "+entidades->toString(),3);
 				}
 			}//if etidadi
 		}//for
@@ -452,7 +452,7 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
         result->setConfiguracion(config);
 
         validarDimensionesVentana(result);
-        this->log->addLogMessage("[PARSEAR ARCHIVO] Terminado.", 2);
+        this->log->addLogMessage("[PARSEAR ARCHIVO] Terminado. \n", 2);
         return result;
     }
 

@@ -19,11 +19,11 @@ private:
 	unsigned int indexZ;
 	SDL_Texture *imagen;
 	Logger *log;
-	string intToString(int number);
+	std::string intToString(int number);
 
 public:
 	Entidad();
-	Entidad(unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ);
+	Entidad(unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ, Logger *log);
 	virtual void dibujar(SDL_Renderer *renderer, SDL_Rect *camara) = 0;
 	void setearColor(SDL_Renderer *renderer);
 	virtual ~Entidad();
@@ -37,6 +37,11 @@ public:
     Logger *getLog() const;
     void setLog(Logger *log);
 	string toString();
+    unsigned int getId() const;
+    unsigned int getIndexZ() const;
+    std::string getRutaImagen() const;
+    int getX() const;
+    int getY() const;
 
 
 private:

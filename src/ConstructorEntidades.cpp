@@ -48,7 +48,6 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 	{
 		if(((*pos).gettipo() == "rectangulo") || ((*pos).gettipo() == "cuadrado"))
 		{
-
 			id = (*pos).getid();
 			color = (*pos).getcolor();
 			ancho = (*pos).getDim()->getvalor1();
@@ -66,13 +65,14 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			{
 				validarCuadrado(ancho, alto);
 			}
-			Rectangulo *rectangulo = new Rectangulo(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ);
+			Rectangulo *rectangulo = new Rectangulo(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
 			entidades.push_back(rectangulo);
+			this->log->setModulo("CONSTRUCTOR ENTIDADES");
+			this->log->addLogMessage("[CARGAR ENTIDADES] Rectangulo->"+rectangulo->toString(), 3);
 		}
 
 		if((*pos).gettipo() == "circulo")
 		{
-
 			id = (*pos).getid();
 			color = (*pos).getcolor();
 			radio = (*pos).getDim()->getvalor1();
@@ -84,15 +84,18 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			validarDatosNumericos(id, coordX, coordY, indexZ);
 			validar(radio, 0, MAX_RADIO);
 
-			Circulo *circulo = new Circulo(radio, id, color, rutaImagen, coordX, coordY, indexZ);
+			Circulo *circulo = new Circulo(radio, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
 			entidades.push_back(circulo);
+			this->log->setModulo("CONSTRUCTOR ENTIDADES");
+			this->log->addLogMessage("[CARGAR ENTIDADES] Circulo->"+circulo->toString(), 3);
 		}
 	}
 
 	cargarImagenes(renderizador);
 	ordenarSegunIndexZ();
 
-	this->log->addLogMessage("[CARGA DE ENTIDADES] Terminado.", 2);
+	this->log->setModulo("CONSTRUCTOR ENTIDADES");
+	this->log->addLogMessage("[CARGA DE ENTIDADES] Terminado.\n", 2);
 }
 
 Logger *ConstructorEntidades::getLog() const
@@ -107,16 +110,21 @@ void ConstructorEntidades::setLog(Logger *log)
 
 void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 {
-	this->log->addLogMessage("[CARGAR IMAGENES] Iniciado",2);
+	this->log->setModulo("CONSTRUCTOR ENTIDADES");
+	this->log->addLogMessage("[CARGAR IMAGENES] Iniciado.",2);
 	list<Entidad*>::iterator pos;
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
 		if ((*pos)->tieneRutaImagen())
 		{
 			(*pos)->cargarImagen(renderizador, log);
+			this->log->setModulo("CONSTRUCTOR ENTIDADES");
+			this->log->addLogMessage("[CARGAR IMAGENES] Imagen cargada en ruta: "+(*pos)->getRutaImagen(),3);
 		}
 	}
-	this->log->addLogMessage("[CARGAR IMAGENES] Terminado",2);
+
+	this->log->setModulo("CONSTRUCTOR ENTIDADES");
+	this->log->addLogMessage("[CARGAR IMAGENES] Terminado.",2);
 
 }
 void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ)
@@ -146,14 +154,14 @@ void ConstructorEntidades::ordenarSegunIndexZ()
 
 void ConstructorEntidades::validarDatosNumericos(int &id, int &coordX, int &coordY, int &indexZ)
 {
-	this->log->addLogMessage("[VALIDAR DATOS NUMERICOS] Iniciado",2);
+	this->log->addLogMessage("[VALIDAR DATOS NUMERICOS] Iniciado.",2);
 
 	validar(id, 0, MAX_ID);
 	validar(coordX, 0, MAX_COORDX);
 	validar(coordY, 0, MAX_COORDY);
 	validar(indexZ, 0, MAX_INDEXZ);
 
-	this->log->addLogMessage("[VALIDAR DATOS NUMERICOS] Terminado",2);
+	this->log->addLogMessage("[VALIDAR DATOS NUMERICOS] Terminado.",2);
 }
 
 void ConstructorEntidades::validar(int &numero, int minimo, int maximo)

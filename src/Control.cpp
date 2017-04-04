@@ -1,9 +1,11 @@
 #include "Control.h"
 #define MODULO 'CONTROL'
 
-Control::Control(int posicionx, int posiciony) {
+Control::Control(int posicionx, int posiciony, Logger *log) {
 	this->posicionInicialX = posicionx;
 	this->posicionInicialY = posiciony;
+	this->log = log;
+	this->log->setModulo("CONTROL");
 }
 
 int Control::getPosicionInicialX(){
@@ -12,14 +14,15 @@ int Control::getPosicionInicialX(){
 int Control::getPosicionInicialY(){
 	return this->posicionInicialY;
 }
-void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic, Logger *log){
-
-	this->log = log;
-	this->log->setModulo("CONTROL");
+void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 	SDL_Rect imagenMostrar;
+
+	this->log->addLogMessage("[CONTROLAR JUEGO] Iniciado.", 2);
 	imagenMostrar.x = 0;
 	imagenMostrar.y = 0;
 	imagenMostrar.w = vista->obtenerAnchoVentana();
+
+	Uint32 tiempoDeJuego = 0;
 
 	SDL_Event e;
 	bool salir = false;
@@ -37,7 +40,16 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic, Logger *log){
 
 			sonic->procesarEvento( e );
 		}
-		sonic->mover(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
+
+		//para calcular el tiempo q transcurre en cada fotografia
+		tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
+		float tiempoDeFotografia = tiempoDeJuego / 1000.f;
+		//........
+
+		sonic->mover(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario(),tiempoDeFotografia);
+
+		tiempoDeJuego = SDL_GetTicks();
+
 		camara->actualizar(sonic,vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
 		SDL_SetRenderDrawColor(vista->obtenerRender(),0xff,0xff,0xff,0xff);
 		SDL_RenderClear(vista->obtenerRender());
@@ -55,6 +67,7 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic, Logger *log){
 		//muestro la imagen
 		SDL_RenderPresent( vista->obtenerRender());
 	}
+	this->log->addLogMessage("[CONTROLAR JUEGO] Terminado. \n", 2);
 }
 
 Control::~Control() {

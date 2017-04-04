@@ -27,7 +27,7 @@ class Personaje
 		void procesarEvento( SDL_Event& e );
 
 		//mueve al personaje;
-		void mover(int maximoAncho,int maximoAlto);
+		void mover(int maximoAncho,int maximoAlto, float tiempoDeJuego);
 
 		//pinta el personaje en la pantalla
 		void render( int camX, int camY);

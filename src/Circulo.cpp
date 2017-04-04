@@ -7,8 +7,8 @@ Circulo::Circulo() : radio()
 
 }
 
-Circulo::Circulo(int radio, unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ)
-: Entidad(id, color, rutaImagen, x, y, indexZ), radio(radio)
+Circulo::Circulo(int radio, unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ, Logger *log)
+: Entidad(id, color, rutaImagen, x, y, indexZ, log), radio(radio)
 {
 
 }
@@ -103,6 +103,24 @@ void Circulo::dibujarImagen(SDL_Renderer *renderer, SDL_Rect *camara)
 			}
 		}
 	}
+}
+
+    int Circulo::getRadio() const
+    {
+        return radio;
+    }
+
+    std::string Circulo::intToString(int number)
+    {
+      ostringstream oss;
+      oss<< number;
+      return oss.str();
+    }
+
+string Circulo::toString(){
+	return "id: "+intToString(getId())+" ," +"dimesiones-> radio:"+ intToString(getRadio())+
+			", coordenadas-> x:"+intToString(getX())+
+		", y: "+intToString(getY())+", index_z: "+ intToString(getIndexZ())+", ruta_imagen: "+ getRutaImagen();
 }
 
 }
