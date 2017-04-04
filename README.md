@@ -1,15 +1,15 @@
 #  Taller de programación 1: 2017 1er Cuatrimestre, 1er tp.
-#  Integrantes: 
+#  Integrantes 
     Añez Johana 93042,
     Dimasi Patricia, 
     Ponce Julieta,
     Quino Julián,
     Villani Cristian,
 
-# Sistema Operativo: 
+# Sistema Operativo 
   Linux, Ubuntu.  
   
-# Librerias:
+# Librerias
     SDL2 (FALTA VERSION Y LINK)
     SDL2_IMAGE (FALTA VERSION Y LINK)
     Jannson (FALTA VERSION Y LINK)
