@@ -15,12 +15,16 @@
     Jannson, version 2.10, link : http://www.digip.org/jansson/releases/
     STL
   
-# Compilación por consola
-    g++ src/capas.cpp src/Circulo.cpp src/ConstructorEntidades.cpp src/Control.cpp src/Camara.cpp src/dimensiones.cpp 
-    src/Entidad.cpp src/jcirculo.cpp src/jconfiguracion.cpp src/jentidades.cpp src/jescenario.cpp src/jescenarioJuego.cpp 
-    src/jpruebas.cpp src/jrectangulo.cpp src/jventana.cpp  src/Logger.cpp src/Mensaje.cpp src/parseadorJson.cpp src/jcuadrado.cpp
-    src/Personaje.cpp src/Rectangulo.cpp src/Sonictp.cpp src/Textura.cpp  src/VistaSDL.cpp -lSDL2 -lSDL2_image -ljansson 
-    -o sonictp
+# Compilació src/jescenarioJuego.cppn por consola
+    g++ src/capas.cpp src/Circulo.cpp src/ConstructorEntidades.cpp src/Control.cpp src/Camara.cpp 
+    src/dimensiones.cpp src/Entidad.cpp src/jcirculo.cpp src/jconfiguracion.cpp src/jentidades.cpp
+    src/jescenario.cpp src/jescenarioJuego.cpp src/jpruebas.cpp src/jrectangulo.cpp src/jventana.cpp
+    src/Logger.cpp src/Mensaje.cpp src/parseadorJson.cpp src/jcuadrado.cpp src/Rectangulo.cpp
+    src/Personaje.cpp src/Sonictp.cpp src/Textura.cpp src/VistaSDL.cpp -lSDL2 -lSDL2_image -ljansson   
+      
+    
+           
+    
 
 # Ejecución
     ./sonictp 1
