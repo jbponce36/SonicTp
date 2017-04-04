@@ -1,7 +1,7 @@
 #  Taller de programación 1: 2017 1er Cuatrimestre, 1er tp.
 #  Integrantes 
     Añez Johana 93042,
-    Dimasi Patricia  79477,
+    Dimasi Patricia  79478,
     Ponce Julieta 96375
     Quino Julián 94224,
     Villani Cristian 93358,
