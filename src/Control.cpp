@@ -22,6 +22,8 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 	imagenMostrar.y = 0;
 	imagenMostrar.w = vista->obtenerAnchoVentana();
 
+	Uint32 tiempoDeJuego = 0;
+
 	SDL_Event e;
 	bool salir = false;
 	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana());
@@ -38,7 +40,16 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 
 			sonic->procesarEvento( e );
 		}
-		sonic->mover(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
+
+		//para calcular el tiempo q transcurre en cada fotografia
+		tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
+		float tiempoDeFotografia = tiempoDeJuego / 1000.f;
+		//........
+
+		sonic->mover(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario(),tiempoDeFotografia);
+
+		tiempoDeJuego = SDL_GetTicks();
+
 		camara->actualizar(sonic,vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
 		SDL_SetRenderDrawColor(vista->obtenerRender(),0xff,0xff,0xff,0xff);
 		SDL_RenderClear(vista->obtenerRender());

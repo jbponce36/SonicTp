@@ -63,17 +63,20 @@ void Personaje::procesarEvento( SDL_Event& e )
     }
 }
 
-void Personaje::mover(int maximoAncho,int maximoAlto )
+void Personaje::mover(int maximoAncho,int maximoAlto, float tiempoDeJuego )
 {
     //muve al personaje
-    this->posicionX += this->velocidadX;
+    this->posicionX += this->velocidadX * tiempoDeJuego;
 
     //se fija si se paso los limites de la pantalla
-    if( ( posicionX < 0 ) || ( posicionX + this->personajeAncho >  maximoAncho ) )
+    if( posicionX < 0 )
     {
-        posicionX -= velocidadX;
+        posicionX = 0;
     }
-
+    else if (posicionX + this->personajeAncho >  maximoAncho){
+		//this->posicionX -= velocidadX;
+		this->posicionX = maximoAncho-this->personajeAncho;
+	}
     /*posicionY += velocidadY;
 
     //se fija si se paso los limites
