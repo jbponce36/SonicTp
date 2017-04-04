@@ -67,19 +67,26 @@ void VistaSDL::validacionesEscenario(jescenario *jescenario)
 void VistaSDL::validacionesVentana()
 {
 	this->log->addLogMessage("[VALIDACIONES VENTANA] Iniciado.",2);
-	if ( this->anchoVentana > MAX_ANCHO_VENTANA || this->altoVentana > MAX_ALTO_VENTANA  )
+
+	if ( this->anchoVentana > MAX_ANCHO_VENTANA )
 	{
 		this->anchoVentana = MAX_ANCHO_VENTANA;
-		this->altoVentana = MAX_ALTO_VENTANA;
 		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Ancho:",MAX_ANCHO_VENTANA);
-		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Alto:",MAX_ALTO_VENTANA);
-	}
 
-	else if( this->anchoVentana < MIN_ANCHO_VENTANA_PERMITIDO || this->altoVentana < MIN_ALTO_VENTANA_PERMITIDO )
+	}
+	else if( this->anchoVentana < MIN_ANCHO_VENTANA_PERMITIDO )
 	{
 		this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
-		this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
 		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Ancho:",ANCHO_VENTANA_POR_DEFECTO);
+	}
+	if ( this->altoVentana > MAX_ALTO_VENTANA  )
+	{
+		this->altoVentana = MAX_ALTO_VENTANA;
+		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Alto:",MAX_ALTO_VENTANA);
+	}
+	else if( this->altoVentana < MIN_ALTO_VENTANA_PERMITIDO )
+	{
+		this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
 		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Alto:",ALTO_VENTANA_POR_DEFECTO);
 	}
 	this->log->addLogMessage("[VALIDACIONES VENTANA] Terminado.",2);
