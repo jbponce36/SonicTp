@@ -3,7 +3,7 @@
     Añez Johana 93042,
     Dimasi Patricia, 
     Ponce Julieta,
-    Quino Julián,
+    Quino Julián 94224,
     Villani Cristian,
 
 # Sistema Operativo 
