@@ -18,7 +18,7 @@
 # Compilación por consola
     g++ src/capas.cpp src/Circulo.cpp src/ConstructorEntidades.cpp src/Control.cpp src/Camara.cpp src/dimensiones.cpp 
     src/Entidad.cpp src/jcirculo.cpp src/jconfiguracion.cpp src/jentidades.cpp src/jescenario.cpp src/jescenarioJuego.cpp 
-    src/jpruebas.cpp src/jrectangulo.cpp src/jventana.cpp  src/Logger.cpp src/Mensaje.cpp src/parseadorJson.cpp 
+    src/jpruebas.cpp src/jrectangulo.cpp src/jventana.cpp  src/Logger.cpp src/Mensaje.cpp src/parseadorJson.cpp src/jcuadrado.cpp
     src/Personaje.cpp src/Rectangulo.cpp src/Sonictp.cpp src/Textura.cpp  src/VistaSDL.cpp -lSDL2 -lSDL2_image -ljansson 
     -o sonictp
 
