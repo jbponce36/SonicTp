@@ -6,11 +6,13 @@ Entidad::Entidad() : id(), rutaImagen(""), x(), y(), indexZ(), imagen(NULL)
 
 }
 
-Entidad::Entidad(unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ)
+Entidad::Entidad(unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ, Logger *log)
 : id(id), rutaImagen(rutaImagen), x(x), y(y), indexZ(indexZ), imagen(NULL)
 {
 	SDL_Color colorSDL = convertirColor(color);
 	this->color=colorSDL;
+	this->log = log;
+	this->log->setModulo("ENTIDAD");
 }
 
 Entidad::~Entidad()
@@ -72,9 +74,12 @@ bool Entidad::tieneRutaImagen()
 int Entidad::cargarImagen(SDL_Renderer *renderer, Logger *log)
 {
 	int error = 0;
+	this->log->setModulo("ENTIDAD");
+	this->log->addLogMessage("[CARGAR IMAGEN] Iniciado.",2);
 	if ((rutaImagen != "") && (imagen != NULL))
 	{
 		//Imagen ya cargada
+		this->log->addLogMessage("[CARGAR IMAGEN] Error cargando imagen en ruta: "+rutaImagen,1);
 		return error;
 	}
 
@@ -96,16 +101,15 @@ int Entidad::cargarImagen(SDL_Renderer *renderer, Logger *log)
 	if(imagenCargada == NULL)
 	{
 		std::string mensaje = "[CARGAR IMAGEN ENTIDAD] No existe imagen. Se muestra de color solido. Id: "+id;
-		log->addLogMessage(mensaje, 2);
-
+		log->addLogMessage(mensaje, 1);
 		rutaImagen = "";
-
 		error = 1;
 	}
 
 	imagen = SDL_CreateTextureFromSurface(renderer, imagenCargada);
 	SDL_FreeSurface(imagenCargada);
-
+	this->log->addLogMessage("[CARGAR IMAGEN] Imagen cargada en ruta:"+rutaImagen,3);
+	this->log->addLogMessage("[CARGAR IMAGEN] Terminado.",2);
 	return error;
 }
 
@@ -118,6 +122,31 @@ void Entidad::setLog(Logger *log)
 {
     this->log = log;
     this->log->setModulo("ENTIDAD");
+}
+
+unsigned int Entidad::getId() const
+{
+    return id;
+}
+
+unsigned int Entidad::getIndexZ() const
+{
+    return indexZ;
+}
+
+std::string Entidad::getRutaImagen() const
+{
+    return rutaImagen;
+}
+
+int Entidad::getX() const
+{
+    return x;
+}
+
+int Entidad::getY() const
+{
+    return y;
 }
 
 void Entidad::destruirImagen()
@@ -142,7 +171,7 @@ bool Entidad::indexZes(int otroIndexZ)
 	return (indexZ == otroIndexZ);
 }
 
-string Entidad::intToString(int number)
+std::string Entidad::intToString(int number)
 {
   ostringstream oss;
   oss<< number;
@@ -150,6 +179,8 @@ string Entidad::intToString(int number)
 }
 
 string Entidad::toString(){
-	return "id";
+	return "id: " + intToString(id)
+			+ ", coordenadas-> x:"+intToString(x)+
+	", y: "+intToString(y)+", index_z: "+ intToString(indexZ)+", ruta_imagen: "+ rutaImagen;
 }
 

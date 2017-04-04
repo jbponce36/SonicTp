@@ -43,7 +43,7 @@ void VistaSDL::validacionesEscenario(jescenario *jescenario)
 
 	this->anchoescenario=jescenario->getancho();
 	this->altoescenario=jescenario->getalto();
-	this->log->addLogMessage("[VALIDACIONES ESCENARIO] Iniciado",2);
+	this->log->addLogMessage("[VALIDACIONES ESCENARIO] Iniciado.",2);
 
 	if(jescenario->getancho() > MAXIMO_ANCHO_ESCENARIO)
 	{
@@ -61,7 +61,7 @@ void VistaSDL::validacionesEscenario(jescenario *jescenario)
 	{
 		this->altoescenario = this->altoVentana;
 	}
-	this->log->addLogMessage("[VALIDACIONES ESCENARIO] Terminado",2);
+	this->log->addLogMessage("[VALIDACIONES ESCENARIO] Terminado.",2);
 }
 
 void VistaSDL::validacionesVentana()
@@ -89,16 +89,21 @@ void VistaSDL::crearVentanaYrenderizador()
 {
 	this->log->addLogMessage("[CREAR VENTANA Y RENDERIZADOR] Iniciado.",2);
 	this->imgFlags = 0;
+	string error;
 	//Inicializa SDL
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
 	{
-			printf( "SDL no pudo iniciar! SDL Error: %s\n", SDL_GetError() );
+		error = SDL_GetError();
+		printf( "SDL no pudo iniciar! SDL Error: %s\n", SDL_GetError() );
+		this->log->addLogMessage("[CREAR VENTANA Y RENDERIZADOR] Error obteniendo video"+error,3);
 	}
 		else 
 		{	//Crea ventana
 			this->ventana = SDL_CreateWindow( "Juego Sonic", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->anchoVentana, this->altoVentana, SDL_WINDOW_SHOWN );
 			if( this->ventana == NULL )
 			{
+				error = SDL_GetError();
+				this->log->addLogMessage("[CREAR VENTANA Y RENDERIZADOR] Error creando ventana"+error,3);
 				printf( "ventana no se pudo crear ventana! SDL Error: %s\n", SDL_GetError() );
 			}
 			else
@@ -106,6 +111,8 @@ void VistaSDL::crearVentanaYrenderizador()
 				renderizador = SDL_CreateRenderer( this->ventana, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 				if( renderizador == NULL )
 				{
+					error = SDL_GetError();
+					this->log->addLogMessage("[CREAR VENTANA Y RENDERIZADOR] Error, renderer no se pudo crear"+ error,3);
 					printf( "renderer no se pudo crear! SDL Error: %s\n", SDL_GetError() );
 				}
 				else
@@ -117,21 +124,24 @@ void VistaSDL::crearVentanaYrenderizador()
 					int imgFlags = IMG_INIT_PNG;
 					if( !( IMG_Init( imgFlags ) & imgFlags ) )
 					{
+						this->log->addLogMessage("[CREAR VENTANA Y RENDERIZADOR] Error, en SLD_image, no se pudo crear la imagen",3);
 						printf( "SDL_image no se pudo crear! SDL_image Error: %s\n", IMG_GetError() );
 					}
 					else
 					{
 						//obtener superficie ventana
 						this->superficiePantalla = SDL_GetWindowSurface( this->ventana );
+						this->log->addLogMessage("[CREAR VENTANA Y RENDERIZADOR] Ventana creada exitosamente",3);
 					}
 				}
 			}
 		}
-	this->log->addLogMessage("[CREAR VENTANA Y RENDERIZADOR] Terminado.",2);
+	this->log->addLogMessage("[CREAR VENTANA Y RENDERIZADOR] Terminado. \n",2);
 }
 
 void VistaSDL::cargarCapas(jescenario* jescenario)
 {
+	this->log->setModulo("VISTA SDL");
 	this->log->addLogMessage("[CARGAR CAPAS] Iniciado.",2);
 	//cargamos las capas desde el json en el vector de capas
 	list<capas> lista = jescenario->getcapas();
@@ -163,6 +173,7 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 		}
 	}
 	aux=NULL;
+	this->log->setModulo("VISTA SDL");
 	this->log->addLogMessage("[CARGAR CAPAS] Terminado.",2);
 }
 
@@ -210,7 +221,8 @@ int VistaSDL::cantidadCapasCargadas(){
 
 void VistaSDL::cerrar()
 {
-	this->log->addLogMessage("[CERRAR] Iniciado",2);
+	this->log->setModulo("VISTA SDL");
+	this->log->addLogMessage("[CERRAR] Iniciado.",2);
 	//destruir ventana render
 	SDL_DestroyRenderer( this->renderizador );
 	SDL_DestroyWindow( this->ventana );
@@ -220,7 +232,7 @@ void VistaSDL::cerrar()
 	//cerrar SDL subsistemas
 	IMG_Quit();
 	SDL_Quit();
-	this->log->addLogMessage("[CERRAR] Terminado",2);
+	this->log->addLogMessage("[CERRAR] Terminado.",2);
 }
 
 VistaSDL::~VistaSDL()

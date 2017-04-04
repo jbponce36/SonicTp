@@ -23,7 +23,7 @@ Textura::Textura()
 void Textura::cargarImagen(std::string path,SDL_Renderer* render, Logger *log)
 {
 	log->setModulo("TEXTURA");
-	log->addLogMessage("[CARGAR IMAGEN] Iniciado", 2);
+	log->addLogMessage("[CARGAR IMAGEN] Iniciado.", 2);
 	this->renderizador = render;
 	//en caso que hubiera una textura creada, la libero para podeer crear otra
 	this->liberarTextura();
@@ -48,7 +48,7 @@ void Textura::cargarImagen(std::string path,SDL_Renderer* render, Logger *log)
 	if( textura == NULL )
 	{
 		printf( "incapaz de crear textura %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
-		log->addLogMessage("[CARGAR IMAGEN] Error creando la textura ", 1);
+		log->addLogMessage("[CARGAR IMAGEN] Error creando la textura.", 1);
 	}
 	else
 	{
@@ -58,7 +58,7 @@ void Textura::cargarImagen(std::string path,SDL_Renderer* render, Logger *log)
 	}
 	//liberar memoria de superficie creada
 	SDL_FreeSurface( superficie );
-	log->addLogMessage("[CARGAR IMAGEN] Terminado", 2);
+	log->addLogMessage("[CARGAR IMAGEN] Terminado.", 2);
 }
 
 int Textura::obtenerAnchoTextura()

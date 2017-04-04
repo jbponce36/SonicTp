@@ -7,8 +7,8 @@ Rectangulo::Rectangulo() : ancho(), alto()
 
 }
 
-Rectangulo::Rectangulo(int ancho, int alto, unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ)
-: Entidad(id, color, rutaImagen, x, y, indexZ), ancho(ancho), alto(alto)
+Rectangulo::Rectangulo(int ancho, int alto, unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ, Logger *log)
+: Entidad(id, color, rutaImagen, x, y, indexZ, log), ancho(ancho), alto(alto)
 {
 	this->rectanguloSDL.x = x;
 	this->rectanguloSDL.y = y;
@@ -106,6 +106,19 @@ void Rectangulo::mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara)
 
 		return;
 	}
+}
+
+std::string Rectangulo::intToString(int number)
+{
+  ostringstream oss;
+  oss<< number;
+  return oss.str();
+}
+
+string Rectangulo::toString(){
+	return "id: " +intToString(getId())+ ", " +"dimesiones-> ancho:"+ intToString(ancho)+", alto:"+
+			intToString(alto)+ ", coordenadas-> x:"+intToString(getX())+
+	", y: "+intToString(getY())+", index_z: "+ intToString(getIndexZ())+", ruta_imagen: "+ getRutaImagen();
 }
 
 }

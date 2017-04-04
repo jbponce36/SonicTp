@@ -1,9 +1,11 @@
 #include "Control.h"
 #define MODULO 'CONTROL'
 
-Control::Control(int posicionx, int posiciony) {
+Control::Control(int posicionx, int posiciony, Logger *log) {
 	this->posicionInicialX = posicionx;
 	this->posicionInicialY = posiciony;
+	this->log = log;
+	this->log->setModulo("CONTROL");
 }
 
 int Control::getPosicionInicialX(){
@@ -12,11 +14,10 @@ int Control::getPosicionInicialX(){
 int Control::getPosicionInicialY(){
 	return this->posicionInicialY;
 }
-void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic, Logger *log){
-
-	this->log = log;
-	this->log->setModulo("CONTROL");
+void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 	SDL_Rect imagenMostrar;
+
+	this->log->addLogMessage("[CONTROLAR JUEGO] Iniciado.", 2);
 	imagenMostrar.x = 0;
 	imagenMostrar.y = 0;
 	imagenMostrar.w = vista->obtenerAnchoVentana();
@@ -55,6 +56,7 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic, Logger *log){
 		//muestro la imagen
 		SDL_RenderPresent( vista->obtenerRender());
 	}
+	this->log->addLogMessage("[CONTROLAR JUEGO] Terminado. \n", 2);
 }
 
 Control::~Control() {
