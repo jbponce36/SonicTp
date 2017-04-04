@@ -6,7 +6,9 @@
     Quino Julián,
     Villani Cristian,
 
-# Sistema Operativo: Linux, Ubuntu.  
+# Sistema Operativo: 
+  Linux, Ubuntu.  
+  
 # Librerias:
     SDL2 (FALTA VERSION Y LINK)
     SDL2_IMAGE (FALTA VERSION Y LINK)
