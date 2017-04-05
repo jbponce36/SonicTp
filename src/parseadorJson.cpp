@@ -381,7 +381,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 						 }//fin cuadrado
 					 }
 
-				entidades->setruta(this->leerValorStringCapas(entidadi,"ruta_imagen", "/imagenes/entidad1.png"));
+				entidades->setruta(this->leerValorStringCapas(entidadi,"ruta_imagen", "/images/entidaddefault.png"));
 				entidades->setindex(this->leerValorEntero(entidadi, "index_z", 99));
 
 				if (entidades->esValida()){
