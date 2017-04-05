@@ -38,9 +38,8 @@ namespace std {
             jsonventanaalto = json_object_get(jsonventana, "alto");
             jsonventanaancho = json_object_get(jsonventana, "ancho");
             ventana->setalto(json_number_value(jsonventanaalto));
-            this->log->imprimirMensajeNivelAlto("[CARGAR VENTANA] Alto: ",json_number_value(jsonventanaalto) );
             ventana->setancho(json_number_value(jsonventanaancho));
-            this->log->imprimirMensajeNivelAlto("[CARGAR VENTANA] Ancho: ",json_number_value(jsonventanaancho) );
+            this->log->addLogMessage("[CARGAR VENTANA] Ventana-> "+ventana->toString(),3);
             this->log->addLogMessage("[CARGAR VENTANA] Terminado.", 2);
         }else{
             ventana->setalto(480);
@@ -153,9 +152,11 @@ bool parseadorJson::validarVentana(json_t* raiz,const char* nomvent,const char* 
 
    if(json_number_value(jsonancho) && json_number_value(jsonalto)){
 	  validarvent = true;
+	  this->log->addLogMessage("[VALIDAR VENTANA]Ventana valida", 3);
     }
    else{
 	  validarvent = false;
+	  this->log->addLogMessage("[VALIDAR VENTANA] ERROR. Alto y/o ancho no son numeros.Se cargaron dimesiones por default", 1);
    }
 
    this->log->addLogMessage("[VALIDAR VENTANA] Terminado.", 2);
@@ -236,8 +237,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 		this->log->addLogMessage("[CARGAR ESCENARIO] Error, no se encontro el atributo dimensiones dentro de escenario. Se cargaran sus dimensiones por defecto.",1);
 	}
 
-	this->log->imprimirMensajeNivelAlto("[CARGAR ESCENARIO] Alto:",escenario->getalto());
-	this->log->imprimirMensajeNivelAlto("[CARGAR ESCENARIO] Ancho:",escenario->getancho());
+	this->log->addLogMessage("[CARGAR ESCENARIO] Escenario ->"+ escenario->toString() ,3);
 
 	//Verificr lo que falta
 	jcapas = json_object_get(jsonescenario, "capas");
@@ -267,8 +267,6 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 			   jcapas->setrutaimagen(this->leerValorStringCapas(capai,"ruta_imagen",ruta));
 			   capalista.push_back(*jcapas);
 			   this->log->addLogMessage("[CARGAR CAPAS] Capa-> " + jcapas->toString(),3);
-			   //this->log->addLogMessage("[CARGAR CAPAS] "+jcapas->toString(),3);
-			   //this->log->imprimirMensajeNivelAlto("[CARGAR CAPAS] Capa 1-> index_z:", jcapas->getindex());
 		   }
 		}
 		escenario->setcapas(capalista);
@@ -333,9 +331,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 						rectangulo->settipo2("rectangulo");
 						entidades->setDim(rectangulo);
 					}
-											 //
 						 //aca va el cuadrado
-
 						  if (entidades->gettipo().compare("cuadrado") == 0){
 							  double ancho;
 							  double alto;
@@ -347,15 +343,10 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 							  	  cuadrado->setalto(ancho);
 							  	  cuadrado->setancho(alto);
 							  }
-
 							  cuadrado->settipo2("cuadrado");
 							  entidades->setDim(cuadrado);
-
-
 						  }
 						 //fin cuadrado
-
-
 						 if (entidades->gettipo().compare("circulo") == 0){
 
 							 double radio;
@@ -368,7 +359,6 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 							 entidades->setDim(circulo);
 						  }
 					 }else{ //if (dimensiones)
-
 						 if (entidades->gettipo().compare("rectangulo") == 0){
  							  jrectangulo* rectangulo = new jrectangulo();
 							  rectangulo->settipo2("rectangulo");
@@ -389,11 +379,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
                              entidades->setDim(cuadrado);
 
 						 }//fin cuadrado
-
-
-
 					 }
-
 
 				entidades->setruta(this->leerValorStringCapas(entidadi,"ruta_imagen", "/imagenes/entidad1.png"));
 				entidades->setindex(this->leerValorEntero(entidadi, "index_z", 99));
@@ -466,12 +452,12 @@ list<capas> parseadorJson::DevolverCapasPorDefecto(){
 	jcapas1->setid(1);
 	jcapas1->setindex(99);
 	jcapas1->setrutaimagen("images/capa0.png");
-	this->log->addLogMessage("[CARGAS CAPAS] Capa 1: id:1, index_z: 99, ruta_imagen: images/capa0.png  ", 3);
+	this->log->addLogMessage("[CARGAS CAPAS] Capa 1-> id:1, index_z: 99, ruta_imagen: images/capa0.png  ", 3);
 
 	jcapas2->setid(2);
 	jcapas2->setindex(98);
 	jcapas2->setrutaimagen("images/capa1r.png");
-	this->log->addLogMessage("[CARGAS CAPAS] Capa 2: id:2, index_z: 98, ruta_imagen: images/capa1r.png  ", 3);
+	this->log->addLogMessage("[CARGAS CAPAS] Capa 2-> id:2, index_z: 98, ruta_imagen: images/capa1r.png  ", 3);
 
 	capasdefault.push_back(*jcapas1);
 	capasdefault.push_back(*jcapas2);

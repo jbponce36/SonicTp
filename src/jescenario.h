@@ -36,12 +36,14 @@ public:
     void setentidades(list<jentidades>);
 
     void cargarDimensionPorDefecto();
+    string toString();
 
 private:
 	int ancho;
     int alto;
     list<capas> c;
     list<jentidades> je;
+	std::string intToString(int number);
 };
 
 } /* namespace std */

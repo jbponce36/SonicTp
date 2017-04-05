@@ -31,14 +31,15 @@ void Textura::cargarImagen(std::string path,SDL_Renderer* render, Logger *log)
 	if( superficie == NULL && this->index_z == 99 )
 	{
 		superficie = IMG_Load( "images/capa0default.png" );
+		log->addLogMessage("[CARGAR IMAGEN] Error cargando capa 0, se cargara la capa 0 por default", 1);
 		//printf( "incapaz de crear imagen %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
 	}
 	if( superficie == NULL && this->index_z == 98 )
 	{
 		superficie = IMG_Load( "images/capa1default.png" );
+		log->addLogMessage("[CARGAR IMAGEN] Error cargando capa 1, se cargara la capa 1 por default", 1);
 		//printf( "incapaz de crear imagen %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
 	}
-
 
 	//Color key image
 	SDL_SetColorKey( superficie, SDL_TRUE, SDL_MapRGB( superficie->format, 0, 0xFF, 0xFF ) );
@@ -55,6 +56,7 @@ void Textura::cargarImagen(std::string path,SDL_Renderer* render, Logger *log)
 		//Get image dimensions
 		anchoTextura = superficie->w;
 		altoTextura = superficie->h;
+		log->addLogMessage("[CARGAR IMAGEN] Textura-> Ancho: "+intToString(anchoTextura)+", Alto:"+intToString(altoTextura)+".", 3);
 	}
 	//liberar memoria de superficie creada
 	SDL_FreeSurface( superficie );
@@ -68,7 +70,6 @@ int Textura::obtenerAnchoTextura()
 
 int Textura::obtenerAltoTextura()
 {
-
 	return this->altoTextura;
 }
 
@@ -142,4 +143,17 @@ int Textura::getIndex_z(){
 Textura::~Textura()
 {
 	this->liberarTextura();
+}
+
+std::string Textura::intToString(int number)
+{
+  ostringstream oss;
+  oss<< number;
+  return oss.str();
+}
+
+string Textura::toString(){
+	return "id: " + intToString(id)
+			+ ", dimensiones-> ancho:"+intToString(anchoTextura)+
+	", alto: "+intToString(altoTextura)+", index_z: "+ intToString(index_z)+", ruta_imagen: "+ ruta;
 }

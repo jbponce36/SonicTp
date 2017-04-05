@@ -59,6 +59,16 @@ void jescenario::cargarDimensionPorDefecto() {
 	this->setalto(500);
 }
 
+std::string jescenario::intToString(int number)
+{
+  ostringstream oss;
+  oss<< number;
+  return oss.str();
+}
+
+string jescenario::toString(){
+	return "Alto:" +intToString(alto)+", Ancho: "+ intToString(ancho)+".";
+}
 
 
 

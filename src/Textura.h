@@ -24,6 +24,7 @@ private:
 	int index_z;
 	std::string ruta;
 	int id;
+	string intToString(int number);
 
 public:
 	Textura();
@@ -41,6 +42,7 @@ public:
 	int getAltoTextura();
 	std::string getRuta();
 	int getIndex_z();
+	string toString();
 	~Textura();
 };
 

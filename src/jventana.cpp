@@ -32,4 +32,15 @@ int jventana::getalto(){
 void jventana::setalto(int altovent){
 	alto = altovent;
 }
+
+std::string jventana::intToString(int number)
+{
+  ostringstream oss;
+  oss<< number;
+  return oss.str();
+}
+
+string jventana::toString(){
+	return "Alto:" +intToString(alto)+", Ancho: "+ intToString(ancho)+".";
+}
 } /* namespace std */

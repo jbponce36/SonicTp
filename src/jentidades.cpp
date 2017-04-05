@@ -179,8 +179,7 @@ std::string jentidades::intToString(int number)
 }
 
 std::string jentidades::toString(){
-	return "id: " + intToString(id) +", tipo: " +tipo+", color: "+color+ ", dimensiones-> ancho: "+
-			intToString(ancho)+", alto: "+ intToString(alto)+ ", coordenadas-> x:"+intToString(coorx)+
+	return "id: " + intToString(id) +", tipo: " +tipo+", color: "+color+ ", coordenadas-> x:"+intToString(coorx)+
 			", y: "+intToString(coory)+", index_z: "+ intToString(index)+", ruta_imagen: "+ ruta;
 }
 

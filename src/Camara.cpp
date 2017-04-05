@@ -13,7 +13,6 @@ void Camara::actualizar(Personaje *sonic, int maximoAncho, int maximoAlto){
 	this->camaraImagen->x = ( sonic->getPosicionX() + sonic->getAncho() / 2 ) - camaraImagen->w / 2;
 	//this->camaraImagen->y = ( sonic->getPosicionY() + sonic->getAlto() / 2 ) - this->camaraImagen->h / 2;
 
-
 	if( this->camaraImagen->x < 0 )
 	{
 		this->camaraImagen->x = 0;

@@ -163,6 +163,8 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 		tex->setRuta((*pos).getrutaimagen());
 		tex->cargarImagen( (*pos).getrutaimagen() ,renderizador, this->log);
 		this->capasFondo.push_back(tex);
+		this->log->setModulo("VISTA SDL");
+		this->log->addLogMessage("[CARGAR CAPAS] Textura cargada ->."+tex->toString(),3);
 		i++;
 	}
 	Textura *aux=NULL;

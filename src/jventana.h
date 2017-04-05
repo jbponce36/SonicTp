@@ -7,7 +7,9 @@
 
 #ifndef JVENTANA_H_
 #define JVENTANA_H_
-
+#include <string>
+#include <iostream>
+#include <sstream>
 
 namespace std {
 
@@ -22,10 +24,12 @@ public:
 	//alto
 	int getalto();
 	void setalto(int);
+	string toString();
 
 private:
 	int alto;
 	int ancho;
+	string intToString(int number);
 };
 
 } /* namespace std */

@@ -36,8 +36,6 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 			{
 				salir = true;
 			}
-
-
 			sonic->procesarEvento( e );
 		}
 
