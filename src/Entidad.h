@@ -16,10 +16,9 @@ private:
 	std::string rutaImagen;
 	int x;
 	int y;
-	unsigned int indexZ;
+	int indexZ;
 	SDL_Texture *imagen;
 	Logger *log;
-	std::string intToString(int number);
 
 public:
 	Entidad();
@@ -34,11 +33,11 @@ public:
 	int cargarImagen(SDL_Renderer *renderer, Logger *log);
 	bool indexZMenorA(const Entidad *otraEntidad) const;
 	bool indexZes(int otroIndexZ);
-    Logger *getLog() const;
+    Logger* getLog() const;
     void setLog(Logger *log);
 	string toString();
     unsigned int getId() const;
-    unsigned int getIndexZ() const;
+    int getIndexZ() const;
     std::string getRutaImagen() const;
     int getX() const;
     int getY() const;
@@ -47,6 +46,7 @@ public:
 private:
 	SDL_Color convertirColor(std::string color);
 	void destruirImagen();
+	std::string intToString(int number);
 
 };
 

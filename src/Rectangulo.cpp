@@ -10,10 +10,7 @@ Rectangulo::Rectangulo() : ancho(), alto()
 Rectangulo::Rectangulo(int ancho, int alto, unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ, Logger *log)
 : Entidad(id, color, rutaImagen, x, y, indexZ, log), ancho(ancho), alto(alto)
 {
-	this->rectanguloSDL.x = x;
-	this->rectanguloSDL.y = y;
-	this->rectanguloSDL.w = ancho;
-	this->rectanguloSDL.h = alto;
+	getLog()->setModulo("RECTANGULO");
 }
 
 Rectangulo::~Rectangulo() {
@@ -33,17 +30,6 @@ void Rectangulo::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
 		SDL_RenderFillRect(renderer, &destino);
 	}
 }
-
-    Logger *Rectangulo::getLog() const
-    {
-        return log;
-    }
-
-    void Rectangulo::setLog(Logger *log)
-    {
-        this->log = log;
-        this->log->setModulo("RECTANGULO");
-    }
 
 void Rectangulo::mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara)
 {

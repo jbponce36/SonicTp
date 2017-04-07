@@ -340,8 +340,8 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 
 							  if (this->tryLeerValorEntero(dimensiones, "ancho", &ancho)
 							  	  && this->tryLeerValorEntero(dimensiones, "alto", &alto)){
-							  	  cuadrado->setalto(ancho);
-							  	  cuadrado->setancho(alto);
+							  	  cuadrado->setalto(alto);
+							  	  cuadrado->setancho(ancho);
 							  }
 							  cuadrado->settipo2("cuadrado");
 							  entidades->setDim(cuadrado);
