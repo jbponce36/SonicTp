@@ -324,8 +324,8 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 						jrectangulo* rectangulo = new jrectangulo();
 						if (this->tryLeerValorEntero(dimensiones, "ancho", &ancho)
 						  && this->tryLeerValorEntero(dimensiones, "alto", &alto)){
-						  rectangulo->setalto(ancho);
-						  rectangulo->setancho(alto);
+						  rectangulo->setalto(alto);
+						  rectangulo->setancho(ancho);
 						}
 
 						rectangulo->settipo2("rectangulo");
@@ -340,8 +340,8 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 
 							  if (this->tryLeerValorEntero(dimensiones, "ancho", &ancho)
 							  	  && this->tryLeerValorEntero(dimensiones, "alto", &alto)){
-							  	  cuadrado->setalto(ancho);
-							  	  cuadrado->setancho(alto);
+							  	  cuadrado->setalto(alto);
+							  	  cuadrado->setancho(ancho);
 							  }
 							  cuadrado->settipo2("cuadrado");
 							  entidades->setDim(cuadrado);
