@@ -1,0 +1,70 @@
+{
+	"ventana": {"dimensiones": {"ancho": 800, "alto": 600}},
+	"configuracion": {"vel_scroll": 700},
+	"escenario": {
+		"dimensiones": {"ancho": 3600, "alto": 600},
+		"capas": [
+			{
+			"id": 1,
+			"index_z": 99,
+			"ruta_imagen":"images/capa0.png"
+			},
+			{
+			"id": 2,
+			"index_z": 98,
+			"ruta_imagen":"images/capa1r.png"
+			}
+		],
+		"entidades": [
+		
+		{
+			"id": 2,
+			"tipo": "rectangulo",
+			"color": "amarillo",
+			"dimensiones": {"ancho": 200, "alto": 200},
+			"coordenada": {"x": 1700, "y": 400},
+			"ruta_imagen": "images/entidad1.png",
+			"index_z": 98
+		}
+		{
+			"id": 1,
+			"color": "azul",
+			"dimensdddiones": {"ancho": 200, "alto": 200},
+			"coordenada": {"x": 100, "y": 200},
+			"ruta_imagen": "images/entidad1.png",
+			"index_z": 98
+		},
+		{
+			"id": 3,
+			"tipo": "rectangulo",
+			"color": "rojo",
+			"dimensiones": {"ancho": 300, "alto": 100},
+			"coordenada": {"x": 3300, "y": 0},
+			"ruta_imagen": "images/entidad3png",
+			"index_z": 99
+		},
+		{
+			"id": 4,
+			"tipo": "circulo",
+			"color": "verde",
+			"dimensiones": {"radio": 50},
+			"coordenada": {"x": 100, "y": 400},
+			"ruta_imagen": "images/entida3.png",
+			"index_z": 98
+		},
+		
+{
+			"id": 6,
+			"tipo": "circulo",
+			"color": "blanco",
+			"dimensiones": {"radio": 300},
+			"coordenada": {"x": 1700, "y": 400},
+			"ruta_imagen": "images/entad4.p",
+			"index_z": 98
+		}]
+	}
+}
+
+    
+
+

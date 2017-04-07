@@ -176,7 +176,7 @@ jconfiguracion* parseadorJson::cargarConfiguracion(json_t* raiz){
   //   jsonvelscrol = json_object_get(jsonconfiguracion, "vel_scroll");
 
      if((jsonconfiguracion)){
-    	 configuracion->setvelscroll(this->leerValorEntero(jsonconfiguracion,"vel_scroll",15));
+    	 configuracion->setvelscroll(this->leerValorEntero(jsonconfiguracion,"vel_scroll",500));
      }
      else{
     	 this->log->addLogMessage("[CARGAR VELOCIDAD DE SCROLL] Error, no se encontro el atributo configuracion. Se carga un valor de velocidad de scroll por defecto.", 1);
@@ -324,8 +324,8 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 						jrectangulo* rectangulo = new jrectangulo();
 						if (this->tryLeerValorEntero(dimensiones, "ancho", &ancho)
 						  && this->tryLeerValorEntero(dimensiones, "alto", &alto)){
-						  rectangulo->setalto(ancho);
-						  rectangulo->setancho(alto);
+						  rectangulo->setalto(alto);
+						  rectangulo->setancho(ancho);
 						}
 
 						rectangulo->settipo2("rectangulo");

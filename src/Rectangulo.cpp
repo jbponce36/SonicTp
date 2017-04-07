@@ -29,7 +29,8 @@ void Rectangulo::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
 	else
 	{
 		setearColor(renderer);
-		SDL_RenderFillRect(renderer, &rectanguloSDL);
+		SDL_Rect destino = {obtenerX() - camara->x, obtenerY() - camara->y, ancho, alto};
+		SDL_RenderFillRect(renderer, &destino);
 	}
 }
 
