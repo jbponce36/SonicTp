@@ -1,7 +1,7 @@
 #include "Entidad.h"
 #define MODULO 'ENTIDAD'
 
-Entidad::Entidad() : id(), rutaImagen(""), x(), y(), indexZ(), imagen(NULL)
+Entidad::Entidad() : id(), rutaImagen(""), x(), y(), indexZ(), imagen(NULL), log()
 {
 
 }
@@ -113,7 +113,7 @@ int Entidad::cargarImagen(SDL_Renderer *renderer, Logger *log)
 	return error;
 }
 
-Logger *Entidad::getLog() const
+Logger* Entidad::getLog() const
 {
     return log;
 }
@@ -129,7 +129,7 @@ unsigned int Entidad::getId() const
     return id;
 }
 
-unsigned int Entidad::getIndexZ() const
+int Entidad::getIndexZ() const
 {
     return indexZ;
 }
