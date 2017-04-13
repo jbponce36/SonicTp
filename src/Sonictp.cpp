@@ -17,7 +17,9 @@
 #include "Personaje.h"
 #include "Control.h"
 
-#define MODULO 'PRINCIPAL'
+
+
+
 using namespace std;
 
 int getNivelLogger(int argc, char *argv[]){
@@ -34,6 +36,7 @@ int getNivelLogger(int argc, char *argv[]){
 
 int main(int argc, char *argv[]) {
 
+
 	char *archivoLog=(char*)"configuracion/log.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "PRINCIPAL");
 	log->iniciarLog("INICAR LOGGER");
@@ -49,7 +52,9 @@ int main(int argc, char *argv[]) {
     log->setModulo("PRINCIPAL");
 	log->addLogMessage("Se empieza a cargar la vista.",1);
 	log->setLevel(getNivelLogger(argc, argv));
-    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
+
+
+   /* VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
 
 	Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
     Control *control = new Control(0, 0, log);
@@ -59,6 +64,12 @@ int main(int argc, char *argv[]) {
 	log->addLogMessage("Se termina de cargar la vista.",1);
 	vista->cerrar();
 	log->iniciarLog("TERMINAR LOGGER");
+*/
+
+	jpruebas *prueba = new jpruebas();
+	prueba->pruebasocket();
+
+
 
 	return 0;
 }

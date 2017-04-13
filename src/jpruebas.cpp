@@ -17,6 +17,8 @@
 #include <list>
 #include "dimensiones.h"
 #include "parseadorJson.h"
+#include "ConexCliente.h"
+#include "ConexServidor.h"
 
 
 namespace std {
@@ -81,5 +83,35 @@ void jpruebas::prueba(jescenarioJuego* parser){
 
 
 	}
+
+void jpruebas::pruebasocket(){
+
+  ConexServidor*  conexser = new ConexServidor();
+  ConexCliente * conexcliente = new ConexCliente();
+
+  char* message;
+  int puerto = 3316;
+
+
+  if (!conexcliente->crear()){
+  	  cout<<"socket() error\n"<<endl;
+   }
+
+  int fdcliente = conexcliente->conectar(puerto);
+  printf("ponga un mensaje : ");
+  message = "Hola Patricia";
+
+  if(!conexcliente->recibircliente(fdcliente,message)){
+	  cout<<"Error en recv()"<<endl;
+  }
+  if(!conexcliente->enviarcliente(fdcliente,message)){
+	  cout<<"error en env"<<endl;
+  }
+
+
+
+}
+
+
 
 } /* namespace std */

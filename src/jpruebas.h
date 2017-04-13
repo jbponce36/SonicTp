@@ -28,6 +28,7 @@ public:
 	jpruebas();
 	virtual ~jpruebas();
     void prueba(jescenarioJuego* escenario);
+    void pruebasocket();
 };
 
 } /* namespace std */
