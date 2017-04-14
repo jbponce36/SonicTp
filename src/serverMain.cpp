@@ -1,12 +1,5 @@
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL.h>
-#include <iostream>
-#include <jansson.h>
-#include <string.h>
 #include "Logger.h"
-#include "jpruebas.h"
 #include "ConexServidor.h"
-
 
 using namespace std;
 
