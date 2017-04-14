@@ -34,10 +34,7 @@ int main(int argc, char *argv[]) {
 	char *file=(char*)"configuracion/configuracion.json";
     //jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
-    log->setModulo("PRINCIPAL");
-	log->addLogMessage("Se empieza a cargar la vista.",1);
-	log->setLevel(getNivelLogger(argc, argv));
-
+    log->setModulo("SERVER");
 
 	Sockets *conexser = new Sockets();
 	Sockets *conexcliente = new Sockets();
@@ -52,9 +49,11 @@ int main(int argc, char *argv[]) {
 
 	status = conexser->aceptarcliente(conexcliente);
 	conexser->recibir(conexcliente, buffer,232);
+	parseador->getLog()->addLogMessage("Recibiendo mensaje", 1);
 	parseador->getLog()->addLogMessage(buffer, 1);
 	conexcliente->cerrar();
 	conexser->cerrar();
 
+	log->iniciarLog("TERMINAR LOGGER");
 	return 0;
 }
