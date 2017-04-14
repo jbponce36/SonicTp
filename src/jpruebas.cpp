@@ -70,46 +70,5 @@ void jpruebas::prueba(jescenarioJuego* parser){
 
 	}
 
-void jpruebas::pruebasocket(){
-
-  Sockets *conexser = new Sockets();
-  Sockets *conexcliente = new Sockets();
-
-  char* message;
-  int puerto = 8080;
-  int status = conexser->crear();
-
-  if (status<0){
-  	  cout<<"socket() error\n"<<endl;
-  }
-
-  status = conexser->enlazar(puerto);
-
-  if (status<0){
-  	  cout<<"socket() error\n"<<endl;
-  }
-
-  status = conexser->escuchar();
-
-  if (status<0){
-  	  cout<<"socket() error\n"<<endl;
-  }
-
-  status = conexser->aceptarcliente(conexcliente);
-
-  if (status<0){
-  	  cout<<"error \n"<<endl;
-  }
-
-  //int fdcliente = conexcliente->conectar(hostname,puerto);
-
-
-
-
-  conexcliente->cerrar();
-  conexser->cerrar();
-}
-
-
 
 } /* namespace std */

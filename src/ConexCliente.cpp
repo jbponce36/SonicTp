@@ -6,25 +6,12 @@
  */
 
 #include "ConexCliente.h"
-#include "Sockets.h"
 
 namespace std {
 
 
 ConexCliente::ConexCliente() {
 	// TODO Auto-generated constructor stub
-}
-
-bool ConexCliente::crear(){
-	//conexion_servidor	= getConexionServidor();
-
-	fd = socket(AF_INET , SOCK_STREAM , 0);
-
-    if((fd < 0)){
-    	return false;
-    }
-
-    return true;
 }
 
 ConexCliente::~ConexCliente() {
@@ -38,7 +25,7 @@ bool ConexCliente::ErroresCliente(int puerto){
 	  errorcliente = false;
 	  return errorcliente;
 	}
-   if (conectar("gg",puerto) == false){
+   if (conectar(this->hostname,puerto) == false){
 	   errorcliente =false;
 	   return errorcliente;
    }
@@ -49,8 +36,8 @@ int ConexCliente::conectar(string hostname, int puerto){
 	struct sockaddr_in server_addr;
 	socklen_t server_sock_size;
 
-	this->fd = socket(AF_INET, SOCK_STREAM, 0);
-	if (this->fd < 0) {
+	setFd(socket(AF_INET, SOCK_STREAM, 0));
+	if (this->getFd() < 0) {
 		return false;
 	}
 
@@ -59,7 +46,7 @@ int ConexCliente::conectar(string hostname, int puerto){
 	server_addr.sin_addr.s_addr = inet_addr(hostname.data());
 	server_sock_size = sizeof(server_addr);
 
-	int conectado = connect(this->fd, (struct sockaddr *) &server_addr,server_sock_size);
+	int conectado = connect(this->getFd(), (struct sockaddr *) &server_addr,server_sock_size);
 
 	if ( conectado< 0) {
 		return false;

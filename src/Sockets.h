@@ -12,6 +12,7 @@
 #include <string.h>
 #include <netdb.h>
 #include <string>
+#include <sstream>
 
 namespace std {
 
@@ -20,13 +21,10 @@ public:
 	Sockets();
 	virtual ~Sockets();
 	bool crear();
-	int getConexionServidor();
-	void setConexionServidor(int conexion_servidor);
 	void AgregarDireccionSocket(sockaddr_in *direccion, int puerto);
 
 	//para el servidor
-	bool enlazar /*int conexion_servidor,*/
-    (int puerto);
+	bool enlazar(int puerto);
     bool escuchar();
     int aceptarcliente(Sockets *cliente);
     int enviar(Sockets *socket, char *buf, int size);
@@ -36,6 +34,8 @@ public:
     int cerrar();
     int getFd() const;
     void setFd(int fd);
+    string intToString(int number);
+    string toString();
 
 private:
     int fd;

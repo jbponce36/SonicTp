@@ -16,6 +16,7 @@
 #include "jpruebas.h"
 #include "Personaje.h"
 #include "Control.h"
+#include "ConexServidor.h"
 
 using namespace std;
 
@@ -35,18 +36,21 @@ int main(int argc, char *argv[]) {
 
 
 	char *archivoLog=(char*)"configuracion/log.txt";
-	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "PRINCIPAL");
-
-	//Se lee del json el nombre de la ventana
-	parseadorJson* parseador = new parseadorJson(log);
+	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "CLIENTE");
 
 	Sockets *conexser = new Sockets();
 	Sockets *conexcliente = new Sockets();
 	string hostname = "127.0.0.1";
 	int puerto = 8080;
 	char* buffer=(char*)"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium bibendum mattis. Aliquam vitae aliquet enim. Duis vehicula iaculis mauris, eget viverra massa. Vestibulum fermentum placerat pharetra. Sed in cursus tortor.";
+
 	conexser->conectar(hostname, puerto);
+	log->addLogMessage("conectar en "+ conexcliente->toString(), 1);
+
 	conexcliente->enviar(conexser, buffer, strlen(buffer)+1);
+	log->addLogMessage("enviado en "+ conexcliente->toString(), 1);
+	log->addLogMessage(buffer, 1);
+
 	conexcliente->cerrar();
 	conexser->cerrar();
 

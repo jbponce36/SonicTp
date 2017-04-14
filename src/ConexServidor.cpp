@@ -6,29 +6,15 @@
  */
 
 #include "ConexServidor.h"
-#include "Sockets.h"
 
 namespace std {
 
 ConexServidor::ConexServidor() {
-	// TODO Auto-generated constructor stub
-
+	Sockets::setFd(1);
 }
 
 ConexServidor::~ConexServidor() {
 	// TODO Auto-generated destructor stub
-}
-
-bool ConexServidor::crear(){
-	//conexion_servidor	= getConexionServidor();
-
-	fd = socket(AF_INET , SOCK_STREAM , 0);
-
-    if((fd < 0)){
-    	return false;
-    }
-
-    return true;
 }
 
 bool ConexServidor::enlazar(int puerto){
@@ -41,7 +27,7 @@ bool ConexServidor::enlazar(int puerto){
   server.sin_addr.s_addr = INADDR_ANY;
   bzero(&(server.sin_zero),8);
 
-  int resBind = bind(fd,(struct sockaddr *)&server , sizeof(server));
+  int resBind = bind(Sockets::getFd(),(struct sockaddr *)&server , sizeof(server));
 
   if( resBind < 0)
   {
@@ -54,7 +40,7 @@ bool ConexServidor::enlazar(int puerto){
 
 bool ConexServidor::escuchar(){
 
-   int escuchar = listen(fd, 3);
+   int escuchar = listen(Sockets::getFd(), 3);
 
    if( escuchar <0){
 	   return false;
@@ -76,8 +62,6 @@ int ConexServidor::aceptarcliente(Sockets *cliente){
 	cliente->setFd(fdCliente);
 	return fdCliente;
 }
-
-
 
 bool ConexServidor::ErroresServidor(int puerto){
   bool errorservidor = true;

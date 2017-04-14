@@ -11,7 +11,6 @@
 #include <list>
 #include "dimensiones.h"
 #include "parseadorJson.h"
-#include <list>
 #include "Sockets.h"
 namespace std {
 
@@ -21,7 +20,6 @@ public:
 	jpruebas();
 	virtual ~jpruebas();
     void prueba(jescenarioJuego* escenario);
-    void pruebasocket();
 };
 
 } /* namespace std */

@@ -21,8 +21,6 @@ Sockets::~Sockets() {
 }
 
 bool Sockets::crear(){
-	//conexion_servidor	= getConexionServidor();
-
 	fd = socket(AF_INET , SOCK_STREAM , 0);
 
     if((fd < 0)){
@@ -31,6 +29,7 @@ bool Sockets::crear(){
 
     return true;
 }
+
 bool Sockets::enlazar(int puerto){
 
   //struct sockaddr_in server;
@@ -108,7 +107,7 @@ int Sockets::enviar(Sockets *socket, char *buf, int size){
 	bool is_the_socket_valid = true;
 
 	while (sent < size && is_the_socket_valid) {
-		status = send(socket->fd, &buf[sent], size-sent-1, MSG_NOSIGNAL);
+		status = send(socket->getFd(), &buf[sent], size-sent-1, MSG_NOSIGNAL);
 
 		if (status <= 0) {
 			is_the_socket_valid = false;
@@ -133,7 +132,7 @@ int Sockets::recibir(Sockets *socket, char *buf, int size){
 	bool is_the_socket_valid = true;
 
 	while (size> received && is_the_socket_valid) {
-		bytes = recv(socket->fd, &buf[received], 1, MSG_NOSIGNAL);
+		bytes = recv(socket->getFd(), &buf[received], 1, MSG_NOSIGNAL);
 		if ( bytes <= 0) {
 			is_the_socket_valid = false;
 		}
@@ -158,16 +157,9 @@ void Sockets::AgregarDireccionSocket(sockaddr_in *direccion, int puerto){
     bzero(&(direccion->sin_zero),8);
 }
 
-int Sockets::getConexionServidor(){
-	return fd;
-}
-void Sockets::setConexionServidor(int conexionServidor) {
-	fd = conexionServidor;
-}
-
 int Sockets::cerrar(){
-	shutdown(fd, SHUT_RDWR);
-	close(fd);
+	shutdown(this->getFd(), SHUT_RDWR);
+	close(this->getFd());
 	return 0;
 }
 
@@ -179,6 +171,17 @@ int Sockets::getFd() const
 void Sockets::setFd(int fd)
 {
     this->fd = fd;
+}
+
+string Sockets::intToString(int number)
+{
+  ostringstream oss;
+  oss<< number;
+  return oss.str();
+}
+
+string Sockets::toString(){
+	return "Socket: "+intToString(this->getFd());
 }
 
  /* namespace std */

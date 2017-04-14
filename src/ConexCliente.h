@@ -12,16 +12,15 @@
 
 namespace std {
 
-class ConexCliente {
+class ConexCliente: public Sockets {
 public:
 	ConexCliente();
-	bool crear();
 	virtual ~ConexCliente();
 	bool ErroresCliente(int puerto);
 	int conectar(string string, int puerto);
 
 private:
-	int fd;
+	string hostname;
 };
 
 } /* namespace std */
