@@ -36,17 +36,18 @@ int ConexCliente::getSockEnvio(){
 	return sock_envio;
 }
 
-int ConexCliente::conectar(int puerto){
-	 return sockets.conectar(puerto);
-
+int ConexCliente::conectar(string hostname, int puerto){
+	 return 0;
 }
 
-bool ConexCliente::enviarcliente(int fdCliente, char *buf){
-	return sockets.enviarcliente(fdCliente, buf);
+int ConexCliente::enviarcliente(int fdCliente, char *buf){
+	//return sockets.enviar(fdCliente,buf);
+	return 0;
 }
 
-bool ConexCliente::recibircliente(int fdCliente, char *buf){
-	return sockets.recibircliente(fdCliente, buf);
+int ConexCliente::recibircliente(int fdCliente, char *buf){
+	//return sockets.recibir(fdCliente, buf);
+	return 0;
 }
 
 bool ConexCliente::ErroresCliente(int puerto){
@@ -56,7 +57,7 @@ bool ConexCliente::ErroresCliente(int puerto){
 	  errorcliente = false;
 	  return errorcliente;
 	}
-   if (conectar(puerto) == false){
+   if (conectar("gg",puerto) == false){
 	   errorcliente =false;
 	   return errorcliente;
    }

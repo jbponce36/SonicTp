@@ -8,6 +8,7 @@
 #ifndef CONEXCLIENTE_H_
 #define CONEXCLIENTE_H_
 #include "Sockets.h"
+#include <string>
 
 namespace std {
 
@@ -17,15 +18,12 @@ public:
 	virtual ~ConexCliente();
 
 	bool crear();
-	int conectar(int puerto);
-	bool enviarcliente(int fdCliente, char *buf);
-	bool recibircliente(int fdCliente, char *buf);
-
+	int conectar(string hostname,int puerto);
+	int enviarcliente(int fdCliente, char *buf);
+	int recibircliente(int fdCliente, char *buf);
 	bool ErroresCliente(int puerto);
-
 	int getSockEnvio();
 	void setSockEnvio(int sockEnvio);
-
 
 private:
 	Sockets sockets;

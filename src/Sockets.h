@@ -10,7 +10,8 @@
 #include <unistd.h>    //write
 #include <errno.h>
 #include <string.h>
-
+#include <netdb.h>
+#include <string>
 
 namespace std {
 
@@ -23,23 +24,19 @@ public:
 	void setConexionServidor(int conexion_servidor);
 	void AgregarDireccionSocket(sockaddr_in *direccion, int puerto);
 
-
 	//para el servidor
 	bool enlazar(/*int conexion_servidor,*/int puerto);
 	bool escuchar();
-	int aceptarcliente(/*int conexion_servidor*/);
-	void enviarservidor(int fdCliente, char *buf);
-	void recibirservidor(int fdCliente, char *buf);
+	int aceptarcliente(Sockets *cliente);
+	int enviar(Sockets *socket, char *buf);
+	int recibir(Sockets *socket, char *buf);
 
 	//para el cliente
-	int conectar(int puerto);
-	bool enviarcliente(int fdCliente, char *buf);
-    bool recibircliente(int fdCliente, char *buf);
+	int conectar(string string, int puerto);
+	int cerrar();
 
 private:
-
-    int conexion_servidor;
-
+    int fd;
 };
 
 } /* namespace std */

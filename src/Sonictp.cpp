@@ -66,10 +66,33 @@ int main(int argc, char *argv[]) {
 	log->iniciarLog("TERMINAR LOGGER");
 */
 
-	jpruebas *prueba = new jpruebas();
-	prueba->pruebasocket();
+	  Sockets *conexser = new Sockets();
+	  Sockets *conexcliente = new Sockets();
+	  string hostname = "127.0.0.1";
+	  char buffer[5];
+	  int puerto = 8080;
 
+	  if(strcmp(argv[1],"S")==0){
+		  int status = conexser->crear();
 
+		  	  status = conexser->enlazar(puerto);
+
+		  	  status = conexser->escuchar();
+
+		  	  status = conexser->aceptarcliente(conexcliente);
+			  conexser->recibir(conexcliente, buffer);
+			  cout<<buffer;
+			  conexcliente->cerrar();
+			  conexser->cerrar();
+
+	  }
+
+	  if (strcmp(argv[1],"C")==0){
+		  conexser->conectar(hostname, puerto);
+		  conexcliente->enviar(conexser, "holas");
+		  conexcliente->cerrar();
+		  conexser->cerrar();
+	  }
 
 	return 0;
 }

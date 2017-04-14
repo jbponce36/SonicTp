@@ -6,21 +6,13 @@
  */
 
 #include "Sockets.h"
-
-
-
-
-
-
-
 #define BUFFER_LEN 1024
-
 
 using namespace std;
 
 Sockets::Sockets() {
 	// TODO Auto-generated constructor stub
-	this->conexion_servidor = 0;
+	this->fd = 1;
 }
 
 Sockets::~Sockets() {
@@ -31,12 +23,11 @@ Sockets::~Sockets() {
 bool Sockets::crear(){
 	//conexion_servidor	= getConexionServidor();
 
-	conexion_servidor = socket(AF_INET , SOCK_STREAM , 0);
+	fd = socket(AF_INET , SOCK_STREAM , 0);
 
-    if((conexion_servidor < 0)){
+    if((fd < 0)){
     	return false;
     }
-
 
     return true;
 }
@@ -51,126 +42,138 @@ bool Sockets::enlazar(int puerto){
   server.sin_addr.s_addr = INADDR_ANY;
   bzero(&(server.sin_zero),8);
 
-  int resBind = bind(conexion_servidor,(struct sockaddr *)&server , sizeof(server));
+  int resBind = bind(fd,(struct sockaddr *)&server , sizeof(server));
 
   if( resBind < 0)
-
   {
-
 	 //std::cout << "open failed, error - " << (int)errno << std::endl;
 	 //exit(errno);
-
 	  return false;
-   }
-	return true;
+  }
+  return true;
 }
 
 bool Sockets::escuchar(){
 
-  if( listen(conexion_servidor, 3)<0){
-	return false;
-  }
+   int escuchar = listen(fd, 3);
+
+   if( escuchar <0){
+	   return false;
+   }
 	return true;
 }
 
-int Sockets::aceptarcliente(/*int conexion_servidor*/){
-
+int Sockets::aceptarcliente(Sockets *cliente){
 	int longitud_dircliente;
 	sockaddr_in direccionclient;
 
-
     longitud_dircliente= sizeof(struct sockaddr_in);
-    int fdCliente = accept(conexion_servidor,(struct sockaddr *)&direccionclient,(socklen_t*)&longitud_dircliente);
-	return fdCliente;
-    //if ((server = accept(conexion_servidor,(struct sockaddr *)&direccionclient,(socklen_t*)&longitud_dircliente))<0) {
-//	return false;
+    int fdCliente = accept(fd,(struct sockaddr *)&direccionclient,(socklen_t*)&longitud_dircliente);
 
-//}
-
-//return true;
-
-}
-
-
-int Sockets::conectar(/*int conexion_servidor*/int puerto){
-	 sockaddr_in server;
-
-	 this->AgregarDireccionSocket(&server,puerto);
-
-	 int conectado = connect(conexion_servidor , (struct sockaddr *)&server , sizeof(server));
-
-	 return conectado;
-	//if (connect(conexion_servidor , (struct sockaddr *)&server , sizeof(server)) < 0)
-		//    {
-		  //      return false;
-		   // }
-	   //return true;
-
-}
-void Sockets::enviarservidor(int fdCliente, char *buf){
-
-	send(fdCliente,buf,strlen(buf),0);
-}
-
-void Sockets::recibirservidor(int fdCliente, char *buf){
-
-	char c[1024];
-
-	//recv(fdCliente,buf,strlen(buf),0);
-	recv(fdCliente,c,1024,0);
-	printf(c);
-	//int leer;
-
-	 //while(1){
-
-	 //  leer = recv(conexion_servidor,buf,strlen(buf),0);
-
-	 //}
-}
-
-bool Sockets::enviarcliente(int fdCliente, char *buf){
-
-	send(fdCliente,buf,strlen(buf),0);
-/*bool resulenvio = true;
-
- while(1){
-
-   if( send(conexion_servidor,pBuffer,strlen(pBuffer),0) < 0){
-	   resulenvio = false;
+	if (fdCliente<0) {
+    	return false;
     }
 
-  }
- return resulenvio;*/
-	return true;
+	cliente->fd = fdCliente;
+	return fdCliente;
 }
 
-bool Sockets::recibircliente(int fdCliente, char *buf){
 
-	recv(fdCliente,buf,strlen(buf),0);
+int Sockets::conectar(string hostname, int puerto){
+	struct sockaddr_in server_addr;
+	socklen_t server_sock_size;
 
-	/*if (recv(conexion_servidor,pBuffer,strlen(pBuffer),0) < 0)
-		{
-			return false;
-		}*/
+	this->fd = socket(AF_INET, SOCK_STREAM, 0);
+	if (this->fd < 0) {
+		return false;
+	}
 
-	return true;
+	server_addr.sin_family = AF_INET;
+	server_addr.sin_port = htons(puerto);
+	server_addr.sin_addr.s_addr = inet_addr(hostname.data());
+	server_sock_size = sizeof(server_addr);
+
+	int conectado = connect(this->fd, (struct sockaddr *) &server_addr,server_sock_size);
+
+	if ( conectado< 0) {
+		return false;
+	}
+
+	return conectado;
 }
+
+int Sockets::enviar(Sockets *socket, char *buf){
+	//int bytes = send(fdCliente,buf,strlen(buf),0);
+
+	int size = strlen(buf)+1;
+	int sent = 0;
+	int status = 0;
+	bool is_the_socket_valid = true;
+
+	while (sent < size && is_the_socket_valid) {
+		status = send(socket->fd, &buf[sent], size-sent-1, MSG_NOSIGNAL);
+
+		if (status <= 0) {
+			is_the_socket_valid = false;
+		}
+		else {
+			sent += status;
+		}
+	}
+
+	if (is_the_socket_valid) {
+		return sent;
+	}
+	else {
+		return -1;
+	}
+
+}
+
+int Sockets::recibir(Sockets *socket, char *buf){
+	int received = 0;
+	int bytes = 0;
+	bool is_the_socket_valid = true;
+	int size = strlen(buf)+1;
+
+	while (size> received && is_the_socket_valid) {
+		bytes = recv(socket->fd, &buf[received], 1, MSG_NOSIGNAL);
+		if ( bytes <= 0) {
+			is_the_socket_valid = false;
+		}
+		else {
+			received += bytes;
+		}
+	}
+
+	if (is_the_socket_valid) {
+		return received;
+	}
+	else {
+	  return -1;
+	}
+}
+
 
 void Sockets::AgregarDireccionSocket(sockaddr_in *direccion, int puerto){
 	direccion->sin_family = AF_INET;			// Setea IPv4
     direccion->sin_port = htons(puerto);		// Setea el puerto
     direccion->sin_addr.s_addr = INADDR_ANY;
     bzero(&(direccion->sin_zero),8);
-
 }
 
 int Sockets::getConexionServidor(){
-	return conexion_servidor;
+	return fd;
 }
 void Sockets::setConexionServidor(int conexionServidor) {
-	conexion_servidor = conexionServidor;
+	fd = conexionServidor;
 }
 
+int Sockets::cerrar(){
+	shutdown(fd, SHUT_RDWR);
+	close(fd);
+	return 0;
+}
 
 
  /* namespace std */

@@ -12,8 +12,7 @@
 #include "dimensiones.h"
 #include "parseadorJson.h"
 #include <list>
-#include "ConexCliente.h"
-#include "ConexServidor.h"
+#include "Sockets.h"
 namespace std {
 
 class jpruebas {

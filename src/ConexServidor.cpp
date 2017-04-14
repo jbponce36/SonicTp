@@ -32,12 +32,11 @@ int ConexServidor::getSockRecep(){
 void ConexServidor::setSockRecep(int sockRecep){
 	sock_recep = sockRecep;
 	sockets.setConexionServidor(sockRecep);
-
 }
 int ConexServidor:: aceptarcliente2(/*ConexCliente* cliente*/){
 
    //int c = cliente->getSockEnvio();
-   return (this->sockets.aceptarcliente(/*c*/));
+   return 0;
 
 }
 bool ConexServidor::enlazar(int puerto){
@@ -50,12 +49,12 @@ bool ConexServidor::escuchar(){
 }
 
 void ConexServidor::enviarservidor(int fdCliente, char *buf){
-	this->sockets.enviarservidor(fdCliente, buf);
+	//this->sockets.enviar(fdCliente, buf);
 }
 
 
 void ConexServidor::recibirservidor(int fdCliente, char *buf){
-	this->sockets.recibirservidor(fdCliente, buf);
+	//this->sockets.recibir(fdCliente, buf);
 }
 
 bool ConexServidor::ErroresServidor(int puerto){

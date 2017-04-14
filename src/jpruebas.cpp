@@ -72,30 +72,42 @@ void jpruebas::prueba(jescenarioJuego* parser){
 
 void jpruebas::pruebasocket(){
 
-  ConexServidor*  conexser = new ConexServidor();
-  ConexCliente * conexcliente = new ConexCliente();
+  Sockets *conexser = new Sockets();
+  Sockets *conexcliente = new Sockets();
 
   char* message;
-  int puerto = 3316;
+  int puerto = 8080;
+  int status = conexser->crear();
 
-
-  if (!conexcliente->crear()){
+  if (status<0){
   	  cout<<"socket() error\n"<<endl;
-   }
-
-  int fdcliente = conexcliente->conectar(puerto);
-  printf("ponga un mensaje : ");
-  message = "Hola Patricia";
-
-  if(!conexcliente->recibircliente(fdcliente,message)){
-	  cout<<"Error en recv()"<<endl;
-  }
-  if(!conexcliente->enviarcliente(fdcliente,message)){
-	  cout<<"error en env"<<endl;
   }
 
+  status = conexser->enlazar(puerto);
+
+  if (status<0){
+  	  cout<<"socket() error\n"<<endl;
+  }
+
+  status = conexser->escuchar();
+
+  if (status<0){
+  	  cout<<"socket() error\n"<<endl;
+  }
+
+  status = conexser->aceptarcliente(conexcliente);
+
+  if (status<0){
+  	  cout<<"error \n"<<endl;
+  }
+
+  //int fdcliente = conexcliente->conectar(hostname,puerto);
 
 
+
+
+  conexcliente->cerrar();
+  conexser->cerrar();
 }
 
 
