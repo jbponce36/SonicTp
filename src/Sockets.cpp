@@ -6,23 +6,17 @@
  */
 
 #include "Sockets.h"
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netinet/ip.h> /* superset of previous */
-#include <string.h>
-#include <unistd.h>    //write
-#include <errno.h>
-#include <iostream>
+
+
+
+
+
+
 
 #define BUFFER_LEN 1024
 
 
-namespace std {
+using namespace std;
 
 Sockets::Sockets() {
 	// TODO Auto-generated constructor stub
@@ -81,7 +75,7 @@ bool Sockets::escuchar(){
 
 int Sockets::aceptarcliente(/*int conexion_servidor*/){
 
-	int longitud_dircliente,server;
+	int longitud_dircliente;
 	sockaddr_in direccionclient;
 
 
@@ -147,6 +141,7 @@ bool Sockets::enviarcliente(int fdCliente, char *buf){
 
   }
  return resulenvio;*/
+	return true;
 }
 
 bool Sockets::recibircliente(int fdCliente, char *buf){
@@ -178,4 +173,4 @@ void Sockets::setConexionServidor(int conexionServidor) {
 
 
 
-} /* namespace std */
+ /* namespace std */

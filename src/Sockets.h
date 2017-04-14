@@ -2,14 +2,15 @@
 #define SOCKETS_H_
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netinet/ip.h> /* superset of previous */
-#include <string.h>
 #include <unistd.h>    //write
+#include <errno.h>
+#include <string.h>
+
 
 namespace std {
 

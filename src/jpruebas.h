@@ -1,10 +1,3 @@
-/*
- * jpruebas.h
- *
- *  Created on: 21 mar. 2017
- *      Author: pato
- */
-
 #ifndef JPRUEBAS_H_
 #define JPRUEBAS_H_
 #include <iostream>
@@ -19,7 +12,8 @@
 #include "dimensiones.h"
 #include "parseadorJson.h"
 #include <list>
-
+#include "ConexCliente.h"
+#include "ConexServidor.h"
 namespace std {
 
 class jpruebas {

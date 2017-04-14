@@ -1,0 +1,30 @@
+[2017-4-13 21:4:28] INICAR LOGGER EN NIVEL: ALTO
+-------------------------------------------------------------------------------------------
+[2017-4-13 21:4:28] [PARSEADOR JSON] [PARSEAR ARCHIVO] Iniciado.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [VALIDAR VENTANA] Iniciado.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [VALIDAR VENTANA]Ventana valida
+[2017-4-13 21:4:28] [PARSEADOR JSON] [VALIDAR VENTANA] Terminado.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR VENTANA] Iniciado.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR VENTANA] Ventana-> Alto:500, Ancho: 800.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR VENTANA] Terminado.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR VELOCIDAD DE SCROLL] Iniciado.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR VELOCIDAD DE SCROLL] Velocidad de scroll: 20.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR VELOCIDAD DE SCROLL] Terminado.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR ESCENARIO] Iniciado.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR ESCENARIO] Escenario ->Alto:500, Ancho: 3600.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR CAPAS] Iniciado.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR CAPAS] Capa-> id: 1, index_z: 99, ruta_imagen: images/capa0.png
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR CAPAS] Capa-> id: 2, index_z: 98, ruta_imagen: images/capa1r.png
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR CAPAS] Terminado.
+
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR ENTIDADES] Iniciado.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR ENTIDADES] Entidad-> id: 1, tipo: rectangulo, color: rojo, coordenadas-> x:300, y: 300, index_z: 99, ruta_imagen: images/entidad1.png
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR ENTIDADES] Entidad-> id: 2, tipo: rectangulo, color: verde, coordenadas-> x:200, y: 100, index_z: 99, ruta_imagen: images/entidad2.png
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR ENTIDADES] Entidad-> id: 3, tipo: circulo, color: amarillo, coordenadas-> x:300, y: 100, index_z: 99, ruta_imagen: images/entidad3.png
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR ENTIDADES] Terminado.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [CARGAR ESCENARIO] Terminado.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [VALIDAR DIMENSIONES DE LA VENTANA] Iniciado.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [VALIDAR DIMENSIONES DE LA VENTANA] Terminado.
+[2017-4-13 21:4:28] [PARSEADOR JSON] [PARSEAR ARCHIVO] Terminado. 
+
+[2017-4-13 21:4:28] [PRINCIPAL] Se empieza a cargar la vista.
