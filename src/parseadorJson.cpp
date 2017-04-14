@@ -627,4 +627,43 @@ void parseadorJson::setraiz(json_t* Raiz){
 	raiz = Raiz;
 }
 
+int parseadorJson::cargarPuerto(json_t* raiz){
+
+    this->log->addLogMessage("[CARGAR PUERTO] Iniciado.", 2);
+
+	int puerto;
+	json_t* jsonPuerto = json_object_get(raiz, "cliente");
+	json_t* puert = json_object_get(jsonPuerto,"puerto");
+	if (json_number_value(puert))
+	{
+		puerto = json_number_value(puert);
+	}
+	else
+	{
+		puerto = 3316;
+	}
+
+	this->log->addLogMessage("[CARGAR PUERTO] Terminado.", 2);
+	return puerto;
+}
+
+char* parseadorJson::cargarIP(json_t* raiz){
+
+	char* IP;
+	this->log->addLogMessage("[CARGAR IP] Iniciado.", 2);
+	json_t* jsonIP = json_object_get(raiz, "cliente");
+	json_t* ip = json_object_get(jsonIP,"IP");
+	if(json_string_value(ip))
+	{
+		IP=((char*)json_string_value(ip));
+	}
+	else
+	{
+		IP ="1.1.1.1";
+	}
+
+	this->log->addLogMessage("[CARGAR IP] Terminado.", 2);
+	return IP;
+}
+
 } /* namespace std */
