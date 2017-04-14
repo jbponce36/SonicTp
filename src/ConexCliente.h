@@ -15,19 +15,13 @@ namespace std {
 class ConexCliente {
 public:
 	ConexCliente();
-	virtual ~ConexCliente();
-
 	bool crear();
-	int conectar(string hostname,int puerto);
-	int enviarcliente(int fdCliente, char *buf);
-	int recibircliente(int fdCliente, char *buf);
+	virtual ~ConexCliente();
 	bool ErroresCliente(int puerto);
-	int getSockEnvio();
-	void setSockEnvio(int sockEnvio);
+	int conectar(string string, int puerto);
 
 private:
-	Sockets sockets;
-    int sock_envio;
+	int fd;
 };
 
 } /* namespace std */
