@@ -559,12 +559,19 @@ int parseadorJson::CargarPuertoServidor(){
 	json_t *jsonservidor;
 	json_t *jsonpuerto;
 
-
+	int puerto;
     raiz = this->getraiz();
-	jsonservidor = json_object_get(raiz, "servidor");
-	jsonpuerto = json_object_get(jsonservidor, "puerto");
 
-	int puerto = json_number_value(jsonpuerto);
+	jsonservidor = json_object_get(raiz, "servidor");
+
+	if(jsonservidor){
+	  puerto = this->leerValorEntero(jsonservidor,"puerto",3316);
+
+	}
+	else{
+	  puerto = 3316;
+	}
+
 
 	return puerto;
 
@@ -580,9 +587,15 @@ int parseadorJson::CargarCantClientes(){
 
     raiz = this->getraiz();
 	jsonservidor = json_object_get(raiz, "servidor");
-	jsoncantclientes = json_object_get(jsonservidor, "clientes");
 
-	cantclientes = json_number_value(jsoncantclientes);
+	if(jsonservidor){
+
+	  cantclientes = this->leerValorEntero(jsonservidor,"clientes",2);
+
+	}
+	else{
+		cantclientes = 2;
+	}
 
 	return cantclientes;
 }

@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
 
    // ConexServidor* servidor = new ConexServidor();
 
-    int cant =parseador->CargarPuertoServidor();
+    int cant =parseador->CargarCantClientes();
     cout<<cant<<endl;
 	return 0;
 }
