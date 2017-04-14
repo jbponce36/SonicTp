@@ -10,7 +10,6 @@
 
 namespace std {
 
-
 ConexServidor::ConexServidor() {
 	// TODO Auto-generated constructor stub
 
@@ -20,42 +19,65 @@ ConexServidor::~ConexServidor() {
 	// TODO Auto-generated destructor stub
 }
 
-
 bool ConexServidor::crear(){
-	return this->sockets.crear();
+	//conexion_servidor	= getConexionServidor();
+
+	fd = socket(AF_INET , SOCK_STREAM , 0);
+
+    if((fd < 0)){
+    	return false;
+    }
+
+    return true;
 }
 
-int ConexServidor::getSockRecep(){
-	return sock_recep;
-}
-
-void ConexServidor::setSockRecep(int sockRecep){
-	sock_recep = sockRecep;
-	sockets.setConexionServidor(sockRecep);
-}
-int ConexServidor:: aceptarcliente2(/*ConexCliente* cliente*/){
-
-   //int c = cliente->getSockEnvio();
-   return 0;
-
-}
 bool ConexServidor::enlazar(int puerto){
-	return this->sockets.enlazar(puerto);
+  //struct sockaddr_in server;
+  sockaddr_in	server;
+  //this->AgregarDireccionSocket(&server,puerto);
+
+  server.sin_family = AF_INET;
+  server.sin_port = htons(puerto);
+  server.sin_addr.s_addr = INADDR_ANY;
+  bzero(&(server.sin_zero),8);
+
+  int resBind = bind(fd,(struct sockaddr *)&server , sizeof(server));
+
+  if( resBind < 0)
+  {
+	 //std::cout << "open failed, error - " << (int)errno << std::endl;
+	 //exit(errno);
+	  return false;
+  }
+  return true;
 }
 
 bool ConexServidor::escuchar(){
-	return this->sockets.escuchar();
 
+   int escuchar = listen(fd, 3);
+
+   if( escuchar <0){
+	   return false;
+   }
+	return true;
 }
 
-void ConexServidor::enviarservidor(int fdCliente, char *buf){
-	//this->sockets.enviar(fdCliente, buf);
+int ConexServidor::aceptarcliente(Sockets *cliente){
+	int longitud_dircliente;
+	sockaddr_in direccionclient;
+
+    longitud_dircliente= sizeof(struct sockaddr_in);
+    int fdCliente = accept(cliente->getFd(),(struct sockaddr *)&direccionclient,(socklen_t*)&longitud_dircliente);
+
+	if (fdCliente<0) {
+    	return false;
+    }
+
+	cliente->setFd(fdCliente);
+	return fdCliente;
 }
 
 
-void ConexServidor::recibirservidor(int fdCliente, char *buf){
-	//this->sockets.recibir(fdCliente, buf);
-}
 
 bool ConexServidor::ErroresServidor(int puerto){
   bool errorservidor = true;

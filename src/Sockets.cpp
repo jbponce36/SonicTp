@@ -171,5 +171,14 @@ int Sockets::cerrar(){
 	return 0;
 }
 
+int Sockets::getFd() const
+{
+    return fd;
+}
+
+void Sockets::setFd(int fd)
+{
+    this->fd = fd;
+}
 
  /* namespace std */

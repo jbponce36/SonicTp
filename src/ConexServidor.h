@@ -15,30 +15,21 @@ namespace std {
 
 class ConexServidor {
 public:
-	bool crear();
-
 	ConexServidor();
+	bool crear();
 	virtual ~ConexServidor();
-
-	int getSockRecep();
-	void setSockRecep(int sockRecep);
-
-
 	bool enlazar(int puerto);
 	bool escuchar();
-	int aceptarcliente2(/*ConexCliente* cliente*/);
-	void enviarservidor(int fdCliente, char *buf);
-    void recibirservidor(int fdCliente, char *buf);
-
+	int aceptarcliente(Sockets *cliente);
 
     bool ErroresServidor(int puerto); // agrupa crear, enlazar y escuchar
 
 private:
-	Sockets sockets;
+    int fd;
 	int sock_recep;
 	//ConexCliente cliente; // luego va a ser una lista
 
-	int puerto;
+	string hostname;
 };
 
 } /* namespace std */
