@@ -17,8 +17,7 @@
 #include <list>
 #include "dimensiones.h"
 #include "parseadorJson.h"
-#include "ConexCliente.h"
-#include "ConexServidor.h"
+
 
 
 namespace std {
@@ -34,7 +33,9 @@ jpruebas::~jpruebas() {
 
 void jpruebas::prueba(jescenarioJuego* parser){
 
-	list<capas>::iterator pos;
+	cout << "SERVER" << endl;
+	cout << "puerto:" << parser->getServidor()->getPuerto()<< endl;
+	/*list<capas>::iterator pos;
 	list<capas> capal;
     capal =  parser->getEscenario()->getcapas();
 
@@ -81,12 +82,12 @@ void jpruebas::prueba(jescenarioJuego* parser){
         cout<< "index z: " << (*iterEntidades).getindex()<<endl;
     }
 
-
+*/
 	}
 
 void jpruebas::pruebasocket(){
 
-  ConexServidor*  conexser = new ConexServidor();
+ /* ConexServidor*  conexser = new ConexServidor();
   ConexCliente * conexcliente = new ConexCliente();
 
   char* message;
@@ -108,7 +109,7 @@ void jpruebas::pruebasocket(){
 	  cout<<"error en env"<<endl;
   }
 
-
+*/
 
 }
 

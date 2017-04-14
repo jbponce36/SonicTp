@@ -42,4 +42,13 @@ void jescenarioJuego::setEscenario(jescenario* pescenario) {
 	this-> escenario = pescenario;
 }
 
+void jescenarioJuego::setServidor(jservidor* pservidor){
+	this->servidor = pservidor;
+}
+
+jservidor* jescenarioJuego::getServidor(){
+	return this->servidor;
+}
+
+
 } /* namespace std */

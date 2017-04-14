@@ -18,7 +18,8 @@
 #include "jrectangulo.h"
 #include "jcuadrado.h"
 #include "jventana.h"
-
+#include "jservidor.h"
+#include "ConexServidor.h"
 
 namespace std {
 
@@ -44,19 +45,29 @@ public:
 	bool leerValorVentana(json_t *dimension, const char *ancho, const char *alto);
 	jescenarioJuego* getescenario();
 	void validarDimensionesVentana(jescenarioJuego *escenarioJuego);
+	// devuelvo solo el puerto
+	int CargarPuertoServidor();
+	//devuelve solo la cantclientes
+	int CargarCantClientes();
 
+	void setraiz(json_t*);
+	json_t* getraiz();
 
 private:
 	Logger *log;
+	json_t* raiz;
+
 	jescenarioJuego *juego;
 	jventana* cargarVentana(json_t* raiz);
 	jconfiguracion* cargarConfiguracion(json_t* raiz);
 	jescenario* cargarEscenario(json_t* raiz);
+	jservidor* cargarServidor(json_t* raiz);
 	double leerValorEntero(json_t* padre, const char* nombre,int valorPorDefecto);
 	bool tryLeerValorEntero(json_t* padre, const char* nombre, double* valorLeido);
     std::string leerValorStringCapas(json_t* padre,const char* nombre,std::string valorPorDefecto);
     list<capas> DevolverCapasPorDefecto();
     list<jentidades> DevolverEntidadesPorDefecto();
+
 };
 
 } /* namespace std */
