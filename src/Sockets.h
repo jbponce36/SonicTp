@@ -28,8 +28,8 @@ public:
 	bool enlazar(/*int conexion_servidor,*/int puerto);
 	bool escuchar();
 	int aceptarcliente(Sockets *cliente);
-	int enviar(Sockets *socket, char *buf);
-	int recibir(Sockets *socket, char *buf);
+	int enviar(Sockets *socket, char *buf, int size);
+	int recibir(Sockets *socket, char *buf, int size);
 
 	//para el cliente
 	int conectar(string string, int puerto);

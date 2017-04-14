@@ -102,10 +102,7 @@ int Sockets::conectar(string hostname, int puerto){
 	return conectado;
 }
 
-int Sockets::enviar(Sockets *socket, char *buf){
-	//int bytes = send(fdCliente,buf,strlen(buf),0);
-
-	int size = strlen(buf)+1;
+int Sockets::enviar(Sockets *socket, char *buf, int size){
 	int sent = 0;
 	int status = 0;
 	bool is_the_socket_valid = true;
@@ -130,11 +127,10 @@ int Sockets::enviar(Sockets *socket, char *buf){
 
 }
 
-int Sockets::recibir(Sockets *socket, char *buf){
+int Sockets::recibir(Sockets *socket, char *buf, int size){
 	int received = 0;
 	int bytes = 0;
 	bool is_the_socket_valid = true;
-	int size = strlen(buf)+1;
 
 	while (size> received && is_the_socket_valid) {
 		bytes = recv(socket->fd, &buf[received], 1, MSG_NOSIGNAL);

@@ -18,23 +18,9 @@
 #include "Control.h"
 
 
-
-
 using namespace std;
 
-int getNivelLogger(int argc, char *argv[]){
-	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
-
-	char *nivelLog = (char*)"2";
-	if(argc>1){
-		nivelLog = argv[1];
-	}
-
-	char *nivel= (char*)nivelLog;
-	return atoi(nivel);
-}
-
-int main(int argc, char *argv[]) {
+/*int main(int argc, char *argv[]) {
 
 
 	char *archivoLog=(char*)"configuracion/log.txt";
@@ -47,14 +33,11 @@ int main(int argc, char *argv[]) {
 	char *file=(char*)"configuracion/configuracion.json";
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
-
-
     log->setModulo("PRINCIPAL");
 	log->addLogMessage("Se empieza a cargar la vista.",1);
 	log->setLevel(getNivelLogger(argc, argv));
 
-
-   /* VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
+    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
 
 	Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
     Control *control = new Control(0, 0, log);
@@ -64,35 +47,6 @@ int main(int argc, char *argv[]) {
 	log->addLogMessage("Se termina de cargar la vista.",1);
 	vista->cerrar();
 	log->iniciarLog("TERMINAR LOGGER");
-*/
-
-	  Sockets *conexser = new Sockets();
-	  Sockets *conexcliente = new Sockets();
-	  string hostname = "127.0.0.1";
-	  char buffer[5];
-	  int puerto = 8080;
-
-	  if(strcmp(argv[1],"S")==0){
-		  int status = conexser->crear();
-
-		  	  status = conexser->enlazar(puerto);
-
-		  	  status = conexser->escuchar();
-
-		  	  status = conexser->aceptarcliente(conexcliente);
-			  conexser->recibir(conexcliente, buffer);
-			  cout<<buffer;
-			  conexcliente->cerrar();
-			  conexser->cerrar();
-
-	  }
-
-	  if (strcmp(argv[1],"C")==0){
-		  conexser->conectar(hostname, puerto);
-		  conexcliente->enviar(conexser, "holas");
-		  conexcliente->cerrar();
-		  conexser->cerrar();
-	  }
 
 	return 0;
-}
+}*/

@@ -8,7 +8,7 @@
 #ifndef CONEXCLIENTE_H_
 #define CONEXCLIENTE_H_
 #include "Sockets.h"
-#include <string>
+#include <string.h>
 
 namespace std {
 
