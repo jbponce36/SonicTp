@@ -16,18 +16,25 @@
     STL
   
 # Compilació src/jescenarioJuego.cppn por consola
+    servidor:
+     g++ src/capas.cpp src/Circulo.cpp src/ConstructorEntidades.cpp src/Control.cpp src/Camara.cpp 
+    src/dimensiones.cpp src/Entidad.cpp src/jcirculo.cpp src/jconfiguracion.cpp src/jentidades.cpp 
+    src/jescenario.cpp src/jescenarioJuego.cpp src/jpruebas.cpp src/jrectangulo.cpp src/jventana.cpp 
+    src/Logger.cpp src/Mensaje.cpp src/parseadorJson.cpp src/jcuadrado.cpp src/Rectangulo.cpp src/Personaje.cpp 
+    src/Textura.cpp src/VistaSDL.cpp src/ConexServidor.cpp src/ConexCliente.cpp src/Sockets.cpp 
+    src/jservidor.cpp src/serverMain.cpp -lSDL2 -lSDL2_image -ljansson -o server
+    
+    cliente:
     g++ src/capas.cpp src/Circulo.cpp src/ConstructorEntidades.cpp src/Control.cpp src/Camara.cpp 
-    src/dimensiones.cpp src/Entidad.cpp src/jcirculo.cpp src/jconfiguracion.cpp src/jentidades.cpp
-    src/jescenario.cpp src/jescenarioJuego.cpp src/jpruebas.cpp src/jrectangulo.cpp src/jventana.cpp
-    src/Logger.cpp src/Mensaje.cpp src/parseadorJson.cpp src/jcuadrado.cpp src/Rectangulo.cpp
-    src/Personaje.cpp src/Sonictp.cpp src/Textura.cpp src/VistaSDL.cpp -lSDL2 -lSDL2_image -ljansson   
-      
-    
-           
-    
-
+    src/dimensiones.cpp src/Entidad.cpp src/jcirculo.cpp src/jconfiguracion.cpp src/jentidades.cpp 
+    src/jescenario.cpp src/jescenarioJuego.cpp src/jpruebas.cpp src/jrectangulo.cpp src/jventana.cpp 
+    src/Logger.cpp src/Mensaje.cpp src/parseadorJson.cpp src/jcuadrado.cpp src/Rectangulo.cpp src/Personaje.cpp 
+    src/Textura.cpp src/VistaSDL.cpp src/ConexServidor.cpp src/ConexCliente.cpp src/Sockets.cpp 
+    src/jservidor.cpp src/clientMain.cpp -lSDL2 -lSDL2_image -ljansson -o client
+     
 # Ejecución
-    ./sonictp 1
+    ./server 1
+    ./client 1
 
 1 es esl nivel del logger, puede ser 2 o 3.
-Por default toma el valor 2.
+Si no se agrega ese parámetro, o es incorrecto, por default toma el valor 2.
