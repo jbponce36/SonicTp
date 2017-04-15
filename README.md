@@ -14,8 +14,7 @@
     SDL2_IMAGE version 2.0, link : https://www.libsdl.org/projects/SDL_image/
     Jannson, version 2.10, link : http://www.digip.org/jansson/releases/
     STL
-  
-# Compilació src/jescenarioJuego.cppn por consola
+# Compilación por consola
     servidor:
      g++ src/capas.cpp src/Circulo.cpp src/ConstructorEntidades.cpp src/Control.cpp src/Camara.cpp 
     src/dimensiones.cpp src/Entidad.cpp src/jcirculo.cpp src/jconfiguracion.cpp src/jentidades.cpp 
@@ -35,6 +34,5 @@
 # Ejecución
     ./server 1
     ./client 1
-
 1 es esl nivel del logger, puede ser 2 o 3.
 Si no se agrega ese parámetro, o es incorrecto, por default toma el valor 2.
