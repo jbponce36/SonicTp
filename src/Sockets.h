@@ -1,3 +1,10 @@
+/*
+ * Sockets.h
+ *
+ *  Created on: 10 abr. 2017
+ *      Author: pato
+ */
+
 #ifndef SOCKETS_H_
 #define SOCKETS_H_
 #include <sys/socket.h>
@@ -37,6 +44,9 @@ public:
     string intToString(int number);
     string toString();
 
+    int getPuerto();
+    void setPuerto(int);
+
 private:
     int fd;
     int puerto;
@@ -45,4 +55,3 @@ private:
 } /* namespace std */
 
 #endif /* SOCKETS_H_ */
-

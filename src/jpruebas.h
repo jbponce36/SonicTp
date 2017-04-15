@@ -11,8 +11,9 @@
 #include <list>
 #include "dimensiones.h"
 #include "parseadorJson.h"
-#include "Sockets.h"
+
 namespace std {
+
 
 class jpruebas {
 public:

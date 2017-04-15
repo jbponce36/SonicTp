@@ -22,11 +22,18 @@ public:
 
     bool ErroresServidor(int puerto); // agrupa crear, enlazar y escuchar
 
+    int getPuerto();
+    void setPuerto(int);
+
+    int getCantclientes();
+    void setCantclientes(int);
+
+
 private:
 	int sock_recep;
 	//ConexCliente cliente; // luego va a ser una lista
-
 	string hostname;
+	int cantclientes;
 };
 
 } /* namespace std */

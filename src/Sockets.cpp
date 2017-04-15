@@ -77,7 +77,6 @@ int Sockets::aceptarcliente(Sockets *cliente){
 	return fdCliente;
 }
 
-
 int Sockets::conectar(string hostname, int puerto){
 	struct sockaddr_in server_addr;
 	socklen_t server_sock_size;
@@ -183,5 +182,14 @@ string Sockets::intToString(int number)
 string Sockets::toString(){
 	return "Socket: "+intToString(this->getFd());
 }
+
+int Sockets::getPuerto(){
+	return puerto;
+}
+
+void Sockets::setPuerto(int Puerto){
+	this->puerto = Puerto;
+}
+
 
  /* namespace std */

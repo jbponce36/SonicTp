@@ -63,6 +63,14 @@ int ConexServidor::aceptarcliente(Sockets *cliente){
 	return fdCliente;
 }
 
+int ConexServidor::getCantclientes(){
+	return this->cantclientes;
+}
+
+void ConexServidor::setCantclientes(int CantClientes){
+	this->cantclientes = CantClientes;
+}
+
 bool ConexServidor::ErroresServidor(int puerto){
   bool errorservidor = true;
 

@@ -20,7 +20,9 @@ jpruebas::~jpruebas() {
 
 void jpruebas::prueba(jescenarioJuego* parser){
 
-	list<capas>::iterator pos;
+	cout << "SERVER" << endl;
+	cout << "puerto:" << parser->getServidor()->getPuerto()<< endl;
+	/*list<capas>::iterator pos;
 	list<capas> capal;
     capal =  parser->getEscenario()->getcapas();
 
@@ -67,8 +69,7 @@ void jpruebas::prueba(jescenarioJuego* parser){
         cout<< "index z: " << (*iterEntidades).getindex()<<endl;
     }
 
-
+*/
 	}
-
 
 } /* namespace std */

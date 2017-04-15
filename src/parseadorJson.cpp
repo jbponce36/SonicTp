@@ -6,7 +6,6 @@
  */
 
 #include <iostream>
-#include </usr/include/SDL2/SDL.h>
 #include <jansson.h>
 #include "jventana.h"
 #include "jconfiguracion.h"
@@ -19,6 +18,7 @@
 #include "jrectangulo.h"
 #include "jcirculo.h"
 #include <string>
+
 
 
 namespace std {
@@ -52,6 +52,7 @@ namespace std {
 parseadorJson::parseadorJson() {
 	// TODO Auto-generated constructor stub
 	//jconexion conexion2 = *conexion2.getinstance();
+	this->raiz = NULL;
 }
 
 parseadorJson::parseadorJson(Logger *log) {
@@ -413,13 +414,18 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
 
 	 this->log->addLogMessage("[PARSEAR ARCHIVO] Iniciado.", 2);
 	 json = json_load_file(nombreArchivo,0,&error);
-
+       //nuevo
+	   this->setraiz(json);
+	   //
 	  if(!json) {
 	       cout << "!!! hay  probremas!!!" << endl;
 	       cout << error.text << endl;
 	       this->log->addLogMessage("[PARSEAR ARCHIVO] [ERROR] No se encontro el archivo o directorio.", 1);
 	       cout << "Cargando archivo por defecto" << endl;
 	       json = json_load_file("configuracion/default.json",0,&error);
+	       //nuevo
+	       this->setraiz(json);
+	       //nuevo
 	       this->log->addLogMessage("[PARSEAR ARCHIVO] Se carga un archivo por defecto: configuracion/default.json .", 1);
 	       if (!json){
 		       cout << "!!! no existe el archivo por defecto!!!" << endl;
@@ -432,10 +438,13 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
         jventana *ventana = cargarVentana(json);
         jconfiguracion *config = cargarConfiguracion(json);
         jescenario *escenario = cargarEscenario(json);
+        jservidor* servidor = this->cargarServidor(json);
         jescenarioJuego *result = new jescenarioJuego();
+
         result->setVentana(ventana);
         result->setEscenario(escenario);
         result->setConfiguracion(config);
+        result->setServidor(servidor);
 
         validarDimensionesVentana(result);
         this->log->addLogMessage("[PARSEAR ARCHIVO] Terminado. \n", 2);
@@ -543,4 +552,118 @@ void parseadorJson::validarDimensionesVentana(jescenarioJuego *escenarioJuego){
 	this->log->addLogMessage("[VALIDAR DIMENSIONES DE LA VENTANA] Terminado.", 2 );
 
 }
+
+int parseadorJson::CargarPuertoServidor(){
+
+	json_t* raiz;
+	json_t *jsonservidor;
+	json_t *jsonpuerto;
+
+	int puerto;
+    raiz = this->getraiz();
+
+	jsonservidor = json_object_get(raiz, "servidor");
+
+	if(jsonservidor){
+	  puerto = this->leerValorEntero(jsonservidor,"puerto",3316);
+
+	}
+	else{
+	  puerto = 3316;
+	}
+
+
+	return puerto;
+
+}
+
+int parseadorJson::CargarCantClientes(){
+
+	json_t* raiz;
+	json_t *jsonservidor;
+    json_t *jsoncantclientes;
+
+    int cantclientes;
+
+    raiz = this->getraiz();
+	jsonservidor = json_object_get(raiz, "servidor");
+
+	if(jsonservidor){
+
+	  cantclientes = this->leerValorEntero(jsonservidor,"clientes",2);
+
+	}
+	else{
+		cantclientes = 2;
+	}
+
+	return cantclientes;
+}
+
+jservidor* parseadorJson::cargarServidor(json_t* raiz){
+
+	json_t *jsonservidor;
+	json_t *jsonpuerto;
+    json_t *jsonclientes;
+
+	jservidor* server = new jservidor();
+
+	jsonservidor = json_object_get(raiz, "servidor");
+	jsonpuerto = json_object_get(jsonservidor, "puerto");
+	jsonclientes = json_object_get(jsonservidor,"clientes");
+
+	server->setPuerto(json_number_value(jsonpuerto));
+    server->setCantclientes(json_number_value(jsonclientes));
+
+    return server;
+
+}
+
+json_t* parseadorJson::getraiz(){
+	return raiz;
+}
+
+void parseadorJson::setraiz(json_t* Raiz){
+	raiz = Raiz;
+}
+
+int parseadorJson::cargarPuerto(json_t* raiz){
+
+    this->log->addLogMessage("[CARGAR PUERTO] Iniciado.", 2);
+
+	int puerto;
+	json_t* jsonPuerto = json_object_get(raiz, "cliente");
+	json_t* puert = json_object_get(jsonPuerto,"puerto");
+	if (json_number_value(puert))
+	{
+		puerto = json_number_value(puert);
+	}
+	else
+	{
+		puerto = 3316;
+	}
+
+	this->log->addLogMessage("[CARGAR PUERTO] Terminado.", 2);
+	return puerto;
+}
+
+char* parseadorJson::cargarIP(json_t* raiz){
+
+	char* IP;
+	this->log->addLogMessage("[CARGAR IP] Iniciado.", 2);
+	json_t* jsonIP = json_object_get(raiz, "cliente");
+	json_t* ip = json_object_get(jsonIP,"IP");
+	if(json_string_value(ip))
+	{
+		IP=((char*)json_string_value(ip));
+	}
+	else
+	{
+		IP =(char*)"1.1.1.1";
+	}
+
+	this->log->addLogMessage("[CARGAR IP] Terminado.", 2);
+	return IP;
+}
+
 } /* namespace std */

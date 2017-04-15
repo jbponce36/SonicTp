@@ -1,4 +1,3 @@
-ines (53 sloc)  1.85 KB
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
 #include <iostream>
