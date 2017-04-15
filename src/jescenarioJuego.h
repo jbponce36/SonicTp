@@ -12,7 +12,7 @@
 #include "jconfiguracion.h"
 #include "jescenario.h"
 #include "jescenarioJuego.h"
-
+#include "jservidor.h"
 
 namespace std {
 
@@ -30,10 +30,14 @@ public:
 	jescenario* getEscenario();
 	void setEscenario(jescenario* pescenario);
 
+	jservidor* getServidor();
+	void setServidor(jservidor* pservidor);
+
 private:
 	jventana* ventana;
 	jconfiguracion* configuracion;
 	jescenario* escenario;
+	jservidor* servidor;
 };
 
 } /* namespace std */

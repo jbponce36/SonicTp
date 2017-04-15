@@ -11,9 +11,7 @@
 #include <list>
 #include "dimensiones.h"
 #include "parseadorJson.h"
-#include <list>
-#include "ConexCliente.h"
-#include "ConexServidor.h"
+
 namespace std {
 
 class jpruebas {
@@ -22,7 +20,6 @@ public:
 	jpruebas();
 	virtual ~jpruebas();
     void prueba(jescenarioJuego* escenario);
-    void pruebasocket();
 };
 
 } /* namespace std */

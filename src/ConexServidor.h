@@ -33,12 +33,18 @@ public:
 
     bool ErroresServidor(int puerto); // agrupa crear, enlazar y escuchar
 
+    int getPuerto();
+    void setPuerto(int);
+
+    int getCantclientes();
+    void setCantclientes(int);
+
+
 private:
 	Sockets sockets;
 	int sock_recep;
-	//ConexCliente cliente; // luego va a ser una lista
-
 	int puerto;
+	int cantclientes;
 };
 
 } /* namespace std */

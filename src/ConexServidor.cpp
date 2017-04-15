@@ -58,6 +58,22 @@ void ConexServidor::recibirservidor(int fdCliente, char *buf){
 	this->sockets.recibirservidor(fdCliente, buf);
 }
 
+int ConexServidor::getPuerto(){
+	return puerto;
+}
+
+void ConexServidor::setPuerto(int Puerto){
+	this->puerto = Puerto;
+}
+
+int ConexServidor::getCantclientes(){
+	return this->cantclientes;
+}
+
+void ConexServidor::setCantclientes(int CantClientes){
+	this->cantclientes = CantClientes;
+}
+
 bool ConexServidor::ErroresServidor(int puerto){
   bool errorservidor = true;
 

@@ -1,3 +1,10 @@
+/*
+ * Sockets.h
+ *
+ *  Created on: 10 abr. 2017
+ *      Author: pato
+ */
+
 #ifndef SOCKETS_H_
 #define SOCKETS_H_
 #include <sys/socket.h>
@@ -45,4 +52,3 @@ private:
 } /* namespace std */
 
 #endif /* SOCKETS_H_ */
-

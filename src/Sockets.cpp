@@ -93,19 +93,18 @@ int Sockets::aceptarcliente(/*int conexion_servidor*/){
 
 
 int Sockets::conectar(/*int conexion_servidor*/int puerto){
-	 sockaddr_in server;
+ sockaddr_in server;
 
-	 this->AgregarDireccionSocket(&server,puerto);
+ this->AgregarDireccionSocket(&server,puerto);
 
-	 int conectado = connect(conexion_servidor , (struct sockaddr *)&server , sizeof(server));
+ int conectado = connect(conexion_servidor , (struct sockaddr *)&server , sizeof(server));
 
-	 return conectado;
-	//if (connect(conexion_servidor , (struct sockaddr *)&server , sizeof(server)) < 0)
-		//    {
-		  //      return false;
-		   // }
-	   //return true;
-
+ return conectado;
+//if (connect(conexion_servidor , (struct sockaddr *)&server , sizeof(server)) < 0)
+	//    {
+	  //      return false;
+	   // }
+   //return true;
 }
 void Sockets::enviarservidor(int fdCliente, char *buf){
 
@@ -119,13 +118,7 @@ void Sockets::recibirservidor(int fdCliente, char *buf){
 	//recv(fdCliente,buf,strlen(buf),0);
 	recv(fdCliente,c,1024,0);
 	printf(c);
-	//int leer;
 
-	 //while(1){
-
-	 //  leer = recv(conexion_servidor,buf,strlen(buf),0);
-
-	 //}
 }
 
 bool Sockets::enviarcliente(int fdCliente, char *buf){
