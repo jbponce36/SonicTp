@@ -6,19 +6,6 @@
  */
 
 #include "jpruebas.h"
-#include <iostream>
-#include </usr/include/SDL2/SDL.h>
-#include <jansson.h>
-#include "jventana.h"
-#include "jconfiguracion.h"
-#include "jescenario.h"
-#include "capas.h"
-#include "jentidades.h"
-#include <list>
-#include "dimensiones.h"
-#include "parseadorJson.h"
-
-
 
 namespace std {
 
@@ -84,35 +71,5 @@ void jpruebas::prueba(jescenarioJuego* parser){
 
 */
 	}
-
-void jpruebas::pruebasocket(){
-
- /* ConexServidor*  conexser = new ConexServidor();
-  ConexCliente * conexcliente = new ConexCliente();
-
-  char* message;
-  int puerto = 3316;
-
-
-  if (!conexcliente->crear()){
-  	  cout<<"socket() error\n"<<endl;
-   }
-
-  int fdcliente = conexcliente->conectar(puerto);
-  printf("ponga un mensaje : ");
-  message = "Hola Patricia";
-
-  if(!conexcliente->recibircliente(fdcliente,message)){
-	  cout<<"Error en recv()"<<endl;
-  }
-  if(!conexcliente->enviarcliente(fdcliente,message)){
-	  cout<<"error en env"<<endl;
-  }
-
-*/
-
-}
-
-
 
 } /* namespace std */

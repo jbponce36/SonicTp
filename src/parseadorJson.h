@@ -54,6 +54,9 @@ public:
 	void setraiz(json_t*);
 	json_t* getraiz();
 
+	int cargarPuerto(json_t* raiz);
+	char* cargarIP(json_t* raiz);
+
 
 private:
 	Logger *log;

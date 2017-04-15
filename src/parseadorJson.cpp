@@ -647,15 +647,6 @@ jservidor* parseadorJson::cargarServidor(json_t* raiz){
 	 server->setPuerto(this->leeValorEnteroServer(jsonservidor,"puerto","SERVIDOR",3316));
 	 server->setCantclientes(this->leeValorEnteroServer(jsonservidor,"clientes","SERVIDOR",2));
 
-     //server->setPuerto(this->leerValorEnterobis(jsonservidor,"puerto","servidor",3316));
-     //server->setCantclientes(this->leerValorEnterobis(jsonservidor,"clientes","servidor",2));
-
-		 /*if(json_number_value(jsonpuerto) && json_number_value(jsonclientes)){
-			 server->setPuerto(this->leerValorEntero(jsonservidor,"puerto",3316));
-			 server->setCantclientes(this->leerValorEntero(jsonservidor,"clientes",2));
-			 this->log->addLogMessage("[VALIDAR SERVIDOR]SERVIDOR validO", 3);
-		  }
-		 */
 	}
 	else{
       server->setPuerto(3316);
@@ -675,6 +666,45 @@ json_t* parseadorJson::getraiz(){
 
 void parseadorJson::setraiz(json_t* Raiz){
 	raiz = Raiz;
+}
+
+int parseadorJson::cargarPuerto(json_t* raiz){
+
+    this->log->addLogMessage("[CARGAR PUERTO] Iniciado.", 2);
+
+	int puerto;
+	json_t* jsonPuerto = json_object_get(raiz, "cliente");
+	json_t* puert = json_object_get(jsonPuerto,"puerto");
+	if (json_number_value(puert))
+	{
+		puerto = json_number_value(puert);
+	}
+	else
+	{
+		puerto = 3316;
+	}
+
+	this->log->addLogMessage("[CARGAR PUERTO] Terminado.", 2);
+	return puerto;
+}
+
+char* parseadorJson::cargarIP(json_t* raiz){
+
+	char* IP;
+	this->log->addLogMessage("[CARGAR IP] Iniciado.", 2);
+	json_t* jsonIP = json_object_get(raiz, "cliente");
+	json_t* ip = json_object_get(jsonIP,"IP");
+	if(json_string_value(ip))
+	{
+		IP=((char*)json_string_value(ip));
+	}
+	else
+	{
+		IP =(char*)"1.1.1.1";
+	}
+
+	this->log->addLogMessage("[CARGAR IP] Terminado.", 2);
+	return IP;
 }
 
 } /* namespace std */
