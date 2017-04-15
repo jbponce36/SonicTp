@@ -21,6 +21,7 @@
 #include "jservidor.h"
 #include "ConexServidor.h"
 
+
 namespace std {
 
 class parseadorJson {
@@ -53,6 +54,7 @@ public:
 	void setraiz(json_t*);
 	json_t* getraiz();
 
+
 private:
 	Logger *log;
 	json_t* raiz;
@@ -63,6 +65,7 @@ private:
 	jescenario* cargarEscenario(json_t* raiz);
 	jservidor* cargarServidor(json_t* raiz);
 	double leerValorEntero(json_t* padre, const char* nombre,int valorPorDefecto);
+    double leeValorEnteroServer(json_t* padre, const char* nombre,const char* nombrep,int valorPorDefecto);
 	bool tryLeerValorEntero(json_t* padre, const char* nombre, double* valorLeido);
     std::string leerValorStringCapas(json_t* padre,const char* nombre,std::string valorPorDefecto);
     list<capas> DevolverCapasPorDefecto();

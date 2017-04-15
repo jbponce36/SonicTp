@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
 	log->setLevel(getNivelLogger(argc, argv));
 
 
-/*    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
+    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
 
 	Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
     Control *control = new Control(0, 0, log);
@@ -61,12 +61,7 @@ int main(int argc, char *argv[]) {
 	log->addLogMessage("Se termina de cargar la vista.",1);
 	vista->cerrar();
 	log->iniciarLog("TERMINAR LOGGER");
-*/
 
 
-   // ConexServidor* servidor = new ConexServidor();
-
-    int cant =parseador->CargarCantClientes();
-    cout<<cant<<endl;
 	return 0;
 }

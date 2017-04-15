@@ -17,11 +17,16 @@
 #include "dimensiones.h"
 #include "jrectangulo.h"
 #include "jcirculo.h"
-#include <string>
+#include <iostream>   // std::cout
+#include <string>     // std::string, std::to_string
+#include <sstream>
 
+#define SSTR( x ) dynamic_cast< std::ostringstream & >( \
+            ( std::ostringstream() << std::dec << x ) ).str()
 
 
 namespace std {
+
     jventana *parseadorJson::cargarVentana(json_t *raiz)
     {
         json_t *jsonventana;
@@ -102,6 +107,27 @@ double parseadorJson::leerValorEntero(json_t* padre, const char* nombre,int valo
 	}
 
 	if (!json_is_number(elemento)){
+		return valorPorDefecto;
+	}
+
+	return json_number_value(elemento);
+}
+
+double parseadorJson::leeValorEnteroServer(json_t* padre, const char* nombre,const char* nombrep,int valorPorDefecto){
+	json_t *elemento;
+
+	std::string msjobj = std::string("[VALIDAR") + " " + nombrep + "" + std::string("] ERROR. no se encontro el atributo") + " " + nombre + " " + std::string("se carga el valor por defecto") + " " + SSTR( valorPorDefecto );
+	std:: string msjatributo = std::string("[VALIDAR")+ " " + nombrep + "" + std::string("] ERROR. el atributo ") + " " + nombre + " " + std::string("no es un numero,se carga el valor por defecto")+ " " + SSTR( valorPorDefecto );
+	elemento = json_object_get(padre,nombre);
+
+	if (!elemento){
+		this->log->addLogMessage(msjobj,1);
+		return valorPorDefecto;
+
+	}
+
+	if (!json_is_number(elemento)){
+		this->log->addLogMessage(msjatributo,1);
 		return valorPorDefecto;
 	}
 
@@ -263,7 +289,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 				   index_z = 98;
 			   }
 
-			   jcapas->setid(this->leerValorEntero(capai,"id", id));
+			   jcapas->setid(this->leerValorEntero(capai,"id",id));
 			   jcapas->setindex(this->leerValorEntero(capai,"index_z",index_z));
 			   jcapas->setrutaimagen(this->leerValorStringCapas(capai,"ruta_imagen",ruta));
 			   capalista.push_back(*jcapas);
@@ -383,7 +409,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 					 }
 
 				entidades->setruta(this->leerValorStringCapas(entidadi,"ruta_imagen", "/images/entidaddefault.png"));
-				entidades->setindex(this->leerValorEntero(entidadi, "index_z", 99));
+				entidades->setindex(this->leerValorEntero(entidadi, "index_z",99));
 
 				if (entidades->esValida()){
 					listaentidades.push_back(*entidades);
@@ -595,6 +621,7 @@ int parseadorJson::CargarCantClientes(){
 	}
 	else{
 		cantclientes = 2;
+		this->log->addLogMessage("[VALIDAR SERVIDOR] ERROR. No se encontro el atributo servidor . Se cargaron los valores del servidor por defecto.", 1);
 	}
 
 	return cantclientes;
@@ -612,12 +639,35 @@ jservidor* parseadorJson::cargarServidor(json_t* raiz){
 	jsonpuerto = json_object_get(jsonservidor, "puerto");
 	jsonclientes = json_object_get(jsonservidor,"clientes");
 
-	server->setPuerto(json_number_value(jsonpuerto));
-    server->setCantclientes(json_number_value(jsonclientes));
+	this->log->addLogMessage("[VALIDAR SERVIDOR] Iniciado.", 2);
 
+   if(jsonservidor){
+
+	 this->log->addLogMessage("[VALIDAR SERVIDOR]SERVIDOR valido", 3);
+	 server->setPuerto(this->leeValorEnteroServer(jsonservidor,"puerto","SERVIDOR",3316));
+	 server->setCantclientes(this->leeValorEnteroServer(jsonservidor,"clientes","SERVIDOR",2));
+
+     //server->setPuerto(this->leerValorEnterobis(jsonservidor,"puerto","servidor",3316));
+     //server->setCantclientes(this->leerValorEnterobis(jsonservidor,"clientes","servidor",2));
+
+		 /*if(json_number_value(jsonpuerto) && json_number_value(jsonclientes)){
+			 server->setPuerto(this->leerValorEntero(jsonservidor,"puerto",3316));
+			 server->setCantclientes(this->leerValorEntero(jsonservidor,"clientes",2));
+			 this->log->addLogMessage("[VALIDAR SERVIDOR]SERVIDOR validO", 3);
+		  }
+		 */
+	}
+	else{
+      server->setPuerto(3316);
+      server->setCantclientes(2);
+      this->log->addLogMessage("[VALIDAR SERVIDOR] ERROR. No se encontro el atributo servidor . Se cargaron los valores del servidor por defecto.", 1);
+	}
+    this->log->addLogMessage("[VALIDAR SERVIDOR] Terminado.", 2);
     return server;
 
+
 }
+
 
 json_t* parseadorJson::getraiz(){
 	return raiz;
