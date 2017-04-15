@@ -17,7 +17,9 @@
 #include <unistd.h>    //write
 #include <errno.h>
 #include <string.h>
-
+#include <netdb.h>
+#include <string>
+#include <sstream>
 
 namespace std {
 
@@ -26,27 +28,28 @@ public:
 	Sockets();
 	virtual ~Sockets();
 	bool crear();
-	int getConexionServidor();
-	void setConexionServidor(int conexion_servidor);
 	void AgregarDireccionSocket(sockaddr_in *direccion, int puerto);
 
-
 	//para el servidor
-	bool enlazar(/*int conexion_servidor,*/int puerto);
-	bool escuchar();
-	int aceptarcliente(/*int conexion_servidor*/);
-	void enviarservidor(int fdCliente, char *buf);
-	void recibirservidor(int fdCliente, char *buf);
+	bool enlazar(int puerto);
+    bool escuchar();
+    int aceptarcliente(Sockets *cliente);
+    int enviar(Sockets *socket, char *buf, int size);
+    int recibir(Sockets *socket, char *buf, int size);
+    //para el cliente
+    int conectar(string string, int puerto);
+    int cerrar();
+    int getFd() const;
+    void setFd(int fd);
+    string intToString(int number);
+    string toString();
 
-	//para el cliente
-	int conectar(int puerto);
-	bool enviarcliente(int fdCliente, char *buf);
-    bool recibircliente(int fdCliente, char *buf);
+    int getPuerto();
+    void setPuerto(int);
 
 private:
-
-    int conexion_servidor;
-
+    int fd;
+    int puerto;
 };
 
 } /* namespace std */

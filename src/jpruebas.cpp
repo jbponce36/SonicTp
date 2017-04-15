@@ -72,6 +72,4 @@ void jpruebas::prueba(jescenarioJuego* parser){
 */
 	}
 
-
-
 } /* namespace std */

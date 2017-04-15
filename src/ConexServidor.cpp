@@ -6,64 +6,61 @@
  */
 
 #include "ConexServidor.h"
-#include "Sockets.h"
 
 namespace std {
 
-
 ConexServidor::ConexServidor() {
-	// TODO Auto-generated constructor stub
-
+	Sockets::setFd(1);
 }
 
 ConexServidor::~ConexServidor() {
 	// TODO Auto-generated destructor stub
 }
 
-
-bool ConexServidor::crear(){
-	return this->sockets.crear();
-}
-
-int ConexServidor::getSockRecep(){
-	return sock_recep;
-}
-
-void ConexServidor::setSockRecep(int sockRecep){
-	sock_recep = sockRecep;
-	sockets.setConexionServidor(sockRecep);
-
-}
-int ConexServidor:: aceptarcliente2(/*ConexCliente* cliente*/){
-
-   //int c = cliente->getSockEnvio();
-   return (this->sockets.aceptarcliente(/*c*/));
-
-}
 bool ConexServidor::enlazar(int puerto){
-	return this->sockets.enlazar(puerto);
+  //struct sockaddr_in server;
+  sockaddr_in	server;
+  //this->AgregarDireccionSocket(&server,puerto);
+
+  server.sin_family = AF_INET;
+  server.sin_port = htons(puerto);
+  server.sin_addr.s_addr = INADDR_ANY;
+  bzero(&(server.sin_zero),8);
+
+  int resBind = bind(Sockets::getFd(),(struct sockaddr *)&server , sizeof(server));
+
+  if( resBind < 0)
+  {
+	 //std::cout << "open failed, error - " << (int)errno << std::endl;
+	 //exit(errno);
+	  return false;
+  }
+  return true;
 }
 
 bool ConexServidor::escuchar(){
-	return this->sockets.escuchar();
 
+   int escuchar = listen(Sockets::getFd(), 3);
+
+   if( escuchar <0){
+	   return false;
+   }
+	return true;
 }
 
-void ConexServidor::enviarservidor(int fdCliente, char *buf){
-	this->sockets.enviarservidor(fdCliente, buf);
-}
+int ConexServidor::aceptarcliente(Sockets *cliente){
+	int longitud_dircliente;
+	sockaddr_in direccionclient;
 
+    longitud_dircliente= sizeof(struct sockaddr_in);
+    int fdCliente = accept(cliente->getFd(),(struct sockaddr *)&direccionclient,(socklen_t*)&longitud_dircliente);
 
-void ConexServidor::recibirservidor(int fdCliente, char *buf){
-	this->sockets.recibirservidor(fdCliente, buf);
-}
+	if (fdCliente<0) {
+    	return false;
+    }
 
-int ConexServidor::getPuerto(){
-	return puerto;
-}
-
-void ConexServidor::setPuerto(int Puerto){
-	this->puerto = Puerto;
+	cliente->setFd(fdCliente);
+	return fdCliente;
 }
 
 int ConexServidor::getCantclientes(){

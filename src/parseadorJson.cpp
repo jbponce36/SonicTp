@@ -659,7 +659,7 @@ char* parseadorJson::cargarIP(json_t* raiz){
 	}
 	else
 	{
-		IP ="1.1.1.1";
+		IP =(char*)"1.1.1.1";
 	}
 
 	this->log->addLogMessage("[CARGAR IP] Terminado.", 2);

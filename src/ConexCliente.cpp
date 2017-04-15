@@ -6,47 +6,16 @@
  */
 
 #include "ConexCliente.h"
-#include "Sockets.h"
 
 namespace std {
 
 
 ConexCliente::ConexCliente() {
 	// TODO Auto-generated constructor stub
-
 }
 
 ConexCliente::~ConexCliente() {
 	// TODO Auto-generated destructor stub
-}
-
-
-bool ConexCliente::crear(){
-	return this->sockets.crear();
-}
-
-void ConexCliente::setSockEnvio(int sockEnvio) {
-
-	sock_envio = sockEnvio;
-	sockets.setConexionServidor(sockEnvio);
-
-}
-
-int ConexCliente::getSockEnvio(){
-	return sock_envio;
-}
-
-int ConexCliente::conectar(int puerto){
-	 return sockets.conectar(puerto);
-
-}
-
-bool ConexCliente::enviarcliente(int fdCliente, char *buf){
-	return sockets.enviarcliente(fdCliente, buf);
-}
-
-bool ConexCliente::recibircliente(int fdCliente, char *buf){
-	return sockets.recibircliente(fdCliente, buf);
 }
 
 bool ConexCliente::ErroresCliente(int puerto){
@@ -56,11 +25,34 @@ bool ConexCliente::ErroresCliente(int puerto){
 	  errorcliente = false;
 	  return errorcliente;
 	}
-   if (conectar(puerto) == false){
+   if (conectar(this->hostname,puerto) == false){
 	   errorcliente =false;
 	   return errorcliente;
    }
    return errorcliente;
+}
+
+int ConexCliente::conectar(string hostname, int puerto){
+	struct sockaddr_in server_addr;
+	socklen_t server_sock_size;
+
+	setFd(socket(AF_INET, SOCK_STREAM, 0));
+	if (this->getFd() < 0) {
+		return false;
+	}
+
+	server_addr.sin_family = AF_INET;
+	server_addr.sin_port = htons(puerto);
+	server_addr.sin_addr.s_addr = inet_addr(hostname.data());
+	server_sock_size = sizeof(server_addr);
+
+	int conectado = connect(this->getFd(), (struct sockaddr *) &server_addr,server_sock_size);
+
+	if ( conectado< 0) {
+		return false;
+	}
+
+	return conectado;
 }
 
 } /* namespace std */

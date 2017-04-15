@@ -1,0 +1,28 @@
+[2017-4-14 17:39:47] INICAR LOGGER EN NIVEL: MEDIO
+-------------------------------------------------------------------------------------------
+[2017-4-14 17:39:47] [SERVER] Socket: 3
+[2017-4-14 17:39:47] [SERVER] bind en Socket: 3
+[2017-4-14 17:39:47] [SERVER] listen en Socket: 3
+[2017-4-14 17:39:50] [SERVER] aceptando Socket: 3
+[2017-4-14 17:39:50] [CLIENTE] conectar en Socket: 1
+[2017-4-14 17:39:50] [CLIENTE] enviado en Socket: 1
+[2017-4-14 17:39:50] [CLIENTE] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium bibendum mattis. Aliquam vitae aliquet enim. Duis vehicula iaculis mauris, eget viverra massa. Vestibulum fermentum placerat pharetra. Sed in cursus tortor.
+[2017-4-14 17:39:50] [SERVER] Recibiendo Socket: 3
+[2017-4-14 17:39:50] [SERVER] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium bibendum mattis. Aliquam vitae aliquet enim. Duis vehicula iaculis mauris, eget viverra massa. Vestibulum fermentum placerat pharetra. Sed in cursus tortor.
+[2017-4-14 17:39:50] [SERVER] cerrando Socket: 3
+[2017-4-14 17:39:50] TERMINAR LOGGER EN NIVEL: MEDIO
+-------------------------------------------------------------------------------------------
+[2017-4-14 21:40:28] INICAR LOGGER EN NIVEL: MEDIO
+-------------------------------------------------------------------------------------------
+[2017-4-14 21:40:28] [SERVER] Socket: 3
+[2017-4-14 21:40:28] [SERVER] bind en Socket: 3
+[2017-4-14 21:40:28] [SERVER] listen en Socket: 3
+[2017-4-14 21:40:33] [SERVER] aceptando Socket: 3
+[2017-4-14 21:40:33] [CLIENTE] conectar en Socket: 1
+[2017-4-14 21:40:33] [CLIENTE] enviado en Socket: 1
+[2017-4-14 21:40:33] [CLIENTE] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium bibendum mattis. Aliquam vitae aliquet enim. Duis vehicula iaculis mauris, eget viverra massa. Vestibulum fermentum placerat pharetra. Sed in cursus tortor.
+[2017-4-14 21:40:33] [SERVER] Recibiendo Socket: 3
+[2017-4-14 21:40:33] [SERVER] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium bibendum mattis. Aliquam vitae aliquet enim. Duis vehicula iaculis mauris, eget viverra massa. Vestibulum fermentum placerat pharetra. Sed in cursus tortor.
+[2017-4-14 21:40:33] [SERVER] cerrando Socket: 3
+[2017-4-14 21:40:33] TERMINAR LOGGER EN NIVEL: MEDIO
+-------------------------------------------------------------------------------------------

@@ -33,8 +33,6 @@ int getNivelLogger(int argc, char *argv[]){
 }
 
 int main(int argc, char *argv[]) {
-
-
 	char *archivoLog=(char*)"configuracion/log.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "PRINCIPAL");
 	log->iniciarLog("INICAR LOGGER");
@@ -45,18 +43,14 @@ int main(int argc, char *argv[]) {
 	char *file=(char*)"configuracion/configuracion.json";
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
-
     log->setModulo("PRINCIPAL");
 	log->addLogMessage("Se empieza a cargar la vista.",1);
 	log->setLevel(getNivelLogger(argc, argv));
 
-
 /*    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
-
 	Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
     Control *control = new Control(0, 0, log);
     control->ControlarJuego(vista,sonic);
-
     log->setModulo("PRINCIPAL");
 	log->addLogMessage("Se termina de cargar la vista.",1);
 	vista->cerrar();
