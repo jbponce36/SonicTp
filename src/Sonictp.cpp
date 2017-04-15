@@ -1,3 +1,4 @@
+ines (53 sloc)  1.85 KB
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
 #include <iostream>
@@ -20,9 +21,19 @@
 
 using namespace std;
 
-/*int main(int argc, char *argv[]) {
+int getNivelLogger(int argc, char *argv[]){
+	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
 
+	char *nivelLog = (char*)"2";
+	if(argc>1){
+		nivelLog = argv[1];
+	}
 
+	char *nivel= (char*)nivelLog;
+	return atoi(nivel);
+}
+
+int main(int argc, char *argv[]) {
 	char *archivoLog=(char*)"configuracion/log.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "PRINCIPAL");
 	log->iniciarLog("INICAR LOGGER");
@@ -37,16 +48,20 @@ using namespace std;
 	log->addLogMessage("Se empieza a cargar la vista.",1);
 	log->setLevel(getNivelLogger(argc, argv));
 
-    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
-
+/*    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
 	Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
     Control *control = new Control(0, 0, log);
     control->ControlarJuego(vista,sonic);
-
     log->setModulo("PRINCIPAL");
 	log->addLogMessage("Se termina de cargar la vista.",1);
 	vista->cerrar();
 	log->iniciarLog("TERMINAR LOGGER");
+*/
 
+
+   // ConexServidor* servidor = new ConexServidor();
+
+    int cant =parseador->CargarCantClientes();
+    cout<<cant<<endl;
 	return 0;
-}*/
+}

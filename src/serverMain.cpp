@@ -16,8 +16,6 @@ int getNivelLogger(int argc, char *argv[]){
 }
 
 int main(int argc, char *argv[]) {
-
-
 	char *archivoLog=(char*)"configuracion/log.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "SERVER");
 	log->iniciarLog("INICAR LOGGER");
