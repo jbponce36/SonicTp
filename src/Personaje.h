@@ -3,11 +3,13 @@
 
 #include <SDL2/SDL_image.h>
 #include "Textura.h"
+#include "Animacion.h"
 class Personaje
 {
 	private:
 		Textura *texturaSonic;
 		//SDL_Rect sonicSprites[NUMERO_DE_SPRITES];
+
 		int personajeAncho;
 		int personajeAlto;
 
@@ -18,6 +20,16 @@ class Personaje
 		//velocidad de X e Y
 		int velocidadX, velocidadY;
 
+		Animacion animacionQuietoDer;
+		Animacion animacionCaminarDer;
+		Animacion animacionCorrerDer;
+		Animacion animacionSaltarDer;
+		Animacion animacionQuietoIzq;
+		Animacion animacionCaminarIzq;
+		Animacion animacionCorrerIzq;
+		Animacion animacionSaltarIzq;
+
+		Animacion animacionActual;
 
     public:
 		//constructor
@@ -36,7 +48,7 @@ class Personaje
 		int getPosicionY();
 		int getAlto();
 		int getAncho();
-
+		virtual ~Personaje();
 };
 
 #endif

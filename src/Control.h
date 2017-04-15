@@ -5,6 +5,9 @@
 #include "Camara.h"
 #include "Logger.h"
 
+#define FPS 60
+#define TICKS_POR_FRAME 1000/FPS
+
 class Control {
 private:
 	int posicionInicialX;

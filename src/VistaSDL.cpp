@@ -115,7 +115,7 @@ void VistaSDL::crearVentanaYrenderizador()
 			}
 			else
 			{      //creo render para la ventana
-				renderizador = SDL_CreateRenderer( this->ventana, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+				renderizador = SDL_CreateRenderer( this->ventana, -1, SDL_RENDERER_ACCELERATED);
 				if( renderizador == NULL )
 				{
 					error = SDL_GetError();

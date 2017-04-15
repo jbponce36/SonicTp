@@ -40,6 +40,11 @@ void Textura::cargarImagen(std::string path,SDL_Renderer* render, Logger *log)
 		log->addLogMessage("[CARGAR IMAGEN] Error cargando capa 1, se cargara la capa 1 por default", 1);
 		//printf( "incapaz de crear imagen %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
 	}
+	if(superficie == NULL)
+	{
+		superficie = IMG_Load( "images/sonicSprite.png" );
+		log->addLogMessage("[CARGAR IMAGEN] Error cargando imagen, se cargara imagen por default", 1);
+	}
 
 	//Color key image
 	SDL_SetColorKey( superficie, SDL_TRUE, SDL_MapRGB( superficie->format, 0, 0xFF, 0xFF ) );

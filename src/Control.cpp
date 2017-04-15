@@ -23,12 +23,15 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 	imagenMostrar.w = vista->obtenerAnchoVentana();
 
 	Uint32 tiempoDeJuego = 0;
+	Uint32 tiempoInicio, tiempoFin, delta;
 
 	SDL_Event e;
 	bool salir = false;
 	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana());
 	while( !salir ){
-	//manejar eventos en la cola
+		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
+
+		//manejar eventos en la cola
 		while( SDL_PollEvent( &e ) != 0 )
 		{
 			//usuario pide cierre
@@ -60,10 +63,19 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 			vista->mostrarEntidades(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
 		}
 
-		//dibujo ek personaje
+		//dibujo el personaje
 		sonic->render(camara->getPosicionX(), camara->getPosicionY());
 		//muestro la imagen
 		SDL_RenderPresent( vista->obtenerRender());
+
+		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
+		tiempoFin = SDL_GetTicks();
+		delta = tiempoFin - tiempoInicio;
+		if (delta < TICKS_POR_FRAME)
+		{
+			SDL_Delay(TICKS_POR_FRAME - delta);
+		}
+
 	}
 	this->log->addLogMessage("[CONTROLAR JUEGO] Terminado. \n", 2);
 }
