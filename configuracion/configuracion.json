@@ -1,6 +1,8 @@
 {
 	"ventana": {"dimensiones": {"ancho": 800, "alto": 500}},
 	"configuracion": {"vel_scroll": 200},
+        "servidor":{"puerto": 3316,"clientes":2},
+        "cliente":{"puerto": 3316,"IP":"127.0.0.1"},
 	"escenario": {
 		"dimensiones": {"ancho": 4000, "alto": 500},
 		"capas": [
@@ -44,4 +46,5 @@
 			"index_z": 99
 		}]
 	}
+      
 }

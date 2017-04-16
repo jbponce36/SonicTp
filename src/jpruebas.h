@@ -1,10 +1,3 @@
-/*
- * jpruebas.h
- *
- *  Created on: 21 mar. 2017
- *      Author: pato
- */
-
 #ifndef JPRUEBAS_H_
 #define JPRUEBAS_H_
 #include <iostream>
@@ -18,9 +11,9 @@
 #include <list>
 #include "dimensiones.h"
 #include "parseadorJson.h"
-#include <list>
 
 namespace std {
+
 
 class jpruebas {
 public:
@@ -28,7 +21,6 @@ public:
 	jpruebas();
 	virtual ~jpruebas();
     void prueba(jescenarioJuego* escenario);
-    void pruebasocket();
 };
 
 } /* namespace std */

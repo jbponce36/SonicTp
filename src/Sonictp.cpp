@@ -18,8 +18,6 @@
 #include "Control.h"
 
 
-
-
 using namespace std;
 
 int getNivelLogger(int argc, char *argv[]){
@@ -48,28 +46,26 @@ int main(int argc, char *argv[]) {
     jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
 
-
     log->setModulo("PRINCIPAL");
 	log->addLogMessage("Se empieza a cargar la vista.",1);
 	log->setLevel(getNivelLogger(argc, argv));
 
+	int cant = parseador->CargarCantClientes();
+	cout<<cant<<endl;
 
+/*<-------Comentar esto si usan este main------->*/
     VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
 
 	Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
     Control *control = new Control(0, 0, log);
     control->ControlarJuego(vista,sonic);
+/*<--------------------------------------------->*/
 
     log->setModulo("PRINCIPAL");
 	log->addLogMessage("Se termina de cargar la vista.",1);
 	vista->cerrar();
+
 	log->iniciarLog("TERMINAR LOGGER");
-
-
-//	jpruebas *prueba = new jpruebas();
-//	prueba->pruebasocket();
-
-
 
 	return 0;
 }

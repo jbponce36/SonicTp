@@ -6,7 +6,6 @@
  */
 
 #include <iostream>
-#include </usr/include/SDL2/SDL.h>
 #include <jansson.h>
 #include "jventana.h"
 #include "jconfiguracion.h"
@@ -18,10 +17,16 @@
 #include "dimensiones.h"
 #include "jrectangulo.h"
 #include "jcirculo.h"
-#include <string>
+#include <iostream>   // std::cout
+#include <string>     // std::string, std::to_string
+#include <sstream>
+
+#define SSTR( x ) dynamic_cast< std::ostringstream & >( \
+            ( std::ostringstream() << std::dec << x ) ).str()
 
 
 namespace std {
+
     jventana *parseadorJson::cargarVentana(json_t *raiz)
     {
         json_t *jsonventana;
@@ -52,6 +57,7 @@ namespace std {
 parseadorJson::parseadorJson() {
 	// TODO Auto-generated constructor stub
 	//jconexion conexion2 = *conexion2.getinstance();
+	this->raiz = NULL;
 }
 
 parseadorJson::parseadorJson(Logger *log) {
@@ -101,6 +107,27 @@ double parseadorJson::leerValorEntero(json_t* padre, const char* nombre,int valo
 	}
 
 	if (!json_is_number(elemento)){
+		return valorPorDefecto;
+	}
+
+	return json_number_value(elemento);
+}
+
+double parseadorJson::leeValorEnteroServer(json_t* padre, const char* nombre,const char* nombrep,int valorPorDefecto){
+	json_t *elemento;
+
+	std::string msjobj = std::string("[VALIDAR") + " " + nombrep + "" + std::string("] ERROR. no se encontro el atributo") + " " + nombre + " " + std::string("se carga el valor por defecto") + " " + SSTR( valorPorDefecto );
+	std:: string msjatributo = std::string("[VALIDAR")+ " " + nombrep + "" + std::string("] ERROR. el atributo ") + " " + nombre + " " + std::string("no es un numero,se carga el valor por defecto")+ " " + SSTR( valorPorDefecto );
+	elemento = json_object_get(padre,nombre);
+
+	if (!elemento){
+		this->log->addLogMessage(msjobj,1);
+		return valorPorDefecto;
+
+	}
+
+	if (!json_is_number(elemento)){
+		this->log->addLogMessage(msjatributo,1);
 		return valorPorDefecto;
 	}
 
@@ -262,7 +289,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 				   index_z = 98;
 			   }
 
-			   jcapas->setid(this->leerValorEntero(capai,"id", id));
+			   jcapas->setid(this->leerValorEntero(capai,"id",id));
 			   jcapas->setindex(this->leerValorEntero(capai,"index_z",index_z));
 			   jcapas->setrutaimagen(this->leerValorStringCapas(capai,"ruta_imagen",ruta));
 			   capalista.push_back(*jcapas);
@@ -382,7 +409,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 					 }
 
 				entidades->setruta(this->leerValorStringCapas(entidadi,"ruta_imagen", "/images/entidaddefault.png"));
-				entidades->setindex(this->leerValorEntero(entidadi, "index_z", 99));
+				entidades->setindex(this->leerValorEntero(entidadi, "index_z",99));
 
 				if (entidades->esValida()){
 					listaentidades.push_back(*entidades);
@@ -413,13 +440,18 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
 
 	 this->log->addLogMessage("[PARSEAR ARCHIVO] Iniciado.", 2);
 	 json = json_load_file(nombreArchivo,0,&error);
-
+       //nuevo
+	   this->setraiz(json);
+	   //
 	  if(!json) {
 	       cout << "!!! hay  probremas!!!" << endl;
 	       cout << error.text << endl;
 	       this->log->addLogMessage("[PARSEAR ARCHIVO] [ERROR] No se encontro el archivo o directorio.", 1);
 	       cout << "Cargando archivo por defecto" << endl;
 	       json = json_load_file("configuracion/default.json",0,&error);
+	       //nuevo
+	       this->setraiz(json);
+	       //nuevo
 	       this->log->addLogMessage("[PARSEAR ARCHIVO] Se carga un archivo por defecto: configuracion/default.json .", 1);
 	       if (!json){
 		       cout << "!!! no existe el archivo por defecto!!!" << endl;
@@ -432,10 +464,13 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
         jventana *ventana = cargarVentana(json);
         jconfiguracion *config = cargarConfiguracion(json);
         jescenario *escenario = cargarEscenario(json);
+        jservidor* servidor = this->cargarServidor(json);
         jescenarioJuego *result = new jescenarioJuego();
+
         result->setVentana(ventana);
         result->setEscenario(escenario);
         result->setConfiguracion(config);
+        result->setServidor(servidor);
 
         validarDimensionesVentana(result);
         this->log->addLogMessage("[PARSEAR ARCHIVO] Terminado. \n", 2);
@@ -543,4 +578,133 @@ void parseadorJson::validarDimensionesVentana(jescenarioJuego *escenarioJuego){
 	this->log->addLogMessage("[VALIDAR DIMENSIONES DE LA VENTANA] Terminado.", 2 );
 
 }
+
+int parseadorJson::CargarPuertoServidor(){
+
+	json_t* raiz;
+	json_t *jsonservidor;
+	json_t *jsonpuerto;
+
+	int puerto;
+    raiz = this->getraiz();
+
+	jsonservidor = json_object_get(raiz, "servidor");
+
+	if(jsonservidor){
+	  puerto = this->leerValorEntero(jsonservidor,"puerto",3316);
+
+	}
+	else{
+	  puerto = 3316;
+	}
+
+
+	return puerto;
+
+}
+
+int parseadorJson::CargarCantClientes(){
+
+	json_t* raiz;
+	json_t *jsonservidor;
+    json_t *jsoncantclientes;
+
+    int cantclientes;
+
+    raiz = this->getraiz();
+	jsonservidor = json_object_get(raiz, "servidor");
+
+	if(jsonservidor){
+
+	  cantclientes = this->leerValorEntero(jsonservidor,"clientes",2);
+
+	}
+	else{
+		cantclientes = 2;
+		this->log->addLogMessage("[VALIDAR SERVIDOR] ERROR. No se encontro el atributo servidor . Se cargaron los valores del servidor por defecto.", 1);
+	}
+
+	return cantclientes;
+}
+
+jservidor* parseadorJson::cargarServidor(json_t* raiz){
+
+	json_t *jsonservidor;
+	json_t *jsonpuerto;
+    json_t *jsonclientes;
+
+	jservidor* server = new jservidor();
+
+	jsonservidor = json_object_get(raiz, "servidor");
+	jsonpuerto = json_object_get(jsonservidor, "puerto");
+	jsonclientes = json_object_get(jsonservidor,"clientes");
+
+	this->log->addLogMessage("[VALIDAR SERVIDOR] Iniciado.", 2);
+
+   if(jsonservidor){
+
+	 this->log->addLogMessage("[VALIDAR SERVIDOR]SERVIDOR valido", 3);
+	 server->setPuerto(this->leeValorEnteroServer(jsonservidor,"puerto","SERVIDOR",3316));
+	 server->setCantclientes(this->leeValorEnteroServer(jsonservidor,"clientes","SERVIDOR",2));
+
+	}
+	else{
+      server->setPuerto(3316);
+      server->setCantclientes(2);
+      this->log->addLogMessage("[VALIDAR SERVIDOR] ERROR. No se encontro el atributo servidor . Se cargaron los valores del servidor por defecto.", 1);
+	}
+    this->log->addLogMessage("[VALIDAR SERVIDOR] Terminado.", 2);
+    return server;
+
+
+}
+
+
+json_t* parseadorJson::getraiz(){
+	return raiz;
+}
+
+void parseadorJson::setraiz(json_t* Raiz){
+	raiz = Raiz;
+}
+
+int parseadorJson::cargarPuerto(json_t* raiz){
+
+    this->log->addLogMessage("[CARGAR PUERTO] Iniciado.", 2);
+
+	int puerto;
+	json_t* jsonPuerto = json_object_get(raiz, "cliente");
+	json_t* puert = json_object_get(jsonPuerto,"puerto");
+	if (json_number_value(puert))
+	{
+		puerto = json_number_value(puert);
+	}
+	else
+	{
+		puerto = 3316;
+	}
+
+	this->log->addLogMessage("[CARGAR PUERTO] Terminado.", 2);
+	return puerto;
+}
+
+char* parseadorJson::cargarIP(json_t* raiz){
+
+	char* IP;
+	this->log->addLogMessage("[CARGAR IP] Iniciado.", 2);
+	json_t* jsonIP = json_object_get(raiz, "cliente");
+	json_t* ip = json_object_get(jsonIP,"IP");
+	if(json_string_value(ip))
+	{
+		IP=((char*)json_string_value(ip));
+	}
+	else
+	{
+		IP =(char*)"1.1.1.1";
+	}
+
+	this->log->addLogMessage("[CARGAR IP] Terminado.", 2);
+	return IP;
+}
+
 } /* namespace std */
