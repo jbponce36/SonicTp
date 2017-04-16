@@ -4,6 +4,7 @@
 #include "Personaje.h"
 #include "Camara.h"
 #include "Logger.h"
+#include "ControladorTeclas.h"
 
 #define FPS 60
 #define TICKS_POR_FRAME 1000/FPS
@@ -13,6 +14,7 @@ private:
 	int posicionInicialX;
 	int posicionInicialY;
 	Logger *log;
+	bool salir;
 
 public:
 	Control(int altura, int anchura, Logger *log);
@@ -21,6 +23,13 @@ public:
 	void ControlarJuego(VistaSDL *vista, Personaje *sonic);
 
 	virtual ~Control();
+
+private:
+	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic);
+	void moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic);
+	void actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic);
+
+
 };
 
 #endif

@@ -39,6 +39,9 @@ void Animacion::cargarSprites(int x, int y, int cantidad)
 
 void Animacion::comenzar()
 {
+	if (detenido == false)
+		return;
+
 	detenido = false;
 	fotogramaActual = 0;
 	indiceSprite = 0;
@@ -46,6 +49,9 @@ void Animacion::comenzar()
 
 void Animacion::detener()
 {
+	if (detenido == true)
+		return;
+
 	detenido = true;
 	fotogramaActual = 0;
 	indiceSprite = 0;
