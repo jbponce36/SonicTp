@@ -16,12 +16,13 @@
     STL
 # Compilación por consola
     servidor:
-     g++ src/capas.cpp src/Circulo.cpp src/ConstructorEntidades.cpp src/Control.cpp src/Camara.cpp 
+    g++ src/capas.cpp src/Circulo.cpp src/ConstructorEntidades.cpp src/Control.cpp src/Camara.cpp 
     src/dimensiones.cpp src/Entidad.cpp src/jcirculo.cpp src/jconfiguracion.cpp src/jentidades.cpp 
     src/jescenario.cpp src/jescenarioJuego.cpp src/jpruebas.cpp src/jrectangulo.cpp src/jventana.cpp 
     src/Logger.cpp src/Mensaje.cpp src/parseadorJson.cpp src/jcuadrado.cpp src/Rectangulo.cpp src/Personaje.cpp 
     src/Textura.cpp src/VistaSDL.cpp src/ConexServidor.cpp src/ConexCliente.cpp src/Sockets.cpp 
-    src/jservidor.cpp src/serverMain.cpp -lSDL2 -lSDL2_image -ljansson -o server
+    src/jservidor.cpp src/serverMain.cpp src/Hilo.cpp src/Animacion.cpp src/ControladorTeclas.cpp -lSDL2 -lSDL2_image 
+    -ljansson -pthread -o server
     
     cliente:
     g++ src/capas.cpp src/Circulo.cpp src/ConstructorEntidades.cpp src/Control.cpp src/Camara.cpp 
@@ -29,7 +30,8 @@
     src/jescenario.cpp src/jescenarioJuego.cpp src/jpruebas.cpp src/jrectangulo.cpp src/jventana.cpp 
     src/Logger.cpp src/Mensaje.cpp src/parseadorJson.cpp src/jcuadrado.cpp src/Rectangulo.cpp src/Personaje.cpp 
     src/Textura.cpp src/VistaSDL.cpp src/ConexServidor.cpp src/ConexCliente.cpp src/Sockets.cpp 
-    src/jservidor.cpp src/clientMain.cpp -lSDL2 -lSDL2_image -ljansson -o client
+    src/jservidor.cpp src/clientMain.cpp src/Hilo.cpp src/Animacion.cpp src/ControladorTeclas.cpp -lSDL2 -lSDL2_image 
+    -ljansson -pthread -o client
      
 # Ejecución
     ./server 1
