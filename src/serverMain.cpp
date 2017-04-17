@@ -1,5 +1,5 @@
 #include "Logger.h"
-#include "ConexServidor.h"
+#include "ConexCliente.h"
 #include "parseadorJson.h"
 #include "jescenarioJuego.h"
 
@@ -22,13 +22,14 @@ int main(int argc, char *argv[]) {
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "SERVER");
 	log->iniciarLog("INICAR LOGGER");
 
-
 	//agrego la lectura al json
 	parseadorJson* parseador = new parseadorJson(log);
 	char *file=(char*)"configuracion/configuracion.json";
 	jescenarioJuego* jparseador = parseador->parsearArchivo(file);
+
+	log->setModulo("SERVER");
 	Sockets *conexser = new Sockets(log);
-	Sockets *conexcliente = new Sockets(log);
+	ConexCliente *conexcliente = new ConexCliente(log);
 
 	char buffer[231];
 	int puerto = 8080;

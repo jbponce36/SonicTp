@@ -6,6 +6,8 @@
  */
 
 #include "Sockets.h"
+#include "ConexCliente.h"
+
 #define BUFFER_LEN 1024
 
 using namespace std;
@@ -72,7 +74,7 @@ int Sockets::escuchar(){
 	return escuchar;
 }
 
-int Sockets::aceptarcliente(Sockets *cliente){
+int Sockets::aceptarcliente(ConexCliente *cliente){
 	int longitud_dircliente;
 	sockaddr_in direccionclient;
 
@@ -84,7 +86,7 @@ int Sockets::aceptarcliente(Sockets *cliente){
 		this->log->addLogMessage("[ACEPTAR] ERROR, no se pudo acepar el "+cliente->toString(),1);
     	return fdCliente;
     }
-	cliente->fd = fdCliente;
+	cliente->setFd(fdCliente);
 	this->log->addLogMessage("[ACEPTAR] Terminado",2);
 	return fdCliente;
 }
@@ -141,7 +143,7 @@ int Sockets::enviar(Sockets *socket, char *buf, int size){
 	return status;
 }
 
-int Sockets::recibir(Sockets *socket, char *buf, int size){
+int Sockets::recibir(ConexCliente *socket, char *buf, int size){
 	int received = 0;
 	int bytes = 0;
 	bool is_the_socket_valid = true;

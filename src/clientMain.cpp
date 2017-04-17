@@ -1,6 +1,7 @@
 #include "Logger.h"
 #include <string>
-#include "ConexServidor.h"
+#include "ConexCliente.h"
+#include "Sockets.h"
 
 using namespace std;
 
@@ -23,7 +24,7 @@ int main(int argc, char *argv[]) {
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "CLIENTE");
 
 	Sockets *conexser = new Sockets(log);
-	Sockets *conexcliente = new Sockets(log);
+	ConexCliente *conexcliente = new ConexCliente(log);
 	string hostname = "127.0.0.1";
 	int puerto = 8080;
 	char* buffer=(char*)"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium bibendum mattis. Aliquam vitae aliquet enim. Duis vehicula iaculis mauris, eget viverra massa. Vestibulum fermentum placerat pharetra. Sed in cursus tortor.";
@@ -44,7 +45,7 @@ int main(int argc, char *argv[]) {
 	log->addLogMessage(buffer, 1);
 
 	conexcliente->cerrar();
-	status = conexser->cerrar();
+	conexser->cerrar();
 
 	return 0;
 }

@@ -20,9 +20,11 @@
 #include <netdb.h>
 #include <string>
 #include <sstream>
+
 #include "Logger.h"
 
-namespace std {
+class ConexCliente;
+using namespace std;
 
 class Sockets {
 public:
@@ -35,9 +37,9 @@ public:
 	//para el servidor
 	int enlazar(int puerto);
 	int escuchar();
-    int aceptarcliente(Sockets *cliente);
+    int aceptarcliente(ConexCliente *cliente);
     int enviar(Sockets *socket, char *buf, int size);
-    int recibir(Sockets *socket, char *buf, int size);
+    int recibir(ConexCliente *socket, char *buf, int size);
     //para el cliente
     int conectar(string string, int puerto);
     int cerrar();
@@ -58,6 +60,5 @@ private:
     Logger *log;
 };
 
-} /* namespace std */
 
 #endif /* SOCKETS_H_ */
