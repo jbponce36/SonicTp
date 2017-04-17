@@ -8,6 +8,8 @@
 #include "Textura.h"
 #include "Animacion.h"
 
+#define GRAVEDAD 9
+
 class Personaje
 {
 	public:
@@ -20,6 +22,7 @@ class Personaje
 		int personajeAncho;
 		int personajeAlto;
 		int personajeVelocidad;
+		int personajeAceleracion;
 		int posicionX, posicionY;
 		//velocidad de X e Y
 		int velocidadX, velocidadY;
@@ -39,9 +42,13 @@ class Personaje
 
 		bool saltando;
 		bool corriendo;
+		bool estaQuieto;
 
-		void saltar();
+		Logger *log;
+
+		void animarSalto();
 		void cargarSpriteSonic();
+		void dejarDeEstarQuieto();
 
     public:
 
@@ -59,6 +66,8 @@ class Personaje
 		int getAncho();
 		virtual ~Personaje();
 
+		void saltar();
+		void dejarDeSaltar();
 		void correr(bool estaCorriendo);
 		void irArriba();
 		void irAbajo();

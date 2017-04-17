@@ -2,19 +2,19 @@
 
 const int POSICION_INICIALX = 0;
 const int POSICION_INICIALY = 0;
-const int NUMERO_DE_SPRITES = 1;
+const float REGULADOR_ALTURA_SALTO = 0.04; //Regula la altura del salto (Es como un "promedio" de tiempoDeJuego)
 
-Personaje::Personaje(int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log){
+Personaje::Personaje(int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log)
+{
 	this->texturaSonic = new Textura();
 	this->texturaSonic->cargarImagen("images/sonicSprite.png",render, log);
 
 	//dimensiones del personaje por defecto
 	this->personajeAncho = 50;
 	this->personajeAlto= 50;
-	//
 
 	this->personajeVelocidad = velocidad;
-
+	this->personajeAceleracion = velocidad/20;
 	//posicion por defecto
     this->posicionX = POSICION_INICIALX;
     this->posicionY = altoEscenario / 2;
@@ -24,110 +24,14 @@ Personaje::Personaje(int velocidad,SDL_Renderer *render,int altoEscenario, Logge
 
     this->orientacion = DERECHA;
 
-    this->saltando = false;
+    this->saltando = true;
     this->corriendo = false;
+    this->estaQuieto = true;
     cargarSpriteSonic();
+
+    this->log = log;
+
 }
-
-/*void Personaje::procesarEvento( SDL_Event& e )
-{
-    //dependiendo de la velocidad y el codigo cambia las variables para luego mover
-	if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
-    {
-        //ajusta la velocidad
-        switch( e.key.keysym.sym )
-        {
-            case SDLK_UP:
-            	this->velocidadY -= this->personajeVelocidad;
-            	//animacionActual = animacionSaltarDer;
-            	saltando = true;
-            	break;
-            case SDLK_DOWN:
-            	//this->velocidadY += this->personajeVelocidad;
-            	//animacionActual = animacionSaltarDer;
-            	saltando = true;
-            	break;
-            case SDLK_LEFT:
-            	this->velocidadX-= this->personajeVelocidad;
-            	animacionActual = animacionCaminarIzq;
-            	orientacion = IZQUIERDA;
-            	break;
-            case SDLK_RIGHT:
-            	this->velocidadX += this->personajeVelocidad;
-            	animacionActual = animacionCaminarDer;
-            	orientacion = DERECHA;
-            	break;
-            default:
-            	return;
-        }
-        pasos++;
-        if (saltando)
-		{
-			switch (orientacion)
-			{
-				case IZQUIERDA:
-					animacionActual = animacionSaltarIzq;
-					break;
-				case DERECHA:
-					animacionActual = animacionSaltarDer;
-					break;
-			}
-		}
-		animacionActual.comenzar();
-    }
-    //cambia las variables para ajustar al personaje
-    else if( e.type == SDL_KEYUP && e.key.repeat == 0 )
-    {
-        //ajusta la velocidad
-        switch( e.key.keysym.sym )
-        {
-            case SDLK_UP:
-            	this->velocidadY += 3*this->personajeVelocidad;
-            	//animacionActual = animacionQuietoDer;
-            	saltando = false;
-            	break;
-            case SDLK_DOWN:
-            	//this->velocidadY -= this->personajeVelocidad;
-            	//animacionActual = animacionQuietoDer;
-            	saltando = false;
-            	break;
-            case SDLK_LEFT:
-            	this->velocidadX += this->personajeVelocidad;
-            	animacionActual = animacionCaminarDer;
-            	orientacion = IZQUIERDA;
-            	break;
-            case SDLK_RIGHT:
-            	this->velocidadX -= this->personajeVelocidad;
-            	animacionActual = animacionCaminarIzq;
-            	orientacion = DERECHA;
-            	break;
-            default:
-            	return;
-        }
-        pasos--;
-    }
-	//No es un evento del teclado
-    else
-    {
-    	return;
-    }
-
-	if (pasos == 0)
-	{
-		switch (orientacion)
-		{
-			case IZQUIERDA:
-				animacionActual = animacionQuietoIzq;
-				break;
-			case DERECHA:
-				animacionActual = animacionQuietoDer;
-				break;
-		}
-		animacionActual.comenzar();
-	}
-
-	cout << "Event: " << velocidadX << " " << velocidadY << '\n';
-}*/
 
 void Personaje::mover(int maximoAncho,int maximoAlto, float tiempoDeJuego )
 {
@@ -148,7 +52,12 @@ void Personaje::mover(int maximoAncho,int maximoAlto, float tiempoDeJuego )
 		this->posicionX = maximoAncho-this->personajeAncho;
 	}
 
-    this->posicionY += this->velocidadY * tiempoDeJuego;
+    //Si esta saltando lo afecta la gravedad
+    if (saltando){
+    	this->velocidadY += GRAVEDAD;
+    }
+
+    this->posicionY += this->velocidadY * REGULADOR_ALTURA_SALTO;
 
 	//se fija si se paso los limites de la pantalla
 	if( posicionY < 0 )
@@ -158,7 +67,8 @@ void Personaje::mover(int maximoAncho,int maximoAlto, float tiempoDeJuego )
 	else if (posicionY + this->personajeAlto >  maximoAlto){
 		//this->posicionX -= velocidadX;
 		this->posicionY = maximoAlto-this->personajeAlto;
-		velocidadY = 0;
+		saltando = false; //Al tocar el piso deja de saltar
+		parar();
 	}
     /*posicionY += velocidadY;
 
@@ -248,7 +158,16 @@ Personaje::~Personaje(){
 	}
 }
 
-void Personaje::saltar()
+void Personaje::dejarDeEstarQuieto()
+{
+	if (estaQuieto)
+	{
+		estaQuieto = false;
+		animacionActual->detener();
+	}
+}
+
+void Personaje::animarSalto()
 {
 	if (saltando)
 	{
@@ -264,6 +183,23 @@ void Personaje::saltar()
 	}
 }
 
+void Personaje::saltar()
+{
+	if (!saltando)
+	{
+		velocidadY = -personajeVelocidad;
+		saltando = true;
+	}
+}
+
+void Personaje::dejarDeSaltar()
+{
+	if(velocidadY < (-personajeVelocidad/2))
+	{
+		velocidadY = (-personajeVelocidad/2);
+	}
+}
+
 void Personaje::correr(bool estaCorriendo)
 {
 	corriendo = estaCorriendo;
@@ -271,68 +207,113 @@ void Personaje::correr(bool estaCorriendo)
 
 void Personaje::irArriba()
 {
-	this->velocidadY = -this->personajeVelocidad;
-	saltando = true;
-	saltar();
+	dejarDeEstarQuieto();
+	animarSalto();
 	animacionActual->comenzar();
 }
 
 void Personaje::irAbajo()
 {
-	this->velocidadY = this->personajeVelocidad;
+	/*this->velocidadY = this->personajeVelocidad;
 	saltando = true;
-	saltar();
-	animacionActual->comenzar();
+	animarSalto();
+	animacionActual->comenzar();*/
 }
 
 void Personaje::irIzquierda()
 {
-	if(corriendo){
-		this->velocidadX = -2*this->personajeVelocidad;
+	dejarDeEstarQuieto();
+
+	if ((corriendo) && (!saltando)){
+		//this->velocidadX = -2*this->personajeVelocidad;
+		this->velocidadX -= 2*personajeAceleracion;
+		if(velocidadX < (-2*personajeVelocidad))
+		{
+			velocidadX = -2*personajeVelocidad;
+		}
 		animacionActual = &animacionCorrerIzq;
 	}
 	else{
-		this->velocidadX = -this->personajeVelocidad;
+		//this->velocidadX = -this->personajeVelocidad;
+		this->velocidadX -= personajeAceleracion;
+		if(velocidadX < (-personajeVelocidad))
+		{
+			velocidadX = -personajeVelocidad;
+		}
 		animacionActual = &animacionCaminarIzq;
 	}
+
 	orientacion = IZQUIERDA;
-	saltar();
+	animarSalto();
 	animacionActual->comenzar();
 }
 
 void Personaje::irDerecha()
 {
-	if (corriendo){
-		this->velocidadX = 2*this->personajeVelocidad;
+	dejarDeEstarQuieto();
+
+	if ((corriendo) && (!saltando)){
+		//this->velocidadX = 2*this->personajeVelocidad;
+		this->velocidadX += 2*personajeAceleracion;
+		if(velocidadX > 2*personajeVelocidad)
+		{
+			velocidadX = 2*personajeVelocidad;
+		}
 		animacionActual = &animacionCorrerDer;
 	}
 	else{
-		this->velocidadX = this->personajeVelocidad;
+		//this->velocidadX = this->personajeVelocidad;
+		this->velocidadX += personajeAceleracion;
+		if(velocidadX > personajeVelocidad)
+		{
+			velocidadX = personajeVelocidad;
+		}
 		animacionActual = &animacionCaminarDer;
 	}
 
 	orientacion = DERECHA;
-	saltar();
+	animarSalto();
 	animacionActual->comenzar();
 }
 
 void Personaje::parar()
 {
-	velocidadX = 0;
-	velocidadY = 0;
-	saltando = false;
-	corriendo = false;
-	animacionActual->detener();
-
-	switch (orientacion)
+	if (velocidadX < 0)
 	{
-		case IZQUIERDA:
-			animacionActual = &animacionQuietoIzq;
-			break;
-		case DERECHA:
-			animacionActual = &animacionQuietoDer;
-			break;
+		velocidadX += 2*personajeAceleracion;
+		if (velocidadX >= 0)
+			velocidadX = 0;
 	}
-	animacionActual->comenzar();
+	else if(velocidadX > 0)
+	{
+		velocidadX -= 2*personajeAceleracion;
+		if (velocidadX <= 0)
+			velocidadX = 0;
+	}
 
+	if (saltando)
+		return;
+
+	if (estaQuieto)
+		return;
+
+	velocidadY = 0;
+	if (velocidadX == 0){
+		estaQuieto = true;
+
+		saltando = false;
+		corriendo = false;
+		animacionActual->detener();
+
+		switch (orientacion)
+		{
+			case IZQUIERDA:
+				animacionActual = &animacionQuietoIzq;
+				break;
+			case DERECHA:
+				animacionActual = &animacionQuietoDer;
+				break;
+		}
+		animacionActual->comenzar();
+	}
 }
