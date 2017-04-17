@@ -17,9 +17,11 @@ ControladorTeclas::~ControladorTeclas() {
 	// TODO Auto-generated destructor stub
 }
 
-void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *personaje)
+void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic)
 {
-	//dependiendo de la velocidad y el codigo cambia las variables para luego mover
+	//Al presionar o soltar una tecla se ejecuta una sola vez el codigo correspondiente
+
+	//dependiendo de la velocidad y el codigo de la tecla cambia las variables para luego mover
 	if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
 	{
 		//ajusta la velocidad
@@ -27,6 +29,7 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *personaje)
 		{
 			case SDLK_UP:
 				teclaArriba = true;
+				sonic->saltar();
 				break;
 			case SDLK_DOWN:
 				teclaAbajo = true;
@@ -43,7 +46,6 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *personaje)
 			default:
 				return;
 		}
-		cout << "Evento" << '\n';
 	}
 	//cambia las variables para ajustar al personaje
 	else if( e.type == SDL_KEYUP && e.key.repeat == 0 )
@@ -53,6 +55,7 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *personaje)
 		{
 		case SDLK_UP:
 			teclaArriba = false;
+			sonic->dejarDeSaltar();
 			break;
 		case SDLK_DOWN:
 			teclaAbajo = false;
@@ -69,7 +72,6 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *personaje)
 		default:
 			return;
 		}
-		cout << "Evento" << '\n';
 	}
 	//No es un evento del teclado
 	else
@@ -80,6 +82,7 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *personaje)
 
 void ControladorTeclas::administrarTeclas(Personaje *sonic)
 {
+	//Se ejecuta repetidas veces en el loop principal del juego, luego de evaluar los eventos de las teclas
 	if((!teclaArriba) && (!teclaAbajo) && (!teclaDerecha) && (!teclaIzquierda)){
 		sonic->parar();
 	}

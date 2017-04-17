@@ -22,7 +22,7 @@ private:
 public:
 	ControladorTeclas();
 	virtual ~ControladorTeclas();
-	void procesarEvento(SDL_Event &e,Personaje *personaje);
+	void procesarEvento(SDL_Event &e,Personaje *sonic);
 	void administrarTeclas(Personaje *sonic);
 
 private:

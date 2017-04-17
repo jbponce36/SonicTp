@@ -55,7 +55,7 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic)
 {
 	SDL_Event e;
-	//
+
 	while( SDL_PollEvent( &e ) != 0 )
 	{
 		//usuario pide cierre
