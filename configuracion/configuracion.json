@@ -4,7 +4,7 @@
         "servidor":{"puerto": 8080,"clientes":2},
         "cliente":{"puerto": 3316,"IP":"127.0.0.1"},
 	"escenario": {
-		"dimensiones": {"ancho": 3600, "alto": 500},
+		"dimensiones": {"ancho": 4000, "alto": 500},
 		"capas": [
 			{
 			"id": 1,

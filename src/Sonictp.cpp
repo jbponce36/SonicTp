@@ -50,23 +50,22 @@ int main(int argc, char *argv[]) {
 	log->addLogMessage("Se empieza a cargar la vista.",1);
 	log->setLevel(getNivelLogger(argc, argv));
 
+	int cant = parseador->CargarCantClientes();
+	cout<<cant<<endl;
 
-    /*VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
+/*<-------Comentar esto si usan este main------->*/
+    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
 
 	Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
     Control *control = new Control(0, 0, log);
     control->ControlarJuego(vista,sonic);
+/*<--------------------------------------------->*/
 
     log->setModulo("PRINCIPAL");
 	log->addLogMessage("Se termina de cargar la vista.",1);
 	vista->cerrar();
-	log->iniciarLog("TERMINAR LOGGER");
-*/
-	 int cant =parseador->CargarCantClientes();
-	    cout<<cant<<endl;
-	    log->iniciarLog("TERMINAR LOGGER");
-	return 0;
 
+	log->iniciarLog("TERMINAR LOGGER");
 
 	return 0;
 }
