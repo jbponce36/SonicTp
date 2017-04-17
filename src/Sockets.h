@@ -20,36 +20,42 @@
 #include <netdb.h>
 #include <string>
 #include <sstream>
+#include "Logger.h"
 
 namespace std {
 
 class Sockets {
 public:
 	Sockets();
+	Sockets(Logger *log);
 	virtual ~Sockets();
 	bool crear();
 	void AgregarDireccionSocket(sockaddr_in *direccion, int puerto);
 
 	//para el servidor
-	bool enlazar(int puerto);
-    bool escuchar();
+	int enlazar(int puerto);
+	int escuchar();
     int aceptarcliente(Sockets *cliente);
     int enviar(Sockets *socket, char *buf, int size);
     int recibir(Sockets *socket, char *buf, int size);
     //para el cliente
     int conectar(string string, int puerto);
     int cerrar();
-    int getFd() const;
-    void setFd(int fd);
+
     string intToString(int number);
     string toString();
 
     int getPuerto();
     void setPuerto(int);
+    int getFd() const;
+    void setFd(int fd);
+    Logger* getLog() const;
+    void setLog(Logger *log);
 
 private:
     int fd;
     int puerto;
+    Logger *log;
 };
 
 } /* namespace std */

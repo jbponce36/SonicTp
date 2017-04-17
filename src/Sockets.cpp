@@ -15,27 +15,31 @@ Sockets::Sockets() {
 	this->fd = 1;
 }
 
+Sockets::Sockets(Logger *log) {
+	// TODO Auto-generated constructor stub
+	this->fd = 1;
+	this->setLog(log);
+}
+
 Sockets::~Sockets() {
-	// TODO Auto-generated destructor stub
+
 
 }
 
 bool Sockets::crear(){
 	fd = socket(AF_INET , SOCK_STREAM , 0);
-
     if((fd < 0)){
     	return false;
     }
-
     return true;
 }
 
-bool Sockets::enlazar(int puerto){
-
+int Sockets::enlazar(int puerto){
   //struct sockaddr_in server;
   sockaddr_in	server;
   //this->AgregarDireccionSocket(&server,puerto);
 
+  this->log->addLogMessage("[ENLAZAR] Iniciado",2);
   server.sin_family = AF_INET;
   server.sin_port = htons(puerto);
   server.sin_addr.s_addr = INADDR_ANY;
@@ -47,33 +51,41 @@ bool Sockets::enlazar(int puerto){
   {
 	 //std::cout << "open failed, error - " << (int)errno << std::endl;
 	 //exit(errno);
-	  return false;
+	  this->log->addLogMessage("[ENLAZAR] ERROR, no se pudo enlazar en el puerto "+intToString(puerto),1);
+	  return resBind;
   }
-  return true;
+
+  setPuerto(puerto);
+  this->log->addLogMessage("[ENLAZAR] Terminado",2);
+  return resBind;
 }
 
-bool Sockets::escuchar(){
+int Sockets::escuchar(){
+	this->log->addLogMessage("[ESCUCHAR] Iniciado",2);
+	int escuchar = listen(fd, 3);
 
-   int escuchar = listen(fd, 3);
-
-   if( escuchar <0){
-	   return false;
-   }
-	return true;
+	if( escuchar < 0){
+		this->log->addLogMessage("[ESCUCHAR] Error, no se pudo escuchar en el socket"+ intToString(getFd())+" en el puerto "+intToString(getPuerto()),1);
+		return escuchar;
+	}
+	this->log->addLogMessage("[ENCUCHAR] Terminado",2);
+	return escuchar;
 }
 
 int Sockets::aceptarcliente(Sockets *cliente){
 	int longitud_dircliente;
 	sockaddr_in direccionclient;
 
+	this->log->addLogMessage("[ACEPTAR] Iniciado",2);
     longitud_dircliente= sizeof(struct sockaddr_in);
     int fdCliente = accept(fd,(struct sockaddr *)&direccionclient,(socklen_t*)&longitud_dircliente);
 
 	if (fdCliente<0) {
-    	return false;
+		this->log->addLogMessage("[ACEPTAR] ERROR, no se pudo acepar el "+cliente->toString(),1);
+    	return fdCliente;
     }
-
 	cliente->fd = fdCliente;
+	this->log->addLogMessage("[ACEPTAR] Terminado",2);
 	return fdCliente;
 }
 
@@ -81,9 +93,10 @@ int Sockets::conectar(string hostname, int puerto){
 	struct sockaddr_in server_addr;
 	socklen_t server_sock_size;
 
+	this->log->addLogMessage("[CONECTAR] Iniciado",2);
 	this->fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (this->fd < 0) {
-		return false;
+		return this->fd;
 	}
 
 	server_addr.sin_family = AF_INET;
@@ -94,9 +107,11 @@ int Sockets::conectar(string hostname, int puerto){
 	int conectado = connect(this->fd, (struct sockaddr *) &server_addr,server_sock_size);
 
 	if ( conectado< 0) {
-		return false;
+		this->log->addLogMessage("[CONECTAR] ERROR, no se pudo conectar en el "+toString(),2);
+		return conectado;
 	}
 
+	this->log->addLogMessage("[CONECTAR] Terminado",2);
 	return conectado;
 }
 
@@ -105,9 +120,10 @@ int Sockets::enviar(Sockets *socket, char *buf, int size){
 	int status = 0;
 	bool is_the_socket_valid = true;
 
+	this->log->addLogMessage("[ENVIAR] Iniciado",2);
+
 	while (sent < size && is_the_socket_valid) {
 		status = send(socket->getFd(), &buf[sent], size-sent-1, MSG_NOSIGNAL);
-
 		if (status <= 0) {
 			is_the_socket_valid = false;
 		}
@@ -116,13 +132,13 @@ int Sockets::enviar(Sockets *socket, char *buf, int size){
 		}
 	}
 
-	if (is_the_socket_valid) {
-		return sent;
-	}
-	else {
-		return -1;
+	if (status < 0) {
+		this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el"+toString(),1);
+		return status;
 	}
 
+	this->log->addLogMessage("[ENVIAR] Terminado",2);
+	return status;
 }
 
 int Sockets::recibir(Sockets *socket, char *buf, int size){
@@ -130,6 +146,7 @@ int Sockets::recibir(Sockets *socket, char *buf, int size){
 	int bytes = 0;
 	bool is_the_socket_valid = true;
 
+	this->log->addLogMessage("[RECIBIR] Iniciado",2);
 	while (size> received && is_the_socket_valid) {
 		bytes = recv(socket->getFd(), &buf[received], 1, MSG_NOSIGNAL);
 		if ( bytes <= 0) {
@@ -140,14 +157,14 @@ int Sockets::recibir(Sockets *socket, char *buf, int size){
 		}
 	}
 
-	if (is_the_socket_valid) {
-		return received;
+	if (bytes < 0) {
+		this->log->addLogMessage("[RECIBIR] Error, no se pudo recibir el mensaje en el "+toString(),1);
+		return -1;
 	}
-	else {
-	  return -1;
-	}
-}
 
+	this->log->addLogMessage("[RECIBIR] Terminado",2);
+	return bytes;
+}
 
 void Sockets::AgregarDireccionSocket(sockaddr_in *direccion, int puerto){
 	direccion->sin_family = AF_INET;			// Setea IPv4
@@ -191,5 +208,14 @@ void Sockets::setPuerto(int Puerto){
 	this->puerto = Puerto;
 }
 
+Logger* Sockets::getLog() const
+{
+    return log;
+}
+
+void Sockets::setLog(Logger *log)
+{
+    this->log = log;
+}
 
  /* namespace std */

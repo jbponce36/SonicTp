@@ -20,31 +20,45 @@ int main(int argc, char *argv[]) {
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "SERVER");
 	log->iniciarLog("INICAR LOGGER");
 
-	Sockets *conexser = new Sockets();
-	Sockets *conexcliente = new Sockets();
+	Sockets *conexser = new Sockets(log);
+	Sockets *conexcliente = new Sockets(log);
 	char buffer[231];
 	int puerto = 8080;
 
 	int status = conexser->crear();
-	log->addLogMessage(conexser->toString(), 1);
+	conexcliente->crear();
 
 	status = conexser->enlazar(puerto);
-	log->addLogMessage("bind en "+ conexser->toString(), 1);
+	if (status < 0){
+		return -1;
+	}
 
 	status = conexser->escuchar();
-	log->addLogMessage("listen en "+conexser->toString(), 1);
+	if (status < 0){
+		return -1;
+	}
 
 	status = conexser->aceptarcliente(conexcliente);
-	log->addLogMessage("aceptando "+conexser->toString(), 1);
+	if (status < 0){
+		return -1;
+	}
 
-	conexser->recibir(conexcliente, buffer,232);
+	conexser->recibir(conexcliente, buffer,231);
+	if (status < 0){
+		return -1;
+	}
 	log->addLogMessage("Recibiendo "+ conexser->toString(), 1);
 	log->addLogMessage(buffer, 1);
 
 	conexcliente->cerrar();
-	log->addLogMessage("cerrando "+conexser->toString(), 1);
+	if (status < 0){
+		return -1;
+	}
 
-	conexser->cerrar();
+	status = conexser->cerrar();
+	if (status < 0){
+		return -1;
+	}
 
 	log->iniciarLog("TERMINAR LOGGER");
 	return 0;

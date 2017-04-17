@@ -22,22 +22,29 @@ int main(int argc, char *argv[]) {
 	char *archivoLog=(char*)"configuracion/log.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "CLIENTE");
 
-	Sockets *conexser = new Sockets();
-	Sockets *conexcliente = new Sockets();
+	Sockets *conexser = new Sockets(log);
+	Sockets *conexcliente = new Sockets(log);
 	string hostname = "127.0.0.1";
 	int puerto = 8080;
 	char* buffer=(char*)"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium bibendum mattis. Aliquam vitae aliquet enim. Duis vehicula iaculis mauris, eget viverra massa. Vestibulum fermentum placerat pharetra. Sed in cursus tortor.";
 
-	conexser->conectar(hostname, puerto);
-	log->addLogMessage("conectar en "+ conexcliente->toString(), 1);
+	int status = conexser->conectar(hostname, puerto);
+
+	if (status < 0){
+		return -1;
+	}
 
 	conexcliente->enviar(conexser, buffer, strlen(buffer)+1);
-	log->addLogMessage("enviado en "+ conexcliente->toString(), 1);
+
+	if (status < 0){
+		return -1;
+	}
+
+	log->addLogMessage("[ENVIAR] Mensaje enviado" , 1);
 	log->addLogMessage(buffer, 1);
 
 	conexcliente->cerrar();
-	conexser->cerrar();
-
+	status = conexser->cerrar();
 
 	return 0;
 }
