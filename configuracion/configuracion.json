@@ -1,6 +1,6 @@
 {
 	"ventana": {"dimensiones": {"ancho": 800, "alto": 500}},
-	"configuracion": {"vel_scroll": 700},
+	"configuracion": {"vel_scroll": 200},
         "servidor":{"puerto": 8080,"clientes":2},
         "cliente":{"puerto": 3316,"IP":"127.0.0.1"},
 	"escenario": {
