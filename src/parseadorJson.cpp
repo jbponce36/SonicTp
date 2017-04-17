@@ -591,7 +591,7 @@ int parseadorJson::CargarPuertoServidor(){
 	jsonservidor = json_object_get(raiz, "servidor");
 
 	if(jsonservidor){
-	  puerto = this->leerValorEntero(jsonservidor,"puerto",3316);
+	  puerto = this->leeValorEnteroServer(jsonservidor,"puerto","SERVIDOR",3316);
 
 	}
 	else{
