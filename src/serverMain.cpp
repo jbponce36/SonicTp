@@ -10,11 +10,22 @@ int getNivelLogger(int argc, char *argv[]){
 
 	char *nivelLog = (char*)"2";
 	if(argc>1){
-		nivelLog = argv[1];
+		nivelLog = argv[2];
 	}
 
 	char *nivel= (char*)nivelLog;
 	return atoi(nivel);
+}
+
+char* getJson(int argc, char *argv[]){
+	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
+
+	char *serverConfig = (char*)"servidor.json";
+	if(argc>2){
+		serverConfig = argv[1];
+	}
+
+	return serverConfig;
 }
 
 int main(int argc, char *argv[]) {
@@ -23,11 +34,13 @@ int main(int argc, char *argv[]) {
 	log->iniciarLog("INICAR LOGGER");
 
 	//agrego la lectura al json
+	char *serverConfig = getJson(argc, argv);
 	parseadorJson* parseador = new parseadorJson(log);
 	char *file=(char*)"configuracion/configuracion.json";
 	jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
 	log->setModulo("SERVER");
+	log->addLogMessage(serverConfig, 1);
 	Sockets *conexser = new Sockets(log);
 	ConexCliente *conexcliente = new ConexCliente(log);
 
