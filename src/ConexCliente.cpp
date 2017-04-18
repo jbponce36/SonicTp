@@ -6,7 +6,6 @@
  */
 
 #include "ConexCliente.h"
-#include "Sockets.h"
 
 /* MENSAJE_H_ */
 //archivo donde el logger va a escribir todos los mensajes
@@ -14,6 +13,13 @@
 //    int enviar(Sockets *socket, char *buf, int size);
 //para el cliente
 using namespace std;
+bool ConexCliente::crear(){
+	this->fd = socket(AF_INET, SOCK_STREAM, 0);
+	if(this->fd < 0){
+		return false;
+	}
+	return true;
+}
     ConexCliente::ConexCliente()
     {
     	setFd(1);
@@ -27,14 +33,6 @@ using namespace std;
 
     ConexCliente::~ConexCliente()
     {
-    }
-
-    bool ConexCliente::crear(){
-    	fd = socket(AF_INET , SOCK_STREAM , 0);
-        if((fd < 0)){
-        	return false;
-        }
-        return true;
     }
 
     bool ConexCliente::ErroresCliente(int puerto)
@@ -51,34 +49,30 @@ using namespace std;
         return errorcliente;
     }
 
-    int ConexCliente::conectar(string hostname, int puerto)
+    bool ConexCliente::conectar(string hostname, int puerto)
     {
         struct sockaddr_in server_addr;
         socklen_t server_sock_size;
-        setFd(socket(AF_INET, SOCK_STREAM, 0));
-        if(this->getFd() < 0){
-            return false;
-        }
         server_addr.sin_family = AF_INET;
         server_addr.sin_port = htons(puerto);
         server_addr.sin_addr.s_addr = inet_addr(hostname.data());
         server_sock_size = sizeof (server_addr);
-        int conectado = connect(this->getFd(), (struct sockaddr*)(&server_addr), server_sock_size);
+        int conectado = connect(this->fd, (struct sockaddr*)(&server_addr), server_sock_size);
         if(conectado < 0){
             return false;
         }
         this->puerto = puerto;
-        return conectado;
+        return true;
     }
 
-    int ConexCliente::enviar(Sockets *socket, char *buf, int size)
+    int ConexCliente::enviar(char *buf, int size)
     {
         int sent = 0;
         int status = 0;
         bool is_the_socket_valid = true;
         this->log->addLogMessage("[ENVIAR] Iniciado", 2);
         while(sent < size && is_the_socket_valid){
-            status = send(socket->getFd(), &buf[sent], size - sent - 1, MSG_NOSIGNAL);
+            status = send(this->fd, &buf[sent], size - sent - 1, MSG_NOSIGNAL);
             if(status <= 0){
                 is_the_socket_valid = false;
             }else{

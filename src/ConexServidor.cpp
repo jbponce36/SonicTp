@@ -9,10 +9,17 @@
 
 namespace std {
 
-ConexServidor::ConexServidor() {
-	Sockets::setFd(1);
-}
+ConexServidor::ConexServidor(){
 
+}
+bool ConexServidor::crear(){
+	this->sock_recep = socket(AF_INET,SOCK_STREAM,0);
+	cout<<this->sock_recep<<endl;
+	if(this->sock_recep < 0){
+		return false;
+	}
+	return true;
+}
 ConexServidor::~ConexServidor() {
 	// TODO Auto-generated destructor stub
 }
@@ -27,7 +34,7 @@ bool ConexServidor::enlazar(int puerto){
   server.sin_addr.s_addr = INADDR_ANY;
   bzero(&(server.sin_zero),8);
 
-  int resBind = bind(Sockets::getFd(),(struct sockaddr *)&server , sizeof(server));
+  int resBind = bind(this->sock_recep,(struct sockaddr *)&server , sizeof(server));
 
   if( resBind < 0)
   {
@@ -40,7 +47,7 @@ bool ConexServidor::enlazar(int puerto){
 
 bool ConexServidor::escuchar(){
 
-   int escuchar = listen(Sockets::getFd(), 3);
+   int escuchar = listen(this->sock_recep, 2);
 
    if( escuchar <0){
 	   return false;
@@ -48,18 +55,14 @@ bool ConexServidor::escuchar(){
 	return true;
 }
 
-int ConexServidor::aceptarcliente(Sockets *cliente){
+int ConexServidor::aceptarcliente(){
 	int longitud_dircliente;
 	sockaddr_in direccionclient;
 
     longitud_dircliente= sizeof(struct sockaddr_in);
-    int fdCliente = accept(cliente->getFd(),(struct sockaddr *)&direccionclient,(socklen_t*)&longitud_dircliente);
+    int fdCliente = accept(this->sock_recep,(struct sockaddr *)&direccionclient,(socklen_t*)&longitud_dircliente);
 
-	if (fdCliente<0) {
-    	return false;
-    }
 
-	cliente->setFd(fdCliente);
 	return fdCliente;
 }
 
@@ -89,5 +92,48 @@ bool ConexServidor::ErroresServidor(int puerto){
   }
 	return errorservidor;
  }
+}
+int ConexServidor::cerrar(){
+   	int status = shutdown(this->sock_recep, SHUT_RDWR);
+   	status = close(this->sock_recep);
+   	return status;
+   }
+/*void ConexServidor::aceptarClientes()
+{
 
-} /* namespace std */
+
+	char *archivoLog=(char*)"configuracion/log.txt";
+	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "PRINCIPAL");
+	log->iniciarLog("INICAR LOGGER");
+
+	//Se lee del json el nombre de la ventana
+	parseadorJson* parseador = new parseadorJson(log);
+
+	char *file=(char*)"configuracion/configuracion.json";
+	jescenarioJuego* jparseador = parseador->parsearArchivo(file);
+
+
+	log->setModulo("PRINCIPAL");
+	log->addLogMessage("Se empieza a cargar la vista.",1);
+	log->setLevel(getNivelLogger(argc, argv));
+
+
+
+	Hilo *hilo = new hilo();
+
+
+	while(1)
+	{
+		Sockets skt = new Sockets();
+		skt = acep();
+		if (skt == true){
+			hilo->Create((void*)control->ControlarJuego(skt));//hilo
+		}else{
+			close(skt);
+		}
+	}
+}*/
+ /* namespace std */
+
+
+
