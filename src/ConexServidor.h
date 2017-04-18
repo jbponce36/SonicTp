@@ -12,19 +12,20 @@
 
 namespace std {
 
-class ConexServidor:public Sockets {
+class ConexServidor {
 public:
 	ConexServidor();
+	bool crear();
 	virtual ~ConexServidor();
 	bool enlazar(int puerto);
 	bool escuchar();
-	int aceptarcliente(Sockets *cliente);
+	int aceptarcliente();
 
     bool ErroresServidor(int puerto); // agrupa crear, enlazar y escuchar
 
     int getPuerto();
     void setPuerto(int);
-
+    int cerrar();
     int getCantclientes();
     void setCantclientes(int);
 
@@ -34,6 +35,7 @@ private:
 	//ConexCliente cliente; // luego va a ser una lista
 	string hostname;
 	int cantclientes;
+
 };
 
 } /* namespace std */

@@ -3,6 +3,7 @@
 #include "ConexCliente.h"
 #include "Sockets.h"
 
+
 using namespace std;
 
 int getNivelLogger(int argc, char *argv[]){
@@ -20,7 +21,7 @@ int getNivelLogger(int argc, char *argv[]){
 int main(int argc, char *argv[]) {
 
 
-	char *archivoLog=(char*)"configuracion/log.txt";
+	/*char *archivoLog=(char*)"configuracion/log.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "CLIENTE");
 
 	Sockets *conexser = new Sockets(log);
@@ -45,7 +46,18 @@ int main(int argc, char *argv[]) {
 	log->addLogMessage(buffer, 1);
 
 	conexcliente->cerrar();
-	conexser->cerrar();
+	conexser->cerrar();*/
+	printf("eqweq");
+	ConexCliente *cliente = new ConexCliente();
+	cliente->crear()
+			;
+	if(cliente->conectar("127.0.0.1",8080) == false){
+		cout<<"no se ocneto"<<endl;
+	}else{
+		cout<<"se conecto cliente"<<endl;
+	}
+
+	cliente->cerrar();
 
 	return 0;
 }

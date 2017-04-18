@@ -24,7 +24,7 @@
 #include "Logger.h"
 
 
-class Sockets;
+
 using namespace std;
 
 class ConexCliente{
@@ -34,8 +34,8 @@ public:
 	virtual ~ConexCliente();
 	bool crear();
 	bool ErroresCliente(int puerto);
-	int conectar(string string, int puerto);
-    int enviar(Sockets *socket, char *buf, int size);
+	bool conectar(string string, int puerto);
+    int enviar(char *buf, int size);
     int cerrar();
     string intToString(int number);
     string toString();
