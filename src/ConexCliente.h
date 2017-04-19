@@ -31,10 +31,11 @@ class ConexCliente{
 public:
 	ConexCliente();
 	ConexCliente(Logger *log);
+	std::string cargarNombreArchivo();
 	virtual ~ConexCliente();
 	bool crear();
-	bool ErroresCliente(int puerto);
-	bool conectar(string string, int puerto);
+	//bool ErroresCliente(int puerto);
+	bool conectar(const char* hostName, int puerto);
     int enviar(char *buf, int size);
     int cerrar();
     string intToString(int number);

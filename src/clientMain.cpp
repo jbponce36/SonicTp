@@ -1,8 +1,9 @@
 #include "Logger.h"
 #include <string>
+#include <iostream>
 #include "ConexCliente.h"
 #include "Sockets.h"
-
+#include "parseadorJsonCli.h"
 
 using namespace std;
 
@@ -47,13 +48,17 @@ int main(int argc, char *argv[]) {
 
 	conexcliente->cerrar();
 	conexser->cerrar();*/
-	printf("eqweq");
+
 	ConexCliente *cliente = new ConexCliente();
-	cliente->crear()
-			;
-	if(cliente->conectar("127.0.0.1",8080) == false){
+	cliente->crear();
+	parseadorJsonCli *parseadorCliente = new parseadorJsonCli();
+	parseadorCliente->parsearArchivo(cliente->cargarNombreArchivo());
+	cout<<"1"<<endl;
+	if(cliente->conectar(parseadorCliente->CargarIPCliente(),parseadorCliente->CargarPuertoCliente()) == false){
+		cout<<"2"<<endl;
 		cout<<"no se ocneto"<<endl;
 	}else{
+		cout<<"3"<<endl;
 		cout<<"se conecto cliente"<<endl;
 	}
 

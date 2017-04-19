@@ -18,7 +18,7 @@ namespace std {
 
 class Hilo {
 public:
-	Hilo();
+	Hilo(Logger *logs);
 	virtual ~Hilo();
 	pthread_t tid;
 

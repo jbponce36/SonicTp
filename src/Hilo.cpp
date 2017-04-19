@@ -10,11 +10,9 @@
 
 namespace std {
 
-
-
-Hilo::Hilo() {
-	// TODO Auto-generated constructor stub
-
+Hilo::Hilo(Logger *logs) {
+	this->log = logs;
+	this->log->setModulo("Hilo");
 }
 
 Hilo::~Hilo() {
@@ -27,20 +25,24 @@ int Hilo::Join(){
 }
 
 int Hilo::Create(void *Callback){
- int tret=0;
- this->log->addLogMessage("[VALIDAR CREACION MUTEX] Iniciado.", 2);
-
-  tret = pthread_create(&this->tid, NULL, (void *(*)(void *))Callback, NULL);
-  if(tret) {
-	  this->log->addLogMessage("[VALIDAR CREACION MUTEX] Creacion correcta del mutex.", 3);
+ //this->log->addLogMessage("[VALIDAR CREACION MUTEX] Iniciado.", 2);
+ cout<<"1"<<endl;
+  int tret = pthread_create(&this->tid, NULL, (void *(*)(void *))Callback, NULL);
+  cout<<"2"<<endl;
+  if(tret == 0) {
+	  cout<<"3"<<endl;
+	 // this->log->addLogMessage("[VALIDAR CREACION MUTEX] Creacion correcta del mutex.", 3);
+	  cout<<tret<<endl;
       return tret;
     }
     else {
-      this->log->addLogMessage("[VALIDAR CREACION MUTEX] Creacion incorrecta del mutex." ,1);
-      return 0;
+    	cout<<"5"<<endl;
+     // this->log->addLogMessage("[VALIDAR CREACION MUTEX] Creacion incorrecta del mutex." ,1);
+    	cout<<tret<<endl;
+      return tret;
   }
 
-    this->log->addLogMessage("[VALIDAR CREACION MUTEX] Terminada.", 2);
+   // this->log->addLogMessage("[VALIDAR CREACION MUTEX] Terminada.", 2);
 }
 
 int Hilo::InitMutex(){

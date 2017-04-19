@@ -13,6 +13,13 @@
 //    int enviar(Sockets *socket, char *buf, int size);
 //para el cliente
 using namespace std;
+
+std::string ConexCliente::cargarNombreArchivo(){
+	std::string nombre;
+	cout<<"Ingrese el nombre del archivo del cliente"<<endl;
+	cin>>nombre;
+	return nombre;
+}
 bool ConexCliente::crear(){
 	this->fd = socket(AF_INET, SOCK_STREAM, 0);
 	if(this->fd < 0){
@@ -35,7 +42,7 @@ bool ConexCliente::crear(){
     {
     }
 
-    bool ConexCliente::ErroresCliente(int puerto)
+    /*bool ConexCliente::ErroresCliente(int puerto)
     {
         bool errorcliente = true;
         if(crear() == false){
@@ -47,15 +54,16 @@ bool ConexCliente::crear(){
             return errorcliente;
         }
         return errorcliente;
-    }
+    }*/
 
-    bool ConexCliente::conectar(string hostname, int puerto)
+    bool ConexCliente::conectar(const char* hostname, int puerto)
     {
+    	cout<<"entro en conectar"<<endl;
         struct sockaddr_in server_addr;
         socklen_t server_sock_size;
         server_addr.sin_family = AF_INET;
         server_addr.sin_port = htons(puerto);
-        server_addr.sin_addr.s_addr = inet_addr(hostname.data());
+        server_addr.sin_addr.s_addr = inet_addr(hostname);
         server_sock_size = sizeof (server_addr);
         int conectado = connect(this->fd, (struct sockaddr*)(&server_addr), server_sock_size);
         if(conectado < 0){

@@ -12,9 +12,14 @@ namespace std {
 ConexServidor::ConexServidor(){
 
 }
+std::string ConexServidor::cargarNombreArchivo(){
+	std::string nombre;
+	cout<<"Ingrese el nombre del archivo del servidor"<<endl;
+	cin>>nombre;
+	return nombre;
+}
 bool ConexServidor::crear(){
 	this->sock_recep = socket(AF_INET,SOCK_STREAM,0);
-	cout<<this->sock_recep<<endl;
 	if(this->sock_recep < 0){
 		return false;
 	}
@@ -33,7 +38,7 @@ bool ConexServidor::enlazar(int puerto){
   server.sin_port = htons(puerto);
   server.sin_addr.s_addr = INADDR_ANY;
   bzero(&(server.sin_zero),8);
-
+  cout<<puerto<<endl;
   int resBind = bind(this->sock_recep,(struct sockaddr *)&server , sizeof(server));
 
   if( resBind < 0)
@@ -45,10 +50,10 @@ bool ConexServidor::enlazar(int puerto){
   return true;
 }
 
-bool ConexServidor::escuchar(){
+bool ConexServidor::escuchar(int cantidadMaxima){
 
-   int escuchar = listen(this->sock_recep, 2);
-
+	int escuchar = listen(this->sock_recep,cantidadMaxima);
+   cout<<cantidadMaxima<<endl;
    if( escuchar <0){
 	   return false;
    }
@@ -74,7 +79,7 @@ void ConexServidor::setCantclientes(int CantClientes){
 	this->cantclientes = CantClientes;
 }
 
-bool ConexServidor::ErroresServidor(int puerto){
+/*bool ConexServidor::ErroresServidor(int puerto){
   bool errorservidor = true;
 
   if (crear() == false){
@@ -92,12 +97,13 @@ bool ConexServidor::ErroresServidor(int puerto){
   }
 	return errorservidor;
  }
-}
+}*/
 int ConexServidor::cerrar(){
    	int status = shutdown(this->sock_recep, SHUT_RDWR);
    	status = close(this->sock_recep);
    	return status;
    }
+}
 /*void ConexServidor::aceptarClientes()
 {
 

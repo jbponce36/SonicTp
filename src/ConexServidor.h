@@ -8,7 +8,7 @@
 #ifndef CONEXSERVIDOR_H_
 #define CONEXSERVIDOR_H_
 
-#include "Sockets.h"
+#include "ConexCliente.h"
 
 namespace std {
 
@@ -18,11 +18,11 @@ public:
 	bool crear();
 	virtual ~ConexServidor();
 	bool enlazar(int puerto);
-	bool escuchar();
+	bool escuchar(int cantidadMaxima);
 	int aceptarcliente();
 
-    bool ErroresServidor(int puerto); // agrupa crear, enlazar y escuchar
-
+   // bool ErroresServidor(int puerto); // agrupa crear, enlazar y escuchar
+	std::string cargarNombreArchivo();
     int getPuerto();
     void setPuerto(int);
     int cerrar();
