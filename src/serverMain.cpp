@@ -1,10 +1,12 @@
 #include "Logger.h"
 #include "ConexServidor.h"
-
+#include "ConexCliente.h"
 #include "parseadorJson.h"
 #include "jescenarioJuego.h"
 #include "Hilo.h"
 #include "parseadorJsonSer.h"
+#include <list>
+
 using namespace std;
 
 int getNivelLogger(int argc, char *argv[]){
@@ -58,7 +60,9 @@ int main(int argc, char *argv[]) {
 	else{
 		cout<<" No se escucha"<<endl;
 	*/
-	list<Hilo*> listaProcesos;
+
+
+	/*list<Hilo*> listaProcesos;
 	for(int i=0;i<2;i++){
 		int skt = server->aceptarcliente();
 
@@ -67,18 +71,46 @@ int main(int argc, char *argv[]) {
 		}else{
 			Hilo *hilos = new Hilo(log);
 			cout<<"entro wachin"<<endl;
-			hilos->Create((void*)mainCliente());
+			 ConexCliente *c = new ConexCliente();
+		//	hilos->Create((void*)mainCliente(),c);
 			cout<<"salio del create"<<endl;
 			listaProcesos.push_back(hilos);
 			//pthread_t new_thread;
 			//int rc = pthread_create(&new_thread,NULL,(void *(*)(void *))mainCliente,NULL);
 
-			//hilo->Create((void*)mainCliente());
+			hilos->Create((void*)mainCliente(),&c);
 		}
 	}
+
+
+
+
+
 	list<Hilo*>::iterator pos;
 	for(pos=listaProcesos.begin();pos!= listaProcesos.end();pos++){
 		(*pos)->Join();
+	}
+
+*/
+	list<Hilo> hilolista;
+	list<Hilo>::iterator pos;
+
+	while(1){
+    ConexCliente *c = new ConexCliente();
+    Hilo *hilos = new Hilo(log);
+    hilolista.push_back(*hilos);
+    int skt = server->aceptarcliente();
+    if(skt < 0) {
+      cout << "Error on accept"<<endl;
+    }
+    	else {
+    	    hilos->Create((void *)mainCliente , c);
+        }
+
+    }
+
+	for(pos = hilolista.begin(); pos!=hilolista.end(); pos++){
+		(*pos).Join();
 	}
 
 	//close(skt);

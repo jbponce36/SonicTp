@@ -24,10 +24,12 @@ int Hilo::Join(){
 	 return 0;
 }
 
-int Hilo::Create(void *Callback){
+int Hilo::Create(void *Callback,void *args){
  //this->log->addLogMessage("[VALIDAR CREACION MUTEX] Iniciado.", 2);
  cout<<"1"<<endl;
-  int tret = pthread_create(&this->tid, NULL, (void *(*)(void *))Callback, NULL);
+  //int tret = pthread_create(&this->tid[2], NULL, (void *(*)(void *))Callback, NULL);
+  int tret = pthread_create(&this->tid, NULL, (void *(*)(void *))Callback, args);
+
   cout<<"2"<<endl;
   if(tret == 0) {
 	  cout<<"3"<<endl;

@@ -14,6 +14,7 @@
 #include <iostream>
 
 
+
 namespace std {
 
 class Hilo {
@@ -22,8 +23,8 @@ public:
 	virtual ~Hilo();
 	pthread_t tid;
 
-	//int Create(void *Callback,void *args);
-    int Create(void *Callback);  // seria el create hilo....
+
+	int Create(void *Callback,void *args);
 
 	int Join();
     int InitMutex();
@@ -35,6 +36,7 @@ public:
 private:
 	pthread_mutex_t mutex;
 	Logger *log;
+
 };
 
 } /* namespace std */
