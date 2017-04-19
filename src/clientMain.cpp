@@ -54,8 +54,7 @@ int main(int argc, char *argv[]) {
 	parseadorJsonCli *parseadorCliente = new parseadorJsonCli();
 	parseadorCliente->parsearArchivo(cliente->cargarNombreArchivo());
 	cout<<"1"<<endl;
-	//if(cliente->conectar(parseadorCliente->CargarIPCliente(),parseadorCliente->CargarPuertoCliente()) == false){
-	if(cliente->conectar("127.0.0.1",8080) == false){
+	if(cliente->conectar(parseadorCliente->CargarIPCliente(),parseadorCliente->CargarPuertoCliente()) == false){
 		cout<<"2"<<endl;
 		cout<<"no se ocneto"<<endl;
 	}else{
