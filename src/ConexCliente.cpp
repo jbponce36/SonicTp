@@ -97,27 +97,8 @@ bool ConexCliente::crear(){
     }
 
     int ConexCliente::recibir(char *buf, int size){
-    	int received = 0;
-    	int bytes = 0;
-    	bool is_the_socket_valid = true;
+    	int bytes = recv(this->fd, buf, size, MSG_NOSIGNAL);
 
-    	//this->log->addLogMessage("[RECIBIR] Iniciado",2);
-    	while (size> received && is_the_socket_valid) {
-    		bytes = recv(this->fd, &buf[received], 1, MSG_NOSIGNAL);
-    		if ( bytes <= 0) {
-    			is_the_socket_valid = false;
-    		}
-    		else {
-    			received += bytes;
-    		}
-    	}
-
-    	if (bytes < 0) {
-    	//	this->log->addLogMessage("[RECIBIR] Error, no se pudo recibir el mensaje en el "+toString(),1);
-    		return -1;
-    	}
-
-    	//this->log->addLogMessage("[RECIBIR] Terminado",2);
     	return bytes;
     }
     int ConexCliente::cerrar(){

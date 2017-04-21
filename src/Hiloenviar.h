@@ -13,11 +13,7 @@
 #include "ConexServidor.h"
 #include "ProcesadorCliente.h"
 
-struct parametrosEnviar{
-	ConexServidor *server;
-	//list<ProcesadorCliente>pcliente;
-	int skt;
- };
+
 namespace std {
 
 
@@ -26,8 +22,13 @@ class Hiloenviar {
 public:
 	Hiloenviar();
 	virtual ~Hiloenviar();
-	void IniciarHilo(struct parametrosEnviar *parametros);
+	void IniciarHilo(/*struct parametrosEnviar *parametros*/);
 	static void * serverEnviar(void *args);
+	struct SerParametros{
+		ConexServidor *server;
+		int skt;
+	};
+	SerParametros parametros;
 private:
 };
 

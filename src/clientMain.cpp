@@ -52,8 +52,8 @@ int main(int argc, char *argv[]) {
 	ConexCliente *cliente = new ConexCliente();
 	cliente->crear();
 	parseadorJsonCli *parseadorCliente = new parseadorJsonCli();
-	parseadorCliente->parsearArchivo(cliente->cargarNombreArchivo());
-	if(cliente->conectar(parseadorCliente->CargarIPCliente(),parseadorCliente->CargarPuertoCliente()) == false){
+	//parseadorCliente->parsearArchivo(cliente->cargarNombreArchivo());
+	if(cliente->conectar("127.0.0.1",8080) == false){
 		cout<<"no se conecto"<<endl;
 	}else{
 		cout<<"se conecto cliente"<<endl;
@@ -63,11 +63,12 @@ int main(int argc, char *argv[]) {
 
 
 	cliente->enviar(buffer,11);
-	char buffer2[40];
+	char buffer2[40]="0";
 	cout<<"1"<<endl;
-	cliente->recibir(&buffer2[40],sizeof(buffer2));
-	cout<<"2"<<endl;
-	cout<<buffer2[40]<<endl;
+	cliente->recibir(buffer2,sizeof(buffer2));
+	cout<<"tiene q imprimir despues de esto"<<endl;
+	cout<<buffer2<<endl;
+	cout<<"salio de imprimir"<<endl;
 	cliente->cerrar();
 
 	return 0;

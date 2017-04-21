@@ -99,31 +99,9 @@ void ConexServidor::setCantclientes(int CantClientes){
  }
 }*/
 int ConexServidor::recibir(int skt, char *buf, int size){
-	int received = 0;
-	int bytes = 0;
-	bool is_the_socket_valid = true;
 
-	//this->log->addLogMessage("[RECIBIR] Iniciado",2);
-	while (size> received && is_the_socket_valid) {
-		bytes = recv(skt, &buf[received], 1, MSG_NOSIGNAL);
-		if ( bytes <= 0) {
-			is_the_socket_valid = false;
-		}
-		else {
-			received += bytes;
-		}
-	}
-
-	if (bytes < 0) {
-		//this->log->addLogMessage("[RECIBIR] Error, no se pudo recibir el mensaje en el "+toString(),1);
-		return -1;
-	}
-
-	//this->log->addLogMessage("[RECIBIR] Terminado",2);
+	int bytes = recv(skt, buf, size, MSG_NOSIGNAL);
 	return bytes;
-
-
-
 }
 
 int ConexServidor::enviar(int socket, char *buf, int size){

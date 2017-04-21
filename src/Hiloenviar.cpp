@@ -17,20 +17,18 @@ Hiloenviar::~Hiloenviar() {
 	// TODO Auto-generated destructor stub
 }
 
-void Hiloenviar::IniciarHilo(struct parametrosEnviar *parametros){
+void Hiloenviar::IniciarHilo(/*struct parametrosEnviar *parametros*/){
 
 	Hilo *hilos = new Hilo(/*log*/);
 
-	hilos->Create((void *)Hiloenviar::serverEnviar ,  (void *)parametros);
+	hilos->Create((void *)Hiloenviar::serverEnviar ,  (void *)&parametros);
 
 }
 void *Hiloenviar::serverEnviar(void *args){
 	char buffer[40]="mequiero";
-	parametrosEnviar *parametros = (parametrosEnviar*) args;
-	int skt = parametros->skt;
-	cout<<&skt<<endl;
+	SerParametros *parametros = (SerParametros*) args;
 	//hr->server->recibir(Pcliente->getClienteSocket(),buffer,sizeof(buffer));
-	cout<<"entro en el enviar"<<endl;
+	cout<<"el server envio: "<<endl;
 	parametros->server->enviar(parametros->skt,buffer,11);
 
 }

@@ -33,97 +33,32 @@ int main(int argc, char *argv[]) {
 
 	ConexServidor *server = new ConexServidor();
 	parseadorJsonSer *jsonSer = new parseadorJsonSer(log);
-	jsonSer->parsearArchivo(server->cargarNombreArchivo());
+	//jsonSer->parsearArchivo(server->cargarNombreArchivo());
 	server->crear();
-	server->enlazar(jsonSer->CargarPuertoServidor());
-	server->escuchar(jsonSer->CargarCantClientes());
+	server->enlazar(8080);
+	server->escuchar(3);
 
-
-	/*Hilo *hilo = new Hilo();
-	log->setModulo("SERVER");
-
-	ConexServidor *server = new ConexServidor();
-
-	char buffer[231];
-	int puerto = 8080;
-
-	if (server->crear() == true){
-		cout<<"se creo bien"<<endl;
-	}
-	else{
-		printf("no se creo");
-	}
-
-	if (server->enlazar(puerto) == true){
-		printf("Se enlazo correctamente");
-	}
-	else{
-		printf(" No se enlazo correctamente");
-	}
-	if(server->escuchar() == true){
-		printf("SE escucha");
-	}
-	else{
-		cout<<" No se escucha"<<endl;
-	*/
-
-
-	/*list<Hilo*> listaProcesos;
-	for(int i=0;i<2;i++){
-		int skt = server->aceptarcliente();
-
-		if (skt < 0){
-			cout<<"No cepto"<<endl;
-		}else{
-			Hilo *hilos = new Hilo(log);
-			cout<<"entro wachin"<<endl;
-			 ConexCliente *c = new ConexCliente();
-		//	hilos->Create((void*)mainCliente(),c);
-			cout<<"salio del create"<<endl;
-			listaProcesos.push_back(hilos);
-			//pthread_t new_thread;
-			//int rc = pthread_create(&new_thread,NULL,(void *(*)(void *))mainCliente,NULL);
-
-			hilos->Create((void*)mainCliente(),&c);
-		}
-	}
-
-
-
-
-
-	list<Hilo*>::iterator pos;
-	for(pos=listaProcesos.begin();pos!= listaProcesos.end();pos++){
-		(*pos)->Join();
-	}
-
-*/
 	list<Hilorecibir> hrRecibir;
+	list<Hiloenviar> hrEnviar;
 	//list<Hilo>::iterator pos;
 	//list<Hilo>::iterator pos;
-	//list<ProcesadorCliente> pc;
-	Serparametros parametros;
-	parametros.server = server;
-	parametrosEnviar pte;
-	pte.server = server;
 	while(1){
     int skt = server->aceptarcliente();
     if(skt < 0) {
       cout << "Error on accept"<<endl;
     }
     	else {
-    		//ProcesadorCliente *Pcliente = new ProcesadorCliente();
-    		//Pcliente->setClienteSocket(skt);
-    		parametros.skt = skt;
-    		//ConexCliente *cl = new ConexCliente();
-            //pc.push_back(*Pcliente);
 			Hilorecibir *hr = new Hilorecibir();
-		    hr->IniciarHilo(&parametros);
+			hr->parametros.server = server;
+			hr->parametros.skt = skt;
+		    hr->IniciarHilo();
 		    hrRecibir.push_back(*hr);
 
-		    pte.skt = skt;
 		    Hiloenviar *hre = new Hiloenviar();
-		    hre->IniciarHilo(&pte);
+		    hre->parametros.server = server;
+		    hre->parametros.skt = skt;
+		    hre->IniciarHilo();
+		    hrEnviar.push_back(*hre);
     	    //hilos->Create((void *)mainCliente , Pcliente);
         }
 

@@ -12,11 +12,6 @@
 #include "ConexServidor.h"
 #include "ProcesadorCliente.h"
 
-struct Serparametros{
-	ConexServidor *server;
-	//list<ProcesadorCliente>pcliente;
-	int skt;
- };
 namespace std {
 
 
@@ -25,8 +20,14 @@ class Hilorecibir {
 public:
 	Hilorecibir();
 	virtual ~Hilorecibir();
-	void IniciarHilo(struct Serparametros *parametros);
+	void IniciarHilo(/*struct Serparametros *parametros*/);
 	static void * serverRecibir(void *args);
+	struct Serparametros{
+		ConexServidor *server;
+		//list<ProcesadorCliente>pcliente;
+		int skt;
+	 };
+	Serparametros parametros;
 private:
 };
 
