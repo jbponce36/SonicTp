@@ -24,7 +24,6 @@ class Personaje
 		int personajeVelocidad;
 		int personajeAceleracion;
 		int posicionX, posicionY;
-		//velocidad de X e Y
 		int velocidadX, velocidadY;
 
 		Animacion animacionQuietoDer;
@@ -50,21 +49,22 @@ class Personaje
 		void cargarSpriteSonic();
 		void dejarDeEstarQuieto();
 
+
+
     public:
 
 		Personaje(int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log);
+		virtual ~Personaje();
 
-		//mueve al personaje;
-		void mover(int maximoAncho,int maximoAlto, float tiempoDeJuego);
+		void mover(SDL_Rect *limites, float tiempoDeJuego);
 
-		//pinta el personaje en la pantalla
 		void render(int camX, int camY);
 
+		void posicionarseEn(int x, int y);
 		int getPosicionX();
 		int getPosicionY();
 		int getAlto();
 		int getAncho();
-		virtual ~Personaje();
 
 		void saltar();
 		void dejarDeSaltar();
@@ -74,6 +74,11 @@ class Personaje
 		void irIzquierda();
 		void irDerecha();
 		void parar();
+
+		bool bloqueaCamara(SDL_Rect *limites);
+
+
+
 };
 
 #endif

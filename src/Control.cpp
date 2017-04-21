@@ -30,13 +30,32 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 
 	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana());
 
+
+			/////////Para pruebas
+			Personaje otroSonic = Personaje(200, vista->obtenerRender(), 500, vista->getLog());
+			otroSonic.posicionarseEn(200,100);
+
+			std::vector<Personaje*> sonics;
+			sonics.push_back(sonic);
+			sonics.push_back(&otroSonic);
+
+			camara->agregarSonic(sonic);
+			camara->agregarSonic(&otroSonic);
+			////////////Fin prueba
+
+
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !salir ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
 		administrarTeclas(&controlador, sonic);
-		moverPersonaje(tiempoDeJuego, vista, sonic);
-		actualizarVista(camara, vista, &imagenMostrar, sonic);
+		/////Mandarle al server las teclas que movio...???
+		/////El server calcula el movimiento y las animaciones igual que aca
+		/////Sabe donde esta y que animacion tiene cada sonic.
+		moverPersonaje(tiempoDeJuego, vista, sonic, camara);
+		/////Corregir posicion???? Recibir del server las posiciones de otros sonics y sus animaciones
+		/////y mostrarlos en actualizarVista
+		actualizarVista(camara, vista, &imagenMostrar, sonic, sonics);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
 		tiempoFin = SDL_GetTicks();
@@ -63,30 +82,28 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 		{
 			salir = true;
 		}
-		controlador->procesarEvento(e, sonic);
+		controlador->procesarEvento(e, sonic); //Setea todas las teclas presionadas o liberadas
 	}
-	controlador->administrarTeclas(sonic);
+	controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
 
 
 }
 
-void Control::moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic)
+void Control::moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic, Camara *camara)
 {
 	//para calcular el tiempo q transcurre en cada fotografia
 	tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
 	float tiempoDeFotografia = tiempoDeJuego / 1000.f;
 	//........
 
-	sonic->mover(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario(),tiempoDeFotografia);
+	sonic->mover(camara->devolverCamara(),tiempoDeFotografia);
 
 	tiempoDeJuego = SDL_GetTicks();
 }
 
-void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic)
+void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic, std::vector<Personaje*> sonics)
 {
-	camara->actualizar(sonic,vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
-	SDL_SetRenderDrawColor(vista->obtenerRender(),0xff,0xff,0xff,0xff);
-	SDL_RenderClear(vista->obtenerRender());
+	camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
 
 	for(int contador = 0; contador < vista->cantidadCapasCargadas(); contador++)
 	{
@@ -97,6 +114,11 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenM
 
 	//dibujo el personaje
 	sonic->render(camara->getPosicionX(), camara->getPosicionY());
+
+			////////Para prueba
+			sonics.at(1)->render(camara->getPosicionX(), camara->getPosicionY());
+			///////Fin prueba
+
 	//muestro la imagen
 	SDL_RenderPresent( vista->obtenerRender());
 }

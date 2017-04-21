@@ -28,6 +28,7 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic)
 		switch( e.key.keysym.sym )
 		{
 			case SDLK_UP:
+				//Enviar al server que presiono la tecla
 				teclaArriba = true;
 				sonic->saltar();
 				break;
@@ -54,6 +55,7 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic)
 		switch( e.key.keysym.sym )
 		{
 		case SDLK_UP:
+			//Enviar al server que dejo de presionar la tecla
 			teclaArriba = false;
 			sonic->dejarDeSaltar();
 			break;
