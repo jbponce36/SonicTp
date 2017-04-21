@@ -98,6 +98,59 @@ void ConexServidor::setCantclientes(int CantClientes){
 	return errorservidor;
  }
 }*/
+int ConexServidor::recibir(int skt, char *buf, int size){
+	int received = 0;
+	int bytes = 0;
+	bool is_the_socket_valid = true;
+
+	//this->log->addLogMessage("[RECIBIR] Iniciado",2);
+	while (size> received && is_the_socket_valid) {
+		bytes = recv(skt, &buf[received], 1, MSG_NOSIGNAL);
+		if ( bytes <= 0) {
+			is_the_socket_valid = false;
+		}
+		else {
+			received += bytes;
+		}
+	}
+
+	if (bytes < 0) {
+		//this->log->addLogMessage("[RECIBIR] Error, no se pudo recibir el mensaje en el "+toString(),1);
+		return -1;
+	}
+
+	//this->log->addLogMessage("[RECIBIR] Terminado",2);
+	return bytes;
+
+
+
+}
+
+int ConexServidor::enviar(int socket, char *buf, int size){
+	int sent = 0;
+	int status = 0;
+	bool is_the_socket_valid = true;
+
+	//this->log->addLogMessage("[ENVIAR] Iniciado",2);
+
+	while (sent < size && is_the_socket_valid) {
+		status = send(socket, &buf[sent], size-sent-1, MSG_NOSIGNAL);
+		if (status <= 0) {
+			is_the_socket_valid = false;
+		}
+		else {
+			sent += status;
+		}
+	}
+
+	if (status < 0) {
+		//this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el"+toString(),1);
+		return status;
+	}
+
+	//this->log->addLogMessage("[ENVIAR] Terminado",2);
+	return status;
+}
 int ConexServidor::cerrar(){
    	int status = shutdown(this->sock_recep, SHUT_RDWR);
    	status = close(this->sock_recep);

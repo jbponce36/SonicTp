@@ -36,6 +36,7 @@ public:
 	bool crear();
 	//bool ErroresCliente(int puerto);
 	bool conectar(const char* hostName, int puerto);
+	int recibir(char *buf, int size);
     int enviar(char *buf, int size);
     int cerrar();
     string intToString(int number);
@@ -50,11 +51,16 @@ public:
     void setLog(Logger *log);
     void setPuerto(int puerto);
 
+    int getServer();
+    void setServer(int);
+
 private:
     int fd;
     int puerto;
 	string hostname;
 	Logger *log;
+
+	int server;
 };
 
 

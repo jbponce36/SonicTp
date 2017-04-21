@@ -58,7 +58,6 @@ bool ConexCliente::crear(){
 
     bool ConexCliente::conectar(const char* hostname, int puerto)
     {
-    	cout<<"entro en conectar"<<endl;
         struct sockaddr_in server_addr;
         socklen_t server_sock_size;
         server_addr.sin_family = AF_INET;
@@ -78,7 +77,7 @@ bool ConexCliente::crear(){
         int sent = 0;
         int status = 0;
         bool is_the_socket_valid = true;
-        this->log->addLogMessage("[ENVIAR] Iniciado", 2);
+        //this->log->addLogMessage("[ENVIAR] Iniciado", 2);
         while(sent < size && is_the_socket_valid){
             status = send(this->fd, &buf[sent], size - sent - 1, MSG_NOSIGNAL);
             if(status <= 0){
@@ -89,13 +88,38 @@ bool ConexCliente::crear(){
         }
 
         if(status < 0){
-            this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el" + toString(), 1);
+            //this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el" + toString(), 1);
             return status;
         }
-        this->log->addLogMessage("[ENVIAR] Terminado", 2);
+
+        //this->log->addLogMessage("[ENVIAR] Terminado", 2);
         return status;
     }
 
+    int ConexCliente::recibir(char *buf, int size){
+    	int received = 0;
+    	int bytes = 0;
+    	bool is_the_socket_valid = true;
+
+    	//this->log->addLogMessage("[RECIBIR] Iniciado",2);
+    	while (size> received && is_the_socket_valid) {
+    		bytes = recv(this->fd, &buf[received], 1, MSG_NOSIGNAL);
+    		if ( bytes <= 0) {
+    			is_the_socket_valid = false;
+    		}
+    		else {
+    			received += bytes;
+    		}
+    	}
+
+    	if (bytes < 0) {
+    	//	this->log->addLogMessage("[RECIBIR] Error, no se pudo recibir el mensaje en el "+toString(),1);
+    		return -1;
+    	}
+
+    	//this->log->addLogMessage("[RECIBIR] Terminado",2);
+    	return bytes;
+    }
     int ConexCliente::cerrar(){
     	int status = shutdown(this->getFd(), SHUT_RDWR);
     	status = close(this->getFd());

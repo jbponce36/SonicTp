@@ -20,7 +20,8 @@ public:
 	bool enlazar(int puerto);
 	bool escuchar(int cantidadMaxima);
 	int aceptarcliente();
-
+	int recibir(int skt, char *buf, int size);
+	int enviar(int socket, char *buf, int size);
    // bool ErroresServidor(int puerto); // agrupa crear, enlazar y escuchar
 	std::string cargarNombreArchivo();
     int getPuerto();

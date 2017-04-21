@@ -10,9 +10,9 @@
 
 namespace std {
 
-Hilo::Hilo(Logger *logs) {
-	this->log = logs;
-	this->log->setModulo("Hilo");
+Hilo::Hilo(/*Logger *logs*/) {
+	//this->log = logs;
+	//this->log->setModulo("Hilo");
 }
 
 Hilo::~Hilo() {
@@ -26,21 +26,15 @@ int Hilo::Join(){
 
 int Hilo::Create(void *Callback,void *args){
  //this->log->addLogMessage("[VALIDAR CREACION MUTEX] Iniciado.", 2);
- cout<<"1"<<endl;
   //int tret = pthread_create(&this->tid[2], NULL, (void *(*)(void *))Callback, NULL);
   int tret = pthread_create(&this->tid, NULL, (void *(*)(void *))Callback, args);
 
-  cout<<"2"<<endl;
   if(tret == 0) {
-	  cout<<"3"<<endl;
 	 // this->log->addLogMessage("[VALIDAR CREACION MUTEX] Creacion correcta del mutex.", 3);
-	  cout<<tret<<endl;
       return tret;
     }
     else {
-    	cout<<"5"<<endl;
      // this->log->addLogMessage("[VALIDAR CREACION MUTEX] Creacion incorrecta del mutex." ,1);
-    	cout<<tret<<endl;
       return tret;
   }
 

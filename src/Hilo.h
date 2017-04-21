@@ -7,7 +7,7 @@
 
 #ifndef HILO_H_
 #define HILO_H_
-#include "ConexCliente.h"
+#include "ConexServidor.h"
 #include <pthread.h>
 #include "Logger.h"
 #include <unistd.h>
@@ -19,7 +19,7 @@ namespace std {
 
 class Hilo {
 public:
-	Hilo(Logger *logs);
+	Hilo(/*Logger *logs*/);
 	virtual ~Hilo();
 	pthread_t tid;
 

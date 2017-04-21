@@ -53,15 +53,21 @@ int main(int argc, char *argv[]) {
 	cliente->crear();
 	parseadorJsonCli *parseadorCliente = new parseadorJsonCli();
 	parseadorCliente->parsearArchivo(cliente->cargarNombreArchivo());
-	cout<<"1"<<endl;
 	if(cliente->conectar(parseadorCliente->CargarIPCliente(),parseadorCliente->CargarPuertoCliente()) == false){
-		cout<<"2"<<endl;
-		cout<<"no se ocneto"<<endl;
+		cout<<"no se conecto"<<endl;
 	}else{
-		cout<<"3"<<endl;
 		cout<<"se conecto cliente"<<endl;
 	}
 
+	char buffer[40]="mashambre";
+
+
+	cliente->enviar(buffer,11);
+	char buffer2[40];
+	cout<<"1"<<endl;
+	cliente->recibir(&buffer2[40],sizeof(buffer2));
+	cout<<"2"<<endl;
+	cout<<buffer2[40]<<endl;
 	cliente->cerrar();
 
 	return 0;

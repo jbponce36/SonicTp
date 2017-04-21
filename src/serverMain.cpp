@@ -5,9 +5,15 @@
 #include "jescenarioJuego.h"
 #include "Hilo.h"
 #include "parseadorJsonSer.h"
+#include "Hilorecibir.h"
 #include <list>
+#include "Hiloenviar.h"
+#include <iostream>
+#include <fstream>
+
 
 using namespace std;
+
 
 int getNivelLogger(int argc, char *argv[]){
 	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
@@ -19,12 +25,11 @@ int getNivelLogger(int argc, char *argv[]){
 	char *nivel= (char*)nivelLog;
 	return atoi(nivel);
 }
-void *mainCliente();
+//void *mainCliente(void *Pcliente);
 int main(int argc, char *argv[]) {
 	char *archivoLog=(char*)"configuracion/log.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "SERVER");
 	log->iniciarLog("INICAR LOGGER");
-
 
 	ConexServidor *server = new ConexServidor();
 	parseadorJsonSer *jsonSer = new parseadorJsonSer(log);
@@ -32,6 +37,7 @@ int main(int argc, char *argv[]) {
 	server->crear();
 	server->enlazar(jsonSer->CargarPuertoServidor());
 	server->escuchar(jsonSer->CargarCantClientes());
+
 
 	/*Hilo *hilo = new Hilo();
 	log->setModulo("SERVER");
@@ -92,31 +98,48 @@ int main(int argc, char *argv[]) {
 	}
 
 */
-	list<Hilo> hilolista;
-	list<Hilo>::iterator pos;
-
+	list<Hilorecibir> hrRecibir;
+	//list<Hilo>::iterator pos;
+	//list<Hilo>::iterator pos;
+	//list<ProcesadorCliente> pc;
+	Serparametros parametros;
+	parametros.server = server;
+	parametrosEnviar pte;
+	pte.server = server;
 	while(1){
-    ConexCliente *c = new ConexCliente();
-    Hilo *hilos = new Hilo(log);
-    hilolista.push_back(*hilos);
     int skt = server->aceptarcliente();
     if(skt < 0) {
       cout << "Error on accept"<<endl;
     }
     	else {
-    	    hilos->Create((void *)mainCliente , c);
+    		//ProcesadorCliente *Pcliente = new ProcesadorCliente();
+    		//Pcliente->setClienteSocket(skt);
+    		parametros.skt = skt;
+    		//ConexCliente *cl = new ConexCliente();
+            //pc.push_back(*Pcliente);
+			Hilorecibir *hr = new Hilorecibir();
+		    hr->IniciarHilo(&parametros);
+		    hrRecibir.push_back(*hr);
+
+		    pte.skt = skt;
+		    Hiloenviar *hre = new Hiloenviar();
+		    hre->IniciarHilo(&pte);
+    	    //hilos->Create((void *)mainCliente , Pcliente);
         }
 
     }
-
-	for(pos = hilolista.begin(); pos!=hilolista.end(); pos++){
-		(*pos).Join();
-	}
+   //parametros.pcliente = pc;
+	//for(pos = hilolista.begin(); pos!=hilolista.end(); pos++){
+	//	(*pos).Join();
+	//}
 
 	//close(skt);
 	server->cerrar();
 	return 0;
 }
-void *mainCliente(){
-	cout<<"tengo hambre"<<endl;
-}
+/*void *mainClienteReibir(void *Pcliente){
+ conexCliente *cliente = (conexCliente*) Pcliente;
+ char buffer[12];
+
+  server->recibir(cliente->getClienteSocket(),buffer,12);
+}*/
