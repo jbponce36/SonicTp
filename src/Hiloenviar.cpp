@@ -28,7 +28,8 @@ void *Hiloenviar::serverEnviar(void *args){
 	char buffer[40]="mequiero";
 	SerParametros *parametros = (SerParametros*) args;
 	//hr->server->recibir(Pcliente->getClienteSocket(),buffer,sizeof(buffer));
-	cout<<"el server envio: "<<endl;
+	cout<<"el server envio: "<<buffer<<endl;
+
 	parametros->server->enviar(parametros->skt,buffer,11);
 
 }

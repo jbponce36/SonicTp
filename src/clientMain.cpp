@@ -61,14 +61,11 @@ int main(int argc, char *argv[]) {
 
 	char buffer[40]="mashambre";
 
-
+	cout<<"cliente envio: "<<buffer<<endl;
 	cliente->enviar(buffer,11);
 	char buffer2[40]="0";
-	cout<<"1"<<endl;
 	cliente->recibir(buffer2,sizeof(buffer2));
-	cout<<"tiene q imprimir despues de esto"<<endl;
-	cout<<buffer2<<endl;
-	cout<<"salio de imprimir"<<endl;
+	cout<<"cliente recibio: "<<buffer2<<endl;
 	cliente->cerrar();
 
 	return 0;
