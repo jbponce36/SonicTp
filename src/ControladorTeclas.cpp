@@ -17,7 +17,7 @@ ControladorTeclas::~ControladorTeclas() {
 	// TODO Auto-generated destructor stub
 }
 
-void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic)
+void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, ConexCliente *cliente)
 {
 	//Al presionar o soltar una tecla se ejecuta una sola vez el codigo correspondiente
 
@@ -28,20 +28,24 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic)
 		switch( e.key.keysym.sym )
 		{
 			case SDLK_UP:
-				//Enviar al server que presiono la tecla
+				sonic->enviarAServer(cliente, TECLA_ARRIBA_PRESIONADA);
 				teclaArriba = true;
 				sonic->saltar();
 				break;
 			case SDLK_DOWN:
+				sonic->enviarAServer(cliente, TECLA_ABAJO_PRESIONADA);
 				teclaAbajo = true;
 				break;
 			case SDLK_LEFT:
+				sonic->enviarAServer(cliente, TECLA_IZQUIERDA_PRESIONADA);
 				teclaIzquierda = true;
 				break;
 			case SDLK_RIGHT:
+				sonic->enviarAServer(cliente, TECLA_DERECHA_PRESIONADA);
 				teclaDerecha = true;
 				break;
 			case SDLK_a:
+				sonic->enviarAServer(cliente, TECLA_CORRER_PRESIONADA);
 				teclaCorrer = true;
 				break;
 			default:
@@ -56,19 +60,24 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic)
 		{
 		case SDLK_UP:
 			//Enviar al server que dejo de presionar la tecla
+			sonic->enviarAServer(cliente, TECLA_ARRIBA_LIBERADA);
 			teclaArriba = false;
 			sonic->dejarDeSaltar();
 			break;
 		case SDLK_DOWN:
+			sonic->enviarAServer(cliente, TECLA_ABAJO_LIBERADA);
 			teclaAbajo = false;
 			break;
 		case SDLK_LEFT:
+			sonic->enviarAServer(cliente, TECLA_IZQUIERDA_LIBERADA);
 			teclaIzquierda = false;
 			break;
 		case SDLK_RIGHT:
+			sonic->enviarAServer(cliente, TECLA_DERECHA_LIBERADA);
 			teclaDerecha = false;
 			break;
 		case SDLK_a:
+			sonic->enviarAServer(cliente, TECLA_CORRER_LIBERADA);
 			teclaCorrer = false;
 			break;
 		default:

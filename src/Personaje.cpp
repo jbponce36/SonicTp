@@ -318,5 +318,22 @@ bool Personaje::bloqueaCamara(SDL_Rect *limites)
 	return ((posicionX <= limites->x) || (posicionX >= limites->x + limites->w));
 }
 
+std::string Personaje::intToString(int number)
+{
+  ostringstream oss;
+  oss<< number;
+  return oss.str();
+}
 
+void Personaje::enviarAServer(ConexCliente *cliente, std::string mensaje)
+{
+	mensaje += intToString(posicionX) + intToString(posicionY);
+
+	char* msj = new char[mensaje.length() + 2*sizeof(int) +1];
+	strcpy(msj, mensaje.c_str());
+	//cliente->enviar(msj, strlen(msj));
+	cout << msj << '\n';
+	delete[] msj;
+
+}
 

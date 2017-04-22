@@ -41,6 +41,8 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 
 			camara->agregarSonic(sonic);
 			camara->agregarSonic(&otroSonic);
+
+			ConexCliente cliente = ConexCliente();
 			////////////Fin prueba
 
 
@@ -48,7 +50,7 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 	while( !salir ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
-		administrarTeclas(&controlador, sonic);
+		administrarTeclas(&controlador, sonic, &cliente);
 		/////Mandarle al server las teclas que movio...???
 		/////El server calcula el movimiento y las animaciones igual que aca
 		/////Sabe donde esta y que animacion tiene cada sonic.
@@ -71,7 +73,7 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 	this->log->addLogMessage("[CONTROLAR JUEGO] Terminado. \n", 2);
 }
 
-void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic)
+void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, ConexCliente *cliente)
 {
 	SDL_Event e;
 
@@ -82,7 +84,7 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 		{
 			salir = true;
 		}
-		controlador->procesarEvento(e, sonic); //Setea todas las teclas presionadas o liberadas
+		controlador->procesarEvento(e, sonic, cliente); //Setea todas las teclas presionadas o liberadas
 	}
 	controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
 

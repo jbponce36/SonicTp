@@ -4,9 +4,11 @@
 #include<iostream>
 #include<stdio.h>
 #include<stdlib.h>
+#include <string>
 #include <SDL2/SDL_image.h>
 #include "Textura.h"
 #include "Animacion.h"
+#include "ConexCliente.h"
 
 #define GRAVEDAD 9
 
@@ -48,7 +50,7 @@ class Personaje
 		void animarSalto();
 		void cargarSpriteSonic();
 		void dejarDeEstarQuieto();
-
+		std::string intToString(int number);
 
 
     public:
@@ -77,7 +79,7 @@ class Personaje
 
 		bool bloqueaCamara(SDL_Rect *limites);
 
-
+		void enviarAServer(ConexCliente *cliente, std::string mensaje);
 
 };
 

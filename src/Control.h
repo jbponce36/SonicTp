@@ -25,7 +25,7 @@ public:
 	virtual ~Control();
 
 private:
-	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic);
+	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, ConexCliente *cliente);
 	void moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic, Camara* camara);
 	void actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic, std::vector<Personaje*> sonics);
 
