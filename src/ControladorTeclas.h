@@ -9,6 +9,8 @@
 #define CONTROLADORTECLAS_H_
 
 #include "Personaje.h"
+#include "Definiciones.h"
+#include "ConexCliente.h"
 
 class ControladorTeclas {
 
@@ -22,7 +24,7 @@ private:
 public:
 	ControladorTeclas();
 	virtual ~ControladorTeclas();
-	void procesarEvento(SDL_Event &e,Personaje *sonic);
+	void procesarEvento(SDL_Event &e,Personaje *sonic, ConexCliente *cliente);
 	void administrarTeclas(Personaje *sonic);
 
 private:

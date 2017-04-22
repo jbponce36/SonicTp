@@ -30,11 +30,13 @@ Personaje::Personaje(int velocidad,SDL_Renderer *render,int altoEscenario, Logge
     cargarSpriteSonic();
 
     this->log = log;
-
 }
 
-void Personaje::mover(int maximoAncho,int maximoAlto, float tiempoDeJuego )
+void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 {
+	int maximoAlto = limites->h;
+	int maximoAncho = limites->w;
+
 	/*---Limite en el suelo. Luego borrarlo!---*/
 	maximoAlto -= (maximoAlto/5);
 	/*-----------------------------------------*/
@@ -43,13 +45,14 @@ void Personaje::mover(int maximoAncho,int maximoAlto, float tiempoDeJuego )
     this->posicionX += this->velocidadX * tiempoDeJuego;
 
     //se fija si se paso los limites de la pantalla
-    if( posicionX < 0 )
+    if( posicionX < limites->x )
     {
-        posicionX = 0;
+    	velocidadX = 0;
+        posicionX = limites->x;
     }
-    else if (posicionX + this->personajeAncho >  maximoAncho){
-		//this->posicionX -= velocidadX;
-		this->posicionX = maximoAncho-this->personajeAncho;
+    else if (posicionX + this->personajeAncho - limites->x >  maximoAncho){
+    	velocidadX = 0;
+		this->posicionX = maximoAncho-this->personajeAncho+limites->x;
 	}
 
     //Si esta saltando lo afecta la gravedad
@@ -65,19 +68,10 @@ void Personaje::mover(int maximoAncho,int maximoAlto, float tiempoDeJuego )
 		posicionY = 0;
 	}
 	else if (posicionY + this->personajeAlto >  maximoAlto){
-		//this->posicionX -= velocidadX;
 		this->posicionY = maximoAlto-this->personajeAlto;
 		saltando = false; //Al tocar el piso deja de saltar
 		parar();
 	}
-    /*posicionY += velocidadY;
-
-    //se fija si se paso los limites
-    if( ( posicionY < 0 ) || ( posicionY + this->personajeAlto > maximoAlto ) )
-    {
-
-        this->posicionY -= velocidadY;
-    }*/
 
 	//cout << "Mover: " << velocidadX << " " << velocidadY << '\n';
 
@@ -135,11 +129,16 @@ void Personaje::render( int camX, int camY){
 	animacionActual->dibujar(cuadroDeVentana);
 }
 
+void Personaje::posicionarseEn(int x, int y)
+{
+	this->posicionX = x;
+	this->posicionY = y;
+}
+
 int Personaje::getPosicionX()
 {
 	return this->posicionX;
 }
-
 int Personaje::getPosicionY()
 {
 	return this->posicionY;
@@ -224,8 +223,7 @@ void Personaje::irIzquierda()
 {
 	dejarDeEstarQuieto();
 
-	if ((corriendo) && (!saltando)){
-		//this->velocidadX = -2*this->personajeVelocidad;
+	if (corriendo){
 		this->velocidadX -= 2*personajeAceleracion;
 		if(velocidadX < (-2*personajeVelocidad))
 		{
@@ -234,7 +232,6 @@ void Personaje::irIzquierda()
 		animacionActual = &animacionCorrerIzq;
 	}
 	else{
-		//this->velocidadX = -this->personajeVelocidad;
 		this->velocidadX -= personajeAceleracion;
 		if(velocidadX < (-personajeVelocidad))
 		{
@@ -252,8 +249,7 @@ void Personaje::irDerecha()
 {
 	dejarDeEstarQuieto();
 
-	if ((corriendo) && (!saltando)){
-		//this->velocidadX = 2*this->personajeVelocidad;
+	if (corriendo){
 		this->velocidadX += 2*personajeAceleracion;
 		if(velocidadX > 2*personajeVelocidad)
 		{
@@ -262,7 +258,6 @@ void Personaje::irDerecha()
 		animacionActual = &animacionCorrerDer;
 	}
 	else{
-		//this->velocidadX = this->personajeVelocidad;
 		this->velocidadX += personajeAceleracion;
 		if(velocidadX > personajeVelocidad)
 		{
@@ -317,3 +312,28 @@ void Personaje::parar()
 		animacionActual->comenzar();
 	}
 }
+
+bool Personaje::bloqueaCamara(SDL_Rect *limites)
+{
+	return ((posicionX <= limites->x) || (posicionX >= limites->x + limites->w));
+}
+
+std::string Personaje::intToString(int number)
+{
+  ostringstream oss;
+  oss<< number;
+  return oss.str();
+}
+
+void Personaje::enviarAServer(ConexCliente *cliente, std::string mensaje)
+{
+	mensaje += intToString(posicionX) + intToString(posicionY);
+
+	char* msj = new char[mensaje.length() +1];
+	strcpy(msj, mensaje.c_str());
+	//cliente->enviar(msj, strlen(msj));
+	//cout << msj << '\n';
+	delete[] msj;
+
+}
+

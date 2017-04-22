@@ -16,7 +16,8 @@
 #include "jpruebas.h"
 #include "Personaje.h"
 #include "Control.h"
-
+#include "Juego.h"
+#include "Hilo.h"
 
 using namespace std;
 
@@ -32,40 +33,31 @@ int getNivelLogger(int argc, char *argv[]){
 	return atoi(nivel);
 }
 
+void *iniciarJuegoCliente(void *datos)
+{
+	Juego *juego = (Juego*)datos;
+	juego->iniciarJuego();
+	return NULL;
+}
+
 int main(int argc, char *argv[]) {
 
-
 	char *archivoLog=(char*)"configuracion/log.txt";
-	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "PRINCIPAL");
-	log->iniciarLog("INICAR LOGGER");
+	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv), "PRINCIPAL");
+	log->iniciarLog("INICIAR LOGGER");
 
-	//Se lee del json el nombre de la ventana
-	parseadorJson* parseador = new parseadorJson(log);
-
-	char *file=(char*)"configuracion/configuracion.json";
-    jescenarioJuego* jparseador = parseador->parsearArchivo(file);
-
-
-    log->setModulo("PRINCIPAL");
-	log->addLogMessage("Se empieza a cargar la vista.",1);
-	log->setLevel(getNivelLogger(argc, argv));
-
-	int cant = parseador->CargarCantClientes();
-	cout<<cant<<endl;
-
-/*<-------Comentar esto si usan este main------->*/
-    VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
-
-	Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
-    Control *control = new Control(0, 0, log);
-    control->ControlarJuego(vista,sonic);
 /*<--------------------------------------------->*/
+	ConexCliente cliente = ConexCliente(log);
 
-    log->setModulo("PRINCIPAL");
-	log->addLogMessage("Se termina de cargar la vista.",1);
-	vista->cerrar();
+	/*<------Aca van las cosas de conectar y eso------*/
 
-	log->iniciarLog("TERMINAR LOGGER");
+	Juego juego = Juego(&cliente, log);
+	juego.iniciarJuego();
 
+	//Creo que asi se llamaria desde un hilo llamando a la funcion de arriba del main
+	//Hilo hilo = Hilo();
+	//hilo.Create((void *)iniciarJuegoCliente, (void*)&juego);
+
+	delete log;
 	return 0;
 }
