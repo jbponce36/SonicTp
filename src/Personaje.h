@@ -4,9 +4,11 @@
 #include<iostream>
 #include<stdio.h>
 #include<stdlib.h>
+#include <string>
 #include <SDL2/SDL_image.h>
 #include "Textura.h"
 #include "Animacion.h"
+#include "ConexCliente.h"
 
 #define GRAVEDAD 9
 
@@ -24,7 +26,6 @@ class Personaje
 		int personajeVelocidad;
 		int personajeAceleracion;
 		int posicionX, posicionY;
-		//velocidad de X e Y
 		int velocidadX, velocidadY;
 
 		Animacion animacionQuietoDer;
@@ -49,22 +50,23 @@ class Personaje
 		void animarSalto();
 		void cargarSpriteSonic();
 		void dejarDeEstarQuieto();
+		std::string intToString(int number);
+
 
     public:
 
 		Personaje(int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log);
+		virtual ~Personaje();
 
-		//mueve al personaje;
-		void mover(int maximoAncho,int maximoAlto, float tiempoDeJuego);
+		void mover(SDL_Rect *limites, float tiempoDeJuego);
 
-		//pinta el personaje en la pantalla
 		void render(int camX, int camY);
 
+		void posicionarseEn(int x, int y);
 		int getPosicionX();
 		int getPosicionY();
 		int getAlto();
 		int getAncho();
-		virtual ~Personaje();
 
 		void saltar();
 		void dejarDeSaltar();
@@ -74,6 +76,11 @@ class Personaje
 		void irIzquierda();
 		void irDerecha();
 		void parar();
+
+		bool bloqueaCamara(SDL_Rect *limites);
+
+		void enviarAServer(ConexCliente *cliente, std::string mensaje);
+
 };
 
 #endif

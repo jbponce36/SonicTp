@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
     VistaSDL *vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log);
 
 	Personaje *sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
-    Control *control = new Control(0, 0, log);
+	Control *control = new Control(0, 0, log);
     control->ControlarJuego(vista,sonic);
 /*<--------------------------------------------->*/
 

@@ -20,11 +20,12 @@ int getNivelLogger(int argc, char *argv[]){
 
 	char *nivelLog = (char*)"2";
 	if(argc>1){
-		nivelLog = argv[1];
+		nivelLog = argv[2];
 	}
 	char *nivel= (char*)nivelLog;
 	return atoi(nivel);
 }
+
 //void *mainCliente(void *Pcliente);
 int main(int argc, char *argv[]) {
 	char *archivoLog=(char*)"configuracion/log.txt";

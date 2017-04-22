@@ -11,19 +11,31 @@ int getNivelLogger(int argc, char *argv[]){
 	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
 
 	char *nivelLog = (char*)"2";
-	if(argc>1){
-		nivelLog = argv[1];
+	if(argc>2){
+		nivelLog = argv[2];
 	}
 
 	char *nivel= (char*)nivelLog;
 	return atoi(nivel);
 }
 
+char* getJson(int argc, char *argv[]){
+	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
+
+	char *clientConfig = (char*)"client.json";
+	if(argc>2){
+		clientConfig = argv[1];
+	}
+
+	return clientConfig;
+}
+
 int main(int argc, char *argv[]) {
 
-
+	char *clientConfig = getJson(argc, argv);
 	/*char *archivoLog=(char*)"configuracion/log.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "CLIENTE");
+	log->addLogMessage(clientConfig, 1);
 
 	Sockets *conexser = new Sockets(log);
 	ConexCliente *conexcliente = new ConexCliente(log);
