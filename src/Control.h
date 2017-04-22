@@ -20,7 +20,7 @@ public:
 	Control(int altura, int anchura, Logger *log);
 	int getPosicionInicialX();
 	int getPosicionInicialY();
-	void ControlarJuego(VistaSDL *vista, Personaje *sonic);
+	void ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, ConexCliente *cliente);
 
 	virtual ~Control();
 

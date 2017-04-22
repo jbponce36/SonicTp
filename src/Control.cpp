@@ -15,7 +15,7 @@ int Control::getPosicionInicialX(){
 int Control::getPosicionInicialY(){
 	return this->posicionInicialY;
 }
-void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
+void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, ConexCliente *cliente){
 	SDL_Rect imagenMostrar;
 
 	this->log->addLogMessage("[CONTROLAR JUEGO] Iniciado.", 2);
@@ -42,7 +42,6 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 			camara->agregarSonic(sonic);
 			camara->agregarSonic(&otroSonic);
 
-			ConexCliente cliente = ConexCliente();
 			////////////Fin prueba
 
 
@@ -50,7 +49,7 @@ void Control::ControlarJuego(VistaSDL *vista, Personaje *sonic){
 	while( !salir ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
-		administrarTeclas(&controlador, sonic, &cliente);
+		administrarTeclas(&controlador, sonic, cliente);
 		/////Mandarle al server las teclas que movio...???
 		/////El server calcula el movimiento y las animaciones igual que aca
 		/////Sabe donde esta y que animacion tiene cada sonic.
@@ -98,15 +97,15 @@ void Control::moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *
 	float tiempoDeFotografia = tiempoDeJuego / 1000.f;
 	//........
 
-	sonic->mover(camara->devolverCamara(),tiempoDeFotografia);
+	sonic->mover(camara->devolverCamara(),tiempoDeFotografia); //Se mueve segun los limites de la camara
 
 	tiempoDeJuego = SDL_GetTicks();
+
+	camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario()); //Mueve la camara segun los sonics
 }
 
 void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic, std::vector<Personaje*> sonics)
 {
-	camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
-
 	for(int contador = 0; contador < vista->cantidadCapasCargadas(); contador++)
 	{
 		imagenMostrar->h = vista->obtenerTextura(contador)->getAltoTextura();

@@ -329,10 +329,10 @@ void Personaje::enviarAServer(ConexCliente *cliente, std::string mensaje)
 {
 	mensaje += intToString(posicionX) + intToString(posicionY);
 
-	char* msj = new char[mensaje.length() + 2*sizeof(int) +1];
+	char* msj = new char[mensaje.length() +1];
 	strcpy(msj, mensaje.c_str());
 	//cliente->enviar(msj, strlen(msj));
-	cout << msj << '\n';
+	//cout << msj << '\n';
 	delete[] msj;
 
 }

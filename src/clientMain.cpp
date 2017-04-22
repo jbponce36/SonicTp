@@ -32,7 +32,7 @@ char* getJson(int argc, char *argv[]){
 
 int main(int argc, char *argv[]) {
 
-	char *clientConfig = getJson(argc, argv);
+	//char *clientConfig = getJson(argc, argv);
 	/*char *archivoLog=(char*)"configuracion/log.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "CLIENTE");
 	log->addLogMessage(clientConfig, 1);

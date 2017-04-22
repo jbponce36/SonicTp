@@ -50,8 +50,9 @@ private:
 	vector <Textura*> capasFondo;
     ConstructorEntidades *constructorEntidades;
     Logger *log;
+    bool oculta;
 public:
-    VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion, jescenario *jescenario, Logger *logger);
+    VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion, jescenario *jescenario, Logger *logger, bool oculta);
     void cargarImagen();
     int obtenerAltoVentana();
     void cargarCapas(jescenario *escenario);

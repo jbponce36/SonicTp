@@ -15,7 +15,7 @@ using namespace std;
 #include "ConstructorEntidades.h"
 
 
-VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario *jescenario, Logger *logger)
+VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario *jescenario, Logger *logger, bool oculta)
 {
 	this->renderizador = NULL;
 	this->ventana = NULL;
@@ -27,6 +27,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->anchoVentana= jventana->getancho();
 	this->log = logger;
 	this->log->setModulo("VISTA SDL");
+	this->oculta = oculta;
 	//validamos escenario si tiene numeros negativos o excesivos ponemos valores por defecto
 	this->validacionesVentana();
 	this->validacionesEscenario(jescenario);
@@ -35,6 +36,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->constructorEntidades = new ConstructorEntidades(logger);
 	constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
 	this->cargarCapas(jescenario);
+
 
 }
 
@@ -106,7 +108,15 @@ void VistaSDL::crearVentanaYrenderizador()
 	}
 		else 
 		{	//Crea ventana
-			this->ventana = SDL_CreateWindow( "Juego Sonic", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->anchoVentana, this->altoVentana, SDL_WINDOW_SHOWN );
+			if (oculta)
+			{
+				this->ventana = SDL_CreateWindow( "Juego Sonic", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->anchoVentana, this->altoVentana, SDL_WINDOW_HIDDEN);
+			}
+			else
+			{
+				this->ventana = SDL_CreateWindow( "Juego Sonic", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->anchoVentana, this->altoVentana, SDL_WINDOW_SHOWN);
+			}
+
 			if( this->ventana == NULL )
 			{
 				error = SDL_GetError();
