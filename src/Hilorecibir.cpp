@@ -17,7 +17,7 @@ Hilorecibir::~Hilorecibir() {
 	// TODO Auto-generated destructor stub
 }
 
-void Hilorecibir::IniciarHilo(/*struct Serparametros *parametros*/){
+void Hilorecibir::IniciarHilo(){
 
 	Hilo *hilos = new Hilo(/*log*/);
 
@@ -27,10 +27,26 @@ void Hilorecibir::IniciarHilo(/*struct Serparametros *parametros*/){
 void *Hilorecibir::serverRecibir(void *args){
 	char buffer[40];
 	Serparametros *parametros = (Serparametros*) args;
-	//hr->server->recibir(Pcliente->getClienteSocket(),buffer,sizeof(buffer));
+	int result = 1;
 	parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
-	cout<<"server recibio: "<<endl;
-	cout<<buffer<<endl;
+
+	while (result>0){
+			result = parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
+
+			if (result>0){
+				cout<<"server recibio: "<<endl;
+				cout<<buffer<<endl;
+			}
+
+			if (result==0){
+				printf("El cliente se desconecto satisfactoriamente. \n");
+			}
+
+			if (result==-1){
+				printf("El cliente se desconecto satisfactoriamente. \n");
+			}
+	}
 
 }
+
 } /* namespace std */

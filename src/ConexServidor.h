@@ -29,6 +29,7 @@ public:
     int cerrar();
     int getCantclientes();
     void setCantclientes(int);
+    bool finalizar();
 
 
 private:
@@ -36,6 +37,8 @@ private:
 	//ConexCliente cliente; // luego va a ser una lista
 	string hostname;
 	int cantclientes;
+	int cantMaximaClientes;
+	bool finalizarConexion;
 
 };
 

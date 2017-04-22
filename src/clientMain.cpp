@@ -66,6 +66,9 @@ int main(int argc, char *argv[]) {
 	char buffer2[40]="0";
 	cliente->recibir(buffer2,sizeof(buffer2));
 	cout<<"cliente recibio: "<<buffer2<<endl;
+
+	sleep(20);
+
 	cliente->cerrar();
 
 	return 0;
