@@ -30,8 +30,8 @@
     src/jescenario.cpp src/jescenarioJuego.cpp src/jpruebas.cpp src/jrectangulo.cpp src/jventana.cpp 
     src/Logger.cpp src/Mensaje.cpp src/parseadorJson.cpp src/jcuadrado.cpp src/Rectangulo.cpp src/Personaje.cpp 
     src/Textura.cpp src/VistaSDL.cpp src/ConexServidor.cpp src/ConexCliente.cpp src/Sockets.cpp 
-    src/jservidor.cpp src/clientMain.cpp src/Hilo.cpp src/Animacion.cpp src/ControladorTeclas.cpp -lSDL2 -lSDL2_image 
-    -ljansson -pthread -o client
+    src/jservidor.cpp src/clientMain.cpp src/Hilo.cpp src/Animacion.cpp src/ControladorTeclas.cpp 
+     src/Hiloenviar.cpp src/Hilorecibir.cpp src/parseadorJsonCli.cpp src/ControladorTeclas.cpp src/Juego.cpp    src/parseadorJsonSer.cpp src/parseadorJsonCli.cpp -lSDL2 -lSDL2_image -ljansson -pthread -o client
      
 # Ejecución
     ./server 1
