@@ -21,8 +21,8 @@
     src/jescenario.cpp src/jescenarioJuego.cpp src/jpruebas.cpp src/jrectangulo.cpp src/jventana.cpp 
     src/Logger.cpp src/Mensaje.cpp src/parseadorJson.cpp src/jcuadrado.cpp src/Rectangulo.cpp src/Personaje.cpp 
     src/Textura.cpp src/VistaSDL.cpp src/ConexServidor.cpp src/ConexCliente.cpp src/Sockets.cpp 
-    src/jservidor.cpp src/serverMain.cpp src/Hilo.cpp src/Animacion.cpp src/ControladorTeclas.cpp -lSDL2 -lSDL2_image 
-    -ljansson -pthread -o server
+    src/jservidor.cpp src/serverMain.cpp src/Hilo.cpp src/Animacion.cpp src/ControladorTeclas.cpp src/Hiloenviar.cpp             src/Hilorecibir.cpp src/parseadorJsonCli.cpp src/Animacion.cpp src/ControladorTeclas.cpp src/Juego.cpp 
+    src/parseadorJsonSer.cpp  src/serverMain.cpp -lSDL2 lSDL2_image -ljansson -pthread -o server
     
     cliente:
     g++ src/capas.cpp src/Circulo.cpp src/ConstructorEntidades.cpp src/Control.cpp src/Camara.cpp 
