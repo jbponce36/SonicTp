@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
 	cliente->recibir(buffer2,sizeof(buffer2));
 	cout<<"cliente recibio: "<<buffer2<<endl;
 
-	sleep(20);
+	//sleep(20);
 
 	cliente->cerrar();
 

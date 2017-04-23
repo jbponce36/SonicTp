@@ -17,12 +17,21 @@ Hiloenviar::~Hiloenviar() {
 	// TODO Auto-generated destructor stub
 }
 
+Hilo Hiloenviar::gethilo(){
+	return this->h;
+}
+
+void Hiloenviar::setH(Hilo hil){
+	this->h = hil;
+}
+
 void Hiloenviar::IniciarHilo(/*struct parametrosEnviar *parametros*/){
 
 	Hilo *hilos = new Hilo(/*log*/);
 
 	hilos->Create((void *)Hiloenviar::serverEnviar ,  (void *)&parametros);
 
+	this->setH(*hilos);
 }
 void *Hiloenviar::serverEnviar(void *args){
 	char buffer[40]="mequiero";

@@ -29,7 +29,13 @@ public:
 		int skt;
 	};
 	SerParametros parametros;
+
+	Hilo gethilo();
+
+	void setH(Hilo);
+
 private:
+	Hilo h;
 };
 
 }

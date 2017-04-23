@@ -68,7 +68,7 @@ bool ConexCliente::crear(){
         if(conectado < 0){
             return false;
         }
-        this->puerto = puerto;
+       // this->puerto = puerto;
         return true;
     }
 
@@ -102,8 +102,11 @@ bool ConexCliente::crear(){
     	return bytes;
     }
     int ConexCliente::cerrar(){
-    	int status = shutdown(this->getFd(), SHUT_RDWR);
-    	status = close(this->getFd());
+    	//int status = shutdown(this->getFd(), SHUT_RDWR);
+    	//status = close(this->getFd());
+    	//return status;
+    	int status;
+    	status = close(this->fd);
     	return status;
     }
 

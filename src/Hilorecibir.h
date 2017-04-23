@@ -24,11 +24,19 @@ public:
 	static void * serverRecibir(void *args);
 	struct Serparametros{
 		ConexServidor *server;
-		//list<ProcesadorCliente>pcliente;
 		int skt;
-	 };
+	};
 	Serparametros parametros;
+
+
+	Hilo gethilo();
+
+    void setH(Hilo);
+
+
 private:
+	Hilo h;
+
 };
 
 } /* namespace std */

@@ -37,12 +37,13 @@ int main(int argc, char *argv[]) {
 	//jsonSer->parsearArchivo(server->cargarNombreArchivo());
 	server->crear();
 	server->enlazar(8080);
-	server->escuchar(2);
+	server->escuchar(1);
 
 	list<Hilorecibir> hrRecibir;
 	list<Hiloenviar> hrEnviar;
-	//list<Hilo>::iterator pos;
-	//list<Hilo>::iterator pos;
+	list<Hilorecibir>::iterator posrecibir;
+	list<Hiloenviar>::iterator posenviar;
+
 	while(!server->finalizar()){
 	//while(1){
 		int skt = server->aceptarcliente();
@@ -66,18 +67,16 @@ int main(int argc, char *argv[]) {
 		}
 
     }
-   //parametros.pcliente = pc;
-	//for(pos = hilolista.begin(); pos!=hilolista.end(); pos++){
-	//	(*pos).Join();
-	//}
 
-	//close(skt);
+	for(posrecibir = hrRecibir.begin(); posrecibir!=hrRecibir.end(); posrecibir++){
+		(*posrecibir).gethilo().Join();
+	}
+
+	for(posenviar = hrEnviar.begin(); posenviar!=hrEnviar.end(); posenviar++){
+		(*posenviar).gethilo().Join();
+
+     }
+
 	server->cerrar();
 	return 0;
 }
-/*void *mainClienteReibir(void *Pcliente){
- conexCliente *cliente = (conexCliente*) Pcliente;
- char buffer[12];
-
-  server->recibir(cliente->getClienteSocket(),buffer,12);
-}*/
