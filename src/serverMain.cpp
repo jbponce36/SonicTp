@@ -26,7 +26,7 @@ int getNivelLogger(int argc, char *argv[]){
 	return atoi(nivel);
 }
 
-//void *mainCliente(void *Pcliente);
+
 int main(int argc, char *argv[]) {
 	char *archivoLog=(char*)"configuracion/log.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "SERVER");
@@ -37,14 +37,14 @@ int main(int argc, char *argv[]) {
 	//jsonSer->parsearArchivo(server->cargarNombreArchivo());
 	server->crear();
 	server->enlazar(8080);
-	server->escuchar(1);
+	server->escuchar(2);
 
 	list<Hilorecibir> hrRecibir;
 	list<Hiloenviar> hrEnviar;
 	list<Hilorecibir>::iterator posrecibir;
 	list<Hiloenviar>::iterator posenviar;
 
-	while(!server->finalizar()){
+	while(server->noSeConectaronTodos()){
 	//while(1){
 		int skt = server->aceptarcliente();
 
@@ -65,7 +65,33 @@ int main(int argc, char *argv[]) {
 			hrEnviar.push_back(*hre);
 
 		}
+    }
 
+	//Empieza la partida
+	printf("Empieza la partinda \n");
+	printf("Habria que enviarle a todos los clientes el mensaje empece la partida \n");
+	server->comenzarPartida();
+
+	while(!server->finalizar()){
+	//while(1){
+		int skt = server->aceptarcliente();
+
+		if(skt < 0) {
+		  cout << "Error on accept"<<endl;
+		}
+		else {
+			Hilorecibir *hr = new Hilorecibir();
+			hr->parametros.server = server;
+			hr->parametros.skt = skt;
+			hr->IniciarHilo();
+			hrRecibir.push_back(*hr);
+
+			Hiloenviar *hre = new Hiloenviar();
+			hre->parametros.server = server;
+			hre->parametros.skt = skt;
+			hre->IniciarHilo();
+			hrEnviar.push_back(*hre);
+		}
     }
 
 	for(posrecibir = hrRecibir.begin(); posrecibir!=hrRecibir.end(); posrecibir++){

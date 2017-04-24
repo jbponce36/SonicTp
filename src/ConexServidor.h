@@ -9,6 +9,7 @@
 #define CONEXSERVIDOR_H_
 
 #include "ConexCliente.h"
+#include <pthread.h>
 
 namespace std {
 
@@ -30,7 +31,11 @@ public:
     int getCantclientes();
     void setCantclientes(int);
     bool finalizar();
+    bool noSeConectaronTodos();
+    void comenzarPartida();
 
+	bool getFinalizarConexion();
+	void setFinalizarConexion(bool);
 
 private:
 	int sock_recep;
@@ -39,7 +44,8 @@ private:
 	int cantclientes;
 	int cantMaximaClientes;
 	bool finalizarConexion;
-
+	bool partidaComenzada;
+	pthread_mutex_t mutex;
 };
 
 } /* namespace std */

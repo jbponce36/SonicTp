@@ -19,9 +19,6 @@ HiloConexion::~HiloConexion() {
 }
 
 void HiloConexion::HiloCantidadClientes(int Cant){
-//	Hilo *hilos = new Hilo(/*log*/);
-
-	//	hilos->Create((void *)Hilorecibir::serverRecibir ,  (void *)&parametros);
 
 	Hilo *hilos = new Hilo();
 	hilos->Create((void *)HiloConexion::serverCantidad,(void *)Cant);

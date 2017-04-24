@@ -29,13 +29,13 @@ bool ConexCliente::crear(){
 }
     ConexCliente::ConexCliente()
     {
-    	setFd(1);
+    	//setFd(1);
     }
 
     ConexCliente::ConexCliente(Logger *log)
     {
-    	setFd(1);
-    	setLog(log);
+    	//setFd(1);
+    	//setLog(log);
     }
 
     ConexCliente::~ConexCliente()
@@ -65,10 +65,11 @@ bool ConexCliente::crear(){
         server_addr.sin_addr.s_addr = inet_addr(hostname);
         server_sock_size = sizeof (server_addr);
         int conectado = connect(this->fd, (struct sockaddr*)(&server_addr), server_sock_size);
+
         if(conectado < 0){
             return false;
         }
-       // this->puerto = puerto;
+        this->puerto = puerto;
         return true;
     }
 
@@ -79,7 +80,7 @@ bool ConexCliente::crear(){
         bool is_the_socket_valid = true;
         //this->log->addLogMessage("[ENVIAR] Iniciado", 2);
         while(sent < size && is_the_socket_valid){
-            status = send(this->fd, &buf[sent], size - sent - 1, MSG_NOSIGNAL);
+        int    status = send(this->fd, buf, size, MSG_NOSIGNAL);
             if(status <= 0){
                 is_the_socket_valid = false;
             }else{
@@ -102,12 +103,10 @@ bool ConexCliente::crear(){
     	return bytes;
     }
     int ConexCliente::cerrar(){
-    	//int status = shutdown(this->getFd(), SHUT_RDWR);
-    	//status = close(this->getFd());
-    	//return status;
-    	int status;
-    	status = close(this->fd);
+    	int status = shutdown(this->getFd(), SHUT_RDWR);
+    	status = close(this->getFd());
     	return status;
+
     }
 
     string ConexCliente::intToString(int number)

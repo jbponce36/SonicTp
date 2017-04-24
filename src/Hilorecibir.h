@@ -36,7 +36,6 @@ public:
 
 private:
 	Hilo h;
-
 };
 
 } /* namespace std */
