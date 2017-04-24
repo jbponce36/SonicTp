@@ -69,6 +69,7 @@ ConexCliente::~ConexCliente()
         if(conectado < 0){
             return -1;
         }
+
         this->puerto = puerto;
         this->hostname = hostname;
         return conectado;
@@ -116,8 +117,11 @@ ConexCliente::~ConexCliente()
     	return bytes;
     }
     int ConexCliente::cerrar(){
-    	int status = shutdown(this->getFd(), SHUT_RDWR);
-    	status = close(this->getFd());
+    	//int status = shutdown(this->getFd(), SHUT_RDWR);
+    	//status = close(this->getFd());
+    	//return status;
+    	int status;
+    	status = close(this->fd);
     	return status;
     }
 

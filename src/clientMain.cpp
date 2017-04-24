@@ -107,6 +107,7 @@ int main(int argc, char *argv[]) {
 	cout<<"cliente envio: "<<buffer<<cliente->toString()<<endl;
 	char buffer2[40]="0";
 	cliente->recibir(buffer2,sizeof(buffer2));
+
 	cout<<"cliente recibio: "<<buffer2<<endl;*/
 
 	cliente->cerrar();

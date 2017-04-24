@@ -76,29 +76,29 @@ bool ConexServidor::escuchar(int cantidadMaxima)
 	return true;
 }
 
-    int ConexServidor::aceptarcliente()
-    {
-        int longitud_dircliente;
-        sockaddr_in direccionclient;
-        longitud_dircliente = sizeof (struct sockaddr_in);
-        int fdCliente = accept(this->sock_recep, (struct sockaddr*)(&direccionclient), (socklen_t*)(&longitud_dircliente));
-        if(fdCliente == -1){
-            printf("Estaba esperando conexiones y se deconecto el servidor  \n");
-            //Mostrar en el log la variable errno
-            return -1;
-        }
-        if(this->cantclientes == this->cantMaximaClientes){
-            printf("Se ha superado la cantidad maxima de conexiones  \n");
-            const char *mensaje = "Conexion rechazada. Numero maximo de conexiones establecidad";
-            send(fdCliente, mensaje, strlen(mensaje), MSG_DONTWAIT);
-            close(fdCliente);
-            return -1;
-        }
-        this->cantclientes = this->cantclientes + 1;
-        //printf("Cliente aceptado \n");
-        printf("Cantidad de clientes conectados:%d \n", this->cantclientes);
-        return fdCliente;
-    }
+int ConexServidor::aceptarcliente()
+{
+	int longitud_dircliente;
+	sockaddr_in direccionclient;
+	longitud_dircliente = sizeof (struct sockaddr_in);
+	int fdCliente = accept(this->sock_recep, (struct sockaddr*)(&direccionclient), (socklen_t*)(&longitud_dircliente));
+	if(fdCliente == -1){
+		printf("Estaba esperando conexiones y se deconecto el servidor  \n");
+		//Mostrar en el log la variable errno
+		return -1;
+	}
+	if(this->cantclientes == this->cantMaximaClientes){
+		printf("Se ha superado la cantidad maxima de conexiones  \n");
+		const char *mensaje = "Conexion rechazada. Numero maximo de conexiones establecidad";
+		send(fdCliente, mensaje, strlen(mensaje), MSG_DONTWAIT);
+		close(fdCliente);
+		return -1;
+	}
+	this->cantclientes = this->cantclientes + 1;
+	//printf("Cliente aceptado \n");
+	printf("Cantidad de clientes conectados:%d \n", this->cantclientes);
+	return fdCliente;
+}
 
 int ConexServidor::getCantclientes()
 {
@@ -120,11 +120,14 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 		this->cantclientes = this->cantclientes - 1;
 		//	printf("Clientes desconectado \n");
 		//	printf("Cantidad de clientes conectados %d \n", this->cantclientes);
+
 		if(this->cantclientes == 0){
 			//	printf("Se desconectaron todos los clientes.  \n");
 			//	printf("El servidor se desconectara.  \n");
 			//	printf("Cantidad de clientes conectados %d \n", this->cantclientes);
 			//Aca iria un mutex cada vez que se accede a la variable finalizarConexios
+
+			//Aca iria un mutex cada vez que se accede a la variable finalizarConexion
 			this->finalizarConexion = true;
 			this->cerrar();
 		}
@@ -158,6 +161,7 @@ int ConexServidor::enviar(int socket, char *buf, int size)
 	return status;
 }
 
+
 int ConexServidor::cerrar()
 {
 	int status = shutdown(this->sock_recep, SHUT_RDWR);
@@ -184,6 +188,7 @@ void ConexServidor::setHostname(string hostname)
 {
 	this->hostname = hostname;
 }
+
 
 }
 /*void ConexServidor::aceptarClientes()
