@@ -26,6 +26,7 @@ public:
 	static void * serverEnviar(void *args);
 	struct SerParametros{
 		ConexServidor *server;
+		char *buffer;
 		int skt;
 	};
 	SerParametros parametros;

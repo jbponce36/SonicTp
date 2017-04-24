@@ -34,15 +34,10 @@ void *Hilorecibir::serverRecibir(void *args){
 			result = parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
 
 			if (result>0){
-				cout<<"server recibio: "<<endl;
-				cout<<buffer<<endl;
+				//cout<<"Server recibio: "<<buffer<< "en el "<< parametros->server->toString()<<endl;
 			}
 
-			if (result==0){
-				printf("El cliente se desconecto satisfactoriamente. \n");
-			}
-
-			if (result==-1){
+			if (result<=0){
 				printf("El cliente se desconecto satisfactoriamente. \n");
 			}
 	}

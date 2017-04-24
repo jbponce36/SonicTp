@@ -35,9 +35,10 @@ public:
 	virtual ~ConexCliente();
 	bool crear();
 	//bool ErroresCliente(int puerto);
-	bool conectar(const char* hostName, int puerto);
+	int conectar(const char* hostName, int puerto);
 	int recibir(char *buf, int size);
     int enviar(char *buf, int size);
+    int dibujarMenu();
     int cerrar();
     string intToString(int number);
     string toString();
@@ -50,7 +51,6 @@ public:
     void setHostname(string hostname);
     void setLog(Logger *log);
     void setPuerto(int puerto);
-
     int getServer();
     void setServer(int);
 
