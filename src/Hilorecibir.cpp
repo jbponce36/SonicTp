@@ -25,26 +25,31 @@ void Hilorecibir::IniciarHilo(){
 
 }
 void *Hilorecibir::serverRecibir(void *args){
-	char buffer[40];
-	Serparametros *parametros = (Serparametros*) args;
-	int result = 1;
-	parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
+	bool continuar = true;
+	while(continuar){
+		char buffer[40];
+		Serparametros *parametros = (Serparametros*) args;
+		int result = 1;
+		parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
 
-	while (result>0){
-			result = parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
+		while (result>0){
+				result = parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
 
-			if (result>0){
-				cout<<"server recibio: "<<endl;
-				cout<<buffer<<endl;
-			}
+				if (result>0){
+					cout<<"server recibio: "<<endl;
+					cout<<buffer<<endl;
+				}
 
-			if (result==0){
-				printf("El cliente se desconecto satisfactoriamente. \n");
-			}
+				if (result==0){
+					printf("El cliente se desconecto satisfactoriamente. \n");
+					continuar = false;
+				}
 
-			if (result==-1){
-				printf("El cliente se desconecto satisfactoriamente. \n");
-			}
+				if (result==-1){
+					printf("El cliente se desconecto satisfactoriamente. \n");
+					continuar = false;
+				}
+		}
 	}
 
 }

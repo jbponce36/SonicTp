@@ -8,6 +8,7 @@
 #ifndef CONEXSERVIDOR_H_
 #define CONEXSERVIDOR_H_
 
+#include <vector>
 #include "ConexCliente.h"
 
 namespace std {
@@ -34,7 +35,7 @@ public:
 
 private:
 	int sock_recep;
-	//ConexCliente cliente; // luego va a ser una lista
+	std::vector<ConexCliente*> clientes;
 	string hostname;
 	int cantclientes;
 	int cantMaximaClientes;

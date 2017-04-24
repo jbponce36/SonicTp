@@ -17,7 +17,7 @@ private:
 	bool salir;
 
 public:
-	Control(int altura, int anchura, Logger *log);
+	Control(int posicionX, int posicionY, Logger *log);
 	int getPosicionInicialX();
 	int getPosicionInicialY();
 	void ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, ConexCliente *cliente);

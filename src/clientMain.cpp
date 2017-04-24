@@ -4,6 +4,9 @@
 #include "ConexCliente.h"
 #include "Sockets.h"
 #include "parseadorJsonCli.h"
+#include "JuegoCliente.h"
+#include "Hilo.h"
+
 
 using namespace std;
 
@@ -30,7 +33,18 @@ char* getJson(int argc, char *argv[]){
 	return clientConfig;
 }
 
+void *iniciarJuegoCliente(void *datos)
+	{
+		JuegoCliente *juego = (JuegoCliente*)datos;
+		juego->iniciarJuegoCliente();
+		return NULL;
+	}
+
 int main(int argc, char *argv[]) {
+
+	char *archivoLog=(char*)"configuracion/log.txt";
+	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv), "PRINCIPAL");
+	log->iniciarLog("INICIAR LOGGER");
 
 	//char *clientConfig = getJson(argc, argv);
 	/*char *archivoLog=(char*)"configuracion/log.txt";
@@ -61,7 +75,7 @@ int main(int argc, char *argv[]) {
 	conexcliente->cerrar();
 	conexser->cerrar();*/
 
-	ConexCliente *cliente = new ConexCliente();
+	ConexCliente *cliente = new ConexCliente(log);
 	cliente->crear();
 	parseadorJsonCli *parseadorCliente = new parseadorJsonCli();
 	//parseadorCliente->parsearArchivo(cliente->cargarNombreArchivo());
@@ -72,14 +86,22 @@ int main(int argc, char *argv[]) {
 	}
 
 	char buffer[40]="mashambre";
-
 	cout<<"cliente envio: "<<buffer<<endl;
 	cliente->enviar(buffer,11);
+
 	char buffer2[40]="0";
 	cliente->recibir(buffer2,sizeof(buffer2));
 	cout<<"cliente recibio: "<<buffer2<<endl;
 
-	sleep(20);
+	/*------INICIA EL JUEGO DEL CLIENTE------*/
+	JuegoCliente juego = JuegoCliente(cliente, log);
+
+	Hilo hiloJuego = Hilo();
+	hiloJuego.Create((void *)iniciarJuegoCliente, (void*)&juego);
+
+	hiloJuego.Join();
+
+
 
 	cliente->cerrar();
 

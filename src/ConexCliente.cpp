@@ -79,7 +79,7 @@ bool ConexCliente::crear(){
         bool is_the_socket_valid = true;
         //this->log->addLogMessage("[ENVIAR] Iniciado", 2);
         while(sent < size && is_the_socket_valid){
-            status = send(this->fd, &buf[sent], size - sent - 1, MSG_NOSIGNAL);
+            status = send(this->fd, buf, size - sent - 1, MSG_NOSIGNAL);
             if(status <= 0){
                 is_the_socket_valid = false;
             }else{
