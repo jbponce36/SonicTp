@@ -30,7 +30,7 @@ int getNivelLogger(int argc, char *argv[]){
 int main(int argc, char *argv[]) {
 	char *archivoLog=(char*)"configuracion/log.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "SERVER");
-	log->iniciarLog("INICAR LOGGER");
+	log->iniciarLog("INICIAR LOGGER");
 
 	ConexServidor *server = new ConexServidor();
 	parseadorJsonSer *jsonSer = new parseadorJsonSer(log);
@@ -48,21 +48,24 @@ int main(int argc, char *argv[]) {
 	//while(1){
 		int skt = server->aceptarcliente();
 
-		if(skt < 0) {
+		if(skt <= 0) {
 		  cout << "Error on accept"<<endl;
 		}
 		else {
-			Hilorecibir *hr = new Hilorecibir();
-			hr->parametros.server = server;
-			hr->parametros.skt = skt;
-			hr->IniciarHilo();
-			hrRecibir.push_back(*hr);
+			Hilorecibir *hrecibir = new Hilorecibir();
+			hrecibir->parametros.server = server;
+			hrecibir->parametros.skt = skt;
+			hrecibir->IniciarHilo();
+			hrRecibir.push_back(*hrecibir);
 
-			Hiloenviar *hre = new Hiloenviar();
-			hre->parametros.server = server;
-			hre->parametros.skt = skt;
-			hre->IniciarHilo();
-			hrEnviar.push_back(*hre);
+			Hiloenviar *henviar = new Hiloenviar();
+			henviar->parametros.server = server;
+			henviar->parametros.skt = skt;
+			char *buffer=(char*)"me quiero, me quiero mucho mucho mucho ";
+			henviar->parametros.buffer = buffer;
+
+			henviar->IniciarHilo();
+			hrEnviar.push_back(*henviar);
 
 		}
     }

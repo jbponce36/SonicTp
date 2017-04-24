@@ -327,13 +327,19 @@ std::string Personaje::intToString(int number)
 
 void Personaje::enviarAServer(ConexCliente *cliente, std::string mensaje)
 {
-	mensaje += intToString(posicionX) + intToString(posicionY);
+	mensaje += "x" + intToString(posicionX) + "y" + intToString(posicionY);
 
 	char* msj = new char[mensaje.length() +1];
 	strcpy(msj, mensaje.c_str());
-	//cliente->enviar(msj, strlen(msj));
-	//cout << msj << '\n';
+	cliente->enviar(msj, strlen(msj));
+	cout << "Cliente envio: "<< msj << '\n';
 	delete[] msj;
 
 }
+
+
+
+//Quiero recibir mensajes del servidor
+//Quiero que el servidor reciba mensajes de todos los clientes e iterar sobre esos mensajes
+//O ni bien recibe un mensaje hacer algo?
 

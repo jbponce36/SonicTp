@@ -5,17 +5,24 @@
  *      Author: julieta
  */
 
-#include "Juego.h"
+#include "JuegoCliente.h"
 
-Juego::Juego() : vista(NULL), sonic(NULL), control(NULL), cliente(NULL), log(NULL){
+JuegoCliente::JuegoCliente() : vista(NULL), sonic(NULL), control(NULL), cliente(NULL), log(NULL){
 	//Las variables se setean al llamar a iniciarJuegoCliente desde el thread
 }
 
-Juego::Juego(ConexCliente *cliente, Logger *log) : vista(NULL), sonic(NULL), control(NULL), cliente(cliente), log(log){
+JuegoCliente::~JuegoCliente() {
+	delete vista;
+	delete sonic;
+	delete control;
+}
+
+JuegoCliente::JuegoCliente(ConexCliente *cliente, Logger *log)
+: vista(NULL), sonic(NULL), control(NULL), cliente(cliente), log(log){
 	//Vista, sonic y control se setean al llamar a iniciarJuegoCliente desde el thread
 }
 
-void Juego::inicializarJuego(std::jescenarioJuego *jparseador)
+void JuegoCliente::inicializarJuegoCliente(std::jescenarioJuego *jparseador)
 {
 	vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, false);
 
@@ -23,18 +30,12 @@ void Juego::inicializarJuego(std::jescenarioJuego *jparseador)
 	control = new Control(0, 0, log);
 }
 
-Juego::~Juego() {
-	delete vista;
-	delete sonic;
-	delete control;
-}
-
-void Juego::iniciarJuegoCliente()
+void JuegoCliente::iniciarJuegoControlCliente()
 {
 	control->ControlarJuegoCliente(vista, sonic, cliente);
 }
 
-void Juego::iniciarJuego()
+void JuegoCliente::iniciarJuegoCliente()
 {
 	//Se leen los datos del json
 	parseadorJson* parseador = new parseadorJson(log);
@@ -42,15 +43,14 @@ void Juego::iniciarJuego()
 	char *file=(char*)"configuracion/configuracion.json";
 	jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
-	log->setModulo("JUEGO");
+	log->setModulo("JUEGO_CLIENTE");
 	log->addLogMessage("Se inicia el juego.",1);
 
 	//Inicia el juego
-	inicializarJuego(jparseador); //Inicializa vista, sonic y control.
-	iniciarJuegoCliente();
+	inicializarJuegoCliente(jparseador); //Inicializa vista, sonic y control.
+	iniciarJuegoControlCliente();
 
-	log->setModulo("JUEGO");
+	log->setModulo("JUEGO_CLIENTE");
 	log->addLogMessage("Se termina el juego.",1);
-
-	log->iniciarLog("TERMINAR LOGGER");
 }
+

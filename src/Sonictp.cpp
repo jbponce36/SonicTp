@@ -16,8 +16,8 @@
 #include "jpruebas.h"
 #include "Personaje.h"
 #include "Control.h"
-#include "Juego.h"
 #include "Hilo.h"
+#include "JuegoCliente.h"
 
 using namespace std;
 
@@ -35,8 +35,8 @@ int getNivelLogger(int argc, char *argv[]){
 
 void *iniciarJuegoCliente(void *datos)
 {
-	Juego *juego = (Juego*)datos;
-	juego->iniciarJuego();
+	JuegoCliente *juego = (JuegoCliente*)datos;
+	juego->iniciarJuegoCliente();
 	return NULL;
 }
 
@@ -51,8 +51,8 @@ int main(int argc, char *argv[]) {
 
 	/*<------Aca van las cosas de conectar y eso------*/
 
-	Juego juego = Juego(&cliente, log);
-	juego.iniciarJuego();
+	JuegoCliente juego = JuegoCliente(&cliente, log);
+	juego.iniciarJuegoCliente();
 
 	//Creo que asi se llamaria desde un hilo llamando a la funcion de arriba del main
 	//Hilo hilo = Hilo();

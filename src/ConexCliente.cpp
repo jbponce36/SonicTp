@@ -27,10 +27,6 @@ bool ConexCliente::crear(){
 	}
 	return true;
 }
-    ConexCliente::ConexCliente()
-    {
-    	//setFd(1);
-    }
 
     ConexCliente::ConexCliente(Logger *log)
     {
@@ -38,9 +34,10 @@ bool ConexCliente::crear(){
     	//setLog(log);
     }
 
-    ConexCliente::~ConexCliente()
-    {
-    }
+
+ConexCliente::~ConexCliente()
+{
+}
 
     /*bool ConexCliente::ErroresCliente(int puerto)
     {
@@ -56,7 +53,7 @@ bool ConexCliente::crear(){
         return errorcliente;
     }*/
 
-    bool ConexCliente::conectar(const char* hostname, int puerto)
+    int ConexCliente::conectar(const char* hostname, int puerto)
     {
         struct sockaddr_in server_addr;
         socklen_t server_sock_size;
@@ -67,39 +64,59 @@ bool ConexCliente::crear(){
         int conectado = connect(this->fd, (struct sockaddr*)(&server_addr), server_sock_size);
 
         if(conectado < 0){
-            return false;
+            return -1;
         }
+
         this->puerto = puerto;
         return true;
+
     }
 
     int ConexCliente::enviar(char *buf, int size)
     {
-        int sent = 0;
-        int status = 0;
-        bool is_the_socket_valid = true;
+       /*      bool is_the_socket_valid = true;
         //this->log->addLogMessage("[ENVIAR] Iniciado", 2);
+<<<<<<< HEAD
         while(sent < size && is_the_socket_valid){
         int    status = send(this->fd, buf, size, MSG_NOSIGNAL);
             if(status <= 0){
+=======
+        while(sent < size && is_the_socket_valid){*/
+            int status = send(this->fd, buf, size, MSG_NOSIGNAL);
+           /* if(status <= 0){
+>>>>>>> be6da5e6b014cb2eafbd13d2855582e7fc1faa5b
                 is_the_socket_valid = false;
             }else{
                 sent += status;
             }
-        }
+        }*/
 
-        if(status < 0){
+        if(status == -1){
             //this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el" + toString(), 1);
+        	cout<<status;
+        	cout<<"[CONEXCLIENTE][ENVIAR] No se pudo enviar"<<endl;
             return status;
         }
 
         //this->log->addLogMessage("[ENVIAR] Terminado", 2);
+        cout<<"[CONEXCLIENTE][ENVIAR] Se envio correctamente"<<endl;
         return status;
+    }
+
+    int dibujarMenu(){
+
+    	return 0;
     }
 
     int ConexCliente::recibir(char *buf, int size){
     	int bytes = recv(this->fd, buf, size, MSG_NOSIGNAL);
 
+    	if(bytes<0){
+    		cout<<"[CONEXCLIENTE] [RECIBIR] Error en recibir"<<endl;
+    		return bytes;
+    	}
+
+    	cout<<"[CONEXCLIENTE] [RECIBIR] Se recibio correctamente"<<endl;
     	return bytes;
     }
     int ConexCliente::cerrar(){
@@ -117,7 +134,7 @@ bool ConexCliente::crear(){
     }
 
     string ConexCliente::toString(){
-    	return "Socket: "+intToString(this->getFd());
+    	return "Socket: "+intToString(this->getFd())+" hostname: "+hostname+" y puerto: "+intToString(puerto);
     }
 
     int ConexCliente::getFd() const

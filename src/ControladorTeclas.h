@@ -11,6 +11,7 @@
 #include "Personaje.h"
 #include "Definiciones.h"
 #include "ConexCliente.h"
+#include "ConexServidor.h"
 
 class ControladorTeclas {
 

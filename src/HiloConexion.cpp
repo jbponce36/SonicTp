@@ -21,13 +21,12 @@ HiloConexion::~HiloConexion() {
 void HiloConexion::HiloCantidadClientes(int Cant){
 
 	Hilo *hilos = new Hilo();
-	hilos->Create((void *)HiloConexion::serverCantidad,(void *)Cant);
+	hilos->Create((void *)HiloConexion::serverCantidad,(void *)&Cant);
 }
 
 void *HiloConexion::serverCantidad(void *args){
 
-	 int *cant = (cant *) args;
-
+	 int *cant = (int *) args;
 
 }
 } /* namespace std */

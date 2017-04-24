@@ -34,12 +34,17 @@ void Hiloenviar::IniciarHilo(/*struct parametrosEnviar *parametros*/){
 	this->setH(*hilos);
 }
 void *Hiloenviar::serverEnviar(void *args){
-	char buffer[40]="mequiero";
 	SerParametros *parametros = (SerParametros*) args;
 	//hr->server->recibir(Pcliente->getClienteSocket(),buffer,sizeof(buffer));
-	cout<<"el server envio: "<<buffer<<endl;
 
-	parametros->server->enviar(parametros->skt,buffer,11);
+	int status = parametros->server->enviar(parametros->skt,parametros->buffer,strlen(parametros->buffer));
+
+	if(status < 0){
+		cout<<"[HILO ENVIAR][SERVER ENVIAR] Error"<<endl;
+	}
+	else{
+		cout<<"[HILO ENVIAR][SERVER ENVIAR] Se envio el mensaje correctamente"<<endl;
+	}
 
 }
 

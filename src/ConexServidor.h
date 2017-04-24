@@ -8,6 +8,7 @@
 #ifndef CONEXSERVIDOR_H_
 #define CONEXSERVIDOR_H_
 
+#include <vector>
 #include "ConexCliente.h"
 #include <pthread.h>
 
@@ -31,15 +32,26 @@ public:
     int getCantclientes();
     void setCantclientes(int);
     bool finalizar();
+
     bool noSeConectaronTodos();
     void comenzarPartida();
 
 	bool getFinalizarConexion();
 	void setFinalizarConexion(bool);
 
+    string intToString(int number);
+    string toString();
+    int getFd() const;
+    string getHostname() const;
+    void setFd(int fd);
+    void setHostname(string hostname);
+
+
 private:
 	int sock_recep;
 	//ConexCliente cliente; // luego va a ser una lista
+	int puerto;
+	int fd;
 	string hostname;
 	int cantclientes;
 	int cantMaximaClientes;

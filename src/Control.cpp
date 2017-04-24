@@ -1,9 +1,9 @@
 #include "Control.h"
 #define MODULO 'CONTROL'
 
-Control::Control(int posicionx, int posiciony, Logger *log) {
-	this->posicionInicialX = posicionx;
-	this->posicionInicialY = posiciony;
+Control::Control(int posicionX, int posicionY, Logger *log) {
+	this->posicionInicialX = posicionX;
+	this->posicionInicialY = posicionY;
 	this->log = log;
 	this->log->setModulo("CONTROL");
 	this->salir = false;
@@ -127,4 +127,3 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenM
 Control::~Control() {
 	// TODO Auto-generated destructor stub
 }
-
