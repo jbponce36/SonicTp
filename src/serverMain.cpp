@@ -41,43 +41,45 @@ int main(int argc, char *argv[]) {
 
 	list<Hilorecibir> hrRecibir;
 	list<Hiloenviar> hrEnviar;
-	//list<Hilo>::iterator pos;
-	//list<Hilo>::iterator pos;
+	list<Hilorecibir>::iterator posrecibir;
+	list<Hiloenviar>::iterator posenviar;
+
 	while(!server->finalizar()){
 	//while(1){
 		int skt = server->aceptarcliente();
 
-		if(skt < 0) {
+		if(skt <= 0) {
 		  cout << "Error on accept"<<endl;
 		}
 		else {
-			Hilorecibir *hr = new Hilorecibir();
-			hr->parametros.server = server;
-			hr->parametros.skt = skt;
-			hr->IniciarHilo();
-			hrRecibir.push_back(*hr);
+			Hilorecibir *hrecibir = new Hilorecibir();
+			hrecibir->parametros.server = server;
+			hrecibir->parametros.skt = skt;
+			hrecibir->IniciarHilo();
+			hrRecibir.push_back(*hrecibir);
 
-			Hiloenviar *hre = new Hiloenviar();
-			hre->parametros.server = server;
-			hre->parametros.skt = skt;
-			hre->IniciarHilo();
-			hrEnviar.push_back(*hre);
+			Hiloenviar *henviar = new Hiloenviar();
+			henviar->parametros.server = server;
+			henviar->parametros.skt = skt;
+			char *buffer=(char*)"me quiero, me quiero mucho mucho mucho ";
+			henviar->parametros.buffer = buffer;
+
+			henviar->IniciarHilo();
+			hrEnviar.push_back(*henviar);
 
 		}
 
     }
-   //parametros.pcliente = pc;
-	//for(pos = hilolista.begin(); pos!=hilolista.end(); pos++){
-	//	(*pos).Join();
-	//}
 
-	//close(skt);
+	for(posrecibir = hrRecibir.begin(); posrecibir!=hrRecibir.end(); posrecibir++){
+		(*posrecibir).gethilo().Join();
+	}
+
+	for(posenviar = hrEnviar.begin(); posenviar!=hrEnviar.end(); posenviar++){
+		(*posenviar).gethilo().Join();
+
+     }
+
 	server->cerrar();
 	return 0;
 }
-/*void *mainClienteReibir(void *Pcliente){
- conexCliente *cliente = (conexCliente*) Pcliente;
- char buffer[12];
-
-  server->recibir(cliente->getClienteSocket(),buffer,12);
-}*/

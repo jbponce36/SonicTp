@@ -31,11 +31,18 @@ public:
     int getCantclientes();
     void setCantclientes(int);
     bool finalizar();
-
+    string intToString(int number);
+    string toString();
+    int getFd() const;
+    string getHostname() const;
+    void setFd(int fd);
+    void setHostname(string hostname);
 
 private:
 	int sock_recep;
-	std::vector<ConexCliente*> clientes;
+	//ConexCliente cliente; // luego va a ser una lista
+	int puerto;
+	int fd;
 	string hostname;
 	int cantclientes;
 	int cantMaximaClientes;

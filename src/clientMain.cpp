@@ -6,7 +6,9 @@
 #include "parseadorJsonCli.h"
 #include "JuegoCliente.h"
 #include "Hilo.h"
-
+#include "HiloEnviarCliente.h"
+#include "HiloRecibirCliente.h"
+#include <list>
 
 using namespace std;
 
@@ -79,28 +81,61 @@ int main(int argc, char *argv[]) {
 	cliente->crear();
 	parseadorJsonCli *parseadorCliente = new parseadorJsonCli();
 	//parseadorCliente->parsearArchivo(cliente->cargarNombreArchivo());
-	if(cliente->conectar("127.0.0.1",8080) == false){
-		cout<<"no se conecto"<<endl;
+	int skt = cliente->conectar("127.0.0.1",8080) ;
+
+	if(skt == -1){
+		cout<<"El cliente no se conecto"<<endl;
 	}else{
 		cout<<"se conecto cliente"<<endl;
 	}
 
+	bool salir = false;
+
+	list<HiloRecibirCliente> hrRecibir;
+	list<HiloEnviarCliente> hrEnviar;
+	//list<Hilo>::iterator pos;
+	//list<Hilo>::iterator pos;
+
+
+
+		HiloRecibirCliente *hrecibir = new HiloRecibirCliente();
+		hrecibir->parametros.cliente = cliente;
+		hrecibir->IniciarHilo();
+		hrRecibir.push_back(*hrecibir);
+
+		HiloEnviarCliente *henviar = new HiloEnviarCliente();
+		henviar->parametros.cliente = cliente;
+
+		cout<<skt<<endl;
+		char *buffer=(char*)"me quiero, me quiero mucho mucho mucho ";
+		henviar->parametros.buffer = buffer;
+
+		henviar->IniciarHilo();
+		hrEnviar.push_back(*henviar);
+
+		//sleep(40);
+
+	/*
 	char buffer[40]="mashambre";
 	cout<<"cliente envio: "<<buffer<<endl;
 	cliente->enviar(buffer,11);
+	cout<<"cliente envio: "<<buffer<<cliente->toString()<<endl;
 
 	char buffer2[40]="0";
 	cliente->recibir(buffer2,sizeof(buffer2));
-	cout<<"cliente recibio: "<<buffer2<<endl;
+	cout<<"cliente recibio: "<<buffer2<<endl;*/
+
 
 	/*------INICIA EL JUEGO DEL CLIENTE------*/
+		/* Comentar esto si quieren que no se abra la pantallita! */
+
 	JuegoCliente juego = JuegoCliente(cliente, log);
 
 	Hilo hiloJuego = Hilo();
 	hiloJuego.Create((void *)iniciarJuegoCliente, (void*)&juego);
 
 	hiloJuego.Join();
-
+		/* Hasta aca */
 
 
 	cliente->cerrar();

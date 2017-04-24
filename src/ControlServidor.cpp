@@ -87,7 +87,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista){
 
 		moverPersonajesServidor(tiempoDeJuego, vista, camara);
 
-		actualizarVistaServidor(servidor);
+		actualizarVistaServidor();
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
 		tiempoFin = SDL_GetTicks();

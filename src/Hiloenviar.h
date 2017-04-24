@@ -26,10 +26,17 @@ public:
 	static void * serverEnviar(void *args);
 	struct SerParametros{
 		ConexServidor *server;
+		char *buffer;
 		int skt;
 	};
 	SerParametros parametros;
+
+	Hilo gethilo();
+
+	void setH(Hilo);
+
 private:
+	Hilo h;
 };
 
 }

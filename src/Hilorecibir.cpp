@@ -23,7 +23,19 @@ void Hilorecibir::IniciarHilo(){
 
 	hilos->Create((void *)Hilorecibir::serverRecibir ,  (void *)&parametros);
 
+    this->setH(*hilos);
+
 }
+
+
+Hilo Hilorecibir::gethilo(){
+	return this->h;
+}
+
+void Hilorecibir::setH(Hilo hil){
+	this->h = hil;
+}
+
 void *Hilorecibir::serverRecibir(void *args){
 	bool continuar = true;
 	while(continuar){
