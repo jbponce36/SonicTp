@@ -11,6 +11,7 @@
 #include <vector>
 #include "ConexCliente.h"
 #include <pthread.h>
+#include <queue>
 
 namespace std {
 
@@ -51,6 +52,7 @@ private:
 	int sock_recep;
 	//ConexCliente cliente; // luego va a ser una lista
 	int puerto;
+
 	int fd;
 	string hostname;
 	int cantclientes;

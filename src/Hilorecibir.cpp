@@ -37,11 +37,12 @@ void Hilorecibir::setH(Hilo hil){
 }
 
 void *Hilorecibir::serverRecibir(void *args){
-
 	bool continuar = true;
-	while(continuar){
+	int cont = 0;
+	Serparametros *parametros = (Serparametros*) args;
+	while(continuar && cont <5){
 		char buffer[40];
-		Serparametros *parametros = (Serparametros*) args;
+		//Serparametros *parametros = (Serparametros*) args;
 		int result = 1;
 		parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
 
@@ -62,9 +63,19 @@ void *Hilorecibir::serverRecibir(void *args){
 					printf("El cliente se desconecto satisfactoriamente. \n");
 					continuar = false;
 				}
+				parametros->buffer = buffer;
+				cout<<buffer<<endl;
 		}
-
+		cont++;
+		parametros->colaPaquete.push(buffer);
 	}
+	cout<<"--------------------------------------"<<endl;
+	while (! parametros->colaPaquete.empty())
+	  {
+		cout<<"lo de cola------:";
+	    cout << parametros->colaPaquete.front() << " " ;
+	    parametros->colaPaquete.pop();
+	  }
 
 }
 

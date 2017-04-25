@@ -25,6 +25,9 @@ public:
 	struct Serparametros{
 		ConexServidor *server;
 		int skt;
+		char *buffer;
+		queue<char*> colaPaquete;
+
 	};
 	Serparametros parametros;
 
