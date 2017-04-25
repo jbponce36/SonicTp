@@ -29,7 +29,7 @@ int getNivelLogger(int argc, char *argv[]){
 
 int main(int argc, char *argv[]) {
 	char *archivoLog=(char*)"configuracion/log.txt";
-	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "SERVER");
+	Logger *log = new Logger(archivoLog, 2/*getNivelLogger(argc,argv)*/, "SERVER");
 	log->iniciarLog("INICIAR LOGGER");
 
 	ConexServidor *server = new ConexServidor();

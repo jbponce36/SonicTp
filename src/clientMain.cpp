@@ -75,12 +75,7 @@ int main(int argc, char *argv[]) {
 	parseadorJsonCli *parseadorCliente = new parseadorJsonCli();
 	//parseadorCliente->parsearArchivo(cliente->cargarNombreArchivo());
 
-	if(cliente->conectar("127.0.0.1",8080) == false){
-
-		cout<<"no se conecto"<<endl;
-	}
-
-	int skt = cliente->conectar("127.0.0.1",8080) ;
+	int skt = cliente->conectar("127.0.0.1",8080);
 
 	if(skt == -1){
 		cout<<"El cliente no se conecto"<<endl;

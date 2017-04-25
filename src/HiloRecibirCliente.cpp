@@ -44,7 +44,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				}
 		}
 	}
-	parametros->colaPaquete.push(buffer);
+	//parametros->colaPaquete.push(buffer);
 }
 
 void HiloRecibirCliente::Join()

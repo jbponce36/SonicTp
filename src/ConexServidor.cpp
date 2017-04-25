@@ -55,8 +55,8 @@ bool ConexServidor::enlazar(int puerto){
 
   if( resBind < 0)
   {
-	 //std::cout << "open failed, error - " << (int)errno << std::endl;
-	 //exit(errno);
+	  std::cout << "open failed, error - " << strerror(errno) << std::endl;
+	  //exit(errno);
 	  return false;
   }
   return true;

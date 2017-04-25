@@ -9,7 +9,7 @@
 
 HiloEnviarCliente::HiloEnviarCliente() {
 	// TODO Auto-generated constructor stub
-
+	parametros.buffer = "";
 }
 
 HiloEnviarCliente::~HiloEnviarCliente() {
