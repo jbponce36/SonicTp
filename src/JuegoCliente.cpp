@@ -7,7 +7,9 @@
 
 #include "JuegoCliente.h"
 
-JuegoCliente::JuegoCliente() : vista(NULL), sonic(NULL), control(NULL), cliente(NULL), log(NULL){
+JuegoCliente::JuegoCliente()
+: vista(NULL), sonic(NULL), control(NULL), cliente(NULL), log(NULL),
+  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL){
 	//Las variables se setean al llamar a iniciarJuegoCliente desde el thread
 }
 
@@ -18,8 +20,43 @@ JuegoCliente::~JuegoCliente() {
 }
 
 JuegoCliente::JuegoCliente(ConexCliente *cliente, Logger *log)
-: vista(NULL), sonic(NULL), control(NULL), cliente(cliente), log(log){
+: vista(NULL), sonic(NULL), control(NULL), cliente(cliente), log(log),
+  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL){
 	//Vista, sonic y control se setean al llamar a iniciarJuegoCliente desde el thread
+}
+
+void *JuegoCliente::iniciarJuegoCliente(void *datos)
+{
+	//Se leen los datos del json
+	struct Datos* misDatos = (struct Datos*)datos;
+	JuegoCliente juego = JuegoCliente(misDatos->cliente, misDatos->log);
+	juego.iniciarJuego();
+}
+
+void JuegoCliente::iniciarHilos()
+{
+	hiloRecibir = new HiloRecibirCliente();
+	hiloRecibir->parametros.cliente = cliente;
+	hiloRecibir->IniciarHilo();
+
+	hiloEnviar = new HiloEnviarCliente();
+	hiloEnviar->parametros.cliente = cliente;
+	hiloEnviar->IniciarHilo();
+
+	hiloJuego = new Hilo();
+
+	struct Datos datos;
+	datos.cliente = cliente;
+	datos.log = log;
+
+	hiloJuego->Create((void *)iniciarJuegoCliente, (void *)&datos);
+}
+
+void JuegoCliente::terminarHilos()
+{
+	hiloJuego->Join();
+	hiloRecibir->Join();
+	hiloEnviar->Join();
 }
 
 void JuegoCliente::inicializarJuegoCliente(std::jescenarioJuego *jparseador)
@@ -35,7 +72,7 @@ void JuegoCliente::iniciarJuegoControlCliente()
 	control->ControlarJuegoCliente(vista, sonic, cliente);
 }
 
-void JuegoCliente::iniciarJuegoCliente()
+void JuegoCliente::iniciarJuego()
 {
 	//Se leen los datos del json
 	parseadorJson* parseador = new parseadorJson(log);

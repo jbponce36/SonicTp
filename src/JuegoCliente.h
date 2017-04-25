@@ -15,6 +15,9 @@
 #include "ConexCliente.h"
 #include "Logger.h"
 #include "parseadorJson.h"
+#include "Hilo.h"
+#include "HiloEnviarCliente.h"
+#include "HiloRecibirCliente.h"
 
 class JuegoCliente {
 
@@ -25,6 +28,9 @@ private:
 	ConexCliente *cliente;
 	Logger *log;
 
+	HiloRecibirCliente *hiloRecibir;
+	HiloEnviarCliente *hiloEnviar;
+	Hilo *hiloJuego;
 
 public:
 	JuegoCliente();
@@ -32,10 +38,18 @@ public:
 
 	/*Lado del Cliente*/
 	JuegoCliente(ConexCliente *cliente, Logger *log);
-	void iniciarJuegoCliente(); //Crea el parseador e inicia el juego
+	void iniciarHilos();
+	void terminarHilos();
+	void iniciarJuego(); //Crea el parseador e inicia el juego
+
+	struct Datos{
+		ConexCliente *cliente;
+		Logger *log;
+	};
 
 private:
 	/*Lado del Cliente*/
+	static void* iniciarJuegoCliente(void *datos);
 	void inicializarJuegoCliente(std::jescenarioJuego *jparseador); //Inicializa control, vista y sonic
 	void iniciarJuegoControlCliente(); //Llama al juego propiamente dicho (Control::ControlarJuego)
 };

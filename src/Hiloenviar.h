@@ -35,6 +35,8 @@ public:
 
 	void setH(Hilo);
 
+	void Join();
+
 private:
 	Hilo h;
 };

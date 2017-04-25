@@ -48,4 +48,8 @@ void *Hiloenviar::serverEnviar(void *args){
 
 }
 
+void Hiloenviar::Join()
+{
+	h.Join();
+}
 } /* namespace std */

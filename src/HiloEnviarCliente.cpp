@@ -18,9 +18,9 @@ HiloEnviarCliente::~HiloEnviarCliente() {
 
 void HiloEnviarCliente::IniciarHilo(/*struct parametrosEnviar *parametros*/){
 
-	Hilo *hilos = new Hilo(/*log*/);
+	Hilo *hilo = new Hilo(/*log*/);
 
-	hilos->Create((void *)HiloEnviarCliente::clienteEnviar ,  (void *)&parametros);
+	hilo->Create((void *)HiloEnviarCliente::clienteEnviar ,  (void *)&parametros);
 
 }
 void *HiloEnviarCliente::clienteEnviar(void *args){
@@ -36,4 +36,9 @@ void *HiloEnviarCliente::clienteEnviar(void *args){
 		cout<<"[HILO ENVIAR CLIENTE][CLIENTE ENVIAR]El cliente envio: "<<parametros->buffer<<endl;
 	}
 
+}
+
+void HiloEnviarCliente::Join()
+{
+	hilo->Join();
 }

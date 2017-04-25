@@ -12,6 +12,9 @@
 #include "ConexCliente.h"
 
 class HiloRecibirCliente {
+private:
+	Hilo *hilo;
+
 public:
 	HiloRecibirCliente();
 	virtual ~HiloRecibirCliente();
@@ -25,6 +28,8 @@ public:
 		char *buffer;
 	 };
 	Serparametros parametros;
+
+	void Join();
 };
 
 #endif /* HILORECIBIRCLIENTE_H_ */

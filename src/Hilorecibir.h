@@ -28,10 +28,11 @@ public:
 	};
 	Serparametros parametros;
 
-
 	Hilo gethilo();
 
     void setH(Hilo);
+
+    void Join();
 
 
 private:

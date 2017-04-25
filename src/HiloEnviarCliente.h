@@ -12,6 +12,8 @@
 #include "Hilo.h"
 
 class HiloEnviarCliente {
+private:
+	Hilo* hilo;
 public:
 	HiloEnviarCliente();
 	virtual ~HiloEnviarCliente();
@@ -23,6 +25,8 @@ public:
 			int skt;
 		};
 	SerParametros parametros;
+
+	void Join();
 };
 
 #endif /* HILOENVIARCLIENTE_H_ */

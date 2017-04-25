@@ -68,4 +68,9 @@ void *Hilorecibir::serverRecibir(void *args){
 
 }
 
+void Hilorecibir::Join()
+{
+	h.Join();
+}
+
 } /* namespace std */

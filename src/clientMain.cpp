@@ -35,13 +35,6 @@ char* getJson(int argc, char *argv[]){
 	return clientConfig;
 }
 
-void *iniciarJuegoCliente(void *datos)
-	{
-		JuegoCliente *juego = (JuegoCliente*)datos;
-		juego->iniciarJuegoCliente();
-		return NULL;
-	}
-
 int main(int argc, char *argv[]) {
 
 	char *archivoLog=(char*)"configuracion/log.txt";
@@ -91,36 +84,15 @@ int main(int argc, char *argv[]) {
 
 	if(skt == -1){
 		cout<<"El cliente no se conecto"<<endl;
+		cliente->cerrar();
+		return 1;
 
 	}else{
 		cout<<"se conecto cliente"<<endl;
 	}
 
-	bool salir = false;
 
-	list<HiloRecibirCliente> hrRecibir;
-	list<HiloEnviarCliente> hrEnviar;
-	//list<Hilo>::iterator pos;
-	//list<Hilo>::iterator pos;
-
-
-
-		HiloRecibirCliente *hrecibir = new HiloRecibirCliente();
-		hrecibir->parametros.cliente = cliente;
-		hrecibir->IniciarHilo();
-		hrRecibir.push_back(*hrecibir);
-
-		HiloEnviarCliente *henviar = new HiloEnviarCliente();
-		henviar->parametros.cliente = cliente;
-
-		cout<<skt<<endl;
-		char *buffer=(char*)"me quiero, me quiero mucho mucho mucho ";
-		henviar->parametros.buffer = buffer;
-
-		henviar->IniciarHilo();
-		hrEnviar.push_back(*henviar);
-
-		//sleep(40);
+	//sleep(40);
 
 	/*
 	char buffer[40]="mashambre";
@@ -136,12 +108,9 @@ int main(int argc, char *argv[]) {
 	/*------INICIA EL JUEGO DEL CLIENTE------*/
 		/* Comentar esto si quieren que no se abra la pantallita! */
 
-//	JuegoCliente juego = JuegoCliente(cliente, log);
-
-	//Hilo hiloJuego = Hilo();
-	//hiloJuego.Create((void *)iniciarJuegoCliente, (void*)&juego);
-
-	//hiloJuego.Join();
+	JuegoCliente juego = JuegoCliente(cliente, log);
+	juego.iniciarHilos();
+	juego.terminarHilos();
 		/* Hasta aca */
 
 
