@@ -22,7 +22,7 @@ public:
 		ConexCliente *cliente;
 		//list<ProcesadorCliente>pcliente;
 		int skt;
-		char *buffer;
+		queue<char*> colaPaquete;
 	 };
 	Serparametros parametros;
 };

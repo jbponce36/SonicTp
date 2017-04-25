@@ -7,12 +7,12 @@
 
 #include "HiloRecibirCliente.h"
 
-HiloRecibirCliente::HiloRecibirCliente() {
+HiloRecibirCliente::HiloRecibirCliente(){
 	// TODO Auto-generated constructor stub
 
 }
 
-HiloRecibirCliente::~HiloRecibirCliente() {
+HiloRecibirCliente::~HiloRecibirCliente(){
 	// TODO Auto-generated destructor stub
 }
 
@@ -40,5 +40,5 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				printf("El cliente se desconecto satisfactoriamente. \n");
 			}
 	}
-
+	parametros->colaPaquete.push(buffer);
 }

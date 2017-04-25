@@ -136,12 +136,12 @@ int main(int argc, char *argv[]) {
 	/*------INICIA EL JUEGO DEL CLIENTE------*/
 		/* Comentar esto si quieren que no se abra la pantallita! */
 
-//	JuegoCliente juego = JuegoCliente(cliente, log);
+	JuegoCliente juego = JuegoCliente(cliente, log);
 
-	//Hilo hiloJuego = Hilo();
-	//hiloJuego.Create((void *)iniciarJuegoCliente, (void*)&juego);
+	Hilo hiloJuego = Hilo();
+	hiloJuego.Create((void *)iniciarJuegoCliente, (void*)&juego);
 
-	//hiloJuego.Join();
+	hiloJuego.Join();
 		/* Hasta aca */
 
 
