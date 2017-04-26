@@ -10,6 +10,7 @@
 #include "Hiloenviar.h"
 #include <iostream>
 #include <fstream>
+#include "JuegoServidor.h"
 
 
 using namespace std;
@@ -44,6 +45,9 @@ int main(int argc, char *argv[]) {
 	list<Hilorecibir>::iterator posrecibir;
 	list<Hiloenviar>::iterator posenviar;
 
+	int id = 1;
+
+
 	while(server->noSeConectaronTodos()){
 	//while(1){
 		int skt = server->aceptarcliente();
@@ -52,6 +56,9 @@ int main(int argc, char *argv[]) {
 		  cout << "Error on accept"<<endl;
 		}
 		else {
+			ostringstream oss;
+			oss<< id;
+
 			Hilorecibir *hrecibir = new Hilorecibir();
 			hrecibir->parametros.server = server;
 			hrecibir->parametros.skt = skt;
@@ -61,9 +68,16 @@ int main(int argc, char *argv[]) {
 			Hiloenviar *henviar = new Hiloenviar();
 			henviar->parametros.server = server;
 			henviar->parametros.skt = skt;
-			char *buffer=(char*)"me quiero, me quiero mucho mucho mucho ";
-			henviar->parametros.buffer = buffer;
 
+			//char *buffer=(char*)"me quiero, me quiero mucho mucho mucho ";
+			//Le mando un ID a cada cliente a medida que se conectan
+			char buffer[1] = "";
+			string temp = oss.str();
+			strcpy(buffer, temp.c_str());
+			cout << "Server envio ID: " << buffer << endl;
+			id++;
+
+			henviar->parametros.buffer = buffer;
 			henviar->IniciarHilo();
 			hrEnviar.push_back(*henviar);
 
@@ -74,6 +88,9 @@ int main(int argc, char *argv[]) {
 	printf("Empieza la partinda \n");
 	printf("Habria que enviarle a todos los clientes el mensaje empece la partida \n");
 	server->comenzarPartida();
+
+	JuegoServidor juego = JuegoServidor(server, log);
+	juego.iniciarHiloJuego();
 
 	while(!server->finalizar()){
 	//while(1){
@@ -96,6 +113,8 @@ int main(int argc, char *argv[]) {
 			hrEnviar.push_back(*hre);
 		}
     }
+
+	juego.terminarHiloJuego();
 
 	for(posrecibir = hrRecibir.begin(); posrecibir!=hrRecibir.end(); posrecibir++){
 		(*posrecibir).gethilo().Join();

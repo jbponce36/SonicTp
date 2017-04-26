@@ -322,24 +322,27 @@ std::string Personaje::intToString(int number)
 {
   ostringstream oss;
   oss<< number;
-  return oss.str();
+  std::string numero = oss.str();
+  while(numero.length() < MAX_CANT_DIGITOS){
+	  numero = PADDING + numero;
+  }
+  return numero;
 }
 
 void Personaje::enviarAServer(ConexCliente *cliente, std::string mensaje)
 {
 	mensaje += "x" + intToString(posicionX) + "y" + intToString(posicionY);
 
-	char* msj = new char[mensaje.length() +1];
+	/*char* msj = new char[mensaje.length() +1];
 	strcpy(msj, mensaje.c_str());
 	cliente->enviar(msj, strlen(msj));
 	cout << "Cliente envio: "<< msj << '\n';
-	delete[] msj;
+	delete[] msj;*/
+
+	char buffer[LARGO_MENSAJE] = "";
+	strcpy(buffer, mensaje.c_str());
+	cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
+	cout << "Cliente envio: " << buffer << endl;
 
 }
-
-
-
-//Quiero recibir mensajes del servidor
-//Quiero que el servidor reciba mensajes de todos los clientes e iterar sobre esos mensajes
-//O ni bien recibe un mensaje hacer algo?
 
