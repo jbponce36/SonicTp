@@ -37,6 +37,7 @@ ConexCliente::ConexCliente(Logger *log)
 {
 	setFd(1);
 	setLog(log);
+	this->getLog()->setModulo("CONEX CLIENTE");
 }
 
 ConexCliente::~ConexCliente()

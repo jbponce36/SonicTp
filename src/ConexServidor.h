@@ -12,12 +12,14 @@
 #include "ConexCliente.h"
 #include <pthread.h>
 #include <queue>
+#include "Logger.h"
+
 
 namespace std {
 
 class ConexServidor {
 public:
-	ConexServidor();
+	ConexServidor(Logger *log);
 	bool crear();
 	virtual ~ConexServidor();
 	bool enlazar(int puerto);
@@ -46,6 +48,8 @@ public:
     string getHostname() const;
     void setFd(int fd);
     void setHostname(string hostname);
+    Logger *getLog() const;
+    void setLog(Logger *log);
 
 
 private:
@@ -60,6 +64,7 @@ private:
 	bool finalizarConexion;
 	bool partidaComenzada;
 	pthread_mutex_t mutex;
+	Logger *log;
 };
 
 } /* namespace std */

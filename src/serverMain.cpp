@@ -32,12 +32,16 @@ int main(int argc, char *argv[]) {
 	Logger *log = new Logger(archivoLog, 2/*getNivelLogger(argc,argv)*/, "SERVER");
 	log->iniciarLog("INICIAR LOGGER");
 
-	ConexServidor *server = new ConexServidor();
+	ConexServidor *server = new ConexServidor(log);
 	parseadorJsonSer *jsonSer = new parseadorJsonSer(log);
 	//jsonSer->parsearArchivo(server->cargarNombreArchivo());
+
+	int puerto = 8080;
+	int maxCantClientes = 2;
+
 	server->crear();
-	server->enlazar(8080);
-	server->escuchar(2);
+	server->enlazar(puerto);
+	server->escuchar(maxCantClientes);
 
 	list<Hilorecibir> hrRecibir;
 	list<Hiloenviar> hrEnviar;
@@ -107,5 +111,7 @@ int main(int argc, char *argv[]) {
      }
 
 	server->cerrar();
+	log->setModulo("SERVER");
+	log->iniciarLog("TERMINAR LOGGER");
 	return 0;
 }
