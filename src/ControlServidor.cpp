@@ -56,15 +56,12 @@ std::string ControlServidor::intToString(int number)
   return oss.str();
 }
 
-void ControlServidor::enviarAServer(std::string mensaje)
+void ControlServidor::enviarATodos(std::string mensaje)
 {
-	//mensaje += "x" + intToString(posicionX) + "y" + intToString(posicionY);
-
-	char* msj = new char[mensaje.length() +1];
-	strcpy(msj, mensaje.c_str());
-	//server->enviarATodos();
-	cout << "Server envio: "<< msj << '\n';
-	delete[] msj;
+	char buffer[LARGO_MENSAJE] = "";
+	strcpy(buffer, mensaje.c_str());
+	//server->enviarATodos(buffer, strlen(buffer));
+	cout << "Servidor envio: " << buffer << endl;
 
 }
 

@@ -13,9 +13,11 @@
 #include "Camara.h"
 #include "Logger.h"
 #include <string>
+#include <vector>
 
 #define FPS_SERVER 30
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
+#define LARGO_MENSAJE 13
 
 class ControlServidor {
 
@@ -25,6 +27,7 @@ private:
 	ConexServidor *server;
 	Logger *log;
 	bool salir;
+	std::vector<Personaje> sonics;
 
 public:
 	ControlServidor(int altura, int anchura, ConexServidor *server, Logger *log);
@@ -37,7 +40,7 @@ private:
 	void administrarTeclasServidor();
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor();
-	void enviarAServer(std::string mensaje);
+	void enviarATodos(std::string mensaje);
 	std::string intToString(int number);
 };
 
