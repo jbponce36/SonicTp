@@ -42,9 +42,13 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					printf("El cliente se desconecto satisfactoriamente. \n");
 					continuar = false;
 				}
+				//cargamos los datos de todos los personajes que vienen desde el servidor, estos datos deben actualizar
+				//la vista, etc
+				parametros->pack.cargarUnPaquete(buffer);
 		}
 	}
-	//parametros->colaPaquete.push(buffer);
+
+
 }
 
 void HiloRecibirCliente::Join()
