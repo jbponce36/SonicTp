@@ -6,16 +6,28 @@
  */
 
 #include "Paquete.h"
-#include <queue>
-Paquete::Paquete() {
-	// TODO Auto-generated constructor stub
 
+namespace std{
+Paquete::Paquete(){
+	//this->delante = NULL;
+	//this->atras = NULL;
 }
 
-Paquete::~Paquete() {
-	// TODO Auto-generated destructor stub
-}
-void Paquete::cargarUnPaquete(char * buffer){
-	this->colaPaquetes.push(buffer);
+Paquete::~Paquete(){
 
+}
+void Paquete::agregar(char *buffer){
+	char *buf = new char[40];
+	for(int i=0;i<40;i++){
+		buf[i] = buffer[i];
+	}
+	this->colaPaquetes.push(buf);
+}
+std::queue<char*> Paquete::getColaPaquetes(){
+	return this->colaPaquetes;
+}
+void Paquete::eliminarElPrimetoDeLaCola(){
+	delete [] this->colaPaquetes.front();
+	this->colaPaquetes.pop();
+}
 }
