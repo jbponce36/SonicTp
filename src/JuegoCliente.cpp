@@ -27,10 +27,10 @@ JuegoCliente::JuegoCliente(ConexCliente *cliente, Logger *log)
 
 void *JuegoCliente::iniciarJuegoCliente(void *datos)
 {
-	//Se leen los datos del json
-	struct Datos* misDatos = (struct Datos*)datos;
-	JuegoCliente juego = JuegoCliente(misDatos->cliente, misDatos->log);
-	juego.iniciarJuego();
+	//struct Datos* misDatos = (struct Datos*)datos;
+	//JuegoCliente juego = JuegoCliente(misDatos->cliente, misDatos->log);
+	JuegoCliente *juego = (JuegoCliente*)datos;
+	juego->iniciarJuego();
 }
 
 void JuegoCliente::iniciarHilos()
@@ -45,18 +45,18 @@ void JuegoCliente::iniciarHilos()
 
 	hiloJuego = new Hilo();
 
-	struct Datos datos;
-	datos.cliente = cliente;
-	datos.log = log;
+	//struct Datos datos;
+	//datos.cliente = cliente;
+	//datos.log = log;
 
-	hiloJuego->Create((void *)iniciarJuegoCliente, (void *)&datos);
+	hiloJuego->Create((void *)iniciarJuegoCliente, (void *)this);
 }
 
 void JuegoCliente::terminarHilos()
 {
 	hiloJuego->Join();
-	hiloRecibir->Join();
-	hiloEnviar->Join();
+	//hiloRecibir->Join();
+	//hiloEnviar->Join();
 }
 
 void JuegoCliente::inicializarJuegoCliente(std::jescenarioJuego *jparseador)

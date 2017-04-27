@@ -11,6 +11,9 @@
 #include "ConexCliente.h"
 
 #define GRAVEDAD 9
+#define MAX_CANT_DIGITOS 4
+#define LARGO_MENSAJE 13
+#define PADDING "-"
 
 class Personaje
 {

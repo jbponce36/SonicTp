@@ -32,7 +32,7 @@ void JuegoServidor::iniciarJuegoControlServidor()
 	control->ControlarJuegoServidor(vista);
 }
 
-void JuegoServidor::iniciarJuegoServidor()
+void JuegoServidor::iniciarJuego()
 {
 	//Se leen los datos del json
 	parseadorJson* parseador = new parseadorJson(log);
@@ -51,4 +51,21 @@ void JuegoServidor::iniciarJuegoServidor()
 	log->addLogMessage("Se termina el juego.",1);
 }
 
+void* JuegoServidor::iniciarJuegoServidor(void *datos)
+{
+	JuegoServidor *juego = (JuegoServidor*)datos;
+	juego->iniciarJuego();
+}
+
+void JuegoServidor::iniciarHiloJuego()
+{
+	hiloJuego = new Hilo();
+
+	hiloJuego->Create((void *)iniciarJuegoServidor, (void *)this);
+}
+
+void JuegoServidor::terminarHiloJuego()
+{
+	hiloJuego->Join();
+}
 

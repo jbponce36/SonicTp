@@ -15,6 +15,7 @@
 #include "ConexServidor.h"
 #include "Logger.h"
 #include "parseadorJson.h"
+#include "Hilo.h"
 
 class JuegoServidor {
 
@@ -23,14 +24,18 @@ private:
 	ControlServidor *control;
 	ConexServidor *server;
 	Logger *log;
+	Hilo *hiloJuego;
 
 public:
 	JuegoServidor();
 	virtual ~JuegoServidor();
 	JuegoServidor(ConexServidor *server, Logger *log);
-	void iniciarJuegoServidor();
+	void iniciarJuego();
+	void iniciarHiloJuego();
+	void terminarHiloJuego();
 
 private:
+	static void* iniciarJuegoServidor(void *datos);
 	void inicializarJuegoServidor(std::jescenarioJuego *jparseador);
 	void iniciarJuegoControlServidor();
 };

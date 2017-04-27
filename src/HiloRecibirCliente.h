@@ -10,6 +10,7 @@
 
 #include "Hilo.h"
 #include "ConexCliente.h"
+#include "Paquete.h"
 
 class HiloRecibirCliente {
 private:
@@ -26,6 +27,7 @@ public:
 		//list<ProcesadorCliente>pcliente;
 		int skt;
 		queue<char*> colaPaquete;
+		Paquete pack;
 	 };
 	Serparametros parametros;
 
