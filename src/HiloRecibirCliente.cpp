@@ -44,7 +44,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				}
 				//cargamos los datos de todos los personajes que vienen desde el servidor, estos datos deben actualizar
 				//la vista, etc
-				parametros->pack.cargarUnPaquete(buffer);
+				parametros->colaPaquete.agregar(buffer);
 		}
 	}
 
