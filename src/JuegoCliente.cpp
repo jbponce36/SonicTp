@@ -72,18 +72,20 @@ void JuegoCliente::iniciarJuegoControlCliente()
 {
 	control->ControlarJuegoCliente(vista, sonic, cliente);
 }
+
 //se agrego esto para poder la vista afuera y poder usar el menu
 void JuegoCliente::CargarVistaParaElMenu(){
 	parseadorJson* parseador = new parseadorJson(log);
 
-		char *file=(char*)"configuracion/configuracion.json";
-		jescenarioJuego* jparseador = parseador->parsearArchivo(file);
+	char *file=(char*)"configuracion/configuracion.json";
+	jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
-		log->setModulo("JUEGO_CLIENTE");
-		log->addLogMessage("Se inicia el juego.",1);
+	log->setModulo("JUEGO_CLIENTE");
+	log->addLogMessage("Se inicia el juego.",1);
 
-		vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, false);
+	vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, false);
 }
+
 void JuegoCliente::iniciarJuego()
 {
 	//------------esto se cambio al metodo CargarVistaParaElMenu()-------------
@@ -105,6 +107,7 @@ void JuegoCliente::iniciarJuego()
 	log->setModulo("JUEGO_CLIENTE");
 	log->addLogMessage("Se termina el juego.",1);
 }
+
 int JuegoCliente::elegirOpcionDeMenu(Logger *log){
 	return this->vista->mostraMenuInicial(log);
 }
