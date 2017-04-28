@@ -28,19 +28,20 @@ public:
 		int skt;
 		char *buffer;
 		Paquete colaDeMensajes;
-
+		bool continuar;
 	};
 	Serparametros parametros;
 
 	Hilo gethilo();
-
     void setH(Hilo);
-
     void Join();
+    std::string obtenerElementoDeLaCola();
+    void eliminarPrimerElementoDeLaCola();
 
 
 private:
 	Hilo h;
+
 };
 
 } /* namespace std */

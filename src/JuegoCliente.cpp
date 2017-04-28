@@ -37,6 +37,7 @@ void JuegoCliente::iniciarHilos()
 {
 	hiloRecibir = new HiloRecibirCliente();
 	hiloRecibir->parametros.cliente = cliente;
+	hiloRecibir->parametros.continuar = true;
 	hiloRecibir->IniciarHilo();
 
 	hiloEnviar = new HiloEnviarCliente();

@@ -7,7 +7,7 @@
 
 #include "HiloEnviarCliente.h"
 
-HiloEnviarCliente::HiloEnviarCliente() {
+HiloEnviarCliente::HiloEnviarCliente() : continuar(true){
 	// TODO Auto-generated constructor stub
 	parametros.buffer = "";
 }
@@ -40,5 +40,6 @@ void *HiloEnviarCliente::clienteEnviar(void *args){
 
 void HiloEnviarCliente::Join()
 {
+	continuar = false;
 	hilo->Join();
 }

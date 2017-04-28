@@ -9,7 +9,7 @@
 
 namespace std {
 
-Hilorecibir::Hilorecibir() {
+Hilorecibir::Hilorecibir(){
 
 }
 
@@ -37,9 +37,8 @@ void Hilorecibir::setH(Hilo hil){
 }
 
 void *Hilorecibir::serverRecibir(void *args){
-	bool continuar = true;
 	Serparametros *parametros = (Serparametros*) args;
-	while(continuar){
+	while(parametros->continuar){
 		char buffer[40];
 		//Serparametros *parametros = (Serparametros*) args;
 		int result = 1;
@@ -49,18 +48,17 @@ void *Hilorecibir::serverRecibir(void *args){
 				result = parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
 
 				if (result>0){
-					cout<<"server recibio: "<<endl;
-					cout<<buffer<<endl;
+					cout<<"server recibio: "<<buffer<<endl;
 				}
 
 				if (result==0){
 					printf("El cliente se desconecto satisfactoriamente. \n");
-					continuar = false;
+					parametros->continuar = false;
 				}
 
 				if (result==-1){
 					printf("El cliente se desconecto satisfactoriamente. \n");
-					continuar = false;
+					parametros->continuar = false;
 				}
 				parametros->colaDeMensajes.agregar(buffer);
 		}
@@ -76,7 +74,28 @@ void *Hilorecibir::serverRecibir(void *args){
 
 void Hilorecibir::Join()
 {
+	parametros.continuar = false;
 	h.Join();
 }
+
+std::string Hilorecibir::obtenerElementoDeLaCola()
+{
+	if(! parametros.colaDeMensajes.getColaPaquetes().empty())
+	{
+		char* cadena = parametros.colaDeMensajes.obtenerElementoDelaCola();
+		std::string str = std::string(cadena);
+		return str;
+	}
+	return "Sin elementos";
+}
+
+void Hilorecibir::eliminarPrimerElementoDeLaCola()
+{
+	if(! parametros.colaDeMensajes.getColaPaquetes().empty())
+	{
+		parametros.colaDeMensajes.eliminarElPrimetoDeLaCola();
+	}
+}
+
 
 } /* namespace std */

@@ -9,7 +9,7 @@
 
 namespace std {
 
-Hiloenviar::Hiloenviar(){
+Hiloenviar::Hiloenviar() : continuar(true){
 
 }
 
@@ -50,6 +50,7 @@ void *Hiloenviar::serverEnviar(void *args){
 
 void Hiloenviar::Join()
 {
+	continuar = false;
 	h.Join();
 }
 } /* namespace std */

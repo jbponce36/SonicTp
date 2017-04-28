@@ -36,7 +36,6 @@ public:
 	JuegoCliente();
 	virtual ~JuegoCliente();
 
-	/*Lado del Cliente*/
 	JuegoCliente(ConexCliente *cliente, Logger *log);
 	void iniciarHilos();
 	void terminarHilos();
@@ -49,7 +48,6 @@ public:
 	};
 
 private:
-	/*Lado del Cliente*/
 	static void* iniciarJuegoCliente(void *datos);
 	void inicializarJuegoCliente(/*std::jescenarioJuego *jparseador*/); //Inicializa control, vista y sonic
 	void iniciarJuegoControlCliente(); //Llama al juego propiamente dicho (Control::ControlarJuego)

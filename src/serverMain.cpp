@@ -6,7 +6,7 @@
 #include "Hilo.h"
 #include "parseadorJsonSer.h"
 #include "Hilorecibir.h"
-#include <list>
+#include <vector>
 #include "Hiloenviar.h"
 #include <iostream>
 #include <fstream>
@@ -38,12 +38,12 @@ int main(int argc, char *argv[]) {
 	//jsonSer->parsearArchivo(server->cargarNombreArchivo());
 	server->crear();
 	server->enlazar(8080);
-	server->escuchar(2);
+	server->escuchar(1);
 
-	list<Hilorecibir> hrRecibir;
-	list<Hiloenviar> hrEnviar;
-	list<Hilorecibir>::iterator posrecibir;
-	list<Hiloenviar>::iterator posenviar;
+	//Lo cambie a vector porque necesito hacer at() en algun momento...
+	vector<Hilorecibir*> hrRecibir;
+	vector<Hiloenviar*> hrEnviar;
+
 
 	int id = 1;
 
@@ -62,8 +62,9 @@ int main(int argc, char *argv[]) {
 			Hilorecibir *hrecibir = new Hilorecibir();
 			hrecibir->parametros.server = server;
 			hrecibir->parametros.skt = skt;
+			hrecibir->parametros.continuar = true;
 			hrecibir->IniciarHilo();
-			hrRecibir.push_back(*hrecibir);
+			hrRecibir.push_back(hrecibir);
 
 			Hiloenviar *henviar = new Hiloenviar();
 			henviar->parametros.server = server;
@@ -79,17 +80,17 @@ int main(int argc, char *argv[]) {
 
 			henviar->parametros.buffer = buffer;
 			henviar->IniciarHilo();
-			hrEnviar.push_back(*henviar);
+			hrEnviar.push_back(henviar);
 
 		}
     }
 
 	//Empieza la partida
-	printf("Empieza la partinda \n");
+	printf("Empieza la partida \n");
 	printf("Habria que enviarle a todos los clientes el mensaje empece la partida \n");
 	server->comenzarPartida();
 
-	JuegoServidor juego = JuegoServidor(server,log);
+	JuegoServidor juego = JuegoServidor(server, hrEnviar, hrRecibir, log);
 	juego.iniciarHiloJuego();
 
 	while(!server->finalizar()){
@@ -103,25 +104,29 @@ int main(int argc, char *argv[]) {
 			Hilorecibir *hr = new Hilorecibir();
 			hr->parametros.server = server;
 			hr->parametros.skt = skt;
+			hr->parametros.continuar = true;
 			hr->IniciarHilo();
-			hrRecibir.push_back(*hr);
+			hrRecibir.push_back(hr);
 
 			Hiloenviar *hre = new Hiloenviar();
 			hre->parametros.server = server;
 			hre->parametros.skt = skt;
 			hre->IniciarHilo();
-			hrEnviar.push_back(*hre);
+			hrEnviar.push_back(hre);
 		}
     }
 
 	juego.terminarHiloJuego();
 
-	for(posrecibir = hrRecibir.begin(); posrecibir!=hrRecibir.end(); posrecibir++){
-		(*posrecibir).gethilo().Join();
+	vector<Hilorecibir*>::iterator posrecibir;
+	vector<Hiloenviar*>::iterator posenviar;
+
+	for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
+		(*posrecibir)->gethilo().Join();
 	}
 
 	for(posenviar = hrEnviar.begin(); posenviar!=hrEnviar.end(); posenviar++){
-		(*posenviar).gethilo().Join();
+		(*posenviar)->gethilo().Join();
 
      }
 

@@ -7,8 +7,10 @@
 
 #include "ControlServidor.h"
 
-ControlServidor::ControlServidor(int posicionX, int posicionY, std::vector<Personaje*> sonics, ConexServidor *server, Logger *log)
-: posicionInicialX(posicionX), posicionInicialY(posicionY), server(server), log(log), salir(false), sonics(sonics)
+ControlServidor::ControlServidor(int posicionX, int posicionY, std::vector<Personaje*> sonics,
+	std::vector<Hiloenviar*> hiloEnviar, std::vector<Hilorecibir*> hiloRecibir, ConexServidor *server, Logger *log)
+: posicionInicialX(posicionX), posicionInicialY(posicionY), server(server), log(log),
+  sonics(sonics), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir)
 {
 	teclasPresionadas t = {false, false, false, false, false};
 	for (int i = 1; i <= server->getCantclientes(); i++){
@@ -32,6 +34,24 @@ void ControlServidor::administrarTeclasServidor()
 
 	//Por cada mensaje de tecla presionada, obtiene el id y segun el id y el mensaje,
 	//setea que tecla se presiono o libero
+
+	std::string mensaje;
+	unsigned int cantHilos = hilosRecibir.size();
+	for(unsigned int i=0; i<cantHilos; i++)
+	{
+		mensaje = hilosRecibir.at(i)->obtenerElementoDeLaCola();
+		while ((mensaje) != ("Sin elementos"))
+		{
+			hilosRecibir.at(i)->eliminarPrimerElementoDeLaCola();
+			//Proceso mensaje
+			///////////
+
+			cout << "Control recibio: "<< mensaje << endl;
+			mensaje = hilosRecibir.at(i)->obtenerElementoDeLaCola();
+
+		}
+	}
+
 
 }
 
@@ -76,7 +96,7 @@ void ControlServidor::enviarATodos(std::string mensaje)
 }
 
 
-void ControlServidor::ControlarJuegoServidor(VistaSDL *vista){
+void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado){
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Iniciado.", 2);
 
 	Uint32 tiempoDeJuego = 0;
@@ -87,7 +107,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista){
 	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana());
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
-	while( !salir ){
+	while( !juegoTerminado ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
 		administrarTeclasServidor();

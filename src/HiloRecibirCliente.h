@@ -28,6 +28,7 @@ public:
 		int skt;
 		//queue<char*> colaPaquete;
 		Paquete colaPaquete;
+		bool continuar;
 	 };
 	Serparametros parametros;
 

@@ -8,7 +8,9 @@
 #include "JuegoServidor.h"
 
 JuegoServidor::JuegoServidor()
-: vista(NULL), control(NULL), server(NULL), log(NULL), hiloJuego(NULL), cantJugadores(0), sonics(){
+: vista(NULL), control(NULL), server(NULL), log(NULL),
+  hiloJuego(NULL), hilosEnviar(), hilosRecibir(),
+  cantJugadores(0), sonics(), juegoTerminado(false){
 	//Las variables se setean al llamar a iniciarJuegoCliente desde el thread
 }
 
@@ -22,10 +24,14 @@ JuegoServidor::~JuegoServidor()
 	delete vista;
 }
 
-JuegoServidor::JuegoServidor(ConexServidor *server, Logger *log)
-: vista(NULL), control(NULL),server(server), log(log), hiloJuego(NULL),
-  cantJugadores(server->getCantclientes()), sonics(){
+JuegoServidor::JuegoServidor(ConexServidor *server, std::vector<Hiloenviar*> hiloEnviar, std::vector<Hilorecibir*> hiloRecibir, Logger *log)
+: vista(NULL), control(NULL),server(server), log(log),
+  hiloJuego(NULL), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir),
+  cantJugadores(server->getCantclientes()), sonics(), juegoTerminado(false){
 	//Vista, sonic y control se setean al llamar a iniciarJuegoCliente desde el thread
+
+	//Tiene una copia del vector del main.
+	//TODO: Ver si es mejor un puntero al vector del main o traer toda la creacion de los hilos aca...?
 }
 
 void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
@@ -41,12 +47,12 @@ void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
 		sonics.push_back(sonic);
 	}
 
-	control = new ControlServidor(0, 0, sonics,server,log);
+	control = new ControlServidor(0, 0, sonics, hilosEnviar, hilosRecibir, server,log);
 }
 
 void JuegoServidor::iniciarJuegoControlServidor()
 {
-	control->ControlarJuegoServidor(vista);
+	control->ControlarJuegoServidor(vista, juegoTerminado);
 }
 
 void JuegoServidor::iniciarJuego()
@@ -83,6 +89,7 @@ void JuegoServidor::iniciarHiloJuego()
 
 void JuegoServidor::terminarHiloJuego()
 {
+	juegoTerminado = true;
 	hiloJuego->Join();
 }
 

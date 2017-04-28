@@ -12,6 +12,8 @@
 #include "VistaSDL.h"
 #include "Camara.h"
 #include "Logger.h"
+#include "Hiloenviar.h"
+#include "Hilorecibir.h"
 #include <string>
 #include <vector>
 #include <map>
@@ -26,8 +28,10 @@ private:
 	int posicionInicialY;
 	ConexServidor *server;
 	Logger *log;
-	bool salir;
+
 	std::vector<Personaje*> sonics;
+	std::vector<Hiloenviar*> hilosEnviar;
+	std::vector<Hilorecibir*> hilosRecibir;
 
 	typedef struct teclasPresionadas{
 		bool teclaArriba;
@@ -40,10 +44,11 @@ private:
 	std::vector<teclasPresionadas> teclas; //Cada elemento le corresponde a un sonic
 
 public:
-	ControlServidor(int altura, int anchura, std::vector<Personaje*> sonics, ConexServidor *server, Logger *log);
+	ControlServidor(int altura, int anchura, std::vector<Personaje*> sonics,
+		std::vector<Hiloenviar*> hiloEnviar, std::vector<Hilorecibir*> hiloRecibir, ConexServidor *server, Logger *log);
 	virtual ~ControlServidor();
 
-	void ControlarJuegoServidor(VistaSDL *vista);
+	void ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado);
 
 
 private:
