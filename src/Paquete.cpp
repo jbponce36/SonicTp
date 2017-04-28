@@ -26,6 +26,9 @@ void Paquete::agregar(char *buffer){
 std::queue<char*> Paquete::getColaPaquetes(){
 	return this->colaPaquetes;
 }
+char* Paquete::obtenerElementoDelaCola(){
+	return this->colaPaquetes.front();
+}
 void Paquete::eliminarElPrimetoDeLaCola(){
 	delete [] this->colaPaquetes.front();
 	this->colaPaquetes.pop();

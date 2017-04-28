@@ -22,6 +22,7 @@ public:
 	~Paquete();
 	void agregar(char *buffer);
 	std::queue<char*> getColaPaquetes();
+	char* obtenerElementoDelaCola();
 	void eliminarElPrimetoDeLaCola();
 
 private:
