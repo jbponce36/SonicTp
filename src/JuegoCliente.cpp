@@ -71,6 +71,7 @@ void JuegoCliente::iniciarJuegoControlCliente()
 {
 	control->ControlarJuegoCliente(vista, sonic, cliente);
 }
+//se agrego esto para poder la vista afuera y poder usar el menu
 void JuegoCliente::CargarVistaParaElMenu(){
 	parseadorJson* parseador = new parseadorJson(log);
 
@@ -84,7 +85,7 @@ void JuegoCliente::CargarVistaParaElMenu(){
 }
 void JuegoCliente::iniciarJuego()
 {
-	//---------------------------------------------------
+	//------------esto se cambio al metodo CargarVistaParaElMenu()-------------
 	//Se leen los datos del json
 	/*parseadorJson* parseador = new parseadorJson(log);
 
