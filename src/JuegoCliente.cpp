@@ -59,9 +59,9 @@ void JuegoCliente::terminarHilos()
 	//hiloEnviar->Join();
 }
 
-void JuegoCliente::inicializarJuegoCliente(std::jescenarioJuego *jparseador)
+void JuegoCliente::inicializarJuegoCliente(/*std::jescenarioJuego *jparseador*/)
 {
-	vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, false);
+	//vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, false);
 
 	sonic = new Personaje(1, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
 	//Pasarle el id correcto, no 1!!
@@ -72,23 +72,39 @@ void JuegoCliente::iniciarJuegoControlCliente()
 {
 	control->ControlarJuegoCliente(vista, sonic, cliente);
 }
+//se agrego esto para poder la vista afuera y poder usar el menu
+void JuegoCliente::CargarVistaParaElMenu(){
+	parseadorJson* parseador = new parseadorJson(log);
 
+		char *file=(char*)"configuracion/configuracion.json";
+		jescenarioJuego* jparseador = parseador->parsearArchivo(file);
+
+		log->setModulo("JUEGO_CLIENTE");
+		log->addLogMessage("Se inicia el juego.",1);
+
+		vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, false);
+}
 void JuegoCliente::iniciarJuego()
 {
+	//------------esto se cambio al metodo CargarVistaParaElMenu()-------------
 	//Se leen los datos del json
-	parseadorJson* parseador = new parseadorJson(log);
+	/*parseadorJson* parseador = new parseadorJson(log);
 
 	char *file=(char*)"configuracion/configuracion.json";
 	jescenarioJuego* jparseador = parseador->parsearArchivo(file);
 
 	log->setModulo("JUEGO_CLIENTE");
-	log->addLogMessage("Se inicia el juego.",1);
+	log->addLogMessage("Se inicia el juego.",1);*/
+	//----------------------------------------------------
 
 	//Inicia el juego
-	inicializarJuegoCliente(jparseador); //Inicializa vista, sonic y control.
+	inicializarJuegoCliente(/*jparseador*/); //Inicializa vista, sonic y control.
+
 	iniciarJuegoControlCliente();
 
 	log->setModulo("JUEGO_CLIENTE");
 	log->addLogMessage("Se termina el juego.",1);
 }
-
+int JuegoCliente::elegirOpcionDeMenu(Logger *log){
+	return this->vista->mostraMenuInicial(log);
+}

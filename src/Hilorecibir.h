@@ -11,6 +11,7 @@
 #include "ConexCliente.h"
 #include "ConexServidor.h"
 #include "ProcesadorCliente.h"
+#include "Paquete.h"
 
 namespace std {
 
@@ -26,7 +27,7 @@ public:
 		ConexServidor *server;
 		int skt;
 		char *buffer;
-		queue<char*> colaPaquete;
+		Paquete colaDeMensajes;
 
 	};
 	Serparametros parametros;

@@ -67,6 +67,7 @@ public:
     SDL_Renderer *obtenerRender();
     int obtenerVelocidadDeScroll();
     void validacionesVentana();
+    int mostraMenuInicial(Logger *logger);
     void cerrar();
     ~VistaSDL();
     void mostrarEntidades(SDL_Rect *camara, int indexZ);
