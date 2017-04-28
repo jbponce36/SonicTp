@@ -32,7 +32,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, ConexClie
 
 
 			/////////Para pruebas
-			Personaje otroSonic = Personaje(200, vista->obtenerRender(), 500, vista->getLog());
+			Personaje otroSonic = Personaje(2, 200, vista->obtenerRender(), 500, vista->getLog());
 			otroSonic.posicionarseEn(200,100);
 
 			std::vector<Personaje*> sonics;

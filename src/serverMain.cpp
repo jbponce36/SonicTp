@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
 	printf("Habria que enviarle a todos los clientes el mensaje empece la partida \n");
 	server->comenzarPartida();
 
-	JuegoServidor juego = JuegoServidor(server, log);
+	JuegoServidor juego = JuegoServidor(server,log);
 	juego.iniciarHiloJuego();
 
 	while(!server->finalizar()){

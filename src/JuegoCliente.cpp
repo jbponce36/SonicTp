@@ -63,7 +63,8 @@ void JuegoCliente::inicializarJuegoCliente(std::jescenarioJuego *jparseador)
 {
 	vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, false);
 
-	sonic = new Personaje(vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
+	sonic = new Personaje(1, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
+	//Pasarle el id correcto, no 1!!
 	control = new Control(0, 0, log);
 }
 

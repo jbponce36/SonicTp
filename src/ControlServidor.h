@@ -14,10 +14,10 @@
 #include "Logger.h"
 #include <string>
 #include <vector>
-
+#include <map>
 #define FPS_SERVER 30
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
-#define LARGO_MENSAJE 13
+#define LARGO_MENSAJE_SERVIDOR 14
 
 class ControlServidor {
 
@@ -27,10 +27,20 @@ private:
 	ConexServidor *server;
 	Logger *log;
 	bool salir;
-	std::vector<Personaje> sonics;
+	std::vector<Personaje*> sonics;
+
+	typedef struct teclasPresionadas{
+		bool teclaArriba;
+		bool teclaAbajo;
+		bool teclaIzquierda;
+		bool teclaDerecha;
+		bool teclaCorrer;
+	}teclasPresionadas;
+
+	std::vector<teclasPresionadas> teclas; //Cada elemento le corresponde a un sonic
 
 public:
-	ControlServidor(int altura, int anchura, ConexServidor *server, Logger *log);
+	ControlServidor(int altura, int anchura, std::vector<Personaje*> sonics, ConexServidor *server, Logger *log);
 	virtual ~ControlServidor();
 
 	void ControlarJuegoServidor(VistaSDL *vista);

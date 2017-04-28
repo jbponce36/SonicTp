@@ -7,10 +7,14 @@
 
 #include "ControlServidor.h"
 
-ControlServidor::ControlServidor(int posicionX, int posicionY, ConexServidor *server, Logger *log)
-: posicionInicialX(posicionX), posicionInicialY(posicionY), server(server), log(log), salir(false)
+ControlServidor::ControlServidor(int posicionX, int posicionY, std::vector<Personaje*> sonics, ConexServidor *server, Logger *log)
+: posicionInicialX(posicionX), posicionInicialY(posicionY), server(server), log(log), salir(false), sonics(sonics)
 {
-
+	teclasPresionadas t = {false, false, false, false, false};
+	for (int i = 1; i <= server->getCantclientes(); i++){
+		teclas.push_back(t);
+	}
+	//Info: teclas.at(0) es el sonic con id 1.
 }
 
 ControlServidor::~ControlServidor() {
@@ -19,27 +23,33 @@ ControlServidor::~ControlServidor() {
 
 void ControlServidor::administrarTeclasServidor()
 {
+	//Setea las teclas presionadas de los sonics segun el mensaje
+
 	//TODO: Aca recibe los eventos de las teclas presionadas de todos los sonics
 	//O que tenga una cola de eventos que los vaya recibiendo el hilorecibir
 	//Si son eventos de teclado:
 	//controlador->administrarTeclasServidor();
+
+	//Por cada mensaje de tecla presionada, obtiene el id y segun el id y el mensaje,
+	//setea que tecla se presiono o libero
+
 }
 
 void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara)
 {
-	//for(cada sonic del servidor)
+	std::vector<Personaje*>::iterator pos;
+	for(pos = sonics.begin();pos != sonics.end();pos++)
+	{
+		tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
+		float tiempoDeFotografia = tiempoDeJuego / 1000.f;
+		//........
 
-	//para calcular el tiempo q transcurre en cada fotografia
-	tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
-	float tiempoDeFotografia = tiempoDeJuego / 1000.f;
-	//........
+		(*pos)->mover(camara->devolverCamara(),tiempoDeFotografia); //Se mueve segun los limites de la camara
 
-	//sonic->mover(camara->devolverCamara(),tiempoDeFotografia); //Se mueve segun los limites de la camara
+		tiempoDeJuego = SDL_GetTicks();
 
-	tiempoDeJuego = SDL_GetTicks();
-
-	camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario()); //Mueve la camara segun los sonics
-	//end for. Supongo.
+		camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario()); //Mueve la camara segun los sonics
+	}
 }
 
 void ControlServidor::actualizarVistaServidor()
@@ -58,7 +68,7 @@ std::string ControlServidor::intToString(int number)
 
 void ControlServidor::enviarATodos(std::string mensaje)
 {
-	char buffer[LARGO_MENSAJE] = "";
+	char buffer[LARGO_MENSAJE_SERVIDOR] = "";
 	strcpy(buffer, mensaje.c_str());
 	//server->enviarATodos(buffer, strlen(buffer));
 	cout << "Servidor envio: " << buffer << endl;

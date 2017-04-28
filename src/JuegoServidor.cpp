@@ -7,24 +7,41 @@
 
 #include "JuegoServidor.h"
 
-JuegoServidor::JuegoServidor() : vista(NULL), control(NULL), server(NULL), log(NULL){
+JuegoServidor::JuegoServidor()
+: vista(NULL), control(NULL), server(NULL), log(NULL), hiloJuego(NULL), cantJugadores(0), sonics(){
 	//Las variables se setean al llamar a iniciarJuegoCliente desde el thread
 }
 
-JuegoServidor::~JuegoServidor() {
-	delete vista;
+JuegoServidor::~JuegoServidor()
+{
+	std::vector<Personaje*>::iterator pos;
+	for(pos = sonics.begin();pos != sonics.end();pos++){
+		delete (*pos);
+	}
 	delete control;
+	delete vista;
 }
 
 JuegoServidor::JuegoServidor(ConexServidor *server, Logger *log)
-: vista(NULL), control(NULL),server(server), log(log){
+: vista(NULL), control(NULL),server(server), log(log), hiloJuego(NULL),
+  cantJugadores(server->getCantclientes()), sonics(){
 	//Vista, sonic y control se setean al llamar a iniciarJuegoCliente desde el thread
 }
 
 void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
 {
 	vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, true);
-	control = new ControlServidor(0, 0, server,log);
+
+	int velocidad = jparseador->getConfiguracion()->getvelscroll();
+	int altoEscenario = jparseador->getEscenario()->getalto();
+
+	for (int id = 1; id <= server->getCantclientes(); id++)
+	{
+		Personaje *sonic = new Personaje(id, velocidad, vista->obtenerRender(), altoEscenario, log);
+		sonics.push_back(sonic);
+	}
+
+	control = new ControlServidor(0, 0, sonics,server,log);
 }
 
 void JuegoServidor::iniciarJuegoControlServidor()

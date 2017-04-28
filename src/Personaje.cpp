@@ -4,10 +4,12 @@ const int POSICION_INICIALX = 0;
 const int POSICION_INICIALY = 0;
 const float REGULADOR_ALTURA_SALTO = 0.04; //Regula la altura del salto (Es como un "promedio" de tiempoDeJuego)
 
-Personaje::Personaje(int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log)
+Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log)
 {
+	this->id = id;
 	this->texturaSonic = new Textura();
-	this->texturaSonic->cargarImagen("images/sonicSprite.png",render, log);
+	std::string rutaImagen = "images/sonicSprite" + intToString(id) +".png";
+	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
 
 	//dimensiones del personaje por defecto
 	this->personajeAncho = 50;
@@ -318,7 +320,7 @@ bool Personaje::bloqueaCamara(SDL_Rect *limites)
 	return ((posicionX <= limites->x) || (posicionX >= limites->x + limites->w));
 }
 
-std::string Personaje::intToString(int number)
+std::string Personaje::intToStringConPadding(int number)
 {
   ostringstream oss;
   oss<< number;
@@ -329,9 +331,16 @@ std::string Personaje::intToString(int number)
   return numero;
 }
 
+std::string Personaje::intToString(int number)
+{
+  ostringstream oss;
+  oss<< number;
+  return oss.str();
+}
+
 void Personaje::enviarAServer(ConexCliente *cliente, std::string mensaje)
 {
-	mensaje += "x" + intToString(posicionX) + "y" + intToString(posicionY);
+	mensaje = intToString(id) + mensaje + "x" + intToStringConPadding(posicionX) + "y" + intToStringConPadding(posicionY);
 
 	/*char* msj = new char[mensaje.length() +1];
 	strcpy(msj, mensaje.c_str());
@@ -339,7 +348,7 @@ void Personaje::enviarAServer(ConexCliente *cliente, std::string mensaje)
 	cout << "Cliente envio: "<< msj << '\n';
 	delete[] msj;*/
 
-	char buffer[LARGO_MENSAJE] = "";
+	char buffer[LARGO_MENSAJE_CLIENTE] = "";
 	strcpy(buffer, mensaje.c_str());
 	cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
 	cout << "Cliente envio: " << buffer << endl;

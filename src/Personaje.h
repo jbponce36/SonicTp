@@ -12,8 +12,9 @@
 
 #define GRAVEDAD 9
 #define MAX_CANT_DIGITOS 4
-#define LARGO_MENSAJE 13
+#define LARGO_MENSAJE_CLIENTE 14
 #define PADDING "-"
+#define IMAGEN_POR_DEFECTO "images/sonicSprite.png"
 
 class Personaje
 {
@@ -24,6 +25,7 @@ class Personaje
 
 		Textura *texturaSonic;
 
+		int id;
 		int personajeAncho;
 		int personajeAlto;
 		int personajeVelocidad;
@@ -54,11 +56,12 @@ class Personaje
 		void cargarSpriteSonic();
 		void dejarDeEstarQuieto();
 		std::string intToString(int number);
+		std::string intToStringConPadding(int number);
 
 
     public:
 
-		Personaje(int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log);
+		Personaje(int id, int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log);
 		virtual ~Personaje();
 
 		void mover(SDL_Rect *limites, float tiempoDeJuego);

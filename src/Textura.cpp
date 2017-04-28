@@ -20,7 +20,7 @@ Textura::Textura()
 	this->renderizador = NULL;
 }
 
-void Textura::cargarImagen(std::string path,SDL_Renderer* render, Logger *log)
+void Textura::cargarImagenCapa(std::string path,SDL_Renderer* render, Logger *log)
 {
 	log->setModulo("TEXTURA");
 	log->addLogMessage("[CARGAR IMAGEN] Iniciado.", 2);
@@ -40,11 +40,11 @@ void Textura::cargarImagen(std::string path,SDL_Renderer* render, Logger *log)
 		log->addLogMessage("[CARGAR IMAGEN] Error cargando capa 1, se cargara la capa 1 por default", 1);
 		//printf( "incapaz de crear imagen %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
 	}
-	if(superficie == NULL)
+	/*if(superficie == NULL)
 	{
 		superficie = IMG_Load( "images/sonicSprite.png" );
 		log->addLogMessage("[CARGAR IMAGEN] Error cargando imagen, se cargara imagen por default", 1);
-	}
+	}*/
 
 	//Color key image
 	SDL_SetColorKey( superficie, SDL_TRUE, SDL_MapRGB( superficie->format, 0, 0xFF, 0xFF ) );
@@ -64,6 +64,39 @@ void Textura::cargarImagen(std::string path,SDL_Renderer* render, Logger *log)
 		log->addLogMessage("[CARGAR IMAGEN] Textura-> Ancho: "+intToString(anchoTextura)+", Alto:"+intToString(altoTextura)+".", 3);
 	}
 	//liberar memoria de superficie creada
+	SDL_FreeSurface( superficie );
+	log->addLogMessage("[CARGAR IMAGEN] Terminado.", 2);
+}
+
+void Textura::cargarImagen(std::string path, std::string porDefecto, SDL_Renderer* render, Logger *log)
+{
+	log->setModulo("TEXTURA");
+	log->addLogMessage("[CARGAR IMAGEN] Iniciado.", 2);
+	this->renderizador = render;
+	//en caso que hubiera una textura creada, la libero para podeer crear otra
+	this->liberarTextura();
+	SDL_Surface* superficie = IMG_Load(path.c_str());
+	if(superficie == NULL)
+	{
+		superficie = IMG_Load(porDefecto.c_str());
+		log->addLogMessage("[CARGAR IMAGEN] Error cargando imagen, se cargara imagen por default", 1);
+	}
+
+	SDL_SetColorKey( superficie, SDL_TRUE, SDL_MapRGB( superficie->format, 0, 0xFF, 0xFF ) );
+    textura = SDL_CreateTextureFromSurface( renderizador, superficie );
+
+	if( textura == NULL )
+	{
+		printf( "Incapaz de crear textura %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
+		log->addLogMessage("[CARGAR IMAGEN] Error creando la textura.", 1);
+	}
+	else
+	{
+		anchoTextura = superficie->w;
+		altoTextura = superficie->h;
+		log->addLogMessage("[CARGAR IMAGEN] Textura-> Ancho: "+intToString(anchoTextura)+", Alto:"+intToString(altoTextura)+".", 3);
+	}
+	//Liberar memoria de superficie creada
 	SDL_FreeSurface( superficie );
 	log->addLogMessage("[CARGAR IMAGEN] Terminado.", 2);
 }

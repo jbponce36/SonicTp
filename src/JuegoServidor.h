@@ -16,6 +16,7 @@
 #include "Logger.h"
 #include "parseadorJson.h"
 #include "Hilo.h"
+#include <vector>
 
 class JuegoServidor {
 
@@ -25,6 +26,8 @@ private:
 	ConexServidor *server;
 	Logger *log;
 	Hilo *hiloJuego;
+	int cantJugadores;
+	std::vector<Personaje*> sonics;
 
 public:
 	JuegoServidor();
