@@ -8,7 +8,7 @@
 #include "ControlServidor.h"
 
 ControlServidor::ControlServidor(int posicionX, int posicionY, std::vector<Personaje*> sonics,
-	std::vector<Hiloenviar*> hiloEnviar, std::vector<Hilorecibir*> hiloRecibir, ConexServidor *server, Logger *log)
+	std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir, ConexServidor *server, Logger *log)
 : posicionInicialX(posicionX), posicionInicialY(posicionY), server(server), log(log),
   sonics(sonics), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir)
 {
@@ -26,33 +26,88 @@ ControlServidor::~ControlServidor() {
 void ControlServidor::administrarTeclasServidor()
 {
 	//Setea las teclas presionadas de los sonics segun el mensaje
-
-	//TODO: Aca recibe los eventos de las teclas presionadas de todos los sonics
-	//O que tenga una cola de eventos que los vaya recibiendo el hilorecibir
-	//Si son eventos de teclado:
-	//controlador->administrarTeclasServidor();
-
-	//Por cada mensaje de tecla presionada, obtiene el id y segun el id y el mensaje,
-	//setea que tecla se presiono o libero
-
 	std::string mensaje;
-	unsigned int cantHilos = hilosRecibir.size();
+	unsigned int cantHilos = hilosRecibir->size();
 	for(unsigned int i=0; i<cantHilos; i++)
 	{
-		mensaje = hilosRecibir.at(i)->obtenerElementoDeLaCola();
+		mensaje = hilosRecibir->at(i)->obtenerElementoDeLaCola();
 		while ((mensaje) != ("Sin elementos"))
 		{
-			hilosRecibir.at(i)->eliminarPrimerElementoDeLaCola();
-			//Proceso mensaje
-			///////////
-
+			//Segun la tecla seteo el vector de teclas
 			cout << "Control recibio: "<< mensaje << endl;
-			mensaje = hilosRecibir.at(i)->obtenerElementoDeLaCola();
+
+			//Idea: Quizas:
+			//Si la tecla ya estaba seteada significa que hubo un error y hay que corregir la posicion del sonic
+			std::string tecla = mensaje.substr(1, 3);
+
+			if(tecla.compare(TECLA_ARRIBA_PRESIONADA) == 0){
+				teclas.at(i).teclaArriba = true;
+				sonics.at(i)->saltar();
+			}
+			else if(tecla.compare(TECLA_ABAJO_PRESIONADA) == 0){
+				teclas.at(i).teclaAbajo = true;
+			}
+			else if(tecla.compare(TECLA_DERECHA_PRESIONADA) == 0){
+				teclas.at(i).teclaDerecha = true;
+			}
+			else if(tecla.compare(TECLA_IZQUIERDA_PRESIONADA) == 0){
+				teclas.at(i).teclaIzquierda = true;
+			}
+			else if(tecla.compare(TECLA_CORRER_PRESIONADA) == 0){
+				teclas.at(i).teclaCorrer = true;
+			}
+			else if(tecla.compare(TECLA_ARRIBA_LIBERADA) == 0){
+				teclas.at(i).teclaArriba = false;
+				sonics.at(i)->dejarDeSaltar();
+			}
+			else if(tecla.compare(TECLA_ABAJO_LIBERADA) == 0){
+				teclas.at(i).teclaAbajo = false;
+			}
+			else if(tecla.compare(TECLA_DERECHA_LIBERADA) == 0){
+				teclas.at(i).teclaDerecha = false;
+			}
+			else if(tecla.compare(TECLA_IZQUIERDA_LIBERADA) == 0){
+				teclas.at(i).teclaIzquierda = false;
+			}
+			else if(tecla.compare(TECLA_CORRER_LIBERADA) == 0){
+				teclas.at(i).teclaCorrer = false;
+			}
+
+			//Siguiente mensaje
+			mensaje = hilosRecibir->at(i)->obtenerElementoDeLaCola();
 
 		}
+		moverSonicSegunTeclas(i);
 	}
 
+}
 
+void ControlServidor::moverSonicSegunTeclas(int i)
+{
+	teclasPresionadas t = teclas.at(i);
+	Personaje* sonic = sonics.at(i);
+
+	if((!t.teclaArriba) && (!t.teclaAbajo) && (!t.teclaDerecha) && (!t.teclaIzquierda)){
+		sonic->parar();
+	}
+
+	sonic->correr(t.teclaCorrer);
+
+	if(t.teclaArriba){
+		sonic->irArriba();
+	}
+
+	if(t.teclaAbajo){
+		sonic->irAbajo();
+	}
+
+	if(t.teclaDerecha){
+		sonic->irDerecha();
+	}
+
+	if(t.teclaIzquierda){
+		sonic->irIzquierda();
+	}
 }
 
 void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara)
@@ -69,6 +124,11 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		tiempoDeJuego = SDL_GetTicks();
 
 		camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario()); //Mueve la camara segun los sonics
+
+		/*Para ver lo que pasa en el juego del servidor. (Poner false al crear la VistaSDL en JuegoServidor)*/
+		//(*pos)->render(camara->getPosicionX(), camara->getPosicionY());
+		//SDL_RenderPresent( vista->obtenerRender());
+		/*Hasta aca*/
 	}
 }
 
@@ -77,6 +137,8 @@ void ControlServidor::actualizarVistaServidor()
 	//Aca le envio a todos los clientes la posicion y sprite de todos los otros clientes.
 	//for(cada sonic del servidor)
 	//server->enviarATodos(posicion, sprite);
+
+
 }
 
 std::string ControlServidor::intToString(int number)
@@ -101,8 +163,6 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 	Uint32 tiempoDeJuego = 0;
 	Uint32 tiempoInicio, tiempoFin, delta;
-
-	//ControladorTeclas controlador = ControladorTeclas();
 
 	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana());
 

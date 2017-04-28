@@ -9,9 +9,9 @@
 
 JuegoServidor::JuegoServidor()
 : vista(NULL), control(NULL), server(NULL), log(NULL),
-  hiloJuego(NULL), hilosEnviar(), hilosRecibir(),
+  hiloJuego(NULL), hilosEnviar(NULL), hilosRecibir(NULL),
   cantJugadores(0), sonics(), juegoTerminado(false){
-	//Las variables se setean al llamar a iniciarJuegoCliente desde el thread
+	//Las variables se setean desde el thread
 }
 
 JuegoServidor::~JuegoServidor()
@@ -24,18 +24,19 @@ JuegoServidor::~JuegoServidor()
 	delete vista;
 }
 
-JuegoServidor::JuegoServidor(ConexServidor *server, std::vector<Hiloenviar*> hiloEnviar, std::vector<Hilorecibir*> hiloRecibir, Logger *log)
+JuegoServidor::JuegoServidor(ConexServidor *server,
+	std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir, Logger *log)
 : vista(NULL), control(NULL),server(server), log(log),
   hiloJuego(NULL), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir),
   cantJugadores(server->getCantclientes()), sonics(), juegoTerminado(false){
-	//Vista, sonic y control se setean al llamar a iniciarJuegoCliente desde el thread
+	//Vista, sonic y control se setean desde el thread
 
-	//Tiene una copia del vector del main.
-	//TODO: Ver si es mejor un puntero al vector del main o traer toda la creacion de los hilos aca...?
 }
 
 void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
 {
+	/*Nota para pruebas:
+	Para mostrar la vista del servidor pasarle false y descomentar en ControlServidor::moverPersonajesServidor*/
 	vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, true);
 
 	int velocidad = jparseador->getConfiguracion()->getvelscroll();

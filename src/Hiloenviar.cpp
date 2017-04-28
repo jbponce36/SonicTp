@@ -27,11 +27,11 @@ void Hiloenviar::setH(Hilo hil){
 
 void Hiloenviar::IniciarHilo(/*struct parametrosEnviar *parametros*/){
 
-	Hilo *hilos = new Hilo(/*log*/);
+	Hilo hilos = Hilo(/*log*/);
 
-	hilos->Create((void *)Hiloenviar::serverEnviar ,  (void *)&parametros);
+	hilos.Create((void *)Hiloenviar::serverEnviar ,  (void *)&parametros);
 
-	this->setH(*hilos);
+	this->setH(hilos);
 }
 void *Hiloenviar::serverEnviar(void *args){
 	SerParametros *parametros = (SerParametros*) args;

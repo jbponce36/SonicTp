@@ -17,6 +17,10 @@ JuegoCliente::~JuegoCliente() {
 	delete vista;
 	delete sonic;
 	delete control;
+
+	delete hiloJuego;
+	delete hiloRecibir;
+	delete hiloEnviar;
 }
 
 JuegoCliente::JuegoCliente(ConexCliente *cliente, Logger *log)
@@ -46,10 +50,6 @@ void JuegoCliente::iniciarHilos()
 
 	hiloJuego = new Hilo();
 
-	//struct Datos datos;
-	//datos.cliente = cliente;
-	//datos.log = log;
-
 	hiloJuego->Create((void *)iniciarJuegoCliente, (void *)this);
 }
 
@@ -64,8 +64,18 @@ void JuegoCliente::inicializarJuegoCliente(/*std::jescenarioJuego *jparseador*/)
 {
 	//vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, false);
 
-	sonic = new Personaje(1, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
-	//Pasarle el id correcto, no 1!!
+	//Espera hasta recibir el primer mensaje que debe ser el id.
+	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
+	while (mensaje == "Sin elementos"){
+		mensaje = hiloRecibir->obtenerElementoDeLaCola();
+	}
+
+	int id = 0;
+	if (mensaje.length() == 1){
+		id = atoi(mensaje.c_str());
+	}
+	cout << "Se crea personaje con id " << id << endl;
+	sonic = new Personaje(id, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
 	control = new Control(0, 0, log);
 }
 
@@ -76,15 +86,16 @@ void JuegoCliente::iniciarJuegoControlCliente()
 
 //se agrego esto para poder la vista afuera y poder usar el menu
 void JuegoCliente::CargarVistaParaElMenu(){
-	parseadorJson* parseador = new parseadorJson(log);
+	parseadorJson parseador = parseadorJson(log);
 
 	char *file=(char*)"configuracion/configuracion.json";
-	jescenarioJuego* jparseador = parseador->parsearArchivo(file);
+	jescenarioJuego* jparseador = parseador.parsearArchivo(file);
 
 	log->setModulo("JUEGO_CLIENTE");
 	log->addLogMessage("Se inicia el juego.",1);
 
 	vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, false);
+
 }
 
 void JuegoCliente::iniciarJuego()

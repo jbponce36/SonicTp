@@ -50,9 +50,6 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, ConexClie
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
 		administrarTeclas(&controlador, sonic, cliente);
-		/////Mandarle al server las teclas que movio...???
-		/////El server calcula el movimiento y las animaciones igual que aca
-		/////Sabe donde esta y que animacion tiene cada sonic.
 		moverPersonaje(tiempoDeJuego, vista, sonic, camara);
 		/////Corregir posicion???? Recibir del server las posiciones de otros sonics y sus animaciones
 		/////y mostrarlos en actualizarVista
@@ -115,10 +112,6 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenM
 
 	//dibujo el personaje
 	sonic->render(camara->getPosicionX(), camara->getPosicionY());
-
-			////////Para prueba
-			sonics.at(1)->render(camara->getPosicionX(), camara->getPosicionY());
-			///////Fin prueba
 
 	//muestro la imagen
 	SDL_RenderPresent( vista->obtenerRender());

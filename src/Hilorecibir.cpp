@@ -19,11 +19,11 @@ Hilorecibir::~Hilorecibir() {
 
 void Hilorecibir::IniciarHilo(){
 
-	Hilo *hilos = new Hilo(/*log*/);
+	Hilo hilos = Hilo(/*log*/);
 
-	hilos->Create((void *)Hilorecibir::serverRecibir ,  (void *)&parametros);
+	hilos.Create((void *)Hilorecibir::serverRecibir ,  (void *)&parametros);
 
-    this->setH(*hilos);
+    this->setH(hilos);
 
 }
 
@@ -42,7 +42,7 @@ void *Hilorecibir::serverRecibir(void *args){
 		char buffer[40];
 		//Serparametros *parametros = (Serparametros*) args;
 		int result = 1;
-		parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
+		//parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
 
 		while (result>0){
 				result = parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
@@ -80,21 +80,15 @@ void Hilorecibir::Join()
 
 std::string Hilorecibir::obtenerElementoDeLaCola()
 {
+	//Obtiene el primer elemento de la cola y lo saca.
 	if(! parametros.colaDeMensajes.getColaPaquetes().empty())
 	{
 		char* cadena = parametros.colaDeMensajes.obtenerElementoDelaCola();
 		std::string str = std::string(cadena);
+		parametros.colaDeMensajes.eliminarElPrimetoDeLaCola();
 		return str;
 	}
 	return "Sin elementos";
-}
-
-void Hilorecibir::eliminarPrimerElementoDeLaCola()
-{
-	if(! parametros.colaDeMensajes.getColaPaquetes().empty())
-	{
-		parametros.colaDeMensajes.eliminarElPrimetoDeLaCola();
-	}
 }
 
 

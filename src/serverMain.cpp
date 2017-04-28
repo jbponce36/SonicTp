@@ -38,9 +38,8 @@ int main(int argc, char *argv[]) {
 	//jsonSer->parsearArchivo(server->cargarNombreArchivo());
 	server->crear();
 	server->enlazar(8080);
-	server->escuchar(1);
+	server->escuchar(2);
 
-	//Lo cambie a vector porque necesito hacer at() en algun momento...
 	vector<Hilorecibir*> hrRecibir;
 	vector<Hiloenviar*> hrEnviar;
 
@@ -90,7 +89,7 @@ int main(int argc, char *argv[]) {
 	printf("Habria que enviarle a todos los clientes el mensaje empece la partida \n");
 	server->comenzarPartida();
 
-	JuegoServidor juego = JuegoServidor(server, hrEnviar, hrRecibir, log);
+	JuegoServidor juego = JuegoServidor(server, &hrEnviar, &hrRecibir, log);
 	juego.iniciarHiloJuego();
 
 	while(!server->finalizar()){
@@ -130,6 +129,21 @@ int main(int argc, char *argv[]) {
 
      }
 
+
+	//Cerrar y liberar memoria
 	server->cerrar();
+
+	delete log;
+	delete server;
+	delete jsonSer;
+
+	for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
+		delete (*posrecibir);
+	}
+
+	for(posenviar = hrEnviar.begin(); posenviar!=hrEnviar.end(); posenviar++){
+		delete (*posenviar);
+	 }
+
 	return 0;
 }

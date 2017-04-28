@@ -56,3 +56,16 @@ void HiloRecibirCliente::Join()
 	parametros.continuar = false;
 	hilo->Join();
 }
+
+std::string HiloRecibirCliente::obtenerElementoDeLaCola()
+{
+	//Obtiene el primer elemento de la cola y lo saca.
+	if(! parametros.colaPaquete.getColaPaquetes().empty())
+	{
+		char* cadena = parametros.colaPaquete.obtenerElementoDelaCola();
+		std::string str = std::string(cadena);
+		parametros.colaPaquete.eliminarElPrimetoDeLaCola();
+		return str;
+	}
+	return "Sin elementos";
+}

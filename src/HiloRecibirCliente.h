@@ -33,6 +33,7 @@ public:
 	Serparametros parametros;
 
 	void Join();
+	std::string obtenerElementoDeLaCola();
 };
 
 #endif /* HILORECIBIRCLIENTE_H_ */

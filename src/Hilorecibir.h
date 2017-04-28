@@ -36,7 +36,6 @@ public:
     void setH(Hilo);
     void Join();
     std::string obtenerElementoDeLaCola();
-    void eliminarPrimerElementoDeLaCola();
 
 
 private:

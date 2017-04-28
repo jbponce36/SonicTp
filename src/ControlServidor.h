@@ -14,9 +14,10 @@
 #include "Logger.h"
 #include "Hiloenviar.h"
 #include "Hilorecibir.h"
+#include "Definiciones.h"
 #include <string>
 #include <vector>
-#include <map>
+
 #define FPS_SERVER 30
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
 #define LARGO_MENSAJE_SERVIDOR 14
@@ -30,8 +31,8 @@ private:
 	Logger *log;
 
 	std::vector<Personaje*> sonics;
-	std::vector<Hiloenviar*> hilosEnviar;
-	std::vector<Hilorecibir*> hilosRecibir;
+	std::vector<Hiloenviar*> *hilosEnviar;
+	std::vector<Hilorecibir*> *hilosRecibir;
 
 	typedef struct teclasPresionadas{
 		bool teclaArriba;
@@ -45,7 +46,7 @@ private:
 
 public:
 	ControlServidor(int altura, int anchura, std::vector<Personaje*> sonics,
-		std::vector<Hiloenviar*> hiloEnviar, std::vector<Hilorecibir*> hiloRecibir, ConexServidor *server, Logger *log);
+		std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir, ConexServidor *server, Logger *log);
 	virtual ~ControlServidor();
 
 	void ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado);
@@ -53,6 +54,7 @@ public:
 
 private:
 	void administrarTeclasServidor();
+	void moverSonicSegunTeclas(int indice);
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor();
 	void enviarATodos(std::string mensaje);
