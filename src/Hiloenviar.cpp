@@ -33,22 +33,35 @@ void Hiloenviar::IniciarHilo(/*struct parametrosEnviar *parametros*/){
 
 	this->setH(hilos);
 }
-void *Hiloenviar::serverEnviar(void *args){
+void *Hiloenviar::serverEnviar(void *args)
+{
 	SerParametros *parametros = (SerParametros*) args;
-	//hr->server->recibir(Pcliente->getClienteSocket(),buffer,sizeof(buffer));
-	while(1){ //ese 1 debe ser reemplazado por el bool que termina el juego.
-		if(!parametros->coladeMensajes->getColaPaquetes().empty()){
-			parametros->buffer = parametros->coladeMensajes->obtenerElementoDelaCola();
-			int status = parametros->server->enviar(parametros->skt,parametros->buffer,strlen(parametros->buffer));
+	bool salir = false;
+	while(salir == false){
+		int result = 1;
+			while (result>0){
+				if(parametros->buffer != "")
+				{
 
-			if(status < 0){
-				cout<<"[HILO ENVIAR][SERVER ENVIAR] Error"<<endl;
-			}
-			else{
-				cout<<"[HILO ENVIAR][SERVER ENVIAR] Se envio el mensaje correctamente"<<endl;
+				result = parametros->server->enviar(parametros->skt,parametros->buffer,sizeof(parametros->buffer));
+
+				if (result>0){
+					cout<<"server envio: "<<parametros->buffer<<endl;
+				}
+
+				if (result==0){
+					printf("El cliente se desconecto. \n");
+					salir = false;
+				}
+
+				if (result==-1){
+					printf("El cliente se desconecto. \n");
+					salir = false;
+				}
+				parametros->buffer = "";
+				}
 			}
 		}
-	}
 }
 
 void Hiloenviar::Join()
@@ -57,6 +70,10 @@ void Hiloenviar::Join()
 	h.Join();
 }
 
+void Hiloenviar::enviarBuffer(char* arg){
+
+	parametros.buffer = arg;
+}
 
 }
 /* namespace std */
