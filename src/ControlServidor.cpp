@@ -30,7 +30,7 @@ void ControlServidor::administrarTeclasServidor()
 	unsigned int cantHilos = hilosRecibir->size();
 	for(unsigned int i=0; i<cantHilos; i++)
 	{
-		//mensaje = hilosRecibir->at(i)->obtenerElementoDeLaCola();
+		mensaje = hilosRecibir->at(i)->obtenerElementoDeLaCola();
 		while ((mensaje) != ("Sin elementos"))
 		{
 			//Segun la tecla seteo el vector de teclas
@@ -81,7 +81,7 @@ void ControlServidor::administrarTeclasServidor()
 				//No es un mensaje de tecla apretada. Ver que otros mensajes puede recibir.
 			}
 			//Siguiente mensaje
-			//mensaje = hilosRecibir->at(i)->obtenerElementoDeLaCola();
+			mensaje = hilosRecibir->at(i)->obtenerElementoDeLaCola();
 
 		}
 		moverSonicSegunTeclas(i);
