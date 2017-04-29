@@ -109,7 +109,7 @@ int ConexServidor::aceptarcliente()
 			const char* mensaje = "Conexion rechazada. Numero maximo de conexiones establecidas";
 			send(fdCliente, mensaje, strlen(mensaje), MSG_DONTWAIT);
 			close(fdCliente);
-			fdCliente -1;
+			fdCliente = -1;
 
 		}
 		else

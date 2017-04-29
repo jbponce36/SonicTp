@@ -77,6 +77,8 @@ int main(int argc, char *argv[]) {
 			cout << "Server envio ID: " << buffer << endl;
 			id++;
 
+			//Enviar cantidad de personajes maxima! Asi el Control del cliente los dibuja :)
+
 			henviar->parametros.buffer = buffer;
 			henviar->IniciarHilo();
 			hrEnviar.push_back(henviar);
@@ -89,8 +91,8 @@ int main(int argc, char *argv[]) {
 	printf("Habria que enviarle a todos los clientes el mensaje empece la partida \n");
 	server->comenzarPartida();
 
-	JuegoServidor juego = JuegoServidor(server, &hrEnviar, &hrRecibir, log);
-	juego.iniciarHiloJuego();
+	JuegoServidor *juego = new JuegoServidor(server, &hrEnviar, &hrRecibir, log);
+	juego->iniciarHiloJuego();
 
 	while(!server->finalizar()){
 	//while(1){
@@ -115,7 +117,7 @@ int main(int argc, char *argv[]) {
 		}
     }
 
-	juego.terminarHiloJuego();
+	juego->terminarHiloJuego();
 
 	vector<Hilorecibir*>::iterator posrecibir;
 	vector<Hiloenviar*>::iterator posenviar;
@@ -133,10 +135,6 @@ int main(int argc, char *argv[]) {
 	//Cerrar y liberar memoria
 	server->cerrar();
 
-	delete log;
-	delete server;
-	delete jsonSer;
-
 	for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
 		delete (*posrecibir);
 	}
@@ -144,6 +142,11 @@ int main(int argc, char *argv[]) {
 	for(posenviar = hrEnviar.begin(); posenviar!=hrEnviar.end(); posenviar++){
 		delete (*posenviar);
 	 }
+
+	delete server;
+	delete jsonSer;
+	delete juego;
+	delete log;
 
 	return 0;
 }

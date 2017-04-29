@@ -336,8 +336,10 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 
 		imagenMostrar.x = 0;
 		imagenMostrar.y = 0;
-		imagenMostrar.w = menuInicial->obtenerAnchoTextura();
-		imagenMostrar.h = menuInicial->obtenerAltoTextura();
+		//imagenMostrar.w = menuInicial->obtenerAnchoTextura();
+		//imagenMostrar.h = menuInicial->obtenerAltoTextura();
+		imagenMostrar.w = anchoVentana;
+		imagenMostrar.h = altoVentana;
 		menuInicial->renderizar(&camara,&imagenMostrar);
 		camara.w = texturaConectar->obtenerAnchoTextura();
 		camara.h = texturaConectar->obtenerAltoTextura();
