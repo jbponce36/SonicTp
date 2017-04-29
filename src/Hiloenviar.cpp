@@ -33,19 +33,35 @@ void Hiloenviar::IniciarHilo(/*struct parametrosEnviar *parametros*/){
 
 	this->setH(hilos);
 }
-void *Hiloenviar::serverEnviar(void *args){
+void *Hiloenviar::serverEnviar(void *args)
+{
 	SerParametros *parametros = (SerParametros*) args;
-	//hr->server->recibir(Pcliente->getClienteSocket(),buffer,sizeof(buffer));
+	bool salir = false;
+	while(salir == false){
+		int result = 1;
+			while (result>0){
+				if(parametros->buffer != "")
+				{
 
-	int status = parametros->server->enviar(parametros->skt,parametros->buffer,strlen(parametros->buffer));
+				result = parametros->server->enviar(parametros->skt,parametros->buffer,sizeof(parametros->buffer));
 
-	if(status < 0){
-		cout<<"[HILO ENVIAR][SERVER ENVIAR] Error"<<endl;
-	}
-	else{
-		cout<<"[HILO ENVIAR][SERVER ENVIAR] Se envio el mensaje correctamente"<<endl;
-	}
+				if (result>0){
+					cout<<"server envio: "<<parametros->buffer<<endl;
+				}
 
+				if (result==0){
+					printf("El cliente se desconecto. \n");
+					salir = false;
+				}
+
+				if (result==-1){
+					printf("El cliente se desconecto. \n");
+					salir = false;
+				}
+				parametros->buffer = "";
+				}
+			}
+		}
 }
 
 void Hiloenviar::Join()
@@ -53,4 +69,11 @@ void Hiloenviar::Join()
 	continuar = false;
 	h.Join();
 }
-} /* namespace std */
+
+void Hiloenviar::enviarBuffer(char* arg){
+
+	parametros.buffer = arg;
+}
+
+}
+/* namespace std */
