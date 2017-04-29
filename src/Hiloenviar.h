@@ -38,6 +38,8 @@ public:
 	void Join();
 	void enviarBuffer(char* arg);
 
+	void enviarBuffer(char* arg);
+
 private:
 	Hilo h;
 	bool continuar;
