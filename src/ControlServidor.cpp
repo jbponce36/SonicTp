@@ -38,41 +38,48 @@ void ControlServidor::administrarTeclasServidor()
 
 			//Idea: Quizas:
 			//Si la tecla ya estaba seteada significa que hubo un error y hay que corregir la posicion del sonic
-			mensajeRecibido msj = parsearMensaje(mensaje);
+			if (mensaje.length() == LARGO_MENSAJE_POSICION_CLIENTE)
+			{
+				mensajeRecibido msj = parsearMensajePosicion(mensaje);
+				int indice = msj.id - 1;
 
-			if(msj.tecla.compare(TECLA_ARRIBA_PRESIONADA) == 0){
-				teclas.at(i).teclaArriba = true;
-				sonics.at(i)->saltar();
+				if(msj.tecla.compare(TECLA_ARRIBA_PRESIONADA) == 0){
+					teclas.at(indice).teclaArriba = true;
+					sonics.at(indice)->saltar();
+				}
+				else if(msj.tecla.compare(TECLA_ABAJO_PRESIONADA) == 0){
+					teclas.at(indice).teclaAbajo = true;
+				}
+				else if(msj.tecla.compare(TECLA_DERECHA_PRESIONADA) == 0){
+					teclas.at(indice).teclaDerecha = true;
+				}
+				else if(msj.tecla.compare(TECLA_IZQUIERDA_PRESIONADA) == 0){
+					teclas.at(indice).teclaIzquierda = true;
+				}
+				else if(msj.tecla.compare(TECLA_CORRER_PRESIONADA) == 0){
+					teclas.at(indice).teclaCorrer = true;
+				}
+				else if(msj.tecla.compare(TECLA_ARRIBA_LIBERADA) == 0){
+					teclas.at(indice).teclaArriba = false;
+					sonics.at(indice)->dejarDeSaltar();
+				}
+				else if(msj.tecla.compare(TECLA_ABAJO_LIBERADA) == 0){
+					teclas.at(indice).teclaAbajo = false;
+				}
+				else if(msj.tecla.compare(TECLA_DERECHA_LIBERADA) == 0){
+					teclas.at(indice).teclaDerecha = false;
+				}
+				else if(msj.tecla.compare(TECLA_IZQUIERDA_LIBERADA) == 0){
+					teclas.at(indice).teclaIzquierda = false;
+				}
+				else if(msj.tecla.compare(TECLA_CORRER_LIBERADA) == 0){
+					teclas.at(indice).teclaCorrer = false;
+				}
 			}
-			else if(msj.tecla.compare(TECLA_ABAJO_PRESIONADA) == 0){
-				teclas.at(i).teclaAbajo = true;
+			else
+			{
+				//No es un mensaje de tecla apretada. Ver que otros mensajes puede recibir.
 			}
-			else if(msj.tecla.compare(TECLA_DERECHA_PRESIONADA) == 0){
-				teclas.at(i).teclaDerecha = true;
-			}
-			else if(msj.tecla.compare(TECLA_IZQUIERDA_PRESIONADA) == 0){
-				teclas.at(i).teclaIzquierda = true;
-			}
-			else if(msj.tecla.compare(TECLA_CORRER_PRESIONADA) == 0){
-				teclas.at(i).teclaCorrer = true;
-			}
-			else if(msj.tecla.compare(TECLA_ARRIBA_LIBERADA) == 0){
-				teclas.at(i).teclaArriba = false;
-				sonics.at(i)->dejarDeSaltar();
-			}
-			else if(msj.tecla.compare(TECLA_ABAJO_LIBERADA) == 0){
-				teclas.at(i).teclaAbajo = false;
-			}
-			else if(msj.tecla.compare(TECLA_DERECHA_LIBERADA) == 0){
-				teclas.at(i).teclaDerecha = false;
-			}
-			else if(msj.tecla.compare(TECLA_IZQUIERDA_LIBERADA) == 0){
-				teclas.at(i).teclaIzquierda = false;
-			}
-			else if(msj.tecla.compare(TECLA_CORRER_LIBERADA) == 0){
-				teclas.at(i).teclaCorrer = false;
-			}
-
 			//Siguiente mensaje
 			mensaje = hilosRecibir->at(i)->obtenerElementoDeLaCola();
 
@@ -82,21 +89,21 @@ void ControlServidor::administrarTeclasServidor()
 
 }
 
-ControlServidor::mensajeRecibido ControlServidor::parsearMensaje(std::string mensaje)
+ControlServidor::mensajeRecibido ControlServidor::parsearMensajePosicion(std::string mensaje)
 {
 	mensajeRecibido msj;
 	msj.id = atoi(mensaje.substr(0, 1).c_str());
 	msj.tecla = mensaje.substr(1, 3);
 
-	std::string posX = mensaje.substr(4, 4);
-	std::string posY = mensaje.substr(8, 4);
+	std::string posX = mensaje.substr(5, 4);
+	std::string posY = mensaje.substr(10, 4);
 	posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
 	posY.erase(std::remove(posY.begin(), posY.end(), PADDING), posY.end());
 
 	msj.posX = atoi(posX.c_str());
 	msj.posY = atoi(posY.c_str());
 
-	cout << msj.id << " " << msj.tecla << " " << msj.posX << " " << msj.posY << endl;
+	//cout << msj.id << " " << msj.tecla << " " << msj.posX << " " << msj.posY << endl;
 	return msj;
 }
 
@@ -126,6 +133,26 @@ void ControlServidor::moverSonicSegunTeclas(int i)
 	if(t.teclaIzquierda){
 		sonic->irIzquierda();
 	}
+
+	//Corregir posicion
+	/*if((posXCliente > -1) || (posYCliente >-1))
+	{
+		int dx = 0, dy = 0;
+		int posXServidor = sonic->getPosicionX();
+		int posYServidor = sonic->getPosicionY();
+		if(posXCliente > -1)
+		{
+			dx = posXCliente - posXServidor;
+			dx = dx / 2;
+		}
+		if(posYCliente > -1)
+		{
+			dy = posYCliente - posYServidor;
+			dy = dy / 2;
+		}
+		sonic->posicionarseEn(posXServidor + dx, posYServidor + dy);
+	}*/
+
 }
 
 void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara)
@@ -182,7 +209,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	Uint32 tiempoDeJuego = 0;
 	Uint32 tiempoInicio, tiempoFin, delta;
 
-	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana());
+	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana(), &sonics);
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !juegoTerminado ){

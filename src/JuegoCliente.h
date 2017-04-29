@@ -33,6 +33,7 @@ private:
 	Hilo *hiloJuego;
 
 	int maxJugadores;
+	std::vector<Personaje*> sonics;
 
 public:
 	JuegoCliente();
@@ -50,6 +51,7 @@ public:
 	};
 
 private:
+	void inicializarOtrosSonics(int id);
 	static void* iniciarJuegoCliente(void *datos);
 	void inicializarJuegoCliente(/*std::jescenarioJuego *jparseador*/); //Inicializa control, vista y sonic
 	void iniciarJuegoControlCliente(); //Llama al juego propiamente dicho (Control::ControlarJuego)

@@ -61,7 +61,7 @@ public:
 
 private:
 	void administrarTeclasServidor();
-	ControlServidor::mensajeRecibido parsearMensaje(std::string mensaje);
+	ControlServidor::mensajeRecibido parsearMensajePosicion(std::string mensaje);
 	void moverSonicSegunTeclas(int indice);
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor();

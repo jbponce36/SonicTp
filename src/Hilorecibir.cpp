@@ -60,7 +60,7 @@ void *Hilorecibir::serverRecibir(void *args){
 					printf("El cliente se desconecto satisfactoriamente. \n");
 					parametros->continuar = false;
 				}
-				parametros->colaDeMensajes->agregar(buffer);
+				parametros->colaDeMensajes.agregar(buffer);
 		}
 	}
 	/*cout<<"--------------------------------------"<<endl;
@@ -77,4 +77,18 @@ void Hilorecibir::Join()
 	parametros.continuar = false;
 	h.Join();
 }
-} /* namespace std */
+
+std::string Hilorecibir::obtenerElementoDeLaCola()
+{
+	//Obtiene el primer elemento de la cola y lo saca.
+	if(! parametros.colaDeMensajes.getColaPaquetes().empty())
+	{
+		char* cadena = parametros.colaDeMensajes.obtenerElementoDelaCola();
+		std::string str = std::string(cadena);
+		parametros.colaDeMensajes.eliminarElPrimetoDeLaCola();
+		return str;
+	}
+	return "Sin elementos";
+}
+
+}

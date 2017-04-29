@@ -13,8 +13,6 @@
 #include "Definiciones.h"
 
 #define GRAVEDAD 9
-#define MAX_CANT_DIGITOS_POS 4
-#define LARGO_MENSAJE_CLIENTE 14
 #define IMAGEN_POR_DEFECTO "images/sonicSprite.png"
 
 class Personaje
@@ -59,10 +57,12 @@ class Personaje
 		std::string intToString(int number);
 		std::string intToStringConPadding(int number);
 
+		ConexCliente *cliente; //<-------- Borrarlo cuando el enviar del hilo ande bien!
 
     public:
 
 		Personaje(int id, int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log);
+		Personaje(int id, int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log, ConexCliente *cliente);
 		virtual ~Personaje();
 
 		void mover(SDL_Rect *limites, float tiempoDeJuego);

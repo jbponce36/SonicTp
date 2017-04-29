@@ -9,7 +9,7 @@
 
 JuegoCliente::JuegoCliente()
 : vista(NULL), sonic(NULL), control(NULL), cliente(NULL), log(NULL),
-  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0){
+  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0), sonics(){
 	//Las variables se setean al llamar a iniciarJuegoCliente desde el thread
 }
 
@@ -21,11 +21,16 @@ JuegoCliente::~JuegoCliente() {
 	delete hiloJuego;
 	delete hiloRecibir;
 	delete hiloEnviar;
+
+	std::vector<Personaje*>::iterator pos;
+	for(pos = sonics.begin();pos != sonics.end();pos++){
+		delete (*pos);
+	}
 }
 
 JuegoCliente::JuegoCliente(ConexCliente *cliente, Logger *log)
 : vista(NULL), sonic(NULL), control(NULL), cliente(cliente), log(log),
-  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0){
+  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0), sonics(){
 	//Vista, sonic y control se setean al llamar a iniciarJuegoCliente desde el thread
 }
 
@@ -82,8 +87,26 @@ void JuegoCliente::inicializarJuegoCliente(/*std::jescenarioJuego *jparseador*/)
 
 	}
 	cout << "Se crea personaje con id " << id << "Max jugadores: "<< maxJugadores <<endl;
-	sonic = new Personaje(id, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
-	control = new Control(0, 0, log);
+	sonic = new Personaje(id, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log, cliente);
+
+	inicializarOtrosSonics(id);
+	control = new Control(0, 0, maxJugadores, &sonics, log);
+}
+
+void JuegoCliente::inicializarOtrosSonics(int id)
+{
+	for (int i = 1; i <= maxJugadores; i++)
+	{
+		if(i != id)
+		{
+			Personaje *otroSonic = new Personaje(i, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log, cliente);
+			sonics.push_back(otroSonic);
+		}
+		else if (i == id)
+		{
+			sonics.push_back(sonic);
+		}
+	}
 }
 
 void JuegoCliente::iniciarJuegoControlCliente()

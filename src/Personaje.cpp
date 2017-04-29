@@ -34,6 +34,38 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->log = log;
 }
 
+Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log, ConexCliente *cliente)
+{
+	this->id = id;
+	this->texturaSonic = new Textura();
+	std::string rutaImagen = "images/sonicSprite" + intToString(id) +".png";
+	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
+
+	//dimensiones del personaje por defecto
+	this->personajeAncho = 50;
+	this->personajeAlto= 50;
+
+	this->personajeVelocidad = velocidad;
+	this->personajeAceleracion = velocidad/20;
+	//posicion por defecto
+    this->posicionX = POSICION_INICIALX;
+    this->posicionY = altoEscenario / 2;
+
+    this->velocidadX = 0;
+    this->velocidadY = personajeVelocidad;
+
+    this->orientacion = DERECHA;
+
+    this->saltando = true;
+    this->corriendo = false;
+    this->estaQuieto = true;
+    cargarSpriteSonic();
+
+    this->log = log;
+
+    this->cliente = cliente; //Borrar este metodo cuando ande bien el hiloEnviar!
+}
+
 void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 {
 	int maximoAlto = limites->h;
@@ -348,10 +380,10 @@ void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje
 	cout << "Cliente envio: "<< msj << '\n';
 	delete[] msj;*/
 
-	char buffer[LARGO_MENSAJE_CLIENTE] = "";
+	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
 	strcpy(buffer, mensaje.c_str());
-	//cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
-	hiloEnviar->parametros.buffer = buffer;
+	cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
+	//hiloEnviar->parametros.buffer = buffer;
 	cout << "Cliente envio: " << buffer << endl;
 
 }
