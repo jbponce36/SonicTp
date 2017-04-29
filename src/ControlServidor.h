@@ -17,6 +17,7 @@
 #include "Definiciones.h"
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #define FPS_SERVER 30
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
@@ -51,14 +52,22 @@ public:
 
 	void ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado);
 
+	typedef struct mensajeRecibido{
+		int id;
+		std::string tecla;
+		int posX;
+		int posY;
+	}mensajeRecibido;
 
 private:
 	void administrarTeclasServidor();
+	ControlServidor::mensajeRecibido parsearMensaje(std::string mensaje);
 	void moverSonicSegunTeclas(int indice);
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor();
 	void enviarATodos(std::string mensaje);
 	std::string intToString(int number);
+
 };
 
 #endif

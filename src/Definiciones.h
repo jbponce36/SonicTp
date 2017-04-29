@@ -28,5 +28,6 @@
 #define TECLA_IZQUIERDA_LIBERADA 	"TlL"
 #define TECLA_CORRER_LIBERADA	 	"TcL"
 
+#define PADDING "-"
 
 #endif

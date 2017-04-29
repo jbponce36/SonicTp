@@ -9,7 +9,7 @@
 
 JuegoCliente::JuegoCliente()
 : vista(NULL), sonic(NULL), control(NULL), cliente(NULL), log(NULL),
-  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL){
+  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0){
 	//Las variables se setean al llamar a iniciarJuegoCliente desde el thread
 }
 
@@ -25,7 +25,7 @@ JuegoCliente::~JuegoCliente() {
 
 JuegoCliente::JuegoCliente(ConexCliente *cliente, Logger *log)
 : vista(NULL), sonic(NULL), control(NULL), cliente(cliente), log(log),
-  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL){
+  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0){
 	//Vista, sonic y control se setean al llamar a iniciarJuegoCliente desde el thread
 }
 
@@ -70,18 +70,25 @@ void JuegoCliente::inicializarJuegoCliente(/*std::jescenarioJuego *jparseador*/)
 		mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	}
 
+	std::string ident = mensaje.substr(0,1);
+	std::string maxJug = mensaje.substr(1,1);
+
 	int id = 0;
-	if (mensaje.length() == 1){
-		id = atoi(mensaje.c_str());
+	if (mensaje.length() == 2){
+		std::string ident = mensaje.substr(0,1);
+		std::string maxJug = mensaje.substr(1,1);
+		id = atoi(ident.c_str());
+		maxJugadores = atoi(maxJug.c_str());
+
 	}
-	cout << "Se crea personaje con id " << id << endl;
+	cout << "Se crea personaje con id " << id << "Max jugadores: "<< maxJugadores <<endl;
 	sonic = new Personaje(id, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
 	control = new Control(0, 0, log);
 }
 
 void JuegoCliente::iniciarJuegoControlCliente()
 {
-	control->ControlarJuegoCliente(vista, sonic, cliente);
+	control->ControlarJuegoCliente(vista, sonic, hiloEnviar);
 }
 
 //se agrego esto para poder la vista afuera y poder usar el menu

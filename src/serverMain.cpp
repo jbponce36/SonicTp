@@ -36,9 +36,10 @@ int main(int argc, char *argv[]) {
 	ConexServidor *server = new ConexServidor();
 	parseadorJsonSer *jsonSer = new parseadorJsonSer(log);
 	//jsonSer->parsearArchivo(server->cargarNombreArchivo());
+	int maxConexiones = 2;
 	server->crear();
 	server->enlazar(8080);
-	server->escuchar(2);
+	server->escuchar(maxConexiones);
 
 	vector<Hilorecibir*> hrRecibir;
 	vector<Hiloenviar*> hrEnviar;
@@ -56,7 +57,7 @@ int main(int argc, char *argv[]) {
 		}
 		else {
 			ostringstream oss;
-			oss<< id;
+			oss<< id << maxConexiones;
 
 			Hilorecibir *hrecibir = new Hilorecibir();
 			hrecibir->parametros.server = server;
@@ -70,14 +71,17 @@ int main(int argc, char *argv[]) {
 			henviar->parametros.skt = skt;
 
 			//char *buffer=(char*)"me quiero, me quiero mucho mucho mucho ";
-			//Le mando un ID a cada cliente a medida que se conectan
-			char buffer[1] = "";
+			//Le mando un ID a cada cliente a medida que se conectan y la cantidad maxima de jugadores
+			char buffer[2] = "";
 			string temp = oss.str();
 			strcpy(buffer, temp.c_str());
-			cout << "Server envio ID: " << buffer << endl;
+			cout << "Server envio ID+maxConexiones: " << buffer << endl;
 			id++;
 
-			//Enviar cantidad de personajes maxima! Asi el Control del cliente los dibuja :)
+	//Idea: estaria bueno un generador de ID que sepa cuales son los id libres.
+	//Sino al desconectarse clientes quedan mal los ids.
+
+	//Otra cosa: Al desconectarse un cliente tendrian que borrarse estos hilos
 
 			henviar->parametros.buffer = buffer;
 			henviar->IniciarHilo();

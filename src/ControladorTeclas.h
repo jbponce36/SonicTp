@@ -25,7 +25,7 @@ private:
 public:
 	ControladorTeclas();
 	virtual ~ControladorTeclas();
-	void procesarEvento(SDL_Event &e,Personaje *sonic, ConexCliente *cliente);
+	void procesarEvento(SDL_Event &e,Personaje *sonic, HiloEnviarCliente *hiloEnviar);
 	void administrarTeclas(Personaje *sonic);
 
 private:

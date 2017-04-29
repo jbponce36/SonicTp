@@ -32,6 +32,8 @@ private:
 	HiloEnviarCliente *hiloEnviar;
 	Hilo *hiloJuego;
 
+	int maxJugadores;
+
 public:
 	JuegoCliente();
 	virtual ~JuegoCliente();

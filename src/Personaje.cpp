@@ -325,7 +325,7 @@ std::string Personaje::intToStringConPadding(int number)
   ostringstream oss;
   oss<< number;
   std::string numero = oss.str();
-  while(numero.length() < MAX_CANT_DIGITOS){
+  while(numero.length() < MAX_CANT_DIGITOS_POS){
 	  numero = PADDING + numero;
   }
   return numero;
@@ -333,12 +333,12 @@ std::string Personaje::intToStringConPadding(int number)
 
 std::string Personaje::intToString(int number)
 {
-  ostringstream oss;
-  oss<< number;
-  return oss.str();
+	ostringstream oss;
+	oss<< number;
+	return oss.str();
 }
 
-void Personaje::enviarAServer(ConexCliente *cliente, std::string mensaje)
+void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje)
 {
 	mensaje = intToString(id) + mensaje + "x" + intToStringConPadding(posicionX) + "y" + intToStringConPadding(posicionY);
 
@@ -350,7 +350,8 @@ void Personaje::enviarAServer(ConexCliente *cliente, std::string mensaje)
 
 	char buffer[LARGO_MENSAJE_CLIENTE] = "";
 	strcpy(buffer, mensaje.c_str());
-	cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
+	//cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
+	hiloEnviar->parametros.buffer = buffer;
 	cout << "Cliente envio: " << buffer << endl;
 
 }

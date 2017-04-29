@@ -9,11 +9,12 @@
 #include "Textura.h"
 #include "Animacion.h"
 #include "ConexCliente.h"
+#include "HiloEnviarCliente.h"
+#include "Definiciones.h"
 
 #define GRAVEDAD 9
-#define MAX_CANT_DIGITOS 4
+#define MAX_CANT_DIGITOS_POS 4
 #define LARGO_MENSAJE_CLIENTE 14
-#define PADDING "-"
 #define IMAGEN_POR_DEFECTO "images/sonicSprite.png"
 
 class Personaje
@@ -85,7 +86,7 @@ class Personaje
 
 		bool bloqueaCamara(SDL_Rect *limites);
 
-		void enviarAServer(ConexCliente *cliente, std::string mensaje);
+		void enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje);
 
 };
 

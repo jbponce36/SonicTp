@@ -15,7 +15,7 @@ int Control::getPosicionInicialX(){
 int Control::getPosicionInicialY(){
 	return this->posicionInicialY;
 }
-void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, ConexCliente *cliente){
+void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, HiloEnviarCliente *hiloEnviar){
 	SDL_Rect imagenMostrar;
 
 	this->log->addLogMessage("[CONTROLAR JUEGO] Iniciado.", 2);
@@ -49,7 +49,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, ConexClie
 	while( !salir ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
-		administrarTeclas(&controlador, sonic, cliente);
+		administrarTeclas(&controlador, sonic, hiloEnviar);
 		moverPersonaje(tiempoDeJuego, vista, sonic, camara);
 		/////Corregir posicion???? Recibir del server las posiciones de otros sonics y sus animaciones
 		/////y mostrarlos en actualizarVista
@@ -69,7 +69,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, ConexClie
 	this->log->addLogMessage("[CONTROLAR JUEGO] Terminado. \n", 2);
 }
 
-void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, ConexCliente *cliente)
+void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, HiloEnviarCliente *hiloEnviar)
 {
 	SDL_Event e;
 
@@ -80,7 +80,7 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 		{
 			salir = true;
 		}
-		controlador->procesarEvento(e, sonic, cliente); //Setea todas las teclas presionadas o liberadas
+		controlador->procesarEvento(e, sonic, hiloEnviar); //Setea todas las teclas presionadas o liberadas
 	}
 	controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
 
