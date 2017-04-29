@@ -36,16 +36,19 @@ void Hiloenviar::IniciarHilo(/*struct parametrosEnviar *parametros*/){
 void *Hiloenviar::serverEnviar(void *args){
 	SerParametros *parametros = (SerParametros*) args;
 	//hr->server->recibir(Pcliente->getClienteSocket(),buffer,sizeof(buffer));
+	while(1){ //ese 1 debe ser reemplazado por el bool que termina el juego.
+		if(!parametros->coladeMensajes->getColaPaquetes().empty()){
+			parametros->buffer = parametros->coladeMensajes->obtenerElementoDelaCola();
+			int status = parametros->server->enviar(parametros->skt,parametros->buffer,strlen(parametros->buffer));
 
-	int status = parametros->server->enviar(parametros->skt,parametros->buffer,strlen(parametros->buffer));
-
-	if(status < 0){
-		cout<<"[HILO ENVIAR][SERVER ENVIAR] Error"<<endl;
+			if(status < 0){
+				cout<<"[HILO ENVIAR][SERVER ENVIAR] Error"<<endl;
+			}
+			else{
+				cout<<"[HILO ENVIAR][SERVER ENVIAR] Se envio el mensaje correctamente"<<endl;
+			}
+		}
 	}
-	else{
-		cout<<"[HILO ENVIAR][SERVER ENVIAR] Se envio el mensaje correctamente"<<endl;
-	}
-
 }
 
 void Hiloenviar::Join()
@@ -53,4 +56,7 @@ void Hiloenviar::Join()
 	continuar = false;
 	h.Join();
 }
-} /* namespace std */
+
+
+}
+/* namespace std */
