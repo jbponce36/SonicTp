@@ -60,7 +60,7 @@ void *Hilorecibir::serverRecibir(void *args){
 					printf("El cliente se desconecto satisfactoriamente. \n");
 					parametros->continuar = false;
 				}
-				parametros->colaDeMensajes->agregar(buffer);
+				parametros->colaDeMensajes.agregar(buffer);
 		}
 	}
 	/*cout<<"--------------------------------------"<<endl;
