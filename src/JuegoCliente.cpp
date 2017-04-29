@@ -15,7 +15,6 @@ JuegoCliente::JuegoCliente()
 
 JuegoCliente::~JuegoCliente() {
 	delete vista;
-	delete sonic;
 	delete control;
 
 	delete hiloJuego;

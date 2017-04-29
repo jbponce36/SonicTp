@@ -120,8 +120,8 @@ int main(int argc, char *argv[]) {
 	cout<<"cliente recibio: "<<buffer2<<endl;*/
 
 	cliente->cerrar();
-
-	return 3;
+	delete cliente;
+	return 0;
 }
 
 
