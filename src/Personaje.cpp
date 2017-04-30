@@ -116,14 +116,14 @@ void Personaje::cargarSpriteSonic(){
 		return;
 	}
 
-	animacionQuietoDer = Animacion(texturaSonic, personajeAncho, 7);
-	animacionCaminarDer = Animacion(texturaSonic, personajeAncho, 2);
-	animacionCorrerDer = Animacion(texturaSonic, personajeAncho, 2);
-	animacionSaltarDer = Animacion(texturaSonic, personajeAncho, 2);
-	animacionQuietoIzq = Animacion(texturaSonic, personajeAncho, 7);
-	animacionCaminarIzq = Animacion(texturaSonic, personajeAncho, 2);
-	animacionCorrerIzq = Animacion(texturaSonic, personajeAncho, 2);
-	animacionSaltarIzq = Animacion(texturaSonic, personajeAncho, 2);
+	animacionQuietoDer = Animacion(texturaSonic, personajeAncho, 7, ANIMACION_QUIETO_DERECHA);
+	animacionCaminarDer = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CAMINAR_DERECHA);
+	animacionCorrerDer = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CORRER_DERECHA);
+	animacionSaltarDer = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_SALTAR_DERECHA);
+	animacionQuietoIzq = Animacion(texturaSonic, personajeAncho, 7, ANIMACION_QUIETO_IZQUIERDA);
+	animacionCaminarIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CAMINAR_IZQUIERDA);
+	animacionCorrerIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CORRER_IZQUIERDA);
+	animacionSaltarIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_SALTAR_IZQUIERDA);
 
 
 	for (int i=0; i<10; i++){
@@ -185,6 +185,14 @@ int Personaje::getAlto(){
 }
 int Personaje::getId(){
 	return this->id;
+}
+std::string Personaje::getNombreAnimacion()
+{
+	return animacionActual->obtenerNombre();
+}
+std::string Personaje::getEstadoAnimacion()
+{
+	return intToString(animacionActual->obtenerIndiceSprite());
 }
 
 Personaje::~Personaje(){
@@ -391,6 +399,7 @@ void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje
 
 }
 
+
 void Personaje::enviarPosicionServer(HiloEnviarCliente *hiloEnviar, Posicion *pos)
 {
 	//mensaje = intToString(id) + pos->getCoordenadas() + "x" + intToStringConPadding(posicionX) + "y" + intToStringConPadding(posicionY);
@@ -408,3 +417,13 @@ void Personaje::enviarPosicionServer(HiloEnviarCliente *hiloEnviar, Posicion *po
 	cout << "Cliente envio: " << pos->getCoordenadas() << endl;
 
 }
+
+std::string Personaje::obtenerMensajeEstado()
+{
+	//Tamano es 15. Ej: 1x-300y--20AcD1
+	return (intToString(id)
+			+ "x" + intToStringConPadding(posicionX)
+			+ "y" + intToStringConPadding(posicionY)
+			+ getNombreAnimacion() + getEstadoAnimacion());
+}
+

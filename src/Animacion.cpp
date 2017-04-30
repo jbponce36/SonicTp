@@ -8,14 +8,14 @@
 #include "Animacion.h"
 
 Animacion::Animacion()
-: dimension(0), fotogramaMaximo(0), detenido(true), fotogramaActual(0), indiceSprite(0)
+: dimension(0), fotogramaMaximo(0), detenido(true), fotogramaActual(0), indiceSprite(0), nombre("-")
 {
 
 }
 
-Animacion::Animacion(Textura *spriteSheet, int dimension, int retardo)
+Animacion::Animacion(Textura *spriteSheet, int dimension, int retardo, std::string nombre)
 : spriteSheet(spriteSheet), dimension(dimension), fotogramaMaximo(retardo),
-  detenido(true), fotogramaActual(0), indiceSprite(0)
+  detenido(true), fotogramaActual(0), indiceSprite(0), nombre(nombre)
 {
 
 }
@@ -77,4 +77,14 @@ void Animacion::dibujar(SDL_Rect cuadroDeVentana)
 void Animacion::renderizar(SDL_Rect cuadroDeVentana)
 {
 	spriteSheet->renderizar(&sprites[indiceSprite],&cuadroDeVentana);
+}
+
+std::string Animacion::obtenerNombre()
+{
+	return nombre;
+}
+
+int Animacion::obtenerIndiceSprite()
+{
+	return indiceSprite;
 }

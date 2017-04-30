@@ -75,6 +75,8 @@ class Personaje
 		int getAlto();
 		int getAncho();
 		int getId();
+		std::string getNombreAnimacion();
+		std::string getEstadoAnimacion();
 
 		void saltar();
 		void dejarDeSaltar();
@@ -89,6 +91,8 @@ class Personaje
 
 		void enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje);
 		void enviarPosicionServer(HiloEnviarCliente *hiloEnviar, Posicion *pos);
+		std::string obtenerMensajeEstado();
+
 };
 
 #endif

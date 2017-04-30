@@ -22,7 +22,6 @@
 
 #define FPS_SERVER 30
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
-#define LARGO_MENSAJE_SERVIDOR 14
 
 class ControlServidor {
 
@@ -64,7 +63,7 @@ public:
 private:
 	void administrarTeclasServidor();
 	ControlServidor::mensajeRecibido parsearMensajePosicion(std::string mensaje);
-	void moverSonicSegunTeclas(int indice);
+	void moverSonicsSegunTeclas();
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor();
 	void enviarATodos(std::string mensaje);

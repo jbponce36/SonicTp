@@ -9,8 +9,9 @@
 #define ANIMACION_H_
 
 #include <SDL2/SDL_image.h>
-#include  "Textura.h"
+#include "Textura.h"
 #include <vector>
+#include <string>
 
 class Animacion {
 
@@ -23,14 +24,17 @@ private:
 	int fotogramaActual;
 	unsigned int indiceSprite;
 	SDL_Rect spriteActual;
+	std::string nombre;
 
 public:
 	Animacion();
-	Animacion(Textura *spriteSheet, int dimension, int retardo);
+	Animacion(Textura *spriteSheet, int dimension, int retardo, std::string nombre);
 	void cargarSprites(int x, int y, int cantidad);
 	void comenzar();
 	void detener();
 	void dibujar(SDL_Rect cuadroDeVentana);
+	std::string obtenerNombre();
+	int obtenerIndiceSprite();
 	virtual ~Animacion();
 
 private:

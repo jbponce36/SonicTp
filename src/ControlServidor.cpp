@@ -13,27 +13,23 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, std::map<int, Per
   sonics(sonics), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir), teclas()
 {
 	teclasPresionadas t = {false, false, false, false, false};
-	/*for (int i = 1; i <= server->getCantclientes(); i++){
-		//teclas.push_back(t);
-	}*/
 	std::map<int, Personaje*>::iterator pos;
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
 		this->teclas[(*pos).second->getId()] = t;
 	}
-	//Info: teclas.at(0) es el sonic con id 1.
 }
 
 ControlServidor::~ControlServidor() {
-	// TODO Auto-generated destructor stub
+
 }
 
 void ControlServidor::administrarTeclasServidor()
 {
-	//Setea las teclas presionadas de los sonics segun el mensaje
 	std::string mensaje;
 	std::vector<Hilorecibir*>::iterator pos;
-	int i = 1; //<-----Ponerle ids a los hilos o algo asi
+
+	//Veo todos los mensajes de todos los hilos recibir de los clientes y seteo las tecla presionadas o liberadas
 	for(pos = hilosRecibir->begin();pos != hilosRecibir->end();pos++)
 	{
 		mensaje = (*pos)->obtenerElementoDeLaCola();
@@ -88,12 +84,10 @@ void ControlServidor::administrarTeclasServidor()
 			}
 			//Siguiente mensaje
 			mensaje = (*pos)->obtenerElementoDeLaCola();
-			cout << "Obtuve bien el mensaje y dice: "<< mensaje << endl;
 
 		}
-		//moverSonicSegunTeclas(i);
-		i++;
 	}
+	moverSonicsSegunTeclas();
 
 }
 
@@ -115,52 +109,57 @@ ControlServidor::mensajeRecibido ControlServidor::parsearMensajePosicion(std::st
 	return msj;
 }
 
-void ControlServidor::moverSonicSegunTeclas(int i)
+void ControlServidor::moverSonicsSegunTeclas()
 {
-	teclasPresionadas t = teclas.at(i);
-	Personaje* sonic = sonics->at(i);
-
-	if((!t.teclaArriba) && (!t.teclaAbajo) && (!t.teclaDerecha) && (!t.teclaIzquierda)){
-		sonic->parar();
-	}
-
-	sonic->correr(t.teclaCorrer);
-
-	if(t.teclaArriba){
-		sonic->irArriba();
-	}
-
-	if(t.teclaAbajo){
-		sonic->irAbajo();
-	}
-
-	if(t.teclaDerecha){
-		sonic->irDerecha();
-	}
-
-	if(t.teclaIzquierda){
-		sonic->irIzquierda();
-	}
-
-	//Corregir posicion
-	/*if((posXCliente > -1) || (posYCliente >-1))
+	//Mueve todos los sonics segun las teclas presionadas o liberadas
+	std::map<int, Personaje*>::iterator pos;
+	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
-		int dx = 0, dy = 0;
-		int posXServidor = sonic->getPosicionX();
-		int posYServidor = sonic->getPosicionY();
-		if(posXCliente > -1)
-		{
-			dx = posXCliente - posXServidor;
-			dx = dx / 2;
-		}
-		if(posYCliente > -1)
-		{
-			dy = posYCliente - posYServidor;
-			dy = dy / 2;
-		}
-		sonic->posicionarseEn(posXServidor + dx, posYServidor + dy);
-	}*/
+		teclasPresionadas t = teclas.at((*pos).first);
+		Personaje* sonic = (*pos).second;
 
+		if((!t.teclaArriba) && (!t.teclaAbajo) && (!t.teclaDerecha) && (!t.teclaIzquierda)){
+			sonic->parar();
+		}
+
+		sonic->correr(t.teclaCorrer);
+
+		if(t.teclaArriba){
+			sonic->irArriba();
+		}
+
+		if(t.teclaAbajo){
+			sonic->irAbajo();
+		}
+
+		if(t.teclaDerecha){
+			sonic->irDerecha();
+		}
+
+		if(t.teclaIzquierda){
+			sonic->irIzquierda();
+		}
+
+		//Corregir posicion
+		/* Guardar ultima posicion del cliente en Personaje o algo asi
+		if((posXCliente > -1) || (posYCliente >-1))
+		{
+			int dx = 0, dy = 0;
+			int posXServidor = sonic->getPosicionX();
+			int posYServidor = sonic->getPosicionY();
+			if(posXCliente > -1)
+			{
+				dx = posXCliente - posXServidor;
+				dx = dx / 2;
+			}
+			if(posYCliente > -1)
+			{
+				dy = posYCliente - posYServidor;
+				dy = dy / 2;
+			}
+			sonic->posicionarseEn(posXServidor + dx, posYServidor + dy);
+		}*/
+	}
 }
 
 void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara)
@@ -176,11 +175,13 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 
 		tiempoDeJuego = SDL_GetTicks();
 
-		camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario()); //Mueve la camara segun los sonics
+		//Mueve la camara segun los sonics
+		camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
+
 
 		/*Para ver lo que pasa en el juego del servidor. (Poner false al crear la VistaSDL en JuegoServidor)*/
-		//(*pos)->render(camara->getPosicionX(), camara->getPosicionY());
-		//SDL_RenderPresent( vista->obtenerRender());
+		(*pos).second->render(camara->getPosicionX(), camara->getPosicionY());
+		SDL_RenderPresent( vista->obtenerRender());
 		/*Hasta aca*/
 	}
 }
@@ -190,7 +191,12 @@ void ControlServidor::actualizarVistaServidor()
 	//Aca le envio a todos los clientes la posicion y sprite de todos los otros clientes.
 	//for(cada sonic del servidor)
 	//server->enviarATodos(posicion, sprite);
-
+	std::map<int, Personaje*>::iterator pos;
+	for(pos = sonics->begin();pos != sonics->end();pos++)
+	{
+		std::string mensaje = (*pos).second->obtenerMensajeEstado();
+		//enviarATodos(mensaje); //No envia bien. Enviar siempre siempre?
+	}
 
 }
 
@@ -203,10 +209,17 @@ std::string ControlServidor::intToString(int number)
 
 void ControlServidor::enviarATodos(std::string mensaje)
 {
-	char buffer[LARGO_MENSAJE_SERVIDOR] = "";
+	//Envia el mensaje a todos los hilos enviar para que se lo mande a todos los clientes
+	//TODO: Agregarle ids a los hilos sino si se desconecta un cliente aun le envia
+	char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
 	strcpy(buffer, mensaje.c_str());
-	//server->enviarATodos(buffer, strlen(buffer));
-	cout << "Servidor envio: " << buffer << endl;
+
+	std::vector<Hiloenviar*>::iterator pos;
+	for(pos = hilosEnviar->begin();pos != hilosEnviar->end();pos++)
+	{
+		(*pos)->enviarBuffer(buffer); //TODO: Manda basura...?
+	}
+	cout << "Servidor envio a todos los hilosEnviar: " << buffer << endl;
 
 }
 
@@ -217,7 +230,8 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	Uint32 tiempoDeJuego = 0;
 	Uint32 tiempoInicio, tiempoFin, delta;
 
-	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana(), sonics);
+	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,
+			vista->obtenerAltoVentana(),vista->obtenerAnchoVentana(), sonics);
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !juegoTerminado ){
