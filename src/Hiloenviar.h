@@ -36,9 +36,11 @@ public:
 	void setH(Hilo);
 
 	void Join();
+	void enviarBuffer(char* arg);
 
 private:
 	Hilo h;
+	bool continuar;
 };
 
 }

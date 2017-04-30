@@ -14,6 +14,8 @@
 class HiloEnviarCliente {
 private:
 	Hilo* hilo;
+	bool continuar;
+
 public:
 	HiloEnviarCliente();
 	virtual ~HiloEnviarCliente();

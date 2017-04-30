@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 
 	ConexCliente *cliente = new ConexCliente(log);
 	cliente->crear();
-	parseadorJsonCli *parseadorCliente = new parseadorJsonCli();
+	//parseadorJsonCli *parseadorCliente = new parseadorJsonCli();
 	//parseadorCliente->parsearArchivo(cliente->cargarNombreArchivo());
 
 	int skt = cliente->conectar(hostname,puerto);
@@ -54,11 +54,39 @@ int main(int argc, char *argv[]) {
 		cout<<"El cliente no se conecto"<<endl;
 		cliente->cerrar();
 		return 1;
-
-	}else{
-		cout<<"se conecto cliente"<<endl;
 	}
 
+	JuegoCliente juego = JuegoCliente(cliente, log);
+
+	/*----si no quieren ver elmenu choto comenten esto---*/
+	juego.CargarVistaParaElMenu();
+	/* y pongan a la variable  opcion = 0 */
+
+	int opcion = juego.elegirOpcionDeMenu(log);
+	switch (opcion){
+		case 0:{
+			int skt = cliente->conectar("127.0.0.1",8080);
+
+			if(skt == -1){
+				cout<<"El cliente no se conecto"<<endl;
+				cliente->cerrar();
+				return 1;
+
+			}else{
+				/*------INICIA EL JUEGO DEL CLIENTE------*/
+				/* Comentar esto si quieren que no se abra la pantallita! */
+				cout<<"se conecto cliente"<<endl;
+				juego.iniciarHilos();
+				juego.terminarHilos();
+				/* Hasta aca */
+			}
+		}
+		break;
+		case 1:cout<<"se desconecto"<<endl;
+		break;
+		case 2:cout<<"salir"<<endl;
+		break;
+	}
 
 	//sleep(40);
 
@@ -72,19 +100,16 @@ int main(int argc, char *argv[]) {
 	cliente->recibir(buffer2,sizeof(buffer2));
 	cout<<"cliente recibio: "<<buffer2<<endl;
 
-
 	/*------INICIA EL JUEGO DEL CLIENTE------*/
 		/* Comentar esto si quieren que no se abra la pantallita! */
 
-	/*JuegoCliente juego = JuegoCliente(cliente, log);
+	//JuegoCliente juego = JuegoCliente(cliente, log);
 	juego.iniciarHilos();
-	juego.terminarHilos();*/
+	juego.terminarHilos();
 		/* Hasta aca */
 
-
-
 	cliente->cerrar();
-
+	delete cliente;
 	return 0;
 }
 

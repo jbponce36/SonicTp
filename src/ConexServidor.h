@@ -12,6 +12,7 @@
 #include "ConexCliente.h"
 #include <pthread.h>
 #include <queue>
+#include "Posicion.h"
 #include "Logger.h"
 
 
@@ -26,6 +27,7 @@ public:
 	bool escuchar(int cantidadMaxima);
 	int aceptarcliente();
 	int recibir(int skt, char *buf, int size);
+	int recibirPosicion(int skt, Posicion *posicion, int size);
 	int enviar(int socket, char *buf, int size);
    // bool ErroresServidor(int puerto); // agrupa crear, enlazar y escuchar
 	std::string cargarNombreArchivo();

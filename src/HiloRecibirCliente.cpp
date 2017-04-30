@@ -7,7 +7,7 @@
 
 #include "HiloRecibirCliente.h"
 
-HiloRecibirCliente::HiloRecibirCliente(){
+HiloRecibirCliente::HiloRecibirCliente() {
 	// TODO Auto-generated constructor stub
 
 }
@@ -23,10 +23,10 @@ void HiloRecibirCliente::IniciarHilo(){
 
 }
 void *HiloRecibirCliente::clienteRecibir(void *args){
-	bool continuar = true;
-	while(continuar){
+	Serparametros *parametros = (Serparametros*) args;
+	while(parametros->continuar){
 		char buffer[40];
-		Serparametros *parametros = (Serparametros*) args;
+
 		int result = 1;
 		parametros->cliente->recibir(buffer,strlen(buffer));
 		cout<<"[HILO RECIBIR CLIENTE] [CLIENTE RECIBIR] "<<endl;
@@ -36,15 +36,16 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 				if (result>0){
 					cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
+					parametros->colaPaquete.agregar(buffer);
 				}
 
 				if (result<=0){
 					printf("El cliente se desconecto satisfactoriamente. \n");
-					continuar = false;
+					parametros->continuar = false;
 				}
 				//cargamos los datos de todos los personajes que vienen desde el servidor, estos datos deben actualizar
 				//la vista, etc
-				parametros->pack.cargarUnPaquete(buffer);
+
 		}
 	}
 
@@ -53,5 +54,19 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 void HiloRecibirCliente::Join()
 {
+	parametros.continuar = false;
 	hilo->Join();
+}
+
+std::string HiloRecibirCliente::obtenerElementoDeLaCola()
+{
+	//Obtiene el primer elemento de la cola y lo saca.
+	if(! parametros.colaPaquete.getColaPaquetes().empty())
+	{
+		char* cadena = parametros.colaPaquete.obtenerElementoDelaCola();
+		std::string str = std::string(cadena);
+		parametros.colaPaquete.eliminarElPrimetoDeLaCola();
+		return str;
+	}
+	return "Sin elementos";
 }

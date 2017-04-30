@@ -28,7 +28,8 @@ private:
 
 public:
 	Textura();
-	void cargarImagen(std::string path,SDL_Renderer* render, Logger *log);
+	void cargarImagen(std::string path, std::string porDefecto, SDL_Renderer* render, Logger *log);
+	void cargarImagenCapa(std::string path,SDL_Renderer* render, Logger *log);
 	int obtenerAltoTextura();
 	int obtenerAnchoTextura();
 	void renderizar(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVentana = NULL);

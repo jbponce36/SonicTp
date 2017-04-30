@@ -9,7 +9,7 @@
 
 namespace std {
 
-Hilorecibir::Hilorecibir() {
+Hilorecibir::Hilorecibir(){
 
 }
 
@@ -19,11 +19,11 @@ Hilorecibir::~Hilorecibir() {
 
 void Hilorecibir::IniciarHilo(){
 
-	Hilo *hilos = new Hilo(/*log*/);
+	Hilo hilos = Hilo(/*log*/);
 
-	hilos->Create((void *)Hilorecibir::serverRecibir ,  (void *)&parametros);
+	hilos.Create((void *)Hilorecibir::serverRecibir ,  (void *)&parametros);
 
-    this->setH(*hilos);
+    this->setH(hilos);
 
 }
 
@@ -37,51 +37,59 @@ void Hilorecibir::setH(Hilo hil){
 }
 
 void *Hilorecibir::serverRecibir(void *args){
-	bool continuar = true;
-	int cont = 0;
 	Serparametros *parametros = (Serparametros*) args;
-	while(continuar && cont <5){
+	while(parametros->continuar){
 		char buffer[40];
 		//Serparametros *parametros = (Serparametros*) args;
 		int result = 1;
-		parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
+		//parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
 
 		while (result>0){
 				result = parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
 
 				if (result>0){
-					cout<<"server recibio: "<<endl;
-					cout<<buffer<<endl;
+					cout<<"server recibio: "<<buffer<<endl;
+					parametros->colaDeMensajes.agregar(buffer);
 				}
 
 				if (result==0){
 					printf("El cliente se desconecto satisfactoriamente. \n");
-					continuar = false;
+					parametros->continuar = false;
 				}
 
 				if (result==-1){
 					printf("El cliente se desconecto satisfactoriamente. \n");
-					continuar = false;
+					parametros->continuar = false;
 				}
-				parametros->buffer = buffer;
-				cout<<buffer<<endl;
+
 		}
-		cont++;
-		parametros->colaPaquete.push(buffer);
 	}
-	cout<<"--------------------------------------"<<endl;
-	while (! parametros->colaPaquete.empty())
+	/*cout<<"--------------------------------------"<<endl;
+	while (! parametros->colaDeMensajes.getColaPaquetes().empty())
 	  {
 		cout<<"lo de cola------:";
-	    cout << parametros->colaPaquete.front() << " " ;
-	    parametros->colaPaquete.pop();
-	  }
-
+	    cout << parametros->colaDeMensajes.obtenerElementoDelaCola() << endl;
+	    parametros->colaDeMensajes.eliminarElPrimetoDeLaCola();
+	  }*/
 }
 
 void Hilorecibir::Join()
 {
+	parametros.continuar = false;
 	h.Join();
 }
 
-} /* namespace std */
+std::string Hilorecibir::obtenerElementoDeLaCola()
+{
+	//Obtiene el primer elemento de la cola y lo saca.
+	if(! parametros.colaDeMensajes.getColaPaquetes().empty())
+	{
+		char* cadena = parametros.colaDeMensajes.obtenerElementoDelaCola();
+		std::string str = std::string(cadena);
+		parametros.colaDeMensajes.eliminarElPrimetoDeLaCola();
+		return str;
+	}
+	return "Sin elementos";
+}
+
+}

@@ -1,12 +1,11 @@
 #include "Control.h"
 #define MODULO 'CONTROL'
 
-Control::Control(int posicionX, int posicionY, Logger *log) {
-	this->posicionInicialX = posicionX;
-	this->posicionInicialY = posicionY;
-	this->log = log;
+Control::Control(int posicionX, int posicionY, int maxJugadores, std::vector<Personaje*> *sonics, Logger *log)
+: posicionInicialX(posicionX), posicionInicialY(posicionY),
+  log(log), salir(false), sonics(sonics), maxJugadores(maxJugadores)
+{
 	this->log->setModulo("CONTROL");
-	this->salir = false;
 }
 
 int Control::getPosicionInicialX(){
@@ -15,7 +14,7 @@ int Control::getPosicionInicialX(){
 int Control::getPosicionInicialY(){
 	return this->posicionInicialY;
 }
-void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, ConexCliente *cliente){
+void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, HiloEnviarCliente *hiloEnviar){
 	SDL_Rect imagenMostrar;
 
 	this->log->addLogMessage("[CONTROLAR JUEGO] Iniciado.", 2);
@@ -28,35 +27,24 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, ConexClie
 
 	ControladorTeclas controlador = ControladorTeclas();
 
-	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana());
+	std::map<int, Personaje*> sonicsMapa;
+	std::vector<Personaje*>::iterator pos;
+	for(pos = sonics->begin();pos != sonics->end();pos++)
+	{
+		sonicsMapa[(*pos)->getId()] = (*pos);
+	}
 
-
-			/////////Para pruebas
-			Personaje otroSonic = Personaje(200, vista->obtenerRender(), 500, vista->getLog());
-			otroSonic.posicionarseEn(200,100);
-
-			std::vector<Personaje*> sonics;
-			sonics.push_back(sonic);
-			sonics.push_back(&otroSonic);
-
-			camara->agregarSonic(sonic);
-			camara->agregarSonic(&otroSonic);
-
-			////////////Fin prueba
-
+	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana(), &sonicsMapa);
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !salir ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
-		administrarTeclas(&controlador, sonic, cliente);
-		/////Mandarle al server las teclas que movio...???
-		/////El server calcula el movimiento y las animaciones igual que aca
-		/////Sabe donde esta y que animacion tiene cada sonic.
+		administrarTeclas(&controlador, sonic, hiloEnviar);
 		moverPersonaje(tiempoDeJuego, vista, sonic, camara);
 		/////Corregir posicion???? Recibir del server las posiciones de otros sonics y sus animaciones
 		/////y mostrarlos en actualizarVista
-		actualizarVista(camara, vista, &imagenMostrar, sonic, sonics);
+		actualizarVista(camara, vista, &imagenMostrar, sonic);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
 		tiempoFin = SDL_GetTicks();
@@ -72,7 +60,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, ConexClie
 	this->log->addLogMessage("[CONTROLAR JUEGO] Terminado. \n", 2);
 }
 
-void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, ConexCliente *cliente)
+void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, HiloEnviarCliente *hiloEnviar)
 {
 	SDL_Event e;
 
@@ -83,7 +71,7 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 		{
 			salir = true;
 		}
-		controlador->procesarEvento(e, sonic, cliente); //Setea todas las teclas presionadas o liberadas
+		controlador->procesarEvento(e, sonic, hiloEnviar); //Setea todas las teclas presionadas o liberadas
 	}
 	controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
 
@@ -104,7 +92,7 @@ void Control::moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *
 	camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario()); //Mueve la camara segun los sonics
 }
 
-void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic, std::vector<Personaje*> sonics)
+void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic)
 {
 	for(int contador = 0; contador < vista->cantidadCapasCargadas(); contador++)
 	{
@@ -113,12 +101,12 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenM
 		vista->mostrarEntidades(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
 	}
 
-	//dibujo el personaje
-	sonic->render(camara->getPosicionX(), camara->getPosicionY());
-
-			////////Para prueba
-			sonics.at(1)->render(camara->getPosicionX(), camara->getPosicionY());
-			///////Fin prueba
+	//dibujo todos los sonics
+	std::vector<Personaje*>::iterator pos;
+	for(pos = sonics->begin();pos != sonics->end();pos++)
+	{
+		(*pos)->render(camara->getPosicionX(), camara->getPosicionY());
+	}
 
 	//muestro la imagen
 	SDL_RenderPresent( vista->obtenerRender());

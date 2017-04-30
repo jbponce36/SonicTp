@@ -171,7 +171,7 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 		tex->setId((*pos).getid());
 		tex->setIndex_z((*pos).getindex());
 		tex->setRuta((*pos).getrutaimagen());
-		tex->cargarImagen( (*pos).getrutaimagen() ,renderizador, this->log);
+		tex->cargarImagenCapa( (*pos).getrutaimagen() ,renderizador, this->log);
 		this->capasFondo.push_back(tex);
 		this->log->setModulo("VISTA SDL");
 		this->log->addLogMessage("[CARGAR CAPAS] Textura cargada ->."+tex->toString(),3);
@@ -277,7 +277,90 @@ void VistaSDL::setLog(Logger *log)
 {
     this->log = log;
 }
+int VistaSDL::mostraMenuInicial(Logger *logger){
+	Textura *menuInicial = new Textura();
+	Textura *texturaConectar = new Textura();
+	Textura *texturaDesconectar = new Textura();
+	Textura *texturaSalir = new Textura();
+	menuInicial->cargarImagen("images/imagenesMenu/sonicMenu.jpg", "images/entidaddefault.png",this->renderizador, logger);
+	texturaConectar->cargarImagen("images/imagenesMenu/conectar.png", "images/entidaddefault.png", this->renderizador, logger);
+	texturaDesconectar->cargarImagen("images/imagenesMenu/desconectar.png", "images/entidaddefault.png", this->renderizador, logger);
+	texturaSalir->cargarImagen("images/imagenesMenu/salir.png", "images/entidaddefault.png", this->renderizador, logger);
+	bool salir = false;
+	SDL_Event e;
+	int seleccion = 0;
+	while( !salir ){
+	//manejar eventos en la cola
+		while( SDL_PollEvent( &e ) != 0 )
+		{
+			//cout<<e.key.keysym.sym<<endl;
+			if( e.type == SDL_QUIT )
+			{
+				salir = true;
+				seleccion = 2;
+			}
+			else if(e.type == SDL_KEYDOWN){
+					switch (e.key.keysym.sym){
+						case SDLK_UP:
+							seleccion--;
+							if(seleccion<0){
+								seleccion = 2;
+							}
+						break;
 
+						case SDLK_DOWN:
+							seleccion++;
+							if(seleccion>2){
+								seleccion = 0;
+							}
+						break;
+
+						case SDLK_RETURN:
+							salir = true;
+						break;
+					}
+
+				}
+
+		}
+		SDL_Rect camara;
+		SDL_Rect imagenMostrar;
+
+		SDL_SetRenderDrawColor(this->obtenerRender(),0xff,0xff,0xff,0xff);
+		SDL_RenderClear(this->obtenerRender());
+
+		camara.x = 0;
+		camara.y = 0;
+		camara.w = menuInicial->obtenerAnchoTextura();
+		camara.h = menuInicial->obtenerAltoTextura();
+
+		imagenMostrar.x = 0;
+		imagenMostrar.y = 0;
+		//imagenMostrar.w = menuInicial->obtenerAnchoTextura();
+		//imagenMostrar.h = menuInicial->obtenerAltoTextura();
+		imagenMostrar.w = anchoVentana;
+		imagenMostrar.h = altoVentana;
+		menuInicial->renderizar(&camara,&imagenMostrar);
+		camara.w = texturaConectar->obtenerAnchoTextura();
+		camara.h = texturaConectar->obtenerAltoTextura();
+		switch (seleccion){
+			case 0:
+			texturaConectar->renderizar(&imagenMostrar,&camara);
+			break;
+
+			case 1:
+			texturaDesconectar->renderizar(&imagenMostrar,&camara);
+			break;
+
+			case 2:
+			texturaSalir->renderizar(&imagenMostrar,&camara);
+			break;
+		}
+
+		SDL_RenderPresent(this->renderizador);
+	}
+	return seleccion;
+}
 
 
 

@@ -22,7 +22,6 @@ Posicion::Posicion(string coordenada) {
 			 +now->tm_sec;
 
 	this->coordenadas= coordenada;
-
 }
 
 

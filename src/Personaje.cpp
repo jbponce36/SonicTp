@@ -4,10 +4,12 @@ const int POSICION_INICIALX = 0;
 const int POSICION_INICIALY = 0;
 const float REGULADOR_ALTURA_SALTO = 0.04; //Regula la altura del salto (Es como un "promedio" de tiempoDeJuego)
 
-Personaje::Personaje(int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log)
+Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log)
 {
+	this->id = id;
 	this->texturaSonic = new Textura();
-	this->texturaSonic->cargarImagen("images/sonicSprite.png",render, log);
+	std::string rutaImagen = "images/sonicSprite" + intToString(id) +".png";
+	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
 
 	//dimensiones del personaje por defecto
 	this->personajeAncho = 50;
@@ -30,6 +32,38 @@ Personaje::Personaje(int velocidad,SDL_Renderer *render,int altoEscenario, Logge
     cargarSpriteSonic();
 
     this->log = log;
+}
+
+Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log, ConexCliente *cliente)
+{
+	this->id = id;
+	this->texturaSonic = new Textura();
+	std::string rutaImagen = "images/sonicSprite" + intToString(id) +".png";
+	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
+
+	//dimensiones del personaje por defecto
+	this->personajeAncho = 50;
+	this->personajeAlto= 50;
+
+	this->personajeVelocidad = velocidad;
+	this->personajeAceleracion = velocidad/20;
+	//posicion por defecto
+    this->posicionX = POSICION_INICIALX;
+    this->posicionY = altoEscenario / 2;
+
+    this->velocidadX = 0;
+    this->velocidadY = personajeVelocidad;
+
+    this->orientacion = DERECHA;
+
+    this->saltando = true;
+    this->corriendo = false;
+    this->estaQuieto = true;
+    cargarSpriteSonic();
+
+    this->log = log;
+
+    this->cliente = cliente; //Borrar este metodo cuando ande bien el hiloEnviar!
 }
 
 void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
@@ -148,6 +182,9 @@ int Personaje::getAncho(){
 }
 int Personaje::getAlto(){
 	return this->personajeAlto;
+}
+int Personaje::getId(){
+	return this->id;
 }
 
 Personaje::~Personaje(){
@@ -318,20 +355,27 @@ bool Personaje::bloqueaCamara(SDL_Rect *limites)
 	return ((posicionX <= limites->x) || (posicionX >= limites->x + limites->w));
 }
 
-std::string Personaje::intToString(int number)
+std::string Personaje::intToStringConPadding(int number)
 {
   ostringstream oss;
   oss<< number;
   std::string numero = oss.str();
-  while(numero.length() < MAX_CANT_DIGITOS){
+  while(numero.length() < MAX_CANT_DIGITOS_POS){
 	  numero = PADDING + numero;
   }
   return numero;
 }
 
-void Personaje::enviarAServer(ConexCliente *cliente, std::string mensaje)
+std::string Personaje::intToString(int number)
 {
-	mensaje += "x" + intToString(posicionX) + "y" + intToString(posicionY);
+	ostringstream oss;
+	oss<< number;
+	return oss.str();
+}
+
+void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje)
+{
+	mensaje = intToString(id) + mensaje + "x" + intToStringConPadding(posicionX) + "y" + intToStringConPadding(posicionY);
 
 	/*char* msj = new char[mensaje.length() +1];
 	strcpy(msj, mensaje.c_str());
@@ -339,10 +383,28 @@ void Personaje::enviarAServer(ConexCliente *cliente, std::string mensaje)
 	cout << "Cliente envio: "<< msj << '\n';
 	delete[] msj;*/
 
-	char buffer[LARGO_MENSAJE] = "";
+	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
 	strcpy(buffer, mensaje.c_str());
 	cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
+	//hiloEnviar->parametros.buffer = buffer;
 	cout << "Cliente envio: " << buffer << endl;
 
 }
 
+void Personaje::enviarPosicionServer(HiloEnviarCliente *hiloEnviar, Posicion *pos)
+{
+	//mensaje = intToString(id) + pos->getCoordenadas() + "x" + intToStringConPadding(posicionX) + "y" + intToStringConPadding(posicionY);
+
+	/*char* msj = new char[mensaje.length() +1];
+	strcpy(msj, mensaje.c_str());
+	cliente->enviar(msj, strlen(msj));
+	cout << "Cliente envio: "<< msj << '\n';
+	delete[] msj;*/
+
+	//char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
+	//strcpy(buffer, mensaje.c_str());
+	cliente->enviarPosicion(pos, sizeof(pos));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
+	//hiloEnviar->parametros.buffer = buffer;
+	cout << "Cliente envio: " << pos->getCoordenadas() << endl;
+
+}

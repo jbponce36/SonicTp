@@ -9,11 +9,11 @@
 #include "Textura.h"
 #include "Animacion.h"
 #include "ConexCliente.h"
+#include "HiloEnviarCliente.h"
+#include "Definiciones.h"
 
 #define GRAVEDAD 9
-#define MAX_CANT_DIGITOS 4
-#define LARGO_MENSAJE 13
-#define PADDING "-"
+#define IMAGEN_POR_DEFECTO "images/sonicSprite.png"
 
 class Personaje
 {
@@ -24,6 +24,7 @@ class Personaje
 
 		Textura *texturaSonic;
 
+		int id;
 		int personajeAncho;
 		int personajeAlto;
 		int personajeVelocidad;
@@ -54,11 +55,14 @@ class Personaje
 		void cargarSpriteSonic();
 		void dejarDeEstarQuieto();
 		std::string intToString(int number);
+		std::string intToStringConPadding(int number);
 
+		ConexCliente *cliente; //<-------- Borrarlo cuando el enviar del hilo ande bien!
 
     public:
 
-		Personaje(int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log);
+		Personaje(int id, int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log);
+		Personaje(int id, int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log, ConexCliente *cliente);
 		virtual ~Personaje();
 
 		void mover(SDL_Rect *limites, float tiempoDeJuego);
@@ -70,6 +74,7 @@ class Personaje
 		int getPosicionY();
 		int getAlto();
 		int getAncho();
+		int getId();
 
 		void saltar();
 		void dejarDeSaltar();
@@ -82,8 +87,8 @@ class Personaje
 
 		bool bloqueaCamara(SDL_Rect *limites);
 
-		void enviarAServer(ConexCliente *cliente, std::string mensaje);
-
+		void enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje);
+		void enviarPosicionServer(HiloEnviarCliente *hiloEnviar, Posicion *pos);
 };
 
 #endif

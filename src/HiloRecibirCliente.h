@@ -26,12 +26,14 @@ public:
 		ConexCliente *cliente;
 		//list<ProcesadorCliente>pcliente;
 		int skt;
-		queue<char*> colaPaquete;
-		Paquete pack;
+		//queue<char*> colaPaquete;
+		Paquete colaPaquete;
+		bool continuar;
 	 };
 	Serparametros parametros;
 
 	void Join();
+	std::string obtenerElementoDeLaCola();
 };
 
 #endif /* HILORECIBIRCLIENTE_H_ */

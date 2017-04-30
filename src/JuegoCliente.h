@@ -19,6 +19,7 @@
 #include "HiloEnviarCliente.h"
 #include "HiloRecibirCliente.h"
 
+using namespace std;
 class JuegoCliente {
 
 private:
@@ -32,25 +33,28 @@ private:
 	HiloEnviarCliente *hiloEnviar;
 	Hilo *hiloJuego;
 
+	int maxJugadores;
+	std::vector<Personaje*> sonics;
+
 public:
 	JuegoCliente();
 	virtual ~JuegoCliente();
 
-	/*Lado del Cliente*/
 	JuegoCliente(ConexCliente *cliente, Logger *log);
 	void iniciarHilos();
 	void terminarHilos();
 	void iniciarJuego(); //Crea el parseador e inicia el juego
-
+	void CargarVistaParaElMenu();
+	int elegirOpcionDeMenu(Logger *log);
 	struct Datos{
 		ConexCliente *cliente;
 		Logger *log;
 	};
 
 private:
-	/*Lado del Cliente*/
+	void inicializarOtrosSonics(int id);
 	static void* iniciarJuegoCliente(void *datos);
-	void inicializarJuegoCliente(std::jescenarioJuego *jparseador); //Inicializa control, vista y sonic
+	void inicializarJuegoCliente(/*std::jescenarioJuego *jparseador*/); //Inicializa control, vista y sonic
 	void iniciarJuegoControlCliente(); //Llama al juego propiamente dicho (Control::ControlarJuego)
 };
 

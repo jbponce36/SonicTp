@@ -16,6 +16,10 @@
 #include "Logger.h"
 #include "parseadorJson.h"
 #include "Hilo.h"
+#include "Hiloenviar.h"
+#include "Hilorecibir.h"
+#include <vector>
+#include <map>
 
 class JuegoServidor {
 
@@ -25,14 +29,22 @@ private:
 	ConexServidor *server;
 	Logger *log;
 	Hilo *hiloJuego;
+	std::vector<Hiloenviar*> *hilosEnviar;
+	std::vector<Hilorecibir*> *hilosRecibir;
+	int cantJugadores;
+	std::map<int, Personaje*> sonics;
+	bool juegoTerminado;
+	int velocidad;
+	int altoEscenario;
 
 public:
 	JuegoServidor();
 	virtual ~JuegoServidor();
-	JuegoServidor(ConexServidor *server, Logger *log);
+	JuegoServidor(ConexServidor *server, std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir, Logger *log);
 	void iniciarJuego();
 	void iniciarHiloJuego();
 	void terminarHiloJuego();
+	void agregarJugador(int id);
 
 private:
 	static void* iniciarJuegoServidor(void *datos);
