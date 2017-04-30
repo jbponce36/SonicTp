@@ -19,6 +19,7 @@
 #include "Hiloenviar.h"
 #include "Hilorecibir.h"
 #include <vector>
+#include <map>
 
 class JuegoServidor {
 
@@ -31,8 +32,10 @@ private:
 	std::vector<Hiloenviar*> *hilosEnviar;
 	std::vector<Hilorecibir*> *hilosRecibir;
 	int cantJugadores;
-	std::vector<Personaje*> sonics;
+	std::map<int, Personaje*> sonics;
 	bool juegoTerminado;
+	int velocidad;
+	int altoEscenario;
 
 public:
 	JuegoServidor();
@@ -41,6 +44,7 @@ public:
 	void iniciarJuego();
 	void iniciarHiloJuego();
 	void terminarHiloJuego();
+	void agregarJugador(int id);
 
 private:
 	static void* iniciarJuegoServidor(void *datos);

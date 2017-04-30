@@ -183,6 +183,9 @@ int Personaje::getAncho(){
 int Personaje::getAlto(){
 	return this->personajeAlto;
 }
+int Personaje::getId(){
+	return this->id;
+}
 
 Personaje::~Personaje(){
 	if (texturaSonic != NULL)

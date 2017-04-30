@@ -36,6 +36,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 				if (result>0){
 					cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
+					parametros->colaPaquete.agregar(buffer);
 				}
 
 				if (result<=0){
@@ -44,7 +45,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				}
 				//cargamos los datos de todos los personajes que vienen desde el servidor, estos datos deben actualizar
 				//la vista, etc
-				parametros->colaPaquete.agregar(buffer);
+
 		}
 	}
 

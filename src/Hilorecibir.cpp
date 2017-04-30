@@ -49,6 +49,7 @@ void *Hilorecibir::serverRecibir(void *args){
 
 				if (result>0){
 					cout<<"server recibio: "<<buffer<<endl;
+					parametros->colaDeMensajes.agregar(buffer);
 				}
 
 				if (result==0){
@@ -60,7 +61,7 @@ void *Hilorecibir::serverRecibir(void *args){
 					printf("El cliente se desconecto satisfactoriamente. \n");
 					parametros->continuar = false;
 				}
-				parametros->colaDeMensajes.agregar(buffer);
+
 		}
 	}
 	/*cout<<"--------------------------------------"<<endl;

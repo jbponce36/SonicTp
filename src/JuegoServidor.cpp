@@ -16,9 +16,9 @@ JuegoServidor::JuegoServidor()
 
 JuegoServidor::~JuegoServidor()
 {
-	std::vector<Personaje*>::iterator pos;
+	std::map<int ,Personaje*>::iterator pos;
 	for(pos = sonics.begin();pos != sonics.end();pos++){
-		delete (*pos);
+		delete (*pos).second;
 	}
 	delete control;
 	delete vista;
@@ -39,16 +39,16 @@ void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
 	Para mostrar la vista del servidor pasarle false y descomentar en ControlServidor::moverPersonajesServidor*/
 	vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, true);
 
-	int velocidad = jparseador->getConfiguracion()->getvelscroll();
-	int altoEscenario = jparseador->getEscenario()->getalto();
+	velocidad = jparseador->getConfiguracion()->getvelscroll();
+	altoEscenario = jparseador->getEscenario()->getalto();
 
 	for (int id = 1; id <= server->getCantclientes(); id++)
 	{
 		Personaje *sonic = new Personaje(id, velocidad, vista->obtenerRender(), altoEscenario, log);
-		sonics.push_back(sonic);
+		sonics[id] = sonic;
 	}
 
-	control = new ControlServidor(0, 0, sonics, hilosEnviar, hilosRecibir, server,log);
+	control = new ControlServidor(0, 0, &sonics, hilosEnviar, hilosRecibir, server,log);
 }
 
 void JuegoServidor::iniciarJuegoControlServidor()
@@ -92,5 +92,11 @@ void JuegoServidor::terminarHiloJuego()
 {
 	juegoTerminado = true;
 	hiloJuego->Join();
+}
+
+void JuegoServidor::agregarJugador(int id)
+{
+	sonics[id] = new Personaje(id, velocidad, vista->obtenerRender(), altoEscenario, log);
+	control->agregarSonic(id);
 }
 

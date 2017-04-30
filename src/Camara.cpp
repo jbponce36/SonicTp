@@ -1,6 +1,6 @@
 #include "Camara.h"
 
-Camara::Camara(int posicionx, int posiciony, int alto, int ancho, std::vector<Personaje*> *sonics)
+Camara::Camara(int posicionx, int posiciony, int alto, int ancho, std::map<int, Personaje*> *sonics)
 : sonics(sonics){
 	camaraImagen = new SDL_Rect();
 	this->camaraImagen->x = posicionx;
@@ -55,12 +55,12 @@ void Camara::actualizar(int maximoAncho, int maximoAlto){
 
 	int posicionMax = 0;
 	bloqueada = false;
-	std::vector<Personaje*>::iterator sonic;
+	std::map<int, Personaje*>::iterator sonic;
 	for(sonic = sonics->begin();sonic != sonics->end();sonic++){
-		if (posicionMax < (*sonic)->getPosicionX()){
-			posicionMax = (*sonic)->getPosicionX();
+		if (posicionMax < (*sonic).second->getPosicionX()){
+			posicionMax = (*sonic).second->getPosicionX();
 		}
-		if ((*sonic)->bloqueaCamara(camaraImagen)){
+		if ((*sonic).second->bloqueaCamara(camaraImagen)){
 			bloqueada = true;
 		}
 	}

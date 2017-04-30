@@ -74,6 +74,7 @@ class Personaje
 		int getPosicionY();
 		int getAlto();
 		int getAncho();
+		int getId();
 
 		void saltar();
 		void dejarDeSaltar();

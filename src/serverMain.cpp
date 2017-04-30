@@ -37,9 +37,28 @@ int main(int argc, char *argv[]) {
 	parseadorJsonSer *jsonSer = new parseadorJsonSer(log);
 	//jsonSer->parsearArchivo(server->cargarNombreArchivo());
 	int maxConexiones = 2;
-	server->crear();
-	server->enlazar(8080);
-	server->escuchar(maxConexiones);
+	//server->crear();
+	//server->enlazar(8080);
+	//server->escuchar(maxConexiones);
+
+	if(server->crear() == false){
+		server->cerrar();
+		delete server;
+		delete jsonSer;
+		delete log;
+	}
+	if(server->enlazar(8080) == false){
+		server->cerrar();
+		delete server;
+		delete jsonSer;
+		delete log;
+	}
+	if(server->escuchar(maxConexiones) == false){
+		server->cerrar();
+		delete server;
+		delete jsonSer;
+		delete log;
+	}
 
 	vector<Hilorecibir*> hrRecibir;
 	vector<Hiloenviar*> hrEnviar;
@@ -106,18 +125,40 @@ int main(int argc, char *argv[]) {
 		  cout << "Error on accept"<<endl;
 		}
 		else {
-			Hilorecibir *hr = new Hilorecibir();
-			hr->parametros.server = server;
-			hr->parametros.skt = skt;
-			hr->parametros.continuar = true;
-			hr->IniciarHilo();
-			hrRecibir.push_back(hr);
+			ostringstream oss;
+			oss<< id << maxConexiones;
 
-			Hiloenviar *hre = new Hiloenviar();
-			hre->parametros.server = server;
-			hre->parametros.skt = skt;
-			hre->IniciarHilo();
-			hrEnviar.push_back(hre);
+			Hilorecibir *hrecibir = new Hilorecibir();
+			hrecibir->parametros.server = server;
+			hrecibir->parametros.skt = skt;
+			hrecibir->parametros.continuar = true;
+			hrecibir->IniciarHilo();
+			hrRecibir.push_back(hrecibir);
+
+			Hiloenviar *henviar = new Hiloenviar();
+			henviar->parametros.server = server;
+			henviar->parametros.skt = skt;
+
+			//char *buffer=(char*)"me quiero, me quiero mucho mucho mucho ";
+			//Le mando un ID a cada cliente a medida que se conectan y la cantidad maxima de jugadores
+			char buffer[2] = "";
+			string temp = oss.str();
+			strcpy(buffer, temp.c_str());
+			cout << "Server envio ID+maxConexiones: " << buffer << endl;
+
+
+	//Idea: estaria bueno un generador de ID que sepa cuales son los id libres.
+	//Sino al desconectarse clientes quedan mal los ids.
+
+	//Otra cosa: Al desconectarse un cliente tendrian que borrarse estos hilos
+
+			henviar->parametros.buffer = buffer;
+			henviar->IniciarHilo();
+			hrEnviar.push_back(henviar);
+
+			juego->agregarJugador(id);
+			id++;
+
 		}
     }
 

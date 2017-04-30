@@ -27,7 +27,14 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, HiloEnvia
 
 	ControladorTeclas controlador = ControladorTeclas();
 
-	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana(), sonics);
+	std::map<int, Personaje*> sonicsMapa;
+	std::vector<Personaje*>::iterator pos;
+	for(pos = sonics->begin();pos != sonics->end();pos++)
+	{
+		sonicsMapa[(*pos)->getId()] = (*pos);
+	}
+
+	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana(), &sonicsMapa);
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !salir ){

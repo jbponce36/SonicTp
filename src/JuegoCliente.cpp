@@ -101,11 +101,8 @@ void JuegoCliente::inicializarOtrosSonics(int id)
 			Personaje *otroSonic = new Personaje(i, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log, cliente);
 			sonics.push_back(otroSonic);
 		}
-		else if (i == id)
-		{
-			sonics.push_back(sonic);
-		}
 	}
+	sonics.push_back(sonic);
 }
 
 void JuegoCliente::iniciarJuegoControlCliente()

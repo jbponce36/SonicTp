@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 #define FPS_SERVER 30
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
@@ -31,7 +32,7 @@ private:
 	ConexServidor *server;
 	Logger *log;
 
-	std::vector<Personaje*> sonics;
+	std::map<int, Personaje*> *sonics;
 	std::vector<Hiloenviar*> *hilosEnviar;
 	std::vector<Hilorecibir*> *hilosRecibir;
 
@@ -43,14 +44,15 @@ private:
 		bool teclaCorrer;
 	}teclasPresionadas;
 
-	std::vector<teclasPresionadas> teclas; //Cada elemento le corresponde a un sonic
+	std::map<int, teclasPresionadas> teclas; //Cada elemento le corresponde a un sonic
 
 public:
-	ControlServidor(int altura, int anchura, std::vector<Personaje*> sonics,
+	ControlServidor(int altura, int anchura, std::map<int, Personaje*> *sonics,
 		std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir, ConexServidor *server, Logger *log);
 	virtual ~ControlServidor();
 
 	void ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado);
+	void agregarSonic(int id);
 
 	typedef struct mensajeRecibido{
 		int id;
