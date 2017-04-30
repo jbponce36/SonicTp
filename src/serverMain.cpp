@@ -46,18 +46,21 @@ int main(int argc, char *argv[]) {
 		delete server;
 		delete jsonSer;
 		delete log;
+		return 1;
 	}
 	if(server->enlazar(8080) == false){
 		server->cerrar();
 		delete server;
 		delete jsonSer;
 		delete log;
+		return 1;
 	}
 	if(server->escuchar(maxConexiones) == false){
 		server->cerrar();
 		delete server;
 		delete jsonSer;
 		delete log;
+		return 1;
 	}
 
 	vector<Hilorecibir*> hrRecibir;

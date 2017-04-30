@@ -75,6 +75,8 @@ class Personaje
 		int getAlto();
 		int getAncho();
 		int getId();
+		std::string getNombreAnimacion();
+		std::string getEstadoAnimacion();
 
 		void saltar();
 		void dejarDeSaltar();
@@ -88,6 +90,7 @@ class Personaje
 		bool bloqueaCamara(SDL_Rect *limites);
 
 		void enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje);
+		std::string obtenerMensajeEstado();
 
 };
 
