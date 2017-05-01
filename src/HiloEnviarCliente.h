@@ -29,7 +29,9 @@ public:
 			Paquete pack;
 		};
 	SerParametros parametros;
-
+	void iniciarHiloQueue();
+	static void* clienteEnviarQueue(void* args);
+	void enviarDato(char* dato);
 	void Join();
 };
 

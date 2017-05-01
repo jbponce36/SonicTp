@@ -39,7 +39,9 @@ public:
 
 	void Join();
 	void enviarBuffer(char* arg);
-
+	void iniciarHiloQueue();
+	static void* serverEnviarQueue(void* args);
+	void enviarDato(char* dato);
 private:
 	Hilo h;
 	bool continuar;

@@ -41,7 +41,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				result = parametros->cliente->recibir(buffer,sizeof(buffer));
 
 				if (result>0){
-					//cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
+					cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
 					if (strcmp(buffer, "Conexion rechazada") == 0){
 					 printf("****** La conexion fue rechaza por el servidor ******* \n");
 
