@@ -10,6 +10,8 @@
 #include <iostream>
 #include <string.h>
 #include <queue>
+#include "Posicion.h"
+
 namespace std{
 struct nodo{
 	char nodo[40];
@@ -21,12 +23,19 @@ public:
 	Paquete();
 	~Paquete();
 	void agregar(char *buffer);
+	//void agregarPosicion(Posicion *pos);
+
 	std::queue<char*> getColaPaquetes();
+	//std::queue<Posicion *> getColaPaquetes();
+
 	char* obtenerElementoDelaCola();
+	//Posicion* obtenerElementoDelaCola();
+
 	void eliminarElPrimetoDeLaCola();
 
 private:
 	std::queue<char*> colaPaquetes;
+	//std::queue<Posicion *> colaPaquetes;
 	//Puntero delante;
 	//Puntero atras;
 

@@ -67,7 +67,6 @@ int main(int argc, char *argv[]) {
 
 	int id = 1;
 
-
 	while(server->noSeConectaronTodos()){
 	//while(1){
 		int skt = server->aceptarcliente();

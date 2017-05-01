@@ -34,6 +34,8 @@ public:
 
 	void Join();
 	std::string obtenerElementoDeLaCola();
+	std::string obtenerPosicionDeLaCola();
+
 };
 
 #endif /* HILORECIBIRCLIENTE_H_ */
