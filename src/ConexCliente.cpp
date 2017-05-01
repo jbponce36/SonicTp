@@ -69,6 +69,7 @@ ConexCliente::~ConexCliente()
         server_sock_size = sizeof (server_addr);
         int conectado = connect(this->fd, (struct sockaddr*)(&server_addr), server_sock_size);
         if(conectado < 0){
+        	this->getLog()->addLogMessage("[CONECTAR] Error, no se pudo conectar en el puerto "+intToString(puerto),2);
             return -1;
         }
 
