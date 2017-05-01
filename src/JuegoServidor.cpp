@@ -37,7 +37,7 @@ void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
 {
 	/*Nota para pruebas:
 	Para mostrar la vista del servidor pasarle false y descomentar en ControlServidor::moverPersonajesServidor*/
-	vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, false);
+	vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, true);
 
 	velocidad = jparseador->getConfiguracion()->getvelscroll();
 	altoEscenario = jparseador->getEscenario()->getalto();

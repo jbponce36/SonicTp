@@ -104,6 +104,17 @@ int main(int argc, char *argv[]) {
 
 			henviar->parametros.buffer = buffer;
 			henviar->IniciarHilo();
+
+
+			/*
+			char* buf;
+			buf="aaaaabbbbccccddddeeeeffffgggghhhh";
+			henviar->enviarDato(buf);
+			henviar->iniciarHiloQueue();
+			*/
+
+
+
 			hrEnviar.push_back(henviar);
 
 		}

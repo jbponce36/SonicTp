@@ -180,8 +180,8 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 
 
 		/*Para ver lo que pasa en el juego del servidor. (Poner false al crear la VistaSDL en JuegoServidor)*/
-		(*pos).second->render(camara->getPosicionX(), camara->getPosicionY());
-		SDL_RenderPresent( vista->obtenerRender());
+		//(*pos).second->render(camara->getPosicionX(), camara->getPosicionY());
+		//SDL_RenderPresent( vista->obtenerRender());
 		/*Hasta aca*/
 	}
 }
@@ -195,7 +195,7 @@ void ControlServidor::actualizarVistaServidor()
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
 		std::string mensaje = (*pos).second->obtenerMensajeEstado();
-		//enviarATodos(mensaje); //No envia bien. Enviar siempre siempre?
+		enviarATodos(mensaje); //No envia bien. Enviar siempre siempre?
 	}
 
 }

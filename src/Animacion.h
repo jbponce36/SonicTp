@@ -35,6 +35,7 @@ public:
 	void dibujar(SDL_Rect cuadroDeVentana);
 	std::string obtenerNombre();
 	int obtenerIndiceSprite();
+	void cambiarSprite(int indice);
 	virtual ~Animacion();
 
 private:

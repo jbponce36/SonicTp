@@ -11,10 +11,12 @@
 #include "Hilo.h"
 #include "ConexCliente.h"
 #include "Paquete.h"
+#include <pthread.h>
 
 class HiloRecibirCliente {
 private:
 	Hilo *hilo;
+
 
 public:
 	HiloRecibirCliente();
@@ -32,10 +34,11 @@ public:
 	 };
 	Serparametros parametros;
 
+
+
 	void Join();
 	std::string obtenerElementoDeLaCola();
 	std::string obtenerPosicionDeLaCola();
-
 };
 
 #endif /* HILORECIBIRCLIENTE_H_ */
