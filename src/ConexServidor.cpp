@@ -150,13 +150,13 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 
 
 	pthread_mutex_lock(&mutex);
-	if (bytes >= 0){
+	if (bytes <= 0){
+		this->log->addLogMessage("[RECIBIR] Error",2);
 		this->cantclientes = this->cantclientes -1;
 		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
 
 		if (this->cantclientes==0){
 			printf("No hay clientes conectados \n");
-
 			if (this->partidaComenzada){
 
 				printf("La partida habia comenzado y se desconectaron todos los clientes \n");
@@ -188,6 +188,7 @@ int ConexServidor::recibirPosicion(int skt, Posicion *posicion, int size)
 
 	pthread_mutex_lock(&mutex);
 	if (bytes<=0){
+		this->log->addLogMessage("[RECIBIR] Error",2);
 		this->cantclientes = this->cantclientes -1;
 		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
 
@@ -205,12 +206,8 @@ int ConexServidor::recibirPosicion(int skt, Posicion *posicion, int size)
 			}
 		}
 	}
-	else{
-		this->log->addLogMessage("[RECIBIR] Error",2);
-	}
-	pthread_mutex_unlock(&mutex);
-
 	this->log->addLogMessage("[RECIBIR] Terminado",2);
+	pthread_mutex_unlock(&mutex);
 	return bytes;
 }
 
