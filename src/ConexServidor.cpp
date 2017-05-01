@@ -215,34 +215,40 @@ int ConexServidor::recibirPosicion(int skt, Posicion *posicion, int size)
 int ConexServidor::enviar(int socket, char *buf, int size){
 	this->log->setModulo("[CONEX SERVIDOR]");
 	this->log->addLogMessage("[ENVIAR] Iniciado",2);
-//	int sent = 0;
-//	int status = 0;
-//	bool is_the_socket_valid = true;
-
-	//this->log->addLogMessage("[ENVIAR] Iniciado",2);
-
-//	while (sent < size && is_the_socket_valid) {
-	int	status = send(socket,buf, size, MSG_NOSIGNAL);
-	//	if (status <= 0) {
-	//		is_the_socket_valid = false;
-	//	}
-	//	else {
-	//		sent += status;
-	//	}
-	//}
-
-	if(status < 0){
+	int enviado = 0;
+	int envioParcial = 0;
+	bool socketValido = true;
+	while(enviado < size && socketValido)
+	{
+		envioParcial = send(socket,buf, size, MSG_NOSIGNAL);
+		if(envioParcial == 0){
+		socketValido = false;
 		//this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el"+toString(),1);
 		cout<<"[CONEX SERVIDOR][ENVIAR] No se pudo enviar"<<endl;
-
 		this->log->addLogMessage("[ENVIAR] Error, no se pudo enviar",2);
-		return status;
-	}
-	//this->log->addLogMessage("[ENVIAR] Terminado",2);
-	cout<<"[ENVIAR] Terminado"<<endl;
-	return status;
-}
+		//return status;
+		}
+		else if (envioParcial < 0){
 
+			socketValido = false;
+		}
+
+		else{
+
+			enviado += envioParcial;
+		}
+		//this->log->addLogMessage("[ENVIAR] Terminado",2);
+		cout<<"[ENVIAR] Terminado"<<endl;
+		//return status;
+		}
+		if (socketValido = false)
+		{
+			return envioParcial;
+		}
+		else {
+			return enviado;
+	}
+}
 
 
 int ConexServidor::cerrar()

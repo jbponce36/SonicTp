@@ -32,7 +32,7 @@ void *HiloEnviarCliente::clienteEnviar(void *args){
 					if(parametros->buffer != "")
 					{
 
-					result = parametros->cliente->enviar(parametros->buffer,sizeof(parametros->buffer) );
+					result = parametros->cliente->enviar(parametros->buffer,strlen(parametros->buffer) );
 
 					if (result>0){
 						cout<<"server envio: "<<parametros->buffer<<endl;
@@ -77,7 +77,7 @@ void* HiloEnviarCliente::clienteEnviarQueue(void* args){
 				{
 				parametros->buffer = parametros->pack.obtenerElementoDelaCola();
 
-				result = parametros->cliente->enviar(parametros->buffer,sizeof(parametros->buffer));
+				result = parametros->cliente->enviar(parametros->buffer,strlen(parametros->buffer));
 
 				if (result>0){
 					cout<<"server envio: "<<parametros->buffer<<endl;

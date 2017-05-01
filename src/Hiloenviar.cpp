@@ -43,7 +43,7 @@ void *Hiloenviar::serverEnviar(void *args)
 				if(parametros->buffer != "")
 				{
 
-				result = parametros->server->enviar(parametros->skt,parametros->buffer,sizeof(parametros->buffer));
+				result = parametros->server->enviar(parametros->skt,parametros->buffer,strlen(parametros->buffer));
 
 				if (result>0){
 					cout<<"server envio: "<<parametros->buffer<<endl;
@@ -92,8 +92,11 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 				if(parametros->pack.getColaPaquetes().empty() != true)
 				{
 				parametros->buffer = parametros->pack.obtenerElementoDelaCola();
+				cout<<"tamanio buffer  :"<<sizeof(parametros->buffer)<<endl;
+				cout<<strlen(parametros->buffer)<<endl;
+				result = parametros->server->enviar(parametros->skt,parametros->buffer,strlen(parametros->buffer));
+				result = 20;
 
-				result = parametros->server->enviar(parametros->skt,parametros->buffer,sizeof(parametros->buffer));
 
 				if (result>0){
 					cout<<"server envio: "<<parametros->buffer<<"envio n° de datos:"<<result<<endl;
