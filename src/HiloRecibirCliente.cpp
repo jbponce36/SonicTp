@@ -32,7 +32,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 		char buffer[100];
 
 		int result = 1;
-	//	parametros->cliente->recibir(buffer,strlen(buffer));
+		parametros->cliente->recibir(buffer,strlen(buffer));
 		cout<<"[HILO RECIBIR CLIENTE] [CLIENTE RECIBIR] "<<endl;
 
 		while (result>0){

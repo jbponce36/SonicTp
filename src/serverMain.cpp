@@ -106,12 +106,13 @@ int main(int argc, char *argv[]) {
 			henviar->IniciarHilo();
 
 
-			/*
-			char* buf;
-			buf="aaaaabbbbccccddddeeeeffffgggghhhh";
+/*
+			char buf[40] = "aaaabbbbccccddddeeeeffffgggghhhh";
 			henviar->enviarDato(buf);
+
 			henviar->iniciarHiloQueue();
-			*/
+*/
+
 
 
 
