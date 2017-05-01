@@ -75,5 +75,49 @@ void Hiloenviar::enviarBuffer(char* arg){
 	parametros.buffer = arg;
 }
 
+void Hiloenviar::iniciarHiloQueue(){
+
+	Hilo hilo = Hilo(/*log*/);
+	hilo.Create((void *)Hiloenviar::serverEnviarQueue ,  (void *)&parametros);
+	this->setH(hilo);
+}
+
+void* Hiloenviar::serverEnviarQueue(void* args){
+
+	SerParametros *parametros = (SerParametros*) args;
+	bool salir = false;
+	while(salir == false){
+		int result = 1;
+			while (result>0){
+				if(parametros->pack.getColaPaquetes().empty() != true)
+				{
+				parametros->buffer = parametros->pack.obtenerElementoDelaCola();
+
+				result = parametros->server->enviar(parametros->skt,parametros->buffer,sizeof(parametros->buffer));
+
+				if (result>0){
+					cout<<"server envio: "<<parametros->buffer<<"envio n° de datos:"<<result<<endl;
+					parametros->pack.eliminarElPrimetoDeLaCola();
+				}
+
+				if (result==0){
+					printf("El cliente se desconecto. \n");
+					salir = false;
+				}
+
+				if (result==-1){
+					printf("El cliente se desconecto. \n");
+					salir = false;
+				}
+				parametros->buffer = "";
+				}
+			}
+		}
+}
+
+void Hiloenviar::enviarDato(char* dato){
+
+	parametros.pack.agregar(dato);
+}
 }
 /* namespace std */

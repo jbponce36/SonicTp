@@ -40,16 +40,20 @@ void *Hilorecibir::serverRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
 	while(parametros->continuar){
 		char buffer[40];
+		Posicion *pos = new Posicion();
 		//Serparametros *parametros = (Serparametros*) args;
 		int result = 1;
 		//parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
 
 		while (result>0){
 				result = parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
+				//result = parametros->server->recibirPosicion(parametros->skt, pos, sizeof(pos));
 
 				if (result>0){
-					cout<<"server recibio: "<<buffer<<endl;
+					cout<<"server recibio: "<<pos->toString() <<endl;
+					//parametros->colaDeMensajes.agregarPosicion(pos);
 					parametros->colaDeMensajes.agregar(buffer);
+
 				}
 
 				if (result==0){
@@ -84,7 +88,24 @@ std::string Hilorecibir::obtenerElementoDeLaCola()
 	//Obtiene el primer elemento de la cola y lo saca.
 	if(! parametros.colaDeMensajes.getColaPaquetes().empty())
 	{
-		char* cadena = parametros.colaDeMensajes.obtenerElementoDelaCola();
+		char *cadena = parametros.colaDeMensajes.obtenerElementoDelaCola();
+		//Posicion *pos = parametros.colaDeMensajes.obtenerElementoDelaCola();
+		//std::string str = pos->getCoordenadas();
+		std::string str = std::string(cadena);
+		parametros.colaDeMensajes.eliminarElPrimetoDeLaCola();
+		return str;
+	}
+	return "Sin elementos";
+}
+
+std::string Hilorecibir::obtenerPosicionDeLaCola()
+{
+	//Obtiene el primer elemento de la cola y lo saca.
+	if(! parametros.colaDeMensajes.getColaPaquetes().empty())
+	{
+		char *cadena = parametros.colaDeMensajes.obtenerElementoDelaCola();
+		//Posicion *pos = parametros.colaDeMensajes.obtenerElementoDelaCola();
+		//std::string str = pos->getCoordenadas();
 		std::string str = std::string(cadena);
 		parametros.colaDeMensajes.eliminarElPrimetoDeLaCola();
 		return str;

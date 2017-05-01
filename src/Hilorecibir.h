@@ -12,6 +12,7 @@
 #include "ConexServidor.h"
 #include "ProcesadorCliente.h"
 #include "Paquete.h"
+#include "Posicion.h"
 
 namespace std {
 
@@ -36,6 +37,7 @@ public:
     void setH(Hilo);
     void Join();
     std::string obtenerElementoDeLaCola();
+    std::string obtenerPosicionDeLaCola();
 
 
 private:

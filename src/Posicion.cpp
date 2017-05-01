@@ -24,7 +24,8 @@ Posicion::Posicion(string coordenada) {
 	this->coordenadas= coordenada;
 }
 
-
+Posicion::Posicion() {
+}
 
 Posicion::~Posicion() {
 	this->coordenadas = "";
@@ -59,6 +60,10 @@ void Posicion::setDireccion(string direccion)
 void Posicion::setFecha(string fecha)
 {
     this->fecha = fecha;
+}
+
+string Posicion::toString(){
+	return "Posicion-> fecha: "+ this->fecha+", coordenadas: "+ this->coordenadas;
 }
 
 
