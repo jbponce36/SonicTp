@@ -5,7 +5,11 @@
 #include "Camara.h"
 #include "Logger.h"
 #include "ControladorTeclas.h"
+#include "HiloRecibirCliente.h"
+#include "HiloEnviarCliente.h"
+#include "Definiciones.h"
 #include <vector>
+#include <algorithm>
 
 #define FPS 30
 #define TICKS_POR_FRAME 1000/FPS
@@ -21,16 +25,27 @@ private:
 	int maxJugadores;
 
 public:
+	typedef struct mensajePosicion{
+			int id;
+			int posX;
+			int posY;
+			std::string animacion;
+			int indiceAnimacion;
+	}mensajePosicion;
+
 	Control(int posicionX, int posicionY, int maxJugadores, std::vector<Personaje*> *sonics, Logger *log);
+	virtual ~Control();
 	int getPosicionInicialX();
 	int getPosicionInicialY();
-	void ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, HiloEnviarCliente *hiloEnviar);
+	void ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, HiloEnviarCliente *hiloEnviar, HiloRecibirCliente *hiloRecibir);
+	void parsearMensajePosicion(mensajePosicion& msjParseado, std::string mensaje);
 
-	virtual ~Control();
+
 
 private:
 	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, HiloEnviarCliente *hiloEnviar);
 	void moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic, Camara* camara);
+	void moverOtrosSonics(Personaje* sonic, HiloRecibirCliente *hiloRecibir);
 	void actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic);
 
 

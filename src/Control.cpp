@@ -14,7 +14,9 @@ int Control::getPosicionInicialX(){
 int Control::getPosicionInicialY(){
 	return this->posicionInicialY;
 }
-void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, HiloEnviarCliente *hiloEnviar){
+void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
+		HiloEnviarCliente *hiloEnviar, HiloRecibirCliente *hiloRecibir)
+{
 	SDL_Rect imagenMostrar;
 
 	this->log->addLogMessage("[CONTROLAR JUEGO] Iniciado.", 2);
@@ -41,9 +43,9 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, HiloEnvia
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
 		administrarTeclas(&controlador, sonic, hiloEnviar);
+		moverOtrosSonics(sonic, hiloRecibir);
 		moverPersonaje(tiempoDeJuego, vista, sonic, camara);
-		/////Corregir posicion???? Recibir del server las posiciones de otros sonics y sus animaciones
-		/////y mostrarlos en actualizarVista
+		/////Corregir posicion????
 		actualizarVista(camara, vista, &imagenMostrar, sonic);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
@@ -78,6 +80,48 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 
 }
 
+void Control::moverOtrosSonics(Personaje* sonic, HiloRecibirCliente *hiloRecibir)
+{
+	//Mueve a los otros sonics de acuerdo a los mensajes recibidos del servidor
+	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
+	while ((mensaje) != ("Sin elementos"))
+	{
+		cout << "Control mensaje: " << mensaje << endl;
+		if(mensaje.length() == LARGO_MENSAJE_POSICION_SERVIDOR)
+		{
+			mensajePosicion msj;
+			parsearMensajePosicion(msj, mensaje);
+			if (msj.id != sonic->getId()){
+				sonics->at(msj.id - 1)->posicionarseConAnimacion(msj.posX, msj.posY, msj.animacion, msj.indiceAnimacion);
+			}
+
+			cout << msj.id << " " << " " << msj.posX << " " << msj.posY  << msj.animacion << " " << msj.indiceAnimacion << endl;
+		}
+		else
+		{
+			//Otros mensajes...
+		}
+		mensaje = hiloRecibir->obtenerElementoDeLaCola();
+	}
+}
+
+void Control::parsearMensajePosicion(mensajePosicion& msj, std::string mensaje)
+{
+	//Son los mensajes de las posiciones de los otros sonics que recibe desde el servidor
+	msj.id = atoi(mensaje.substr(0, 1).c_str());
+
+	std::string posX = mensaje.substr(2, 4);
+	std::string posY = mensaje.substr(7, 4);
+	posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
+	posY.erase(std::remove(posY.begin(), posY.end(), PADDING), posY.end());
+
+	msj.posX = atoi(posX.c_str());
+	msj.posY = atoi(posY.c_str());
+
+	msj.animacion = mensaje.substr(11, 3);
+	msj.indiceAnimacion = atoi(mensaje.substr(14, 1).c_str());
+}
+
 void Control::moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic, Camara *camara)
 {
 	//para calcular el tiempo q transcurre en cada fotografia
@@ -90,6 +134,8 @@ void Control::moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *
 	tiempoDeJuego = SDL_GetTicks();
 
 	camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario()); //Mueve la camara segun los sonics
+
+
 }
 
 void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic)
