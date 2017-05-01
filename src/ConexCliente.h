@@ -22,8 +22,7 @@
 #include <string>
 #include <sstream>
 #include "Logger.h"
-
-
+#include "Posicion.h"
 
 using namespace std;
 
@@ -37,6 +36,7 @@ public:
 	//bool ErroresCliente(int puerto);
 	int conectar(const char* hostName, int puerto);
 	int recibir(char *buf, int size);
+	int enviarPosicion(Posicion *posicion, int size);
     int enviar(char *buf, int size);
     int dibujarMenu();
     int cerrar();

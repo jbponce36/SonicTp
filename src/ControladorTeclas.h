@@ -12,6 +12,7 @@
 #include "Definiciones.h"
 #include "ConexCliente.h"
 #include "ConexServidor.h"
+#include "Posicion.h"
 
 class ControladorTeclas {
 

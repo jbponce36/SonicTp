@@ -91,6 +91,7 @@ class Personaje
 		bool bloqueaCamara(SDL_Rect *limites);
 
 		void enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje);
+		void enviarPosicionServer(HiloEnviarCliente *hiloEnviar, Posicion *pos);
 		std::string obtenerMensajeEstado();
 
 };

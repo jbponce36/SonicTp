@@ -1,25 +1,17 @@
-/*
- * ConexServidor.cpp
- *
- *  Created on: 11 abr. 2017
- *      Author: pato
- */
-
 #include "ConexServidor.h"
-
-#include <pthread.h>
-
 
 #define DEFAULT_PORT = 8090;
 
 namespace std {
 
-ConexServidor::ConexServidor(){
+ConexServidor::ConexServidor(Logger *log){
 	this->cantMaximaClientes = 0;
 	this->cantclientes = 0;
 	this->finalizarConexion = false;
 	this->partidaComenzada = false;
 	pthread_mutex_init(&mutex, NULL);
+	this->log = log;
+	this->log->setModulo("CONEX SERVIDOR");
 }
 std::string ConexServidor::cargarNombreArchivo(){
 	std::string nombre;
@@ -46,6 +38,7 @@ bool ConexServidor::enlazar(int puerto){
   sockaddr_in	server;
   //this->AgregarDireccionSocket(&server,puerto);
 
+  this->log->addLogMessage("[ENLAZAR] Iniciado",2);
   server.sin_family = AF_INET;
   server.sin_port = htons(puerto);
   server.sin_addr.s_addr = INADDR_ANY;
@@ -56,9 +49,13 @@ bool ConexServidor::enlazar(int puerto){
   if( resBind < 0)
   {
 	  std::cout << "open failed, error - " << strerror(errno) << std::endl;
+	  this->log->addLogMessage("[ENLAZAR] Error, no se pudo enlazar en el puerto "+intToString(puerto),2);
 	  //exit(errno);
 	  return false;
   }
+
+  this->puerto = puerto;
+  this->log->addLogMessage("[ENLAZAR] Terminado",2);
   return true;
 }
 
@@ -76,17 +73,21 @@ bool ConexServidor::noSeConectaronTodos(){
 
 bool ConexServidor::escuchar(int cantidadMaxima)
 {
+	this->log->addLogMessage("[ESCUCHAR] Iniciado",2);
 	int escuchar = listen(this->sock_recep, cantidadMaxima);
 	cout << cantidadMaxima << endl;
 	this->cantMaximaClientes = cantidadMaxima;
 	if(escuchar < 0){
+		this->log->addLogMessage("[ESCUCHAR] Error, no se pudo escuchar",1);
 		return false;
 	}
+	this->log->addLogMessage("[ESCUCHAR] Terminado",2);
 	return true;
 }
 
 int ConexServidor::aceptarcliente()
 {
+	this->log->addLogMessage("[ACEPTAR CLIENTE] Iniciado",2);
 	int longitud_dircliente;
 	sockaddr_in direccionclient;
 
@@ -102,7 +103,6 @@ int ConexServidor::aceptarcliente()
     }
     else
     {
-
 		if (this->cantclientes == this->cantMaximaClientes)   {
 
 			printf("Se ha superado la cantidad maxima de conexiones  \n");
@@ -123,6 +123,7 @@ int ConexServidor::aceptarcliente()
 
     pthread_mutex_unlock(&mutex);
 
+	this->log->addLogMessage("[ACEPTAR CLIENTE] Terminado",2);
     return fdCliente;
 
 }
@@ -141,8 +142,45 @@ void ConexServidor::setCantclientes(int CantClientes)
 
 int ConexServidor::recibir(int skt, char *buf, int size)
 {
-
+	this->log->addLogMessage("[RECIBIR] Iniciado",2);
 	int bytes = recv(skt, buf, size, MSG_NOSIGNAL);
+	//recv devuelve 0 si el cliente se desconecto satisfactoriamente
+	//devuelve -1 si ubo algun error
+	//en ambos casos hay que restar la cantidad de clientes
+
+
+	pthread_mutex_lock(&mutex);
+	if (bytes >= 0){
+		this->cantclientes = this->cantclientes -1;
+		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
+
+		if (this->cantclientes==0){
+			printf("No hay clientes conectados \n");
+
+			if (this->partidaComenzada){
+
+				printf("La partida habia comenzado y se desconectaron todos los clientes \n");
+				printf("El servidor se desconectara.   \n");
+
+				//a iria un mutex cada vez que se accede a la variable finalizarConexion
+				this->finalizarConexion = true;
+				this->cerrar();
+			}
+		}
+	}
+	else{
+		this->log->addLogMessage("[RECIBIR] Error",2);
+	}
+	pthread_mutex_unlock(&mutex);
+
+	this->log->addLogMessage("[RECIBIR] Terminado",2);
+	return bytes;
+}
+
+int ConexServidor::recibirPosicion(int skt, Posicion *posicion, int size)
+{
+	this->log->addLogMessage("[RECIBIR] Iniciado",2);
+	int bytes = recv(skt, posicion, sizeof(posicion), MSG_NOSIGNAL);
 	//recv devuelve 0 si el cliente se desconecto satisfactoriamente
 	//devuelve -1 si ubo algun error
 	//en ambos casos hay que restar la cantidad de clientes
@@ -167,13 +205,19 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 			}
 		}
 	}
+	else{
+		this->log->addLogMessage("[RECIBIR] Error",2);
+	}
 	pthread_mutex_unlock(&mutex);
 
+	this->log->addLogMessage("[RECIBIR] Terminado",2);
 	return bytes;
 }
 
 
 int ConexServidor::enviar(int socket, char *buf, int size){
+	this->log->setModulo("[CONEX SERVIDOR]");
+	this->log->addLogMessage("[ENVIAR] Iniciado",2);
 //	int sent = 0;
 //	int status = 0;
 //	bool is_the_socket_valid = true;
@@ -193,10 +237,12 @@ int ConexServidor::enviar(int socket, char *buf, int size){
 	if(status < 0){
 		//this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el"+toString(),1);
 		cout<<"[CONEX SERVIDOR][ENVIAR] No se pudo enviar"<<endl;
+
+		this->log->addLogMessage("[ENVIAR] Error, no se pudo enviar",2);
 		return status;
 	}
 	//this->log->addLogMessage("[ENVIAR] Terminado",2);
-	cout<<"[CONEX SERVIDOR][ENVIAR] Se envio correctamente"<<endl;
+	cout<<"[ENVIAR] Terminado"<<endl;
 	return status;
 }
 
@@ -204,8 +250,11 @@ int ConexServidor::enviar(int socket, char *buf, int size){
 
 int ConexServidor::cerrar()
 {
+	this->log->addLogMessage("[CERRAR] Iniciado",2);
 	int status = shutdown(this->sock_recep, SHUT_RDWR);
 	status = close(this->sock_recep);
+
+	this->log->addLogMessage("[CERRAR] Terminado",2);
 	return status;
 }
 
@@ -233,28 +282,17 @@ void ConexServidor::setHostname(string hostname)
 }
 /*void ConexServidor::aceptarClientes()
 {
-
-
 	char *archivoLog=(char*)"configuracion/log.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "PRINCIPAL");
 	log->iniciarLog("INICAR LOGGER");
-
 	//Se lee del json el nombre de la ventana
 	parseadorJson* parseador = new parseadorJson(log);
-
 	char *file=(char*)"configuracion/configuracion.json";
 	jescenarioJuego* jparseador = parseador->parsearArchivo(file);
-
-
 	log->setModulo("PRINCIPAL");
 	log->addLogMessage("Se empieza a cargar la vista.",1);
 	log->setLevel(getNivelLogger(argc, argv));
-
-
-
 	Hilo *hilo = new hilo();
-
-
 	while(1)
 	{
 		Sockets skt = new Sockets();
@@ -277,10 +315,6 @@ string ConexServidor::intToString(int number)
 string ConexServidor::toString(){
 	return "Socket: "+intToString(this->getFd())+", puerto: "+intToString(this->puerto);
 }
- /* namespace std */
-
-
-
 
 bool ConexServidor::getFinalizarConexion(){
 	return finalizarConexion;

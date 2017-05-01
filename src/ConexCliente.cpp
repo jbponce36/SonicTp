@@ -37,6 +37,7 @@ ConexCliente::ConexCliente(Logger *log)
 {
 	setFd(1);
 	setLog(log);
+	this->getLog()->setModulo("CONEX CLIENTE");
 }
 
 ConexCliente::~ConexCliente()
@@ -59,6 +60,7 @@ ConexCliente::~ConexCliente()
 
     int ConexCliente::conectar(const char* hostname, int puerto)
     {
+    	this->getLog()->addLogMessage("[CONECTAR] Iniciado",2);
         struct sockaddr_in server_addr;
         socklen_t server_sock_size;
         server_addr.sin_family = AF_INET;
@@ -72,11 +74,14 @@ ConexCliente::~ConexCliente()
 
         this->puerto = puerto;
         this->hostname = hostname;
+        this->getLog()->addLogMessage("[CONECTAR] Terminado",2);
         return conectado;
     }
 
     int ConexCliente::enviar(char *buf, int size)
     {
+    	this->log->setModulo("CONEX CLIENTE");
+    	this->log->addLogMessage("[ENVIAR] Iniciado",2);
        /*      bool is_the_socket_valid = true;
         //this->log->addLogMessage("[ENVIAR] Iniciado", 2);
         while(sent < size && is_the_socket_valid){*/
@@ -95,10 +100,36 @@ ConexCliente::~ConexCliente()
             return status;
         }
 
-        //this->log->addLogMessage("[ENVIAR] Terminado", 2);
-        cout<<"[CONEXCLIENTE][ENVIAR] Se envio correctamente"<<endl;
+        this->log->addLogMessage("[ENVIAR] Terminado.", 2);
+        cout<<"[ENVIAR] Terminado"<<endl;
         return status;
     }
+
+    int ConexCliente::enviarPosicion(Posicion *posicion, int size)
+        {
+        	this->log->setModulo("CONEX CLIENTE");
+        	this->log->addLogMessage("[ENVIAR] Iniciado.",2);
+           /*      bool is_the_socket_valid = true;
+            //this->log->addLogMessage("[ENVIAR] Iniciado", 2);
+            while(sent < size && is_the_socket_valid){*/
+                int status = send(this->fd, posicion, sizeof(posicion), MSG_NOSIGNAL);
+               /* if(status <= 0){
+                    is_the_socket_valid = false;
+                }else{
+                    sent += status;
+                }
+            }*/
+
+            if(status == -1){
+            	cout<<"[CONEXCLIENTE][ENVIAR] No se pudo enviar"<<endl;
+            	this->log->addLogMessage("[ENVIAR] Error", 2);
+                return status;
+            }
+
+            this->log->addLogMessage("[ENVIAR] Terminado.", 2);
+            cout<<"[ENVIAR] Terminado"<<endl;
+            return status;
+        }
 
     int dibujarMenu(){
 
@@ -106,6 +137,8 @@ ConexCliente::~ConexCliente()
     }
 
     int ConexCliente::recibir(char *buf, int size){
+    	this->log->setModulo("CONEX CLIENTE");
+    	this->log->addLogMessage("[RECIBIR] Iniciado",2);
     	int bytes = recv(this->fd, buf, size, MSG_NOSIGNAL);
 
     	if(bytes<0){
@@ -114,6 +147,7 @@ ConexCliente::~ConexCliente()
     	}
 
     	cout<<"[CONEXCLIENTE] [RECIBIR] Se recibio correctamente"<<endl;
+    	this->log->addLogMessage("[RECIBIR] Terminado",2);
     	return bytes;
     }
     int ConexCliente::cerrar(){
