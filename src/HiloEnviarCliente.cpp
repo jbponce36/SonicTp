@@ -9,7 +9,7 @@
 
 HiloEnviarCliente::HiloEnviarCliente() : continuar(true){
 	// TODO Auto-generated constructor stub
-	parametros.buffer = "";
+	parametros.buffer = (char*)"";
 }
 
 HiloEnviarCliente::~HiloEnviarCliente() {
@@ -47,7 +47,7 @@ void *HiloEnviarCliente::clienteEnviar(void *args){
 						printf("El cliente se desconecto. \n");
 						salir = false;
 					}
-					parametros->buffer = "";
+					parametros->buffer = (char*)"";
 					}
 				}
 			}

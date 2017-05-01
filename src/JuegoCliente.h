@@ -19,6 +19,7 @@
 #include "HiloEnviarCliente.h"
 #include "HiloRecibirCliente.h"
 
+using namespace std;
 class JuegoCliente {
 
 private:

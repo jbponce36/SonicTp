@@ -70,6 +70,7 @@ class Personaje
 		void render(int camX, int camY);
 
 		void posicionarseEn(int x, int y);
+		void posicionarseConAnimacion(int x, int y, std::string animacion, int indiceAnimacion);
 		int getPosicionX();
 		int getPosicionY();
 		int getAlto();
@@ -90,6 +91,7 @@ class Personaje
 		bool bloqueaCamara(SDL_Rect *limites);
 
 		void enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje);
+		void enviarPosicionServer(HiloEnviarCliente *hiloEnviar, Posicion *pos);
 		std::string obtenerMensajeEstado();
 
 };

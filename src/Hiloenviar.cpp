@@ -58,7 +58,7 @@ void *Hiloenviar::serverEnviar(void *args)
 					printf("El cliente se desconecto. \n");
 					salir = false;
 				}
-				parametros->buffer = "";
+				parametros->buffer = (char*)"";
 				}
 			}
 		}
@@ -71,7 +71,7 @@ void Hiloenviar::Join()
 }
 
 void Hiloenviar::enviarBuffer(char* arg){
-
+	sleep(1);
 	parametros.buffer = arg;
 }
 

@@ -12,18 +12,22 @@
 #include "ConexCliente.h"
 #include <pthread.h>
 #include <queue>
+#include "Posicion.h"
+#include "Logger.h"
+
 
 namespace std {
 
 class ConexServidor {
 public:
-	ConexServidor();
+	ConexServidor(Logger *log);
 	bool crear();
 	virtual ~ConexServidor();
 	bool enlazar(int puerto);
 	bool escuchar(int cantidadMaxima);
 	int aceptarcliente();
 	int recibir(int skt, char *buf, int size);
+	int recibirPosicion(int skt, Posicion *posicion, int size);
 	int enviar(int socket, char *buf, int size);
    // bool ErroresServidor(int puerto); // agrupa crear, enlazar y escuchar
 	std::string cargarNombreArchivo();
@@ -46,6 +50,8 @@ public:
     string getHostname() const;
     void setFd(int fd);
     void setHostname(string hostname);
+    Logger *getLog() const;
+    void setLog(Logger *log);
 
 
 private:
@@ -60,6 +66,7 @@ private:
 	bool finalizarConexion;
 	bool partidaComenzada;
 	pthread_mutex_t mutex;
+	Logger *log;
 };
 
 } /* namespace std */

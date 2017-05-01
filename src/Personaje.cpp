@@ -169,6 +169,37 @@ void Personaje::posicionarseEn(int x, int y)
 	this->posicionY = y;
 }
 
+void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, int indiceAnimacion)
+{
+	posicionarseEn(x, y);
+	if(animacion.compare(ANIMACION_QUIETO_DERECHA) == 0){
+		animacionActual = &animacionQuietoDer;
+	}
+	else if(animacion.compare(ANIMACION_CAMINAR_DERECHA) == 0){
+		animacionActual = &animacionCaminarDer;
+	}
+	else if(animacion.compare(ANIMACION_CORRER_DERECHA) == 0){
+		animacionActual = &animacionCorrerDer;
+	}
+	else if(animacion.compare(ANIMACION_SALTAR_DERECHA) == 0){
+		animacionActual = &animacionSaltarDer;
+	}
+	else if(animacion.compare(ANIMACION_QUIETO_IZQUIERDA) == 0){
+		animacionActual = &animacionQuietoIzq;
+	}
+	else if(animacion.compare(ANIMACION_CAMINAR_IZQUIERDA) == 0){
+		animacionActual = &animacionCaminarIzq;
+	}
+	else if(animacion.compare(ANIMACION_CORRER_IZQUIERDA) == 0){
+		animacionActual = &animacionCorrerIzq;
+	}
+	else if(animacion.compare(ANIMACION_SALTAR_IZQUIERDA) == 0){
+		animacionActual = &animacionSaltarIzq;
+	}
+	animacionActual->cambiarSprite(indiceAnimacion);
+	animacionActual->comenzar();
+}
+
 int Personaje::getPosicionX()
 {
 	return this->posicionX;
@@ -396,6 +427,25 @@ void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje
 	cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
 	//hiloEnviar->parametros.buffer = buffer;
 	cout << "Cliente envio: " << buffer << endl;
+
+}
+
+
+void Personaje::enviarPosicionServer(HiloEnviarCliente *hiloEnviar, Posicion *pos)
+{
+	//mensaje = intToString(id) + pos->getCoordenadas() + "x" + intToStringConPadding(posicionX) + "y" + intToStringConPadding(posicionY);
+
+	/*char* msj = new char[mensaje.length() +1];
+	strcpy(msj, mensaje.c_str());
+	cliente->enviar(msj, strlen(msj));
+	cout << "Cliente envio: "<< msj << '\n';
+	delete[] msj;*/
+
+	//char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
+	//strcpy(buffer, mensaje.c_str());
+	cliente->enviarPosicion(pos, sizeof(pos));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
+	//hiloEnviar->parametros.buffer = buffer;
+	cout << "Cliente envio: " << pos->getCoordenadas() << endl;
 
 }
 

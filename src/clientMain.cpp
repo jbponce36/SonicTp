@@ -37,38 +37,11 @@ char* getJson(int argc, char *argv[]){
 
 int main(int argc, char *argv[]) {
 
-	char *archivoLog=(char*)"configuracion/log.txt";
-	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv), "PRINCIPAL");
-	log->iniciarLog("INICIAR LOGGER");
-
 	//char *clientConfig = getJson(argc, argv);
-	/*char *archivoLog=(char*)"configuracion/log.txt";
+	char *archivoLog=(char*)"configuracion/log.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "CLIENTE");
-	log->addLogMessage(clientConfig, 1);
-
-	Sockets *conexser = new Sockets(log);
-	ConexCliente *conexcliente = new ConexCliente(log);
-	string hostname = "127.0.0.1";
+	char* hostname = (char*)"127.0.0.1";
 	int puerto = 8080;
-	char* buffer=(char*)"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium bibendum mattis. Aliquam vitae aliquet enim. Duis vehicula iaculis mauris, eget viverra massa. Vestibulum fermentum placerat pharetra. Sed in cursus tortor.";
-
-	int status = conexser->conectar(hostname, puerto);
-
-	if (status < 0){
-		return -1;
-	}
-
-	conexcliente->enviar(conexser, buffer, strlen(buffer)+1);
-
-	if (status < 0){
-		return -1;
-	}
-
-	log->addLogMessage("[ENVIAR] Mensaje enviado" , 1);
-	log->addLogMessage(buffer, 1);
-
-	conexcliente->cerrar();
-	conexser->cerrar();*/
 
 	ConexCliente *cliente = new ConexCliente(log);
 	cliente->crear();
@@ -86,10 +59,10 @@ int main(int argc, char *argv[]) {
 		case 0:{
 			int skt = cliente->conectar("127.0.0.1",8080);
 
-			if(skt == -1){
+			if(skt <0){
 				cout<<"El cliente no se conecto"<<endl;
 				cliente->cerrar();
-				return 1;
+				return -1;
 
 			}else{
 				/*------INICIA EL JUEGO DEL CLIENTE------*/
@@ -109,8 +82,7 @@ int main(int argc, char *argv[]) {
 
 	//sleep(40);
 
-	/*
-	char buffer[40]="mashambre";
+	/*char buffer[11]="mashambre";
 	cout<<"cliente envio: "<<buffer<<endl;
 	cliente->enviar(buffer,11);
 	cout<<"cliente envio: "<<buffer<<cliente->toString()<<endl;

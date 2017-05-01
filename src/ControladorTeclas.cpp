@@ -27,27 +27,32 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 		//ajusta la velocidad
 		switch( e.key.keysym.sym )
 		{
-			case SDLK_UP:
+			case SDLK_UP: {
+				Posicion *posicion = new Posicion(TECLA_ARRIBA_PRESIONADA);
 				sonic->enviarAServer(hiloEnviar, TECLA_ARRIBA_PRESIONADA);
 				teclaArriba = true;
 				sonic->saltar();
-				break;
-			case SDLK_DOWN:
+				break;}
+			case SDLK_DOWN:{
+				Posicion *posicion = new Posicion(TECLA_ABAJO_PRESIONADA);
 				sonic->enviarAServer(hiloEnviar, TECLA_ABAJO_PRESIONADA);
 				teclaAbajo = true;
-				break;
-			case SDLK_LEFT:
+				break;}
+			case SDLK_LEFT:{
+				Posicion *posicion = new Posicion(TECLA_IZQUIERDA_PRESIONADA);
 				sonic->enviarAServer(hiloEnviar, TECLA_IZQUIERDA_PRESIONADA);
 				teclaIzquierda = true;
-				break;
-			case SDLK_RIGHT:
+				break;}
+			case SDLK_RIGHT:{
+				Posicion *posicion = new Posicion(TECLA_DERECHA_PRESIONADA);
 				sonic->enviarAServer(hiloEnviar, TECLA_DERECHA_PRESIONADA);
 				teclaDerecha = true;
-				break;
-			case SDLK_a:
+				break;}
+			case SDLK_a:{
+				Posicion *posicion = new Posicion(TECLA_CORRER_PRESIONADA);
 				sonic->enviarAServer(hiloEnviar, TECLA_CORRER_PRESIONADA);
 				teclaCorrer = true;
-				break;
+				break;}
 			default:
 				return;
 		}
@@ -58,28 +63,33 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 		//ajusta la velocidad
 		switch( e.key.keysym.sym )
 		{
-		case SDLK_UP:
+		case SDLK_UP:{
 			//Enviar al server que dejo de presionar la tecla
+			Posicion *posicion = new Posicion(TECLA_CORRER_PRESIONADA);
 			sonic->enviarAServer(hiloEnviar, TECLA_ARRIBA_LIBERADA);
 			teclaArriba = false;
 			sonic->dejarDeSaltar();
-			break;
-		case SDLK_DOWN:
+			break;}
+		case SDLK_DOWN:{
+			Posicion *posicion = new Posicion(TECLA_CORRER_PRESIONADA);
 			sonic->enviarAServer(hiloEnviar, TECLA_ABAJO_LIBERADA);
 			teclaAbajo = false;
-			break;
-		case SDLK_LEFT:
+			break;}
+		case SDLK_LEFT:{
+			Posicion *posicion = new Posicion(TECLA_CORRER_PRESIONADA);
 			sonic->enviarAServer(hiloEnviar, TECLA_IZQUIERDA_LIBERADA);
 			teclaIzquierda = false;
-			break;
-		case SDLK_RIGHT:
+			break;}
+		case SDLK_RIGHT:{
+			Posicion *posicion = new Posicion(TECLA_CORRER_PRESIONADA);
 			sonic->enviarAServer(hiloEnviar, TECLA_DERECHA_LIBERADA);
 			teclaDerecha = false;
-			break;
-		case SDLK_a:
+			break;}
+		case SDLK_a:{
+			Posicion *posicion = new Posicion(TECLA_CORRER_PRESIONADA);
 			sonic->enviarAServer(hiloEnviar, TECLA_CORRER_LIBERADA);
 			teclaCorrer = false;
-			break;
+			break;}
 		default:
 			return;
 		}

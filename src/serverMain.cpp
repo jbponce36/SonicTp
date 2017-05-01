@@ -12,9 +12,7 @@
 #include <fstream>
 #include "JuegoServidor.h"
 
-
 using namespace std;
-
 
 int getNivelLogger(int argc, char *argv[]){
 	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
@@ -33,7 +31,7 @@ int main(int argc, char *argv[]) {
 	Logger *log = new Logger(archivoLog, 2/*getNivelLogger(argc,argv)*/, "SERVER");
 	log->iniciarLog("INICIAR LOGGER");
 
-	ConexServidor *server = new ConexServidor();
+	ConexServidor *server = new ConexServidor(log);
 	parseadorJsonSer *jsonSer = new parseadorJsonSer(log);
 	//jsonSer->parsearArchivo(server->cargarNombreArchivo());
 	int maxConexiones = 2;
@@ -173,10 +171,8 @@ int main(int argc, char *argv[]) {
 	/*for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
 		(*posrecibir)->gethilo().Join();
 	}
-
 	for(posenviar = hrEnviar.begin(); posenviar!=hrEnviar.end(); posenviar++){
 		(*posenviar)->gethilo().Join();
-
      }*/
 
 
@@ -186,7 +182,6 @@ int main(int argc, char *argv[]) {
 	/*for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
 		delete (*posrecibir);
 	}
-
 	for(posenviar = hrEnviar.begin(); posenviar!=hrEnviar.end(); posenviar++){
 		delete (*posenviar);
 	 }*/
