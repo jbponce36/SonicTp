@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
 	printf("Habria que enviarle a todos los clientes el mensaje empece la partida \n");
 	server->comenzarPartida();
 
-	JuegoServidor *juego = new JuegoServidor(server, &hrEnviar, &hrRecibir, log);
+	JuegoServidor *juego = new JuegoServidor(server, hrEnviar, hrRecibir, log);
 	juego->iniciarHiloJuego();
 
 	while(!server->finalizar()){

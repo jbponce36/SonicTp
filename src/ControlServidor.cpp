@@ -189,8 +189,6 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 void ControlServidor::actualizarVistaServidor()
 {
 	//Aca le envio a todos los clientes la posicion y sprite de todos los otros clientes.
-	//for(cada sonic del servidor)
-	//server->enviarATodos(posicion, sprite);
 	std::map<int, Personaje*>::iterator pos;
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
@@ -215,9 +213,12 @@ void ControlServidor::enviarATodos(std::string mensaje)
 	strcpy(buffer, mensaje.c_str());
 
 	std::vector<Hiloenviar*>::iterator pos;
+	int i = 1;
 	for(pos = hilosEnviar->begin();pos != hilosEnviar->end();pos++)
 	{
+		cout << "ENVIAR A HILOS: " << buffer << " Hilo: " << i <<endl;
 		(*pos)->enviarBuffer(buffer); //TODO: Manda basura...?
+		i++;
 	}
 	cout << "Servidor envio a todos los hilosEnviar: " << buffer << endl;
 

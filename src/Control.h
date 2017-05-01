@@ -45,7 +45,7 @@ public:
 private:
 	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, HiloEnviarCliente *hiloEnviar);
 	void moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic, Camara* camara);
-	void moverOtrosSonics(Personaje* sonic, HiloRecibirCliente *hiloRecibir);
+	void moverOtrosSonics(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista);
 	void actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic);
 
 
