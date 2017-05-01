@@ -169,6 +169,37 @@ void Personaje::posicionarseEn(int x, int y)
 	this->posicionY = y;
 }
 
+void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, int indiceAnimacion)
+{
+	posicionarseEn(x, y);
+	if(animacion.compare(ANIMACION_QUIETO_DERECHA) == 0){
+		animacionActual = &animacionQuietoDer;
+	}
+	else if(animacion.compare(ANIMACION_CAMINAR_DERECHA) == 0){
+		animacionActual = &animacionCaminarDer;
+	}
+	else if(animacion.compare(ANIMACION_CORRER_DERECHA) == 0){
+		animacionActual = &animacionCorrerDer;
+	}
+	else if(animacion.compare(ANIMACION_SALTAR_DERECHA) == 0){
+		animacionActual = &animacionSaltarDer;
+	}
+	else if(animacion.compare(ANIMACION_QUIETO_IZQUIERDA) == 0){
+		animacionActual = &animacionQuietoIzq;
+	}
+	else if(animacion.compare(ANIMACION_CAMINAR_IZQUIERDA) == 0){
+		animacionActual = &animacionCaminarIzq;
+	}
+	else if(animacion.compare(ANIMACION_CORRER_IZQUIERDA) == 0){
+		animacionActual = &animacionCorrerIzq;
+	}
+	else if(animacion.compare(ANIMACION_SALTAR_IZQUIERDA) == 0){
+		animacionActual = &animacionSaltarIzq;
+	}
+	animacionActual->cambiarSprite(indiceAnimacion);
+	animacionActual->comenzar();
+}
+
 int Personaje::getPosicionX()
 {
 	return this->posicionX;

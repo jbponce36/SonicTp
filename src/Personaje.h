@@ -70,6 +70,7 @@ class Personaje
 		void render(int camX, int camY);
 
 		void posicionarseEn(int x, int y);
+		void posicionarseConAnimacion(int x, int y, std::string animacion, int indiceAnimacion);
 		int getPosicionX();
 		int getPosicionY();
 		int getAlto();

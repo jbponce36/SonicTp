@@ -103,11 +103,13 @@ void JuegoCliente::inicializarOtrosSonics(int id)
 		}
 	}
 	sonics.push_back(sonic);
+
+	//Mapa! O no?
 }
 
 void JuegoCliente::iniciarJuegoControlCliente()
 {
-	control->ControlarJuegoCliente(vista, sonic, hiloEnviar);
+	control->ControlarJuegoCliente(vista, sonic, hiloEnviar, hiloRecibir);
 }
 
 //se agrego esto para poder la vista afuera y poder usar el menu

@@ -88,3 +88,8 @@ int Animacion::obtenerIndiceSprite()
 {
 	return indiceSprite;
 }
+
+void Animacion::cambiarSprite(int indice)
+{
+	indiceSprite = indice;
+}

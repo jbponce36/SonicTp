@@ -71,7 +71,7 @@ void Hiloenviar::Join()
 }
 
 void Hiloenviar::enviarBuffer(char* arg){
-
+	sleep(1);
 	parametros.buffer = arg;
 }
 
