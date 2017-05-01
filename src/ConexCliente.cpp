@@ -86,7 +86,7 @@ ConexCliente::~ConexCliente()
        /*      bool is_the_socket_valid = true;
         //this->log->addLogMessage("[ENVIAR] Iniciado", 2);
         while(sent < size && is_the_socket_valid){*/
-            int status = send(this->fd, buf, size, MSG_NOSIGNAL);
+         int status = send(this->fd, buf, size, MSG_NOSIGNAL);
            /* if(status <= 0){
                 is_the_socket_valid = false;
             }else{
@@ -94,7 +94,7 @@ ConexCliente::~ConexCliente()
             }
         }*/
 
-        if(status == -1){
+       if(status == -1){
             //this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el" + toString(), 1);
         	cout<<status;
         	cout<<"[CONEXCLIENTE][ENVIAR] No se pudo enviar"<<endl;

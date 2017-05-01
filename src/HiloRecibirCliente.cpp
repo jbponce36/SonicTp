@@ -45,6 +45,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					if (strcmp(buffer, "Conexion rechazada") == 0){
 					 printf("****** La conexion fue rechaza por el servidor ******* \n");
 
+
 					}
 					parametros->colaPaquete.agregar(buffer);
 				}

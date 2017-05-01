@@ -35,7 +35,6 @@ public:
 	Serparametros parametros;
 
 
-
 	void Join();
 	std::string obtenerElementoDeLaCola();
 
