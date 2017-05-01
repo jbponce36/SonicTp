@@ -10,6 +10,7 @@
 
 #include "ConexCliente.h"
 #include "Hilo.h"
+#include "Paquete.h"
 
 class HiloEnviarCliente {
 private:
@@ -25,6 +26,7 @@ public:
 			ConexCliente *cliente;
 			char *buffer;
 			int skt;
+			Paquete pack;
 		};
 	SerParametros parametros;
 

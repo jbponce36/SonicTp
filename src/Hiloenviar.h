@@ -12,6 +12,7 @@
 #include "ConexCliente.h"
 #include "ConexServidor.h"
 #include "ProcesadorCliente.h"
+#include "Paquete.h"
 
 
 namespace std {
@@ -28,6 +29,7 @@ public:
 		ConexServidor *server;
 		char *buffer;
 		int skt;
+		Paquete pack;
 	};
 	SerParametros parametros;
 

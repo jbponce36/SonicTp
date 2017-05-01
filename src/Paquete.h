@@ -31,6 +31,6 @@ private:
 	//Puntero atras;
 
 };
-
-#endif /* PAQUETE_H_ */
 }
+#endif /* PAQUETE_H_ */
+
