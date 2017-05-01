@@ -23,12 +23,27 @@ void Paquete::agregar(char *buffer){
 	}
 	this->colaPaquetes.push(buf);
 }
+
+/*void Paquete::agregarPosicion(Posicion *pos){
+	this->colaPaquetes.push(pos);
+}*/
+
 std::queue<char*> Paquete::getColaPaquetes(){
 	return this->colaPaquetes;
 }
+
+/*std::queue<Posicion*> Paquete::getColaPaquetes(){
+	return this->colaPaquetes;
+}*/
+
 char* Paquete::obtenerElementoDelaCola(){
 	return this->colaPaquetes.front();
 }
+
+/*Posicion* Paquete::obtenerElementoDelaCola(){
+	return this->colaPaquetes.front();
+}*/
+
 void Paquete::eliminarElPrimetoDeLaCola(){
 	delete [] this->colaPaquetes.front();
 	this->colaPaquetes.pop();

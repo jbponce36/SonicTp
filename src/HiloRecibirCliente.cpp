@@ -74,7 +74,24 @@ std::string HiloRecibirCliente::obtenerElementoDeLaCola()
 	//Obtiene el primer elemento de la cola y lo saca.
 	if(! parametros.colaPaquete.getColaPaquetes().empty())
 	{
-		char* cadena = parametros.colaPaquete.obtenerElementoDelaCola();
+		//Posicion *pos = parametros.colaPaquete.obtenerElementoDelaCola();
+		//std::string str = pos->getCoordenadas();
+		char *cadena = parametros.colaPaquete.obtenerElementoDelaCola();
+		std::string str = std::string(cadena);
+		parametros.colaPaquete.eliminarElPrimetoDeLaCola();
+		return str;
+	}
+	return "Sin elementos";
+}
+
+std::string HiloRecibirCliente::obtenerPosicionDeLaCola()
+{
+	//Obtiene el primer elemento de la cola y lo saca.
+	if(! parametros.colaPaquete.getColaPaquetes().empty())
+	{
+		//Posicion *pos = parametros.colaPaquete.obtenerElementoDelaCola();
+		//std::string str = pos->getCoordenadas();
+		char *cadena = parametros.colaPaquete.obtenerElementoDelaCola();
 		std::string str = std::string(cadena);
 		parametros.colaPaquete.eliminarElPrimetoDeLaCola();
 		return str;

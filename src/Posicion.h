@@ -15,6 +15,7 @@ using namespace std;
 class Posicion {
 public:
 	Posicion(string coordenada);
+	Posicion();
 	virtual ~Posicion();
     string getCoordenadas() const;
     string getDireccion() const;
@@ -22,7 +23,7 @@ public:
     void setCoordenadas(string coordenadas);
     void setDireccion(string direccion);
     void setFecha(string fecha);
-
+    string toString();
 
 private:
 	string fecha; /* */

@@ -43,7 +43,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
 		administrarTeclas(&controlador, sonic, hiloEnviar);
-		moverOtrosSonics(sonic, hiloRecibir);
+		moverOtrosSonics(sonic, hiloRecibir, vista);
 		moverPersonaje(tiempoDeJuego, vista, sonic, camara);
 		/////Corregir posicion????
 		actualizarVista(camara, vista, &imagenMostrar, sonic);
@@ -80,7 +80,7 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 
 }
 
-void Control::moverOtrosSonics(Personaje* sonic, HiloRecibirCliente *hiloRecibir)
+void Control::moverOtrosSonics(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista)
 {
 	//Mueve a los otros sonics de acuerdo a los mensajes recibidos del servidor
 	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
@@ -91,8 +91,19 @@ void Control::moverOtrosSonics(Personaje* sonic, HiloRecibirCliente *hiloRecibir
 		{
 			mensajePosicion msj;
 			parsearMensajePosicion(msj, mensaje);
-			if (msj.id != sonic->getId()){
-				sonics->at(msj.id - 1)->posicionarseConAnimacion(msj.posX, msj.posY, msj.animacion, msj.indiceAnimacion);
+			if (msj.id != sonic->getId())
+			{
+				try{
+					sonics->at(msj.id - 1)->posicionarseConAnimacion(msj.posX, msj.posY, msj.animacion, msj.indiceAnimacion);
+				}
+				catch (out_of_range &e)
+				{
+					//Significa que el id que me enviaron no existe. Es mayor a los que hay. Agrego un nuevo Sonic.
+					Personaje *nuevoSonic = new Personaje(msj.id, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
+					nuevoSonic->posicionarseConAnimacion(msj.posX, msj.posY, msj.animacion, msj.indiceAnimacion);
+					sonics->push_back(nuevoSonic);
+				}
+
 			}
 
 			cout << msj.id << " " << " " << msj.posX << " " << msj.posY  << msj.animacion << " " << msj.indiceAnimacion << endl;

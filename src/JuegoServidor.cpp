@@ -7,11 +7,14 @@
 
 #include "JuegoServidor.h"
 
-JuegoServidor::JuegoServidor()
-: vista(NULL), control(NULL), server(NULL), log(NULL),
-  hiloJuego(NULL), hilosEnviar(NULL), hilosRecibir(NULL),
-  cantJugadores(0), sonics(), juegoTerminado(false){
-	//Las variables se setean desde el thread
+JuegoServidor::JuegoServidor(ConexServidor *server,
+	std::vector<Hiloenviar*> hiloEnviar, std::vector<Hilorecibir*> hiloRecibir, Logger *log)
+: vista(NULL), control(NULL),server(server), log(log),
+  hiloJuego(NULL), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir),
+  cantJugadores(server->getCantclientes()), sonics(), juegoTerminado(false),
+  altoEscenario(0), velocidad(0){
+	//Vista, sonic y control se setean desde el thread
+
 }
 
 JuegoServidor::~JuegoServidor()
@@ -24,19 +27,8 @@ JuegoServidor::~JuegoServidor()
 	delete vista;
 }
 
-JuegoServidor::JuegoServidor(ConexServidor *server,
-	std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir, Logger *log)
-: vista(NULL), control(NULL),server(server), log(log),
-  hiloJuego(NULL), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir),
-  cantJugadores(server->getCantclientes()), sonics(), juegoTerminado(false){
-	//Vista, sonic y control se setean desde el thread
-
-}
-
 void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
 {
-	/*Nota para pruebas:
-	Para mostrar la vista del servidor pasarle false y descomentar en ControlServidor::moverPersonajesServidor*/
 	vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, true);
 
 	velocidad = jparseador->getConfiguracion()->getvelscroll();
@@ -48,7 +40,7 @@ void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
 		sonics[id] = sonic;
 	}
 
-	control = new ControlServidor(0, 0, &sonics, hilosEnviar, hilosRecibir, server,log);
+	control = new ControlServidor(0, 0, &sonics, &hilosEnviar, &hilosRecibir, server,log);
 }
 
 void JuegoServidor::iniciarJuegoControlServidor()
@@ -79,6 +71,7 @@ void* JuegoServidor::iniciarJuegoServidor(void *datos)
 {
 	JuegoServidor *juego = (JuegoServidor*)datos;
 	juego->iniciarJuego();
+	return NULL;
 }
 
 void JuegoServidor::iniciarHiloJuego()

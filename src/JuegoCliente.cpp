@@ -37,6 +37,7 @@ void *JuegoCliente::iniciarJuegoCliente(void *datos)
 {
 	JuegoCliente *juego = (JuegoCliente*)datos;
 	juego->iniciarJuego();
+	return NULL;
 }
 
 void JuegoCliente::iniciarHilos()
@@ -62,12 +63,17 @@ void JuegoCliente::terminarHilos()
 	//hiloEnviar->Join();
 }
 
-void JuegoCliente::inicializarJuegoCliente(/*std::jescenarioJuego *jparseador*/)
+int JuegoCliente::inicializarJuegoCliente()
 {
 	//Espera hasta recibir el primer mensaje que debe ser el id.
 	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	while (mensaje == "Sin elementos"){
 		mensaje = hiloRecibir->obtenerElementoDeLaCola();
+	}
+
+	if (mensaje == "Conexion rechazada")
+	{
+		return CONEXION_RECHAZADA;
 	}
 
 	std::string ident = mensaje.substr(0,1);
@@ -86,6 +92,8 @@ void JuegoCliente::inicializarJuegoCliente(/*std::jescenarioJuego *jparseador*/)
 
 	inicializarOtrosSonics(id);
 	control = new Control(0, 0, maxJugadores, &sonics, log);
+
+	return 0;
 }
 
 void JuegoCliente::inicializarOtrosSonics(int id)
@@ -94,7 +102,7 @@ void JuegoCliente::inicializarOtrosSonics(int id)
 	{
 		if(i != id)
 		{
-			Personaje *otroSonic = new Personaje(i, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log, cliente);
+			Personaje *otroSonic = new Personaje(i, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
 			sonics.push_back(otroSonic);
 		}
 	}
@@ -123,7 +131,14 @@ void JuegoCliente::CargarVistaParaElMenu(){
 void JuegoCliente::iniciarJuego()
 {
 	//Inicia el juego
-	inicializarJuegoCliente(/*jparseador*/); //Inicializa vista, sonic y control.
+	int result = inicializarJuegoCliente(); //Inicializa vista, sonic y control.
+	if (result == CONEXION_RECHAZADA)
+	{
+		cout << "[JUEGO CLIENTE] Conexion rechazada." << endl;
+		log->setModulo("JUEGO_CLIENTE");
+		log->addLogMessage("Error. Conexion rechazada. Se termina el juego.",1);
+		return;
+	}
 
 	iniciarJuegoControlCliente();
 

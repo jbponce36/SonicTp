@@ -19,7 +19,8 @@
 #include "HiloEnviarCliente.h"
 #include "HiloRecibirCliente.h"
 
-using namespace std;
+#define CONEXION_RECHAZADA 1
+
 class JuegoCliente {
 
 private:
@@ -54,7 +55,7 @@ public:
 private:
 	void inicializarOtrosSonics(int id);
 	static void* iniciarJuegoCliente(void *datos);
-	void inicializarJuegoCliente(/*std::jescenarioJuego *jparseador*/); //Inicializa control, vista y sonic
+	int inicializarJuegoCliente(/*std::jescenarioJuego *jparseador*/); //Inicializa control, vista y sonic
 	void iniciarJuegoControlCliente(); //Llama al juego propiamente dicho (Control::ControlarJuego)
 };
 
