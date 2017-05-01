@@ -106,7 +106,7 @@ int ConexServidor::aceptarcliente()
 		if (this->cantclientes == this->cantMaximaClientes)   {
 
 			printf("Se ha superado la cantidad maxima de conexiones  \n");
-			const char* mensaje = "Conexion rechazada. Numero maximo de conexiones establecidas";
+			const char* mensaje = "Conexion rechazada";
 			send(fdCliente, mensaje, strlen(mensaje), MSG_DONTWAIT);
 			close(fdCliente);
 			fdCliente = -1;

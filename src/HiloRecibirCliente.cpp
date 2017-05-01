@@ -6,6 +6,7 @@
  */
 
 #include "HiloRecibirCliente.h"
+#include <pthread.h>
 
 HiloRecibirCliente::HiloRecibirCliente() {
 	// TODO Auto-generated constructor stub
@@ -16,30 +17,40 @@ HiloRecibirCliente::~HiloRecibirCliente(){
 	// TODO Auto-generated destructor stub
 }
 
+
 void HiloRecibirCliente::IniciarHilo(){
 
 	hilo = new Hilo(/*log*/);
 	hilo->Create((void *)HiloRecibirCliente::clienteRecibir, (void *)&parametros);
+//	pthread_create(&this->tid, NULL, (void *(*)(void *))clienteRecibir, (void *)&parametros);
+
 
 }
 void *HiloRecibirCliente::clienteRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
 	while(parametros->continuar){
-		char buffer[40];
+		char buffer[100];
 
 		int result = 1;
-		parametros->cliente->recibir(buffer,strlen(buffer));
+	//	parametros->cliente->recibir(buffer,strlen(buffer));
 		cout<<"[HILO RECIBIR CLIENTE] [CLIENTE RECIBIR] "<<endl;
 
 		while (result>0){
+			memset(buffer, '\0', sizeof(buffer));
+
 				result = parametros->cliente->recibir(buffer,sizeof(buffer));
 
 				if (result>0){
-					cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
+					//cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
+					if (strcmp(buffer, "Conexion rechazada") == 0){
+					 printf("****** La conexion fue rechaza por el servidor ******* \n");
+
+					}
 					parametros->colaPaquete.agregar(buffer);
 				}
 
 				if (result<=0){
+
 					printf("El cliente se desconecto satisfactoriamente. \n");
 					parametros->continuar = false;
 				}
@@ -47,7 +58,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				//la vista, etc
 
 		}
-	}
+	 }
 
 
 }
