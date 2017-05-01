@@ -43,7 +43,7 @@ void *Hiloenviar::serverEnviar(void *args)
 				if(parametros->buffer != "")
 				{
 
-				result = parametros->server->enviar(parametros->skt,parametros->buffer,sizeof(parametros->buffer));
+				result = parametros->server->enviar(parametros->skt,parametros->buffer,strlen(parametros->buffer));
 
 				if (result>0){
 					cout<<"server envio: "<<parametros->buffer<<endl;

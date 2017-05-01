@@ -98,15 +98,22 @@ int JuegoCliente::inicializarJuegoCliente()
 
 void JuegoCliente::inicializarOtrosSonics(int id)
 {
-	for (int i = 1; i <= maxJugadores; i++)
+	int idPropio = sonic->getId();
+
+	for (int i = 1; i < idPropio; i++)
 	{
-		if(i != id)
-		{
-			Personaje *otroSonic = new Personaje(i, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
-			sonics.push_back(otroSonic);
-		}
+		Personaje *otroSonic = new Personaje(i, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
+		sonics.push_back(otroSonic);
 	}
+
 	sonics.push_back(sonic);
+
+	for (int i = idPropio+1; i <= maxJugadores; i++)
+	{
+		Personaje *otroSonic = new Personaje(i, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
+		sonics.push_back(otroSonic);
+	}
+
 
 }
 
