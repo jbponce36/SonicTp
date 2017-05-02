@@ -79,6 +79,7 @@ ConexCliente::~ConexCliente()
         return conectado;
     }
 
+
 int ConexCliente::enviar(char *buf, int size)
 {
 	this->log->setModulo("[CONEX SERVIDOR]");
@@ -120,6 +121,7 @@ int ConexCliente::enviar(char *buf, int size)
 				return enviado;
 		}
 }
+
 
 
     int ConexCliente::enviarPosicion(Posicion *posicion, int size)

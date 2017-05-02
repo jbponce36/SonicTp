@@ -14,9 +14,13 @@
 #include <queue>
 #include "Posicion.h"
 #include "Logger.h"
+#include <list>
+
 
 
 namespace std {
+
+class Hiloenviar;
 
 class ConexServidor {
 public:
@@ -39,7 +43,7 @@ public:
     bool finalizar();
 
     bool noSeConectaronTodos();
-    void comenzarPartida();
+    void comenzarPartida(std::vector<Hiloenviar*> hrEnviar);
 
 	bool getFinalizarConexion();
 	void setFinalizarConexion(bool);
@@ -53,6 +57,7 @@ public:
     Logger *getLog() const;
     void setLog(Logger *log);
 
+    int fdCliente;
 
 private:
 	int sock_recep;
@@ -67,6 +72,9 @@ private:
 	bool partidaComenzada;
 	pthread_mutex_t mutex;
 	Logger *log;
+	list<int> listaClientes;
+
+
 };
 
 } /* namespace std */

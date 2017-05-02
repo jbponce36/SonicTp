@@ -40,6 +40,9 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !salir ){
+		//Deberia mostrar una pantalla freezada y no dejar mover el soni hasta que no ser recibe le mensaje "[INICIAR JUEGO]"
+
+
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
 		administrarTeclas(&controlador, sonic, hiloEnviar);
@@ -55,6 +58,8 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 		{
 			SDL_Delay(TICKS_POR_FRAME - delta);
 		}
+
+		//Aca no pasa nunca a salir en true como para que termine el hiloJuego
 
 	}
 
@@ -111,10 +116,15 @@ void Control::moverOtrosSonics(Personaje* sonic, HiloRecibirCliente *hiloRecibir
 		else
 		{
 			//Otros mensajes...
+			if (mensaje == "Servidor Desconectado"){
+				printf("Aca deberia cerrar el juego. \n");
+				this->salir = true;
+			}
 		}
 		mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	}
 }
+
 
 void Control::parsearMensajePosicion(mensajePosicion& msj, std::string mensaje)
 {

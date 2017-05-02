@@ -88,14 +88,16 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 	bool salir = false;
 	while(salir == false){
 		int result = 1;
-			while (result>0){
-				if(parametros->pack.getColaPaquetes().empty() != true)
-				{
+			//while (result>0){
+
+			if(parametros->pack.getColaPaquetes().empty() != true)
+			{
 				parametros->bufferQ = parametros->pack.obtenerElementoDelaCola();
 				cout<<"tamanio buffer  :"<<sizeof(parametros->bufferQ)<<endl;
 				cout<<strlen(parametros->bufferQ)<<endl;
+
 				result = parametros->server->enviar(parametros->skt,parametros->bufferQ,strlen(parametros->bufferQ));
-				result = 20;
+				//result = 20;
 
 
 				if (result>0){
@@ -105,17 +107,19 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 
 				if (result==0){
 					printf("El cliente se desconecto. \n");
-					salir = false;
+					salir = true;
 				}
 
 				if (result==-1){
 					printf("El cliente se desconecto. \n");
-					salir = false;
+					salir = true;
 				}
 				parametros->bufferQ = "";
-				}
 			}
-		}
+			//}
+	}
+
+	printf("Se termino el thread hilo Eviar. \n");
 }
 
 void Hiloenviar::enviarDato(char* dato){

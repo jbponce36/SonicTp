@@ -68,6 +68,8 @@ void *Hilorecibir::serverRecibir(void *args){
 
 		}
 	}
+
+	printf("Salio del while y el hilo recibir va a terminar. \n");
 	/*cout<<"--------------------------------------"<<endl;
 	while (! parametros->colaDeMensajes.getColaPaquetes().empty())
 	  {

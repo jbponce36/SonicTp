@@ -1,4 +1,5 @@
 #include "ConexServidor.h"
+#include "Hiloenviar.h"
 
 #define DEFAULT_PORT = 8090;
 
@@ -92,7 +93,7 @@ int ConexServidor::aceptarcliente()
 	sockaddr_in direccionclient;
 
     longitud_dircliente= sizeof(struct sockaddr_in);
-    int fdCliente = accept(this->sock_recep,(struct sockaddr *)&direccionclient,(socklen_t*)&longitud_dircliente);
+     fdCliente = accept(this->sock_recep,(struct sockaddr *)&direccionclient,(socklen_t*)&longitud_dircliente);
 
     pthread_mutex_lock(&mutex);
 
@@ -118,6 +119,7 @@ int ConexServidor::aceptarcliente()
 			this->finalizarConexion = false;
 			//printf("Cliente aceptado \n");
 			printf("Cantidad de clientes conectados:%d \n", this->cantclientes);
+			this->listaClientes.push_back(fdCliente);
 		}
     }
 
@@ -154,6 +156,7 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 		this->log->addLogMessage("[RECIBIR] Error",2);
 		this->cantclientes = this->cantclientes -1;
 		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
+
 
 		if (this->cantclientes==0){
 			printf("No hay clientes conectados \n");
@@ -283,30 +286,6 @@ void ConexServidor::setHostname(string hostname)
 
 
 }
-/*void ConexServidor::aceptarClientes()
-{
-	char *archivoLog=(char*)"configuracion/log.txt";
-	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "PRINCIPAL");
-	log->iniciarLog("INICAR LOGGER");
-	//Se lee del json el nombre de la ventana
-	parseadorJson* parseador = new parseadorJson(log);
-	char *file=(char*)"configuracion/configuracion.json";
-	jescenarioJuego* jparseador = parseador->parsearArchivo(file);
-	log->setModulo("PRINCIPAL");
-	log->addLogMessage("Se empieza a cargar la vista.",1);
-	log->setLevel(getNivelLogger(argc, argv));
-	Hilo *hilo = new hilo();
-	while(1)
-	{
-		Sockets skt = new Sockets();
-		skt = acep();
-		if (skt == true){
-			hilo->Create((void*)control->ControlarJuego(skt));//hilo
-		}else{
-			close(skt);
-		}
-	}
-}*/
 
 string ConexServidor::intToString(int number)
 {
@@ -325,9 +304,24 @@ bool ConexServidor::getFinalizarConexion(){
 void ConexServidor::setFinalizarConexion(bool FinalizarConexion){
 	 this->finalizarConexion = FinalizarConexion;
 }
-void ConexServidor::comenzarPartida(){
+void ConexServidor::comenzarPartida(std::vector<Hiloenviar*> hrEnviar)
+{
 	pthread_mutex_lock(&mutex);
 	this->partidaComenzada = true;
 	printf("Se comienza la partida \n");
+    char* mensaje = "[INICIAR JUEGO]";
+
+	std::vector<Hiloenviar*>::iterator pos;
+		for(pos = hrEnviar.begin();pos != hrEnviar.end();pos++)
+		{
+			(*pos)->enviarDato(mensaje);
+		}
+		/*for(pos = this->listaClientes.begin(); pos!=this->listaClientes.end(); pos++){
+			printf("Enviando iniciar juego al cliente %d  \n", (*pos));
+			const char* mensaje = "[INICIAR JUEGO]";
+			send((*pos), mensaje, strlen(mensaje), MSG_DONTWAIT);
+
+	    }
+	    */
 	pthread_mutex_unlock(&mutex);
 }
