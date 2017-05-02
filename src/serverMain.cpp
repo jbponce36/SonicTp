@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "Logger.h"
 #include "ConexServidor.h"
 #include "ConexCliente.h"
@@ -106,12 +108,13 @@ int main(int argc, char *argv[]) {
 			henviar->IniciarHilo();
 
 
-			/*
-			char* buf;
-			buf="aaaaabbbbccccddddeeeeffffgggghhhh";
+/*
+			char buf[40] = "aaaabbbbccccddddeeeeffffgggghhhh";
 			henviar->enviarDato(buf);
+
 			henviar->iniciarHiloQueue();
-			*/
+*/
+
 
 
 
@@ -125,10 +128,10 @@ int main(int argc, char *argv[]) {
 	printf("Habria que enviarle a todos los clientes el mensaje empece la partida \n");
 	server->comenzarPartida();
 
-	JuegoServidor *juego = new JuegoServidor(server, &hrEnviar, &hrRecibir, log);
+	JuegoServidor *juego = new JuegoServidor(server, hrEnviar, hrRecibir, log);
 	juego->iniciarHiloJuego();
 
-	while(!server->finalizar()/*!server->listaClientes.empty()*/){
+	while(!server->finalizar()){
 	//while(1){
 		int skt = server->aceptarcliente();
 

@@ -79,32 +79,50 @@ ConexCliente::~ConexCliente()
         return conectado;
     }
 
-    int ConexCliente::enviar(char *buf, int size)
-    {
-    	this->log->setModulo("CONEX CLIENTE");
-    	this->log->addLogMessage("[ENVIAR] Iniciado",2);
-       /*      bool is_the_socket_valid = true;
-        //this->log->addLogMessage("[ENVIAR] Iniciado", 2);
-        while(sent < size && is_the_socket_valid){*/
-         int status = send(this->fd, buf, size, MSG_NOSIGNAL);
-           /* if(status <= 0){
-                is_the_socket_valid = false;
-            }else{
-                sent += status;
-            }
-        }*/
 
-       if(status == -1){
-            //this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el" + toString(), 1);
-    	   cout<<status;
-        	cout<<"[CONEXCLIENTE][ENVIAR] No se pudo enviar"<<endl;
-            return status;
-        }
+int ConexCliente::enviar(char *buf, int size)
+{
+	this->log->setModulo("[CONEX SERVIDOR]");
+	this->log->addLogMessage("[ENVIAR] Iniciado",2);
+	int enviado = 0;
+		int envioParcial = 0;
+		bool socketValido = true;
+		while(enviado < size && socketValido)
+		{
+			envioParcial = send(this->fd,buf, size, MSG_NOSIGNAL);
+			if(envioParcial == 0){
+			socketValido = false;
+			//this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el"+toString(),1);
+			cout<<"[CONEX SERVIDOR][ENVIAR] No se pudo enviar"<<endl;
+			this->log->addLogMessage("[ENVIAR] Error, no se pudo enviar",2);
+			//return status;
+			}
+			else if (envioParcial < 0){
 
-        this->log->addLogMessage("[ENVIAR] Terminado.", 2);
-        cout<<"[ENVIAR] Terminado"<<endl;
-        return status;
-    }
+				socketValido = false;
+			}
+
+			else{
+
+				enviado += envioParcial;
+			}
+			//this->log->addLogMessage("[ENVIAR] Terminado",2);
+			cout<<"[ENVIAR] Terminado"<<endl;
+			//return status;
+			}
+			if (socketValido == false)
+			{
+				cout<<"[CONEXCLIENTE][ENVIAR] No se pudo enviar"<<endl;
+				return envioParcial;
+			}
+			else {
+				this->log->addLogMessage("[ENVIAR] Terminado.", 2);
+				cout<<"[ENVIAR] Terminado"<<endl;
+				return enviado;
+		}
+}
+
+
 
     int ConexCliente::enviarPosicion(Posicion *posicion, int size)
         {

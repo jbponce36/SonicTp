@@ -32,7 +32,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 		char buffer[100];
 
 		int result = 1;
-	//	parametros->cliente->recibir(buffer,strlen(buffer));
+		parametros->cliente->recibir(buffer,strlen(buffer));
 		cout<<"[HILO RECIBIR CLIENTE] [CLIENTE RECIBIR] "<<endl;
 
 		while (result>0){
@@ -44,7 +44,6 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
 					if (strcmp(buffer, "Conexion rechazada") == 0){
 					 printf("****** La conexion fue rechaza por el servidor ******* \n");
-
 
 					}
 					parametros->colaPaquete.agregar(buffer);
