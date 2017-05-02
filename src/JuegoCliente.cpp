@@ -87,7 +87,7 @@ int JuegoCliente::inicializarJuegoCliente()
 		maxJugadores = atoi(maxJug.c_str());
 
 	}
-	cout << "Se crea personaje con id " << id << "Max jugadores: "<< maxJugadores <<endl;
+	cout << "Se crea personaje con id " << id << " Max jugadores: "<< maxJugadores <<endl;
 	sonic = new Personaje(id, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log, cliente);
 
 	inicializarOtrosSonics(id);
@@ -98,15 +98,22 @@ int JuegoCliente::inicializarJuegoCliente()
 
 void JuegoCliente::inicializarOtrosSonics(int id)
 {
-	for (int i = 1; i <= maxJugadores; i++)
+	int idPropio = sonic->getId();
+
+	for (int i = 1; i < idPropio; i++)
 	{
-		if(i != id)
-		{
-			Personaje *otroSonic = new Personaje(i, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
-			sonics.push_back(otroSonic);
-		}
+		Personaje *otroSonic = new Personaje(i, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
+		sonics.push_back(otroSonic);
 	}
+
 	sonics.push_back(sonic);
+
+	for (int i = idPropio+1; i <= maxJugadores; i++)
+	{
+		Personaje *otroSonic = new Personaje(i, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
+		sonics.push_back(otroSonic);
+	}
+
 
 }
 
@@ -134,7 +141,7 @@ void JuegoCliente::iniciarJuego()
 	int result = inicializarJuegoCliente(); //Inicializa vista, sonic y control.
 	if (result == CONEXION_RECHAZADA)
 	{
-		cout << "[JUEGO CLIENTE] Conexion rechazada." << endl;
+		cout << "[JUEGO CLIENTE] Conexion rechazada. El cliente se cerrara..." << endl;
 		log->setModulo("JUEGO_CLIENTE");
 		log->addLogMessage("Error. Conexion rechazada. Se termina el juego.",1);
 		return;

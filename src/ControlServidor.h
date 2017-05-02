@@ -31,9 +31,18 @@ private:
 	ConexServidor *server;
 	Logger *log;
 
+
+
 	std::map<int, Personaje*> *sonics;
 	std::vector<Hiloenviar*> *hilosEnviar;
 	std::vector<Hilorecibir*> *hilosRecibir;
+
+	typedef struct posSonic{
+		int ultimaPosicionX;
+		int ultimaPosicionY;
+	}posSonic;
+
+	std::map<int, posSonic> ultimasPosiciones;
 
 	typedef struct teclasPresionadas{
 		bool teclaArriba;
@@ -59,6 +68,8 @@ public:
 		int posX;
 		int posY;
 	}mensajeRecibido;
+
+
 
 private:
 	void administrarTeclasServidor();

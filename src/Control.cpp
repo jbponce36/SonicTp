@@ -106,7 +106,7 @@ void Control::moverOtrosSonics(Personaje* sonic, HiloRecibirCliente *hiloRecibir
 
 			}
 
-			cout << msj.id << " " << " " << msj.posX << " " << msj.posY  << msj.animacion << " " << msj.indiceAnimacion << endl;
+			//cout << msj.id << " " << msj.posX << " " << msj.posY  << " " << msj.animacion << " " << msj.indiceAnimacion << endl;
 		}
 		else
 		{
