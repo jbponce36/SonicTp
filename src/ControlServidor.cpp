@@ -13,10 +13,13 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, std::map<int, Per
   sonics(sonics), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir), teclas()
 {
 	teclasPresionadas t = {false, false, false, false, false};
+	posSonic ultimasPosiciones = {0, 300};
+
 	std::map<int, Personaje*>::iterator pos;
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
 		this->teclas[(*pos).second->getId()] = t;
+		this->ultimasPosiciones[(*pos).second->getId()] = ultimasPosiciones;
 	}
 }
 
@@ -77,6 +80,9 @@ void ControlServidor::administrarTeclasServidor()
 				else if(msj.tecla.compare(TECLA_CORRER_LIBERADA) == 0){
 					teclas.at(indice).teclaCorrer = false;
 				}
+
+				ultimasPosiciones.at(indice).ultimaPosicionX = msj.posX;
+				ultimasPosiciones.at(indice).ultimaPosicionY = msj.posY;
 			}
 			else
 			{
@@ -87,7 +93,7 @@ void ControlServidor::administrarTeclasServidor()
 
 		}
 	}
-	moverSonicsSegunTeclas();
+	//moverSonicsSegunTeclas();
 
 }
 
@@ -167,9 +173,54 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 	std::map<int, Personaje*>::iterator pos;
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
+		teclasPresionadas t = teclas.at((*pos).first);
+		Personaje* sonic = (*pos).second;
+
+		if((!t.teclaArriba) && (!t.teclaAbajo) && (!t.teclaDerecha) && (!t.teclaIzquierda)){
+			sonic->parar();
+		}
+
+		sonic->correr(t.teclaCorrer);
+
+		if(t.teclaArriba){
+			sonic->irArriba();
+		}
+
+		if(t.teclaAbajo){
+			sonic->irAbajo();
+		}
+
+		if(t.teclaDerecha){
+			sonic->irDerecha();
+		}
+
+		if(t.teclaIzquierda){
+			sonic->irIzquierda();
+		}
+
+
+		sonic->posicionarseEn(ultimasPosiciones.at(sonic->getId()).ultimaPosicionX, ultimasPosiciones.at(sonic->getId()).ultimaPosicionY);
+
+		//Correccion de posiciones. Ignoren esto. No lo puedo probar bien en mi PC. No tocar.
+		/*int posXCliente = ultimasPosiciones.at(sonic->getId()).ultimaPosicionX;
+		int posYCliente = ultimasPosiciones.at(sonic->getId()).ultimaPosicionY;
+
+		int dx = 0, dy = 0;
+		int posXServidor = sonic->getPosicionX();
+		int posYServidor = sonic->getPosicionY();
+
+		dx = posXCliente - posXServidor;
+		dx = dx / 2;
+		dy = posYCliente - posYServidor;
+		dy = dy / 2;
+
+		sonic->posicionarseEn(posXServidor + dx, posYServidor + dy);
+		Hasta aca. No descomentar..*/
+
+
+		///------------------------------------------------------------
 		tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
 		float tiempoDeFotografia = tiempoDeJuego / 1000.f;
-		//........
 
 		(*pos).second->mover(camara->devolverCamara(),tiempoDeFotografia); //Se mueve segun los limites de la camara
 
@@ -179,7 +230,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
 
 
-		/*Para ver lo que pasa en el juego del servidor. (Poner false al crear la VistaSDL en JuegoServidor)*/
+		/*Para pruebas: Para ver lo que pasa en el juego del servidor. No descomentar.*/
 		//(*pos).second->render(camara->getPosicionX(), camara->getPosicionY());
 		//SDL_RenderPresent( vista->obtenerRender());
 		/*Hasta aca*/
@@ -193,7 +244,7 @@ void ControlServidor::actualizarVistaServidor()
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
 		std::string mensaje = (*pos).second->obtenerMensajeEstado();
-		enviarATodos(mensaje); //No envia bien. Enviar siempre siempre?
+		enviarATodos(mensaje);
 	}
 
 }
@@ -213,14 +264,10 @@ void ControlServidor::enviarATodos(std::string mensaje)
 	strcpy(buffer, mensaje.c_str());
 
 	std::vector<Hiloenviar*>::iterator pos;
-	int i = 1;
 	for(pos = hilosEnviar->begin();pos != hilosEnviar->end();pos++)
 	{
-		cout << "ENVIAR A HILOS: " << buffer << " Hilo: " << i <<endl;
-		(*pos)->enviarBuffer(buffer); //TODO: Manda basura...?
-		i++;
+		(*pos)->enviarDato(buffer);
 	}
-	cout << "Servidor envio a todos los hilosEnviar: " << buffer << endl;
 
 }
 

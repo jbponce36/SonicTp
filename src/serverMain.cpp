@@ -102,8 +102,9 @@ int main(int argc, char *argv[]) {
 
 	//Otra cosa: Al desconectarse un cliente tendrian que borrarse estos hilos
 
-			henviar->parametros.buffer = buffer;
-			henviar->IniciarHilo();
+			//henviar->parametros.buffer = buffer;
+			henviar->enviarDato(buffer);
+			henviar->iniciarHiloQueue();
 
 
 /*
@@ -164,8 +165,9 @@ int main(int argc, char *argv[]) {
 
 	//Otra cosa: Al desconectarse un cliente tendrian que borrarse estos hilos
 
-			henviar->parametros.buffer = buffer;
-			henviar->IniciarHilo();
+			//henviar->parametros.buffer = buffer;
+			henviar->enviarDato(buffer);
+			henviar->iniciarHiloQueue();
 			hrEnviar.push_back(henviar);
 
 			juego->agregarJugador(id);

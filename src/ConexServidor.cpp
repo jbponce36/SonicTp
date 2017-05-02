@@ -241,7 +241,7 @@ int ConexServidor::enviar(int socket, char *buf, int size){
 		cout<<"[ENVIAR] Terminado"<<endl;
 		//return status;
 		}
-		if (socketValido = false)
+		if (socketValido == false)
 		{
 			return envioParcial;
 		}

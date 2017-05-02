@@ -109,7 +109,7 @@ int ConexCliente::enviar(char *buf, int size)
 			cout<<"[ENVIAR] Terminado"<<endl;
 			//return status;
 			}
-			if (socketValido = false)
+			if (socketValido == false)
 			{
 				cout<<"[CONEXCLIENTE][ENVIAR] No se pudo enviar"<<endl;
 				return envioParcial;
