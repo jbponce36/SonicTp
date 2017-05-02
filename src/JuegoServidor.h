@@ -44,6 +44,7 @@ public:
 	void iniciarHiloJuego();
 	void terminarHiloJuego();
 	void agregarJugador(int id);
+	void enviarATodosLosClientes(std::string mensaje);
 
 private:
 	static void* iniciarJuegoServidor(void *datos);

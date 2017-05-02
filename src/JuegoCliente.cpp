@@ -1,5 +1,5 @@
 /*
- * Juego.cpp
+ * JuegoCliente.cpp
  *
  *  Created on: 22 abr. 2017
  *      Author: julieta
@@ -87,6 +87,10 @@ int JuegoCliente::inicializarJuegoCliente()
 		maxJugadores = atoi(maxJug.c_str());
 
 	}
+
+	log->setModulo("JUEGO_CLIENTE");
+	log->addLogMessage("Se crea el personaje.",2);
+
 	cout << "Se crea personaje con id " << id << " Max jugadores: "<< maxJugadores <<endl;
 	sonic = new Personaje(id, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log, cliente);
 
@@ -129,7 +133,7 @@ void JuegoCliente::CargarVistaParaElMenu(){
 	jescenarioJuego* jparseador = parseador.parsearArchivo(file);
 
 	log->setModulo("JUEGO_CLIENTE");
-	log->addLogMessage("Se inicia el juego.",1);
+	log->addLogMessage("Se inicia el menu del juego.",2);
 
 	vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, false);
 
@@ -146,6 +150,9 @@ void JuegoCliente::iniciarJuego()
 		log->addLogMessage("Error. Conexion rechazada. Se termina el juego.",1);
 		return;
 	}
+
+	log->setModulo("JUEGO_CLIENTE");
+	log->addLogMessage("Se inicia el juego.",1);
 
 	iniciarJuegoControlCliente();
 
