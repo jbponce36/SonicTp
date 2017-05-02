@@ -14,7 +14,7 @@
 #include <queue>
 #include "Posicion.h"
 #include "Logger.h"
-
+#include <list>
 
 namespace std {
 
@@ -52,7 +52,8 @@ public:
     void setHostname(string hostname);
     Logger *getLog() const;
     void setLog(Logger *log);
-
+    list<int> listaClientes;
+    int fdCliente;
 
 private:
 	int sock_recep;
@@ -67,6 +68,8 @@ private:
 	bool partidaComenzada;
 	pthread_mutex_t mutex;
 	Logger *log;
+
+	//list<int> listaClientes;
 };
 
 } /* namespace std */

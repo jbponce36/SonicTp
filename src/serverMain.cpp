@@ -128,7 +128,7 @@ int main(int argc, char *argv[]) {
 	JuegoServidor *juego = new JuegoServidor(server, &hrEnviar, &hrRecibir, log);
 	juego->iniciarHiloJuego();
 
-	while(!server->finalizar()){
+	while(!server->finalizar()/*!server->listaClientes.empty()*/){
 	//while(1){
 		int skt = server->aceptarcliente();
 

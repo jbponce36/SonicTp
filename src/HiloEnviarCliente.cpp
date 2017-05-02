@@ -51,6 +51,8 @@ void *HiloEnviarCliente::clienteEnviar(void *args){
 					}
 				}
 			}
+
+
 }
 
 void HiloEnviarCliente::Join()

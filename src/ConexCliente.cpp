@@ -96,7 +96,7 @@ ConexCliente::~ConexCliente()
 
        if(status == -1){
             //this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el" + toString(), 1);
-        	cout<<status;
+    	   cout<<status;
         	cout<<"[CONEXCLIENTE][ENVIAR] No se pudo enviar"<<endl;
             return status;
         }

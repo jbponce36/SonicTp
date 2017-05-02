@@ -92,7 +92,7 @@ int ConexServidor::aceptarcliente()
 	sockaddr_in direccionclient;
 
     longitud_dircliente= sizeof(struct sockaddr_in);
-    int fdCliente = accept(this->sock_recep,(struct sockaddr *)&direccionclient,(socklen_t*)&longitud_dircliente);
+     fdCliente = accept(this->sock_recep,(struct sockaddr *)&direccionclient,(socklen_t*)&longitud_dircliente);
 
     pthread_mutex_lock(&mutex);
 
@@ -118,6 +118,7 @@ int ConexServidor::aceptarcliente()
 			this->finalizarConexion = false;
 			//printf("Cliente aceptado \n");
 			printf("Cantidad de clientes conectados:%d \n", this->cantclientes);
+			this->listaClientes.push_back(fdCliente);
 		}
     }
 
@@ -153,7 +154,9 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 	if (bytes <= 0){
 		this->log->addLogMessage("[RECIBIR] Error",2);
 		this->cantclientes = this->cantclientes -1;
+		listaClientes.remove(fdCliente);
 		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
+
 
 		if (this->cantclientes==0){
 			printf("No hay clientes conectados \n");
@@ -191,7 +194,7 @@ int ConexServidor::recibirPosicion(int skt, Posicion *posicion, int size)
 		this->log->addLogMessage("[RECIBIR] Error",2);
 		this->cantclientes = this->cantclientes -1;
 		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
-
+        this->listaClientes.remove(this->fdCliente);
 		if (this->cantclientes==0){
 			printf("No hay clientes conectados \n");
 
