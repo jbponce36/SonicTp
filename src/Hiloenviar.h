@@ -30,6 +30,7 @@ public:
 		char *buffer;
 		int skt;
 		Paquete pack;
+		char *bufferQ;
 	};
 	SerParametros parametros;
 

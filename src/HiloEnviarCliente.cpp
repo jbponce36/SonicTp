@@ -75,12 +75,12 @@ void* HiloEnviarCliente::clienteEnviarQueue(void* args){
 			while (result>0){
 				if(parametros->pack.getColaPaquetes().empty() != true)
 				{
-				parametros->buffer = parametros->pack.obtenerElementoDelaCola();
+				parametros->bufferQ = parametros->pack.obtenerElementoDelaCola();
 
-				result = parametros->cliente->enviar(parametros->buffer,strlen(parametros->buffer));
+				result = parametros->cliente->enviar(parametros->bufferQ,strlen(parametros->bufferQ));
 
 				if (result>0){
-					cout<<"server envio: "<<parametros->buffer<<endl;
+					cout<<"server envio: "<<parametros->bufferQ<<endl;
 					parametros->pack.eliminarElPrimetoDeLaCola();
 				}
 
@@ -93,7 +93,7 @@ void* HiloEnviarCliente::clienteEnviarQueue(void* args){
 					printf("El cliente se desconecto. \n");
 					salir = false;
 				}
-				parametros->buffer = "";
+				parametros->bufferQ = "";
 				}
 			}
 		}
