@@ -154,7 +154,6 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 	if (bytes <= 0){
 		this->log->addLogMessage("[RECIBIR] Error",2);
 		this->cantclientes = this->cantclientes -1;
-		listaClientes.remove(fdCliente);
 		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
 
 
@@ -194,7 +193,7 @@ int ConexServidor::recibirPosicion(int skt, Posicion *posicion, int size)
 		this->log->addLogMessage("[RECIBIR] Error",2);
 		this->cantclientes = this->cantclientes -1;
 		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
-        this->listaClientes.remove(this->fdCliente);
+
 		if (this->cantclientes==0){
 			printf("No hay clientes conectados \n");
 
@@ -308,5 +307,12 @@ void ConexServidor::comenzarPartida(){
 	pthread_mutex_lock(&mutex);
 	this->partidaComenzada = true;
 	printf("Se comienza la partida \n");
+	list<int>::iterator pos;
+		for(pos = this->listaClientes.begin(); pos!=this->listaClientes.end(); pos++){
+			printf("Enviando iniciar juego al cliente %d  \n", (*pos));
+			const char* mensaje = "[INICIAR JUEGO]";
+			send((*pos), mensaje, strlen(mensaje), MSG_DONTWAIT);
+
+	    }
 	pthread_mutex_unlock(&mutex);
 }
