@@ -303,16 +303,24 @@ bool ConexServidor::getFinalizarConexion(){
 void ConexServidor::setFinalizarConexion(bool FinalizarConexion){
 	 this->finalizarConexion = FinalizarConexion;
 }
-void ConexServidor::comenzarPartida(){
+void ConexServidor::comenzarPartida(std::vector<Hiloenviar*> hrEnviar)
+{
 	pthread_mutex_lock(&mutex);
 	this->partidaComenzada = true;
 	printf("Se comienza la partida \n");
-	list<int>::iterator pos;
-		for(pos = this->listaClientes.begin(); pos!=this->listaClientes.end(); pos++){
+    char* mensaje = "[INICIAR JUEGO]";
+
+	std::vector<Hiloenviar*>::iterator pos;
+		for(pos = hrEnviar.begin();pos != hrEnviar.end();pos++)
+		{
+			(*pos)->enviarDato(mensaje);
+		}
+		/*for(pos = this->listaClientes.begin(); pos!=this->listaClientes.end(); pos++){
 			printf("Enviando iniciar juego al cliente %d  \n", (*pos));
 			const char* mensaje = "[INICIAR JUEGO]";
 			send((*pos), mensaje, strlen(mensaje), MSG_DONTWAIT);
 
 	    }
+	    */
 	pthread_mutex_unlock(&mutex);
 }

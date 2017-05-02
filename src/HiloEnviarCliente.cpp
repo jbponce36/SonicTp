@@ -40,12 +40,12 @@ void *HiloEnviarCliente::clienteEnviar(void *args){
 
 					if (result==0){
 						printf("El cliente se desconecto. \n");
-						salir = false;
+						salir = true;
 					}
 
 					if (result==-1){
 						printf("El cliente se desconecto. \n");
-						salir = false;
+						salir = true;
 					}
 					parametros->buffer = (char*)"";
 					}

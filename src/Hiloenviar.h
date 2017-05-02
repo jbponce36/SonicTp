@@ -10,14 +10,13 @@
 
 #include "Hilo.h"
 #include "ConexCliente.h"
-#include "ConexServidor.h"
 #include "ProcesadorCliente.h"
 #include "Paquete.h"
 
 
 namespace std {
 
-
+class ConexServidor;
 
 class Hiloenviar {
 public:

@@ -16,7 +16,11 @@
 #include "Logger.h"
 #include <list>
 
+
+
 namespace std {
+
+class Hiloenviar;
 
 class ConexServidor {
 public:
@@ -39,7 +43,7 @@ public:
     bool finalizar();
 
     bool noSeConectaronTodos();
-    void comenzarPartida();
+    void comenzarPartida(std::vector<Hiloenviar*> hrEnviar);
 
 	bool getFinalizarConexion();
 	void setFinalizarConexion(bool);
@@ -69,6 +73,7 @@ private:
 	pthread_mutex_t mutex;
 	Logger *log;
 	list<int> listaClientes;
+
 
 };
 

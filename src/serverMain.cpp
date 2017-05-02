@@ -5,7 +5,6 @@
 #include "ConexCliente.h"
 #include "parseadorJson.h"
 #include "jescenarioJuego.h"
-#include "Hilo.h"
 #include "parseadorJsonSer.h"
 #include "Hilorecibir.h"
 #include <vector>
@@ -127,7 +126,7 @@ int main(int argc, char *argv[]) {
 	//Empieza la partida
 	printf("Empieza la partida \n");
 
-	server->comenzarPartida();
+	server->comenzarPartida(hrEnviar);
 
 	JuegoServidor *juego = new JuegoServidor(server, hrEnviar, hrRecibir, log);
 	juego->iniciarHiloJuego();
