@@ -47,22 +47,22 @@ void parseadorJsonSer::parsearArchivo(std::string nombreArchivo){
   json_t *json;
   json_error_t error;
 
-  //this->log->addLogMessage("[PARSEADOR JSON SERVIDOR] Iniciado.", 2);
+  this->log->addLogMessage("[PARSEADOR JSON SERVIDOR] Iniciado.", 2);
 
   json = json_load_file(nombreArchivo.c_str(),0,&error);
   this->setraiz(json);
 
   if(!json) {
 	  cout << error.text << endl;
-	  //this->log->addLogMessage("[PARSEADOR JSON SERVIDOR] [ERROR] No se encontro el archivo o directorio.", 1);
+	  this->log->addLogMessage("[PARSEADOR JSON SERVIDOR] [ERROR] No se encontro el archivo o directorio.", 1);
 	  cout << "Cargando archivo por defecto" << endl;
 	  json = json_load_file("configuracion/servidordefault.json",0,&error);
 	  this->setraiz(json);
-	  //this->log->addLogMessage("[PARSEADOR JSON SERVIDOR] Se carga un archivo por defecto: configuracion/default.json .", 1);
+	  this->log->addLogMessage("[PARSEADOR JSON SERVIDOR] Se carga un archivo por defecto: configuracion/default.json .", 1);
 	  if (!json){
 	    cout << "!!! no existe el archivo por defecto!!!" << endl;
 	    cout << error.text << endl;
-	    //this->log->addLogMessage("[PARSEADOR JSON SERVIDOR] No existe el archivo o directorio por defecto.", 1);
+	    this->log->addLogMessage("[PARSEADOR JSON SERVIDOR] No existe el archivo o directorio por defecto.", 1);
 
 	}
  }
