@@ -93,3 +93,8 @@ void JuegoServidor::agregarJugador(int id)
 	control->agregarSonic(id);
 }
 
+void JuegoServidor::enviarATodosLosClientes(std::string mensaje)
+{
+	control->enviarATodos(mensaje);
+}
+

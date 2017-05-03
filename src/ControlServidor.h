@@ -61,6 +61,7 @@ public:
 
 	void ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado);
 	void agregarSonic(int id);
+	void enviarATodos(std::string mensaje);
 
 	typedef struct mensajeRecibido{
 		int id;
@@ -77,7 +78,7 @@ private:
 	void moverSonicsSegunTeclas();
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor();
-	void enviarATodos(std::string mensaje);
+
 	std::string intToString(int number);
 
 };
