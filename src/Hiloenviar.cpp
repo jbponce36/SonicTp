@@ -10,12 +10,11 @@
 namespace std {
 
 Hiloenviar::Hiloenviar() : continuar(true){
-	pthread_mutex_init(&mutex, NULL);
+
 }
 
 Hiloenviar::~Hiloenviar() {
 	// TODO Auto-generated destructor stub
-	pthread_mutex_destroy(&mutex);
 }
 
 Hilo Hiloenviar::gethilo(){
@@ -91,9 +90,11 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 		int result = 1;
 			//while (result>0){
 
-			if(parametros->pack.getColaPaquetes().empty() != true)
+			if(parametros->pack.estaVacia() != true)
 			{
+				cout << "No esta vacia. Todo ok." << endl;
 				parametros->bufferQ = parametros->pack.obtenerElementoDelaCola();
+
 				cout<<"tamanio buffer  :"<<sizeof(parametros->bufferQ)<<endl;
 				cout<<strlen(parametros->bufferQ)<<endl;
 
@@ -104,6 +105,7 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 				if (result>0){
 					cout<<"server envio: "<<parametros->bufferQ<<"envio n° de datos:"<<result<<endl;
 					parametros->pack.eliminarElPrimetoDeLaCola();
+					cout << "Elimine bien." << endl;
 				}
 
 				if (result==0){
@@ -116,17 +118,16 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 					salir = true;
 				}
 				parametros->bufferQ = "";
+				cout << "Voy a salir bien." << endl;
 			}
 			//}
 	}
 
-	printf("Se termino el thread hilo Eviar. \n");
+	printf("Se termino el thread hilo Enviar. \n");
 }
 
 void Hiloenviar::enviarDato(char* dato){
-	pthread_mutex_lock(&mutex);
 	parametros.pack.agregar(dato);
-	pthread_mutex_unlock(&mutex);
 }
 }
 /* namespace std */

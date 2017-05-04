@@ -36,7 +36,7 @@ int getNivelLogger(int argc, char *argv[]){
 void *iniciarJuegoCliente(void *datos)
 {
 	JuegoCliente *juego = (JuegoCliente*)datos;
-	juego->iniciarJuegoCliente();
+	//juego->iniciarJuegoCliente();
 	return NULL;
 }
 
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 	/*<------Aca van las cosas de conectar y eso------*/
 
 	JuegoCliente juego = JuegoCliente(&cliente, log);
-	juego.iniciarJuegoCliente();
+	//juego.iniciarJuegoCliente();
 
 	//Creo que asi se llamaria desde un hilo llamando a la funcion de arriba del main
 	//Hilo hilo = Hilo();

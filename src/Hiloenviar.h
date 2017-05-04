@@ -45,7 +45,7 @@ public:
 private:
 	Hilo h;
 	bool continuar;
-	pthread_mutex_t mutex;
+
 };
 
 }
