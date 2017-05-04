@@ -88,6 +88,29 @@ void Camara::actualizar(int maximoAncho, int maximoAlto){
 
 }
 
+void Camara::actualizarXY(int x, int y)
+{
+	//Lo usa la camara del cliente
+	camaraImagen->x = x;
+	camaraImagen->y = y;
+}
+
+std::string Camara::intToStringConPadding(int number)
+{
+  ostringstream oss;
+  oss<< number;
+  std::string numero = oss.str();
+  while(numero.length() < MAX_CANT_DIGITOS_POS){
+	  numero = PADDING + numero;
+  }
+  return numero;
+}
+
+std::string Camara::obtenerMensajeEstado()
+{
+	return ("x" + intToStringConPadding(camaraImagen->x) + "y" + intToStringConPadding(camaraImagen->y));
+}
+
 SDL_Rect *Camara::devolverCamara(){
 	return this->camaraImagen;
 }
