@@ -43,7 +43,7 @@ void ControlServidor::administrarTeclasServidor()
 
 			//Idea: Quizas:
 			//Si la tecla ya estaba seteada significa que hubo un error y hay que corregir la posicion del sonic
-			if (mensaje.length() == LARGO_MENSAJE_POSICION_CLIENTE)
+			if (mensaje.substr(1,1) == "T")
 			{
 				mensajeRecibido msj = parsearMensajePosicion(mensaje);
 				int indice = msj.id;

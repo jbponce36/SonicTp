@@ -20,29 +20,26 @@ Hilolatidocliente::~Hilolatidocliente() {
 
 void Hilolatidocliente::latido(){
 
-	Hilo hilos = Hilo(/*log*/);
-	hilos.Create((void *)Hilolatidocliente::enviarlatido ,  (void *)&parametros);
+	Hilo hilo = Hilo(/*log*/);
+	hilo.Create((void *)Hilolatidocliente::enviarlatido ,  (void *)&parametro);
 
 }
 
 void* Hilolatidocliente::enviarlatido(void* args){
-	parametro *parametros = (parametro*) args;
+	parametros *parametro = (parametros*) args;
 	//Envia el mensaje a todos los hilos enviar para que se lo mande a todos los clientes
 	//TODO: Agregarle ids a los hilos sino si se desconecta un cliente aun le envia
 	char buffer[40] = "estoyVivo";
-	bool salir true;
+	bool salir = true;
 	//strcpy(buffer, mensaje.c_str());
    while(1){
-	   sleep(5);
-	   parametro.cliente->enviar(buffer,strlen(buffer));
-	   while( difftime(end_t, start_t) >= 5.0 ){
-
-
-	   }
+	   sleep(1);
+	   parametro->cliente->enviar(buffer,strlen(buffer));
    }
+}
 
 
-	time(&start_t);
+/*	time(&start_t);
 	while( !juegoTerminado ){
 		   time(&end_t);
 		   diff_t = difftime(end_t, start_t);
@@ -52,11 +49,11 @@ void* Hilolatidocliente::enviarlatido(void* args){
 			   //enviar a el servidor el latido
 			   this->enviarATodos(buffer);
 			   time(&start_t);
-
-		   }
-
+*/
 }
 
 
-}
-} /* namespace std */
+
+
+
+ /* namespace std */

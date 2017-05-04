@@ -12,6 +12,7 @@
 #include "ConexCliente.h"
 #include "Paquete.h"
 #include "VariableCondicional.h"
+#include "Definiciones.h"
 #include <pthread.h>
 
 class HiloRecibirCliente {

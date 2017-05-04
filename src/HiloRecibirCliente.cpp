@@ -44,7 +44,8 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 		while (result>0){
 			    //memset(buffer, '\0', sizeof(buffer));
 
-				result = parametros->cliente->recibir(buffer,sizeof(buffer));
+				result = parametros->cliente->recibir(buffer,LARGO_MENSAJE_POSICION_SERVIDOR);
+				//Cuando haya separadores, cambiarlo otra vez por sizeof(buffer) a esto--^
 
 				if (result>0){
 					cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;

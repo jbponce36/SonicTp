@@ -36,9 +36,6 @@ int main(int argc, char *argv[]) {
 	parseadorJsonSer *jsonSer = new parseadorJsonSer(log);
 	//jsonSer->parsearArchivo(server->cargarNombreArchivo());
 	int maxConexiones = 2;
-	//server->crear();
-	//server->enlazar(8080);
-	//server->escuchar(maxConexiones);
 
 	if(server->crear() == false){
 		server->cerrar();
@@ -90,7 +87,6 @@ int main(int argc, char *argv[]) {
 			henviar->parametros.server = server;
 			henviar->parametros.skt = skt;
 
-			//char *buffer=(char*)"me quiero, me quiero mucho mucho mucho ";
 			//Le mando un ID a cada cliente a medida que se conectan y la cantidad maxima de jugadores
 			char buffer[2] = "";
 			string temp = oss.str();
@@ -101,23 +97,8 @@ int main(int argc, char *argv[]) {
 	//Idea: estaria bueno un generador de ID que sepa cuales son los id libres.
 	//Sino al desconectarse clientes quedan mal los ids.
 
-	//Otra cosa: Al desconectarse un cliente tendrian que borrarse estos hilos
-
-			//henviar->parametros.buffer = buffer;
 			henviar->enviarDato(buffer);
 			henviar->iniciarHiloQueue();
-
-
-/*
-			char buf[40] = "aaaabbbbccccddddeeeeffffgggghhhh";
-			henviar->enviarDato(buf);
-
-			henviar->iniciarHiloQueue();
-*/
-
-
-
-
 			hrEnviar.push_back(henviar);
 
 		}
@@ -153,7 +134,6 @@ int main(int argc, char *argv[]) {
 			henviar->parametros.server = server;
 			henviar->parametros.skt = skt;
 
-			//char *buffer=(char*)"me quiero, me quiero mucho mucho mucho ";
 			//Le mando un ID a cada cliente a medida que se conectan y la cantidad maxima de jugadores
 			char buffer[2] = "";
 			string temp = oss.str();
@@ -164,9 +144,6 @@ int main(int argc, char *argv[]) {
 	//Idea: estaria bueno un generador de ID que sepa cuales son los id libres.
 	//Sino al desconectarse clientes quedan mal los ids.
 
-	//Otra cosa: Al desconectarse un cliente tendrian que borrarse estos hilos
-
-			//henviar->parametros.buffer = buffer;
 			henviar->enviarDato(buffer);
 			henviar->iniciarHiloQueue();
 			hrEnviar.push_back(henviar);
