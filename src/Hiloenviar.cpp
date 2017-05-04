@@ -10,11 +10,12 @@
 namespace std {
 
 Hiloenviar::Hiloenviar() : continuar(true){
-
+	pthread_mutex_init(&mutex, NULL);
 }
 
 Hiloenviar::~Hiloenviar() {
 	// TODO Auto-generated destructor stub
+	pthread_mutex_destroy(&mutex);
 }
 
 Hilo Hiloenviar::gethilo(){
@@ -123,8 +124,9 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 }
 
 void Hiloenviar::enviarDato(char* dato){
-
+	pthread_mutex_lock(&mutex);
 	parametros.pack.agregar(dato);
+	pthread_mutex_unlock(&mutex);
 }
 }
 /* namespace std */

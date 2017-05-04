@@ -27,7 +27,7 @@ public:
 			char *buffer;
 			int skt;
 			Paquete pack;
-			char * bufferQ;
+			char *bufferQ;
 		};
 	SerParametros parametros;
 	void iniciarHiloQueue();

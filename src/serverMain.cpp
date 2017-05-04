@@ -126,6 +126,7 @@ int main(int argc, char *argv[]) {
 	//Empieza la partida
 	printf("Empieza la partida \n");
 
+	sleep(1); //Le da tiempo al ultimo jugador en conectarse a inicializar su juego.
 	server->comenzarPartida(hrEnviar);
 
 	JuegoServidor *juego = new JuegoServidor(server, hrEnviar, hrRecibir, log);
