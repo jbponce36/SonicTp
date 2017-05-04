@@ -12,6 +12,7 @@
 #include <vector>
 #include <stdio.h>
 #include <time.h>
+#include "Hilo.h"
 
 
 namespace std {
@@ -22,18 +23,19 @@ public:
 	virtual ~Hilolatidocliente();
 	void IniciarHilo();
 	void latido();
+	static void * enviarlatido(void* args);
 	//std::vector<Hiloenviar*> *hilosEnviar;
 	//std::vector<Hilorecibir*> *hilosRecibir;
 	time_t start_t, end_t;
 	double diff_t;
 
-	static void* enviarLatido(void* args);
+
 
 	struct parametros{
 	ConexCliente* cliente;
 	char *buffer;
 	int skt;
-	Paquete pack;
+	//Paquete pack;
 	char *bufferQ;
 	};
 	parametros parametro;
