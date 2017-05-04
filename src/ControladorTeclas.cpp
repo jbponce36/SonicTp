@@ -17,6 +17,20 @@ ControladorTeclas::~ControladorTeclas() {
 	// TODO Auto-generated destructor stub
 }
 
+string ControladorTeclas::getFechaActual(){
+	time_t t = time(0);
+	struct tm *now = localtime( & t );
+	string fecha =	(now->tm_year + 1900) + '-'
+			 + (now->tm_mon + 1) + '-'
+			 +  now->tm_mday
+			 +  " "
+			 +  now->tm_hour
+			 + now->tm_min
+			 +now->tm_sec;
+
+	return fecha;
+}
+
 void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnviarCliente *hiloEnviar)
 {
 	//Al presionar o soltar una tecla se ejecuta una sola vez el codigo correspondiente
@@ -24,37 +38,33 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 	//dependiendo de la velocidad y el codigo de la tecla cambia las variables para luego mover
 	if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
 	{
+		string mensaje;
 		//ajusta la velocidad
 		switch( e.key.keysym.sym )
 		{
 			case SDLK_UP: {
-				Posicion *posicion = new Posicion(TECLA_ARRIBA_PRESIONADA);
-				sonic->enviarAServer(hiloEnviar, TECLA_ARRIBA_PRESIONADA);
-				//sonic->enviarPosicionServer(hiloEnviar, posicion);
+				mensaje = getFechaActual()+TECLA_ARRIBA_PRESIONADA;
+				sonic->enviarAServer(hiloEnviar, mensaje);
 				teclaArriba = true;
 				sonic->saltar();
 				break;}
 			case SDLK_DOWN:{
-				Posicion *posicion = new Posicion(TECLA_ABAJO_PRESIONADA);
-				//sonic->enviarPosicionServer(hiloEnviar, posicion);
+				mensaje = getFechaActual()+TECLA_ABAJO_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, TECLA_ABAJO_PRESIONADA);
 				teclaAbajo = true;
 				break;}
 			case SDLK_LEFT:{
-				Posicion *posicion = new Posicion(TECLA_IZQUIERDA_PRESIONADA);
-				//sonic->enviarPosicionServer(hiloEnviar, posicion);
+				mensaje = getFechaActual()+TECLA_IZQUIERDA_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, TECLA_IZQUIERDA_PRESIONADA);
 				teclaIzquierda = true;
 				break;}
 			case SDLK_RIGHT:{
-				Posicion *posicion = new Posicion(TECLA_DERECHA_PRESIONADA);
-				//sonic->enviarPosicionServer(hiloEnviar, posicion);
+				mensaje = getFechaActual()+TECLA_DERECHA_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, TECLA_DERECHA_PRESIONADA);
 				teclaDerecha = true;
 				break;}
 			case SDLK_a:{
-				Posicion *posicion = new Posicion(TECLA_CORRER_PRESIONADA);
-				//sonic->enviarPosicionServer(hiloEnviar, posicion);
+				mensaje = getFechaActual()+TECLA_CORRER_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, TECLA_CORRER_PRESIONADA);
 				teclaCorrer = true;
 				break;}
@@ -65,39 +75,35 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 	//cambia las variables para ajustar al personaje
 	else if( e.type == SDL_KEYUP && e.key.repeat == 0 )
 	{
+		string mensaje;
 		//ajusta la velocidad
 		switch( e.key.keysym.sym )
 		{
 		case SDLK_UP:{
 			//Enviar al server que dejo de presionar la tecla
-			Posicion *posicion = new Posicion(TECLA_CORRER_PRESIONADA);
+			mensaje = getFechaActual()+TECLA_ARRIBA_LIBERADA;
 			sonic->enviarAServer(hiloEnviar, TECLA_ARRIBA_LIBERADA);
-			//sonic->enviarPosicionServer(hiloEnviar, posicion);
 			teclaArriba = false;
 			sonic->dejarDeSaltar();
 			break;}
 		case SDLK_DOWN:{
-			Posicion *posicion = new Posicion(TECLA_CORRER_PRESIONADA);
+			mensaje = getFechaActual()+TECLA_ABAJO_LIBERADA;
 			sonic->enviarAServer(hiloEnviar, TECLA_ABAJO_LIBERADA);
-			//sonic->enviarPosicionServer(hiloEnviar, posicion);
 			teclaAbajo = false;
 			break;}
 		case SDLK_LEFT:{
-			Posicion *posicion = new Posicion(TECLA_CORRER_PRESIONADA);
+			mensaje = getFechaActual()+TECLA_IZQUIERDA_LIBERADA;
 			sonic->enviarAServer(hiloEnviar, TECLA_IZQUIERDA_LIBERADA);
-			//sonic->enviarPosicionServer(hiloEnviar, posicion);
 			teclaIzquierda = false;
 			break;}
 		case SDLK_RIGHT:{
-			Posicion *posicion = new Posicion(TECLA_CORRER_PRESIONADA);
+			mensaje = getFechaActual()+TECLA_DERECHA_LIBERADA;
 			sonic->enviarAServer(hiloEnviar, TECLA_DERECHA_LIBERADA);
-			//sonic->enviarPosicionServer(hiloEnviar, posicion);
 			teclaDerecha = false;
 			break;}
 		case SDLK_a:{
-			Posicion *posicion = new Posicion(TECLA_CORRER_PRESIONADA);
+			mensaje = getFechaActual()+TECLA_CORRER_LIBERADA;
 			sonic->enviarAServer(hiloEnviar, TECLA_CORRER_LIBERADA);
-			//sonic->enviarPosicionServer(hiloEnviar, posicion);
 			teclaCorrer = false;
 			break;}
 		default:

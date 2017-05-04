@@ -43,26 +43,26 @@ void parseadorJsonCli::parsearArchivo(std::string  nombreArchivo){
  json_t *json;
  json_error_t error;
  cout<<"entro"<<endl;
- //this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Iniciado.", 2);
+ this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Iniciado.", 2);
 
  json = json_load_file(nombreArchivo.c_str(),0,&error);
  this->setraiz(json);
 
   if(!json) {
 	 cout << error.text << endl;
-	 //this->log->addLogMessage("[PARSEADOR JSON CLIENTE] [ERROR] No se encontro el archivo o directorio.", 1);
+	 this->log->addLogMessage("[PARSEADOR JSON CLIENTE] [ERROR] No se encontro el archivo o directorio.", 1);
 	 cout << "Cargando archivo por defecto" << endl;
 	 json = json_load_file("configuracion/clientedefault.json",0,&error);
 	 this->setraiz(json);
-	 //this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Se carga un archivo por defecto: configuracion/default.json .", 1);
+	 this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Se carga un archivo por defecto: configuracion/default.json .", 1);
 	 if (!json){
 		 cout << "!!! no existe el archivo por defecto!!!" << endl;
 		 cout << error.text << endl;
-		 //this->log->addLogMessage("[PARSEADOR JSON CLIENTE] No existe el archivo o directorio por defecto.", 1);
+		 this->log->addLogMessage("[PARSEADOR JSON CLIENTE] No existe el archivo o directorio por defecto.", 1);
 
 	 }
  }
-	  //this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Terminado. \n", 2);
+	  this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Terminado. \n", 2);
 
 }
 
@@ -120,11 +120,11 @@ int parseadorJsonCli::CargarPuertoCliente(){
   int puerto;
   raiz = this->getraiz();
 
-  //this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Iniciado.", 2);
+  this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Iniciado.", 2);
 
   puerto = this->leeValorEnteroServer(raiz,"puerto","CLIENTE",8080);
 
- // this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Terminado.", 2);
+  this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Terminado.", 2);
   return puerto;
 }
 
@@ -134,11 +134,11 @@ const char* parseadorJsonCli::CargarIPCliente(){
 	raiz = this->getraiz();
 
 
-	//this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Iniciado.", 2);
+	this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Iniciado.", 2);
 
 	ip = this->leerValorStringip(raiz,"ip","127.0.0.1");
 
-	//this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Terminado.", 2);
+	this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Terminado.", 2);
 
 	return ip;
 }
