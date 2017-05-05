@@ -11,17 +11,23 @@ namespace std{
 Paquete::Paquete(){
 	//this->delante = NULL;
 	//this->atras = NULL;
+	pthread_mutex_init(&mutex, NULL);
 }
 
 Paquete::~Paquete(){
-
+	pthread_mutex_destroy(&mutex);
 }
+
 void Paquete::agregar(char *buffer){
+	pthread_mutex_lock(&mutex);
+
 	char *buf = new char[40];
 	for(int i=0;i<40;i++){
 		buf[i] = buffer[i];
 	}
 	this->colaPaquetes.push(buf);
+
+	pthread_mutex_unlock(&mutex);
 }
 
 /*void Paquete::agregarPosicion(Posicion *pos){
@@ -37,7 +43,15 @@ std::queue<char*> Paquete::getColaPaquetes(){
 }*/
 
 char* Paquete::obtenerElementoDelaCola(){
-	return this->colaPaquetes.front();
+	char* elem = "";
+	pthread_mutex_lock(&mutex);
+
+	if(!this->colaPaquetes.empty()){
+		elem = this->colaPaquetes.front();
+	}
+
+	pthread_mutex_unlock(&mutex);
+	return elem;
 }
 
 /*Posicion* Paquete::obtenerElementoDelaCola(){
@@ -45,7 +59,19 @@ char* Paquete::obtenerElementoDelaCola(){
 }*/
 
 void Paquete::eliminarElPrimetoDeLaCola(){
-	delete [] this->colaPaquetes.front();
-	this->colaPaquetes.pop();
+	pthread_mutex_lock(&mutex);
+
+	if(!this->colaPaquetes.empty()){
+		delete [] this->colaPaquetes.front();
+		this->colaPaquetes.pop();
+	}
+
+	pthread_mutex_unlock(&mutex);
 }
+
+bool Paquete::estaVacia()
+{
+	return this->colaPaquetes.empty();
+}
+
 }

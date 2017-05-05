@@ -9,7 +9,7 @@
 
 JuegoCliente::JuegoCliente()
 : vista(NULL), sonic(NULL), control(NULL), cliente(NULL), log(NULL),
-  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0), sonics(){
+  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0), sonics(), juegoIniciado(false){
 	//Las variables se setean al llamar a iniciarJuegoCliente desde el thread
 }
 
@@ -29,12 +29,13 @@ JuegoCliente::~JuegoCliente() {
 
 JuegoCliente::JuegoCliente(ConexCliente *cliente, Logger *log)
 : vista(NULL), sonic(NULL), control(NULL), cliente(cliente), log(log),
-  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0), sonics(){
+  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0), sonics(), juegoIniciado(false){
 	//Vista, sonic y control se setean al llamar a iniciarJuegoCliente desde el thread
 }
 
 void *JuegoCliente::iniciarJuegoCliente(void *datos)
 {
+	//Thread que inicia iniciar juego
 	JuegoCliente *juego = (JuegoCliente*)datos;
 	juego->iniciarJuego();
 	return NULL;
@@ -55,6 +56,8 @@ void JuegoCliente::iniciarHilos()
 	hiloJuego = new Hilo();
 
 	hiloJuego->Create((void *)iniciarJuegoCliente, (void *)this);
+
+	//Idea: Hilo vista? Hasta que juegoIniciado sea true? Despues adios
 }
 
 void JuegoCliente::terminarHilos()
@@ -77,17 +80,11 @@ int JuegoCliente::inicializarJuegoCliente()
 		return CONEXION_RECHAZADA;
 	}
 
+
 	std::string ident = mensaje.substr(0,1);
 	std::string maxJug = mensaje.substr(1,1);
-
-	int id = 0;
-	if (mensaje.length() == 2){
-		std::string ident = mensaje.substr(0,1);
-		std::string maxJug = mensaje.substr(1,1);
-		id = atoi(ident.c_str());
-		maxJugadores = atoi(maxJug.c_str());
-
-	}
+	int id = atoi(ident.c_str());
+	maxJugadores = atoi(maxJug.c_str());
 
 	log->setModulo("JUEGO_CLIENTE");
 	log->addLogMessage("Se crea el personaje.",2);
@@ -124,6 +121,22 @@ void JuegoCliente::inicializarOtrosSonics(int id)
 
 void JuegoCliente::iniciarJuegoControlCliente()
 {
+	//Info: Si tarda mucho va a hacer que la pantalla se ponga en blanco y negro hasta que se conecten todos.
+	//No se como sacarlo por ahora... Pero por ahora sirve.
+
+	cout << "Esperando que se conecten jugadores..." << endl;
+	hiloRecibir->setVariableCondicional(&vcIniciarJuego);
+	vcIniciarJuego.bloquearMutex();
+	while (!juegoIniciado)
+	{
+		vcIniciarJuego.esperarCondicion();
+		juegoIniciado = true;
+	}
+
+	vcIniciarJuego.desbloquearMutex();
+	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola(); //Saca el mensaje [INICIAR JUEGO] de la cola
+
+	cout << "Inicio el juego." << endl;
 	control->ControlarJuegoCliente(vista, sonic, hiloEnviar, hiloRecibir);
 }
 

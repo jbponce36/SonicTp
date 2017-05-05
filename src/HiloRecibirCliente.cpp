@@ -9,13 +9,17 @@
 #include <pthread.h>
 #include  "AdministradorLatidoCliente.h"
 
-HiloRecibirCliente::HiloRecibirCliente() {
-	// TODO Auto-generated constructor stub
-
+HiloRecibirCliente::HiloRecibirCliente() : hilo(NULL) {
+		parametros.vcIniciarJuego = NULL;
 }
 
 HiloRecibirCliente::~HiloRecibirCliente(){
 	// TODO Auto-generated destructor stub
+}
+
+void HiloRecibirCliente::setVariableCondicional(VariableCondicional *varCond)
+{
+	parametros.vcIniciarJuego = varCond;
 }
 
 
@@ -44,17 +48,20 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 		while (result>0){
 			    //memset(buffer, '\0', sizeof(buffer));
 
-				result = parametros->cliente->recibir(buffer,sizeof(buffer));
+				result = parametros->cliente->recibir(buffer,LARGO_MENSAJE_POSICION_SERVIDOR);
+				//Cuando haya separadores, cambiarlo otra vez por sizeof(buffer) a esto--^
 
 				//Cuando recibe estoy vivo actualiza el tiempo de latido
 
 				if (result>0){
 					cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
 
+
 					if (strcmp(buffer, "ESTOY VIVO") == 0){
 						printf("RECIBI estoy Vivo \n");
 						AdministradorLatidoCliente::actualizarTiempoLatido();
 					}
+
 
 
 					if (strcmp(buffer, "Conexion rechazada") == 0){
@@ -64,6 +71,10 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					if (strcmp(buffer, "[INICIAR JUEGO]") == 0){
 				         printf("****** VOY A INICIAR EL JUEGO ******* \n");
 				         //parametros->colaPaquete.agregar("[INICIAR JUEGO]");
+				         if(parametros->vcIniciarJuego != NULL)
+				         {
+				        	 parametros->vcIniciarJuego->notificarTodos();
+				         }
 					}
 
 					parametros->colaPaquete.agregar(buffer);

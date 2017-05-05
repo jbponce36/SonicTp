@@ -45,6 +45,7 @@ public:
 private:
 	Hilo h;
 	bool continuar;
+
 };
 
 }

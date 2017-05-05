@@ -47,7 +47,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 
 
 		administrarTeclas(&controlador, sonic, hiloEnviar);
-		moverOtrosSonics(sonic, hiloRecibir, vista);
+		controlDeMensajes(sonic, hiloRecibir, vista, camara);
 		moverPersonaje(tiempoDeJuego, vista, sonic, camara);
 		/////Corregir posicion????
 		actualizarVista(camara, vista, &imagenMostrar, sonic);
@@ -86,14 +86,14 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 
 }
 
-void Control::moverOtrosSonics(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista)
+void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista, Camara *camara)
 {
 	//Mueve a los otros sonics de acuerdo a los mensajes recibidos del servidor
 	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	while ((mensaje) != ("Sin elementos"))
 	{
 		cout << "Control mensaje: " << mensaje << endl;
-		if(mensaje.length() == LARGO_MENSAJE_POSICION_SERVIDOR)
+		if(mensaje.substr(1,1) == "x")
 		{
 			mensajePosicion msj;
 			parsearMensajePosicion(msj, mensaje);
@@ -114,16 +114,40 @@ void Control::moverOtrosSonics(Personaje* sonic, HiloRecibirCliente *hiloRecibir
 
 			//cout << msj.id << " " << msj.posX << " " << msj.posY  << " " << msj.animacion << " " << msj.indiceAnimacion << endl;
 		}
+		else if (mensaje == "Servidor Desconectado")
+		{
+			printf("Aca deberia cerrar el juego. \n");
+			this->salir = true;
+		}
+		else if (mensaje.substr(0,3) ==  MENSAJE_CAMARA)
+		{
+			int nuevoX, nuevoY;
+			parsearMensajeCamara(nuevoX, nuevoY, mensaje);
+			camara->actualizarXY(nuevoX, nuevoY);
+		}
 		else
 		{
-			//Otros mensajes...
-			if (mensaje == "Servidor Desconectado"){
-				printf("Aca deberia cerrar el juego. \n");
-				this->salir = true;
-			}
+			//Otros mensajes
 		}
+
+
+
 		mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	}
+}
+
+void Control::parsearMensajeCamara(int &xDest, int &yDest, std::string mensaje)
+{
+	//Mensaje es del tipo: CAMx-100y---0
+	std::string posX = mensaje.substr(4, 4);
+	std::string posY = mensaje.substr(9, 4);
+	posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
+	posY.erase(std::remove(posY.begin(), posY.end(), PADDING), posY.end());
+
+	xDest = atoi(posX.c_str());
+	yDest = atoi(posY.c_str());
+
+	cout << "Camara parseo: x: " << xDest << " y: " << yDest << endl;
 }
 
 
@@ -155,7 +179,8 @@ void Control::moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *
 
 	tiempoDeJuego = SDL_GetTicks();
 
-	camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario()); //Mueve la camara segun los sonics
+	//El server va a mover la camara.
+	//camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario()); //Mueve la camara segun los sonics
 
 
 }

@@ -416,12 +416,6 @@ void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje
 {
 	mensaje = intToString(id) + mensaje + "x" + intToStringConPadding(posicionX) + "y" + intToStringConPadding(posicionY);
 
-	/*char* msj = new char[mensaje.length() +1];
-	strcpy(msj, mensaje.c_str());
-	cliente->enviar(msj, strlen(msj));
-	cout << "Cliente envio: "<< msj << '\n';
-	delete[] msj;*/
-
 	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
 	strcpy(buffer, mensaje.c_str());
 	cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma

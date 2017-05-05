@@ -90,9 +90,11 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 		int result = 1;
 			//while (result>0){
 
-			if(parametros->pack.getColaPaquetes().empty() != true)
+			if(parametros->pack.estaVacia() != true)
 			{
+				cout << "No esta vacia. Todo ok." << endl;
 				parametros->bufferQ = parametros->pack.obtenerElementoDelaCola();
+
 				cout<<"tamanio buffer  :"<<sizeof(parametros->bufferQ)<<endl;
 				cout<<strlen(parametros->bufferQ)<<endl;
 
@@ -103,6 +105,7 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 				if (result>0){
 					cout<<"server envio: "<<parametros->bufferQ<<"envio n° de datos:"<<result<<endl;
 					parametros->pack.eliminarElPrimetoDeLaCola();
+					cout << "Elimine bien." << endl;
 				}
 
 				if (result==0){
@@ -115,6 +118,7 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 					salir = true;
 				}
 				parametros->bufferQ = "";
+				cout << "Voy a salir bien." << endl;
 			}
 			//}
 	}
@@ -123,7 +127,6 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 }
 
 void Hiloenviar::enviarDato(char* dato){
-
 	parametros.pack.agregar(dato);
 }
 }

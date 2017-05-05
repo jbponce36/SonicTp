@@ -21,7 +21,7 @@
 #include <map>
 #include "time.h"
 
-#define FPS_SERVER 30
+#define FPS_SERVER 25
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
 
 class ControlServidor {
@@ -78,7 +78,7 @@ private:
 	ControlServidor::mensajeRecibido parsearMensajePosicion(std::string mensaje);
 	void moverSonicsSegunTeclas();
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
-	void actualizarVistaServidor();
+	void actualizarVistaServidor(Camara *camara);
 
 	std::string intToString(int number);
 

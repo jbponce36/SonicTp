@@ -18,6 +18,7 @@
 #include "Hilo.h"
 #include "HiloEnviarCliente.h"
 #include "HiloRecibirCliente.h"
+#include "VariableCondicional.h"
 
 
 #define CONEXION_RECHAZADA 1
@@ -37,6 +38,9 @@ private:
 
 	int maxJugadores;
 	std::vector<Personaje*> sonics;
+
+	VariableCondicional vcIniciarJuego;
+	bool juegoIniciado;
 
 public:
 	JuegoCliente();

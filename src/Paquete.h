@@ -32,9 +32,11 @@ public:
 	//Posicion* obtenerElementoDelaCola();
 
 	void eliminarElPrimetoDeLaCola();
+	bool estaVacia();
 
 private:
 	std::queue<char*> colaPaquetes;
+	pthread_mutex_t mutex;
 	//std::queue<Posicion *> colaPaquetes;
 	//Puntero delante;
 	//Puntero atras;

@@ -30,6 +30,8 @@ ControlServidor::~ControlServidor() {
 void ControlServidor::administrarTeclasServidor()
 {
 	std::string mensaje;
+	mensajeRecibido msj;
+	int indice;
 	std::vector<Hilorecibir*>::iterator pos;
 
 	//Veo todos los mensajes de todos los hilos recibir de los clientes y seteo las tecla presionadas o liberadas
@@ -43,10 +45,10 @@ void ControlServidor::administrarTeclasServidor()
 
 			//Idea: Quizas:
 			//Si la tecla ya estaba seteada significa que hubo un error y hay que corregir la posicion del sonic
-			if (mensaje.length() == LARGO_MENSAJE_POSICION_CLIENTE)
+			if (mensaje.substr(1,1) == "T")
 			{
-				mensajeRecibido msj = parsearMensajePosicion(mensaje);
-				int indice = msj.id;
+				msj = parsearMensajePosicion(mensaje);
+				indice = msj.id;
 
 				if(msj.tecla.compare(TECLA_ARRIBA_PRESIONADA) == 0){
 					teclas.at(indice).teclaArriba = true;
@@ -233,11 +235,11 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		/*Para pruebas: Para ver lo que pasa en el juego del servidor. No descomentar.*/
 		//(*pos).second->render(camara->getPosicionX(), camara->getPosicionY());
 		//SDL_RenderPresent( vista->obtenerRender());
-		/*Hasta aca*/
+		/*Hasta aca. No descomentar*/
 	}
 }
 
-void ControlServidor::actualizarVistaServidor()
+void ControlServidor::actualizarVistaServidor(Camara *camara)
 {
 	//Aca le envio a todos los clientes la posicion y sprite de todos los otros clientes.
 	std::map<int, Personaje*>::iterator pos;
@@ -246,6 +248,9 @@ void ControlServidor::actualizarVistaServidor()
 		std::string mensaje = (*pos).second->obtenerMensajeEstado();
 		enviarATodos(mensaje);
 	}
+
+	std::string mensajeCamara = MENSAJE_CAMARA + camara->obtenerMensajeEstado() + PADDING + PADDING;
+	enviarATodos(mensajeCamara);
 
 }
 
@@ -291,7 +296,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 		moverPersonajesServidor(tiempoDeJuego, vista, camara);
 
-		actualizarVistaServidor();
+		actualizarVistaServidor(camara);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
 		tiempoFin = SDL_GetTicks();
