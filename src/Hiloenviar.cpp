@@ -88,39 +88,33 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 	bool salir = false;
 	while(salir == false){
 		int result = 1;
-			//while (result>0){
+		if(parametros->pack.estaVacia() != true)
+		{
+			parametros->bufferQ = parametros->pack.obtenerElementoDelaCola();
 
-			if(parametros->pack.estaVacia() != true)
-			{
-				cout << "No esta vacia. Todo ok." << endl;
-				parametros->bufferQ = parametros->pack.obtenerElementoDelaCola();
+			cout<<"tamanio buffer  :"<<sizeof(parametros->bufferQ)<<endl;
+			cout<<strlen(parametros->bufferQ)<<endl;
 
-				cout<<"tamanio buffer  :"<<sizeof(parametros->bufferQ)<<endl;
-				cout<<strlen(parametros->bufferQ)<<endl;
-
-				result = parametros->server->enviar(parametros->skt,parametros->bufferQ,strlen(parametros->bufferQ));
-				//result = 20;
+			result = parametros->server->enviar(parametros->skt,parametros->bufferQ,strlen(parametros->bufferQ));
+			//result = 20;
 
 
-				if (result>0){
-					cout<<"server envio: "<<parametros->bufferQ<<"envio n° de datos:"<<result<<endl;
-					parametros->pack.eliminarElPrimetoDeLaCola();
-					cout << "Elimine bien." << endl;
-				}
-
-				if (result==0){
-					printf("El cliente se desconecto. \n");
-					salir = true;
-				}
-
-				if (result==-1){
-					printf("El cliente se desconecto. \n");
-					salir = true;
-				}
-				parametros->bufferQ = "";
-				cout << "Voy a salir bien." << endl;
+			if (result>0){
+				cout<<"server envio: "<<parametros->bufferQ<<" envio n° de datos:"<<result<<endl;
+				parametros->pack.eliminarElPrimetoDeLaCola();
 			}
-			//}
+
+			if (result==0){
+				printf("El cliente se desconecto. \n");
+				salir = true;
+			}
+
+			if (result==-1){
+				printf("El cliente se desconecto. \n");
+				salir = true;
+			}
+			parametros->bufferQ = "";
+		}
 	}
 
 	printf("Se termino el thread hilo Enviar. \n");
