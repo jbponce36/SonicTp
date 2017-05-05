@@ -78,7 +78,15 @@ ConexCliente::~ConexCliente()
         this->getLog()->addLogMessage("[CONECTAR] Terminado",2);
         return conectado;
     }
+int ConexCliente::setsocket(){
+	struct timeval tv;
 
+	tv.tv_sec = 5;
+
+	 int tempo =  setsockopt(this->fd,SOL_SOCKET,SO_RCVTIMEO,(char *)&tv,sizeof(struct timeval));
+	 return tempo;
+
+}
 
 int ConexCliente::enviar(char *buf, int size)
 {

@@ -52,6 +52,7 @@ void JuegoCliente::iniciarHilos()
 	hiloEnviar->parametros.cliente = cliente;
 	hiloEnviar->IniciarHilo();
 
+
 	hiloJuego = new Hilo();
 
 	hiloJuego->Create((void *)iniciarJuegoCliente, (void *)this);

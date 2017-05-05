@@ -7,6 +7,7 @@
 
 #include "HiloRecibirCliente.h"
 #include <pthread.h>
+#include  "AdministradorLatidoCliente.h"
 
 HiloRecibirCliente::HiloRecibirCliente() : hilo(NULL) {
 		parametros.vcIniciarJuego = NULL;
@@ -38,8 +39,11 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 		char buffer[100];
 
 		int result = 1;
+
+
 		//parametros->cliente->recibir(buffer,strlen(buffer));
 		cout<<"[HILO RECIBIR CLIENTE] [CLIENTE RECIBIR] "<<endl;
+		AdministradorLatidoCliente::actualizarTiempoLatido();
 
 		while (result>0){
 			    //memset(buffer, '\0', sizeof(buffer));
@@ -47,8 +51,18 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				result = parametros->cliente->recibir(buffer,LARGO_MENSAJE_POSICION_SERVIDOR);
 				//Cuando haya separadores, cambiarlo otra vez por sizeof(buffer) a esto--^
 
+				//Cuando recibe estoy vivo actualiza el tiempo de latido
+
 				if (result>0){
 					cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
+
+
+					if (strcmp(buffer, "ESTOY VIVO") == 0){
+						printf("RECIBI estoy Vivo \n");
+						AdministradorLatidoCliente::actualizarTiempoLatido();
+					}
+
+
 
 					if (strcmp(buffer, "Conexion rechazada") == 0){
 					    printf("****** La conexion fue rechaza por el servidor ******* \n");

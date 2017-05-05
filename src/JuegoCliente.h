@@ -20,6 +20,7 @@
 #include "HiloRecibirCliente.h"
 #include "VariableCondicional.h"
 
+
 #define CONEXION_RECHAZADA 1
 
 class JuegoCliente {

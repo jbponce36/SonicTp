@@ -12,6 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include "JuegoServidor.h"
+#include "HilolatidoSer.h"
 
 using namespace std;
 
@@ -61,6 +62,7 @@ int main(int argc, char *argv[]) {
 
 	vector<Hilorecibir*> hrRecibir;
 	vector<Hiloenviar*> hrEnviar;
+	vector<HilolatidoSer*> hrLatidos;
 
 
 	int id = 1;
@@ -87,7 +89,16 @@ int main(int argc, char *argv[]) {
 			henviar->parametros.server = server;
 			henviar->parametros.skt = skt;
 
+
+			HilolatidoSer *hilolatidoS = new HilolatidoSer();
+			hilolatidoS->parametros.server = server;
+			hilolatidoS->parametros.skt = skt;
+			hilolatidoS->IniciarHilo();
+			hrLatidos.push_back(hilolatidoS);
+
+
 			//Le mando un ID a cada cliente a medida que se conectan y la cantidad maxima de jugadores
+
 			char buffer[2] = "";
 			string temp = oss.str();
 			strcpy(buffer, temp.c_str());
@@ -158,6 +169,11 @@ int main(int argc, char *argv[]) {
 
 	vector<Hilorecibir*>::iterator posrecibir;
 	vector<Hiloenviar*>::iterator posenviar;
+	vector<HilolatidoSer*>::iterator poslatido;
+
+	for(poslatido = hrLatidos.begin(); poslatido != hrLatidos.end(); poslatido++){
+			(*poslatido)->terminarHilo();
+	}
 
 	/*for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
 		(*posrecibir)->gethilo().Join();

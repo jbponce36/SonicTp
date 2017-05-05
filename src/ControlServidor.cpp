@@ -290,6 +290,8 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	while( !juegoTerminado ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
+
+
 		administrarTeclasServidor();
 
 		moverPersonajesServidor(tiempoDeJuego, vista, camara);

@@ -39,6 +39,7 @@ public:
 	int recibir(char *buf, int size);
 	int enviarPosicion(Posicion *posicion, int size);
     int enviar(char *buf, int size);
+    int setsocket();
     int dibujarMenu();
     int cerrar();
     string intToString(int number);
