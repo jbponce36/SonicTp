@@ -60,6 +60,24 @@ bool ConexServidor::enlazar(int puerto){
   return true;
 }
 
+int ConexServidor::setsocket(){
+  struct timeval tv;
+  tv.tv_sec = 5;
+  tv.tv_usec = 0;
+
+ setsockopt(this->sock_recep,SOL_SOCKET,SO_RCVTIMEO,(char *)&tv,sizeof(struct timeval));
+
+
+}
+
+list<int> ConexServidor::getListaClientes(){
+	this->listaClientes;
+}
+
+void ConexServidor::setListaClientes(list<int> listacliente){
+	this->listaClientes = listacliente;
+}
+
 bool ConexServidor::finalizar(){
 
 	return this->finalizarConexion;
@@ -120,6 +138,8 @@ int ConexServidor::aceptarcliente()
 			//printf("Cliente aceptado \n");
 			printf("Cantidad de clientes conectados:%d \n", this->cantclientes);
 			this->listaClientes.push_back(fdCliente);
+
+			this->setListaClientes(listaClientes);
 		}
     }
 
@@ -155,6 +175,8 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 	if (bytes <= 0){
 		this->log->addLogMessage("[RECIBIR] Error",2);
 		this->cantclientes = this->cantclientes -1;
+		this->listaClientes.remove(fdCliente);
+		this->setListaClientes(listaClientes);
 		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
 
 
@@ -212,6 +234,45 @@ int ConexServidor::recibirPosicion(int skt, Posicion *posicion, int size)
 	this->log->addLogMessage("[RECIBIR] Terminado",2);
 	pthread_mutex_unlock(&mutex);
 	return bytes;
+}
+
+
+int ConexServidor::enviarAsincronico(int socket, char *buf, int size){
+	this->log->setModulo("[CONEX SERVIDOR]");
+	this->log->addLogMessage("[ENVIAR] Iniciado",2);
+	int enviado = 0;
+	int envioParcial = 0;
+	bool socketValido = true;
+	while(enviado < size && socketValido)
+	{
+		envioParcial = send(socket,buf, size, MSG_DONTWAIT);
+		if(envioParcial == 0){
+		socketValido = false;
+		//this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el"+toString(),1);
+		cout<<"[CONEX SERVIDOR][ENVIAR] No se pudo enviar"<<endl;
+		this->log->addLogMessage("[ENVIAR] Error, no se pudo enviar",2);
+		//return status;
+		}
+		else if (envioParcial < 0){
+
+			socketValido = false;
+		}
+
+		else{
+
+			enviado += envioParcial;
+		}
+		//this->log->addLogMessage("[ENVIAR] Terminado",2);
+		cout<<"[ENVIAR] Terminado"<<endl;
+		//return status;
+		}
+		if (socketValido == false)
+		{
+			return envioParcial;
+		}
+		else {
+			return enviado;
+	}
 }
 
 

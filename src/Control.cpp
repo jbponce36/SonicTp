@@ -45,6 +45,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
+
 		administrarTeclas(&controlador, sonic, hiloEnviar);
 		moverOtrosSonics(sonic, hiloRecibir, vista);
 		moverPersonaje(tiempoDeJuego, vista, sonic, camara);

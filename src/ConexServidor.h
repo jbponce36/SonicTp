@@ -33,6 +33,8 @@ public:
 	int recibir(int skt, char *buf, int size);
 	int recibirPosicion(int skt, Posicion *posicion, int size);
 	int enviar(int socket, char *buf, int size);
+	int enviarAsincronico(int socket, char *buf, int size);
+	int setsocket();
    // bool ErroresServidor(int puerto); // agrupa crear, enlazar y escuchar
 	std::string cargarNombreArchivo();
     int getPuerto();
@@ -59,6 +61,9 @@ public:
 
     int fdCliente;
 
+    list<int> getListaClientes();
+    void setListaClientes(list<int>);
+
 private:
 	int sock_recep;
 	//ConexCliente cliente; // luego va a ser una lista
@@ -72,6 +77,7 @@ private:
 	bool partidaComenzada;
 	pthread_mutex_t mutex;
 	Logger *log;
+
 	list<int> listaClientes;
 
 

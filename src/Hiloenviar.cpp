@@ -119,7 +119,7 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 			//}
 	}
 
-	printf("Se termino el thread hilo Eviar. \n");
+	printf("Se termino el thread hilo Enviar. \n");
 }
 
 void Hiloenviar::enviarDato(char* dato){
