@@ -160,7 +160,10 @@ void ConexServidor::setCantclientes(int CantClientes)
 	this->cantclientes = CantClientes;
 }
 
-
+int ConexServidor::getCantMaximaClientes()
+{
+	return this->cantMaximaClientes;
+}
 
 int ConexServidor::recibir(int skt, char *buf, int size)
 {
@@ -302,7 +305,7 @@ int ConexServidor::enviar(int socket, char *buf, int size){
 			enviado += envioParcial;
 		}
 		//this->log->addLogMessage("[ENVIAR] Terminado",2);
-		cout<<"[ENVIAR] Terminado"<<endl;
+		//cout<<"[ENVIAR] Terminado"<<endl;
 		//return status;
 		}
 		if (socketValido == false)
@@ -384,5 +387,17 @@ void ConexServidor::comenzarPartida(std::vector<Hiloenviar*> hrEnviar)
 
 	    }
 	    */
+	pthread_mutex_unlock(&mutex);
+}
+
+void ConexServidor::comenzarPartida(Hiloenviar* hilo)
+{
+	//Le manda el mensaje de inicio de partida a un solo hilo.
+	pthread_mutex_lock(&mutex);
+	printf("Reconexion de jugador iniciada.\n");
+	char* mensaje = "[INICIAR JUEGO]";
+
+	hilo->enviarDato(mensaje);
+
 	pthread_mutex_unlock(&mutex);
 }

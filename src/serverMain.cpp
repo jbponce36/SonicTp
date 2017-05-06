@@ -105,9 +105,6 @@ int main(int argc, char *argv[]) {
 			cout << "Server envio ID+maxConexiones: " << buffer << endl;
 			id++;
 
-	//Idea: estaria bueno un generador de ID que sepa cuales son los id libres.
-	//Sino al desconectarse clientes quedan mal los ids.
-
 			henviar->enviarDato(buffer);
 			henviar->iniciarHiloQueue();
 			hrEnviar.push_back(henviar);
@@ -131,8 +128,11 @@ int main(int argc, char *argv[]) {
 		  cout << "Error on accept"<<endl;
 		}
 		else {
+			juego->reconectar(skt);
+			/*id = juego->obtenerIdLibre();
 			ostringstream oss;
 			oss<< id << maxConexiones;
+
 
 			Hilorecibir *hrecibir = new Hilorecibir();
 			hrecibir->parametros.server = server;
@@ -151,16 +151,9 @@ int main(int argc, char *argv[]) {
 			strcpy(buffer, temp.c_str());
 			cout << "Server envio ID+maxConexiones: " << buffer << endl;
 
-
-	//Idea: estaria bueno un generador de ID que sepa cuales son los id libres.
-	//Sino al desconectarse clientes quedan mal los ids.
-
 			henviar->enviarDato(buffer);
 			henviar->iniciarHiloQueue();
-			hrEnviar.push_back(henviar);
-
-			juego->agregarJugador(id);
-			id++;
+			hrEnviar.push_back(henviar);*/
 
 		}
     }
@@ -171,11 +164,11 @@ int main(int argc, char *argv[]) {
 	vector<Hiloenviar*>::iterator posenviar;
 	vector<HilolatidoSer*>::iterator poslatido;
 
-	for(poslatido = hrLatidos.begin(); poslatido != hrLatidos.end(); poslatido++){
+	/*for(poslatido = hrLatidos.begin(); poslatido != hrLatidos.end(); poslatido++){
 			(*poslatido)->terminarHilo();
 	}
 
-	/*for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
+	for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
 		(*posrecibir)->gethilo().Join();
 	}
 	for(posenviar = hrEnviar.begin(); posenviar!=hrEnviar.end(); posenviar++){

@@ -54,7 +54,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				//Cuando recibe estoy vivo actualiza el tiempo de latido
 
 				if (result>0){
-					cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
+					//cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
 
 
 					if (strcmp(buffer, "ESTOY VIVO") == 0){

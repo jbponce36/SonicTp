@@ -42,10 +42,12 @@ public:
     int cerrar();
     int getCantclientes();
     void setCantclientes(int);
+    int getCantMaximaClientes();
     bool finalizar();
 
     bool noSeConectaronTodos();
     void comenzarPartida(std::vector<Hiloenviar*> hrEnviar);
+    void comenzarPartida(Hiloenviar* hilo);
 
 	bool getFinalizarConexion();
 	void setFinalizarConexion(bool);

@@ -86,6 +86,18 @@ void ControlServidor::administrarTeclasServidor()
 				ultimasPosiciones.at(indice).ultimaPosicionX = msj.posX;
 				ultimasPosiciones.at(indice).ultimaPosicionY = msj.posY;
 			}
+			else if (mensaje.substr(0,3) == MENSAJE_DESCONEXION_CLIENTE)
+			{
+				//MENSAJE DE DESCONEXION DE UN JUGADOR
+				int idDesconectado = atoi(mensaje.substr(3,1).c_str());
+
+				sonics->at(idDesconectado)->congelar();
+
+				//Detengo la ejecucion de los hilos
+				(*pos)->parametros.continuar = false;
+				hilosEnviar->at(idDesconectado - 1)->parametros.continuar = false;
+
+			}
 			else
 			{
 				//No es un mensaje de tecla apretada. Ver que otros mensajes puede recibir.
@@ -268,10 +280,15 @@ void ControlServidor::enviarATodos(std::string mensaje)
 	char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
 	strcpy(buffer, mensaje.c_str());
 
+	int id = 1;
 	std::vector<Hiloenviar*>::iterator pos;
 	for(pos = hilosEnviar->begin();pos != hilosEnviar->end();pos++)
 	{
-		(*pos)->enviarDato(buffer);
+		if(!sonics->at(id)->estaCongelado())
+		{
+			(*pos)->enviarDato(buffer);
+		}
+		id++;
 	}
 
 }

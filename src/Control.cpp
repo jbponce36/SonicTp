@@ -92,7 +92,7 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	while ((mensaje) != ("Sin elementos"))
 	{
-		cout << "Control mensaje: " << mensaje << endl;
+		//cout << "Control mensaje: " << mensaje << endl;
 		if(mensaje.substr(1,1) == "x")
 		{
 			mensajePosicion msj;
@@ -128,6 +128,7 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 		else
 		{
 			//Otros mensajes
+			cout << mensaje << endl;
 		}
 
 
@@ -147,7 +148,7 @@ void Control::parsearMensajeCamara(int &xDest, int &yDest, std::string mensaje)
 	xDest = atoi(posX.c_str());
 	yDest = atoi(posY.c_str());
 
-	cout << "Camara parseo: x: " << xDest << " y: " << yDest << endl;
+	//cout << "Camara parseo: x: " << xDest << " y: " << yDest << endl;
 }
 
 

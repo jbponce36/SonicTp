@@ -173,7 +173,7 @@ int ConexCliente::enviar(char *buf, int size)
     		return bytes;
     	}
 
-    	cout<<"[CONEXCLIENTE] [RECIBIR] Se recibio correctamente"<<endl;
+    	//cout<<"[CONEXCLIENTE] [RECIBIR] Se recibio correctamente"<<endl;
     	this->log->addLogMessage("[RECIBIR] Terminado",2);
     	return bytes;
     }

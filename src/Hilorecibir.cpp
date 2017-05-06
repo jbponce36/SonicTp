@@ -77,6 +77,8 @@ void *Hilorecibir::serverRecibir(void *args){
 	    cout << parametros->colaDeMensajes.obtenerElementoDelaCola() << endl;
 	    parametros->colaDeMensajes.eliminarElPrimetoDeLaCola();
 	  }*/
+
+	//int status = close(parametros->skt);
 }
 
 void Hilorecibir::Join()
@@ -113,6 +115,11 @@ std::string Hilorecibir::obtenerPosicionDeLaCola()
 		return str;
 	}
 	return "Sin elementos";
+}
+
+bool Hilorecibir::continua()
+{
+	return parametros.continuar;
 }
 
 }

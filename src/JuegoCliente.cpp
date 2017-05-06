@@ -60,9 +60,22 @@ void JuegoCliente::iniciarHilos()
 	vista->mostrarEsperarJugadores(log, juegoIniciado);
 }
 
+std::string intToString(int number)
+{
+	ostringstream oss;
+	oss<< number;
+	return oss.str();
+}
+
 void JuegoCliente::terminarHilos()
 {
 	hiloJuego->Join();
+
+	std::string mensaje = MENSAJE_DESCONEXION_CLIENTE + intToString(sonic->getId());
+	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
+	strcpy(buffer, mensaje.c_str());
+	cliente->enviar(buffer, strlen(buffer));
+
 	//hiloRecibir->Join();
 	//hiloEnviar->Join();
 }

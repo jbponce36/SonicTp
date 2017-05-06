@@ -35,9 +35,10 @@ void *HilolatidoSer::serverEnviarRecibir(void *args){
 	bool salir = false;
 	while (!salir){
 
-		cout<<" Voy a mandar estoy vivo: "<<endl;
-		int status = parametros->server->enviarAsincronico(parametros->skt,buffer,strlen(buffer));
+		//cout<<" Voy a mandar estoy vivo: "<<endl;
+		//int status = parametros->server->enviarAsincronico(parametros->skt,buffer,strlen(buffer));
 
+		int status = 1;
 		if(status <= 0){
 			cout<<" Hilo latido envio error: "<<buffer<<endl;
 		    salir = true;
