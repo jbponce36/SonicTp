@@ -9,6 +9,7 @@
 #define ADMINISTRADORLATIDOCLIENTE_H_
 
 #include <time.h>
+#include <stdio.h>
 
 namespace std {
 
@@ -23,6 +24,10 @@ public:
 
 	AdministradorLatidoCliente();
 	virtual ~AdministradorLatidoCliente();
+
+
+
+
 };
 
 } /* namespace std */

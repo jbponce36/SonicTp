@@ -9,6 +9,7 @@
 #define HILOLATIDOSER_H_
 #include "Hilo.h"
 #include "ConexServidor.h"
+#include "Paquete.h"
 
 namespace std {
 
@@ -21,12 +22,21 @@ public:
 	void IniciarHilo();
 	void terminarHilo();
 	static void * serverEnviarRecibir(void *args);
+
 	struct Serparametros{
 			ConexServidor *server;
 			int skt;
-
+			Paquete pack;
+			char *bufferQ;
+			bool continuar;
 	};
 	Serparametros parametros;
+	Hilo gethilo();
+
+	void setH(Hilo);
+	void enviarDato(char* dato);
+private:
+		Hilo h;
 };
 
 } /* namespace std */

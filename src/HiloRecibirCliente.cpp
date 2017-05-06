@@ -32,21 +32,21 @@ void HiloRecibirCliente::IniciarHilo(){
 
 }
 void *HiloRecibirCliente::clienteRecibir(void *args){
-	printf("HiloRecibirCliente::clienteRecibir : Iniciando hilo \n");
-
 	Serparametros *parametros = (Serparametros*) args;
+
+
+	//parametros->cliente->recibir(buffer,strlen(buffer));
+	cout<<"[HILO RECIBIR CLIENTE] [CLIENTE RECIBIR] "<<endl;
+	AdministradorLatidoCliente::actualizarTiempoLatido();
+
+
 	while(parametros->continuar){
 		char buffer[100];
-
 		int result = 1;
 
 
-		//parametros->cliente->recibir(buffer,strlen(buffer));
-		cout<<"[HILO RECIBIR CLIENTE] [CLIENTE RECIBIR] "<<endl;
-		AdministradorLatidoCliente::actualizarTiempoLatido();
-
 		while (result>0){
-			    //memset(buffer, '\0', sizeof(buffer));
+			    memset(buffer, '\0', sizeof(buffer));
 
 				result = parametros->cliente->recibir(buffer,LARGO_MENSAJE_POSICION_SERVIDOR);
 				//Cuando haya separadores, cambiarlo otra vez por sizeof(buffer) a esto--^
@@ -57,7 +57,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					//cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
 
 
-					if (strcmp(buffer, "ESTOY VIVO") == 0){
+					if (strcmp(buffer, "ESTOYVIVO") == 0){
 						printf("RECIBI estoy Vivo \n");
 						AdministradorLatidoCliente::actualizarTiempoLatido();
 					}
@@ -73,6 +73,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				         //parametros->colaPaquete.agregar("[INICIAR JUEGO]");
 				         if(parametros->vcIniciarJuego != NULL)
 				         {
+				        	 cout << "Ya notifique" << endl;
 				        	 parametros->vcIniciarJuego->notificarTodos();
 				         }
 					}
@@ -95,7 +96,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 	 }
 
 	printf("Aca se termina el thread HiloRecibir Cliente. \n");
-	//Aca podria terminar el hilo Juego
+
 }
 
 void HiloRecibirCliente::Join()

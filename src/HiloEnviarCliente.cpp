@@ -31,12 +31,12 @@ void *HiloEnviarCliente::clienteEnviar(void *args){
 			int result = 1;
 				while (result>0){
 					//chequear el ultimo latido, si paso del tiempo salir
-					if (AdministradorLatidoCliente::pasoDemasiadoTiempoDelUltimoLatido()){
+					/*if (AdministradorLatidoCliente::pasoDemasiadoTiempoDelUltimoLatido()){
 						result = 0;
 						salir = true;
 						printf("Paso demasiado tiempo desde el ultimo latido, el cliente se desconectara \n");
 					}
-
+                   */
 					if(parametros->buffer != "")
 					{
 

@@ -248,7 +248,9 @@ int ConexServidor::enviarAsincronico(int socket, char *buf, int size){
 	bool socketValido = true;
 	while(enviado < size && socketValido)
 	{
+		pthread_mutex_lock(&mutex);
 		envioParcial = send(socket,buf, size, MSG_DONTWAIT);
+		pthread_mutex_unlock(&mutex);
 		if(envioParcial == 0){
 		socketValido = false;
 		//this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el"+toString(),1);
@@ -287,7 +289,9 @@ int ConexServidor::enviar(int socket, char *buf, int size){
 	bool socketValido = true;
 	while(enviado < size && socketValido)
 	{
+		pthread_mutex_lock(&mutex);
 		envioParcial = send(socket,buf, size, MSG_NOSIGNAL);
+		pthread_mutex_unlock(&mutex);
 		if(envioParcial == 0){
 		socketValido = false;
 		//this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el"+toString(),1);
@@ -387,17 +391,5 @@ void ConexServidor::comenzarPartida(std::vector<Hiloenviar*> hrEnviar)
 
 	    }
 	    */
-	pthread_mutex_unlock(&mutex);
-}
-
-void ConexServidor::comenzarPartida(Hiloenviar* hilo)
-{
-	//Le manda el mensaje de inicio de partida a un solo hilo.
-	pthread_mutex_lock(&mutex);
-	printf("Reconexion de jugador iniciada.\n");
-	char* mensaje = "[INICIAR JUEGO]";
-
-	hilo->enviarDato(mensaje);
-
 	pthread_mutex_unlock(&mutex);
 }

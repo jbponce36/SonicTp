@@ -8,9 +8,10 @@
 #include "ControlServidor.h"
 
 ControlServidor::ControlServidor(int posicionX, int posicionY, std::map<int, Personaje*> *sonics,
-	std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir, ConexServidor *server, Logger *log)
+	std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
+	std::vector<HilolatidoSer*> *hiloLatidos, ConexServidor *server, Logger *log)
 : posicionInicialX(posicionX), posicionInicialY(posicionY), server(server), log(log),
-  sonics(sonics), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir), teclas()
+  sonics(sonics), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir), hilosLatidos(hiloLatidos), teclas()
 {
 	teclasPresionadas t = {false, false, false, false, false};
 	posSonic ultimasPosiciones = {0, 300};
@@ -96,6 +97,7 @@ void ControlServidor::administrarTeclasServidor()
 				//Detengo la ejecucion de los hilos
 				(*pos)->parametros.continuar = false;
 				hilosEnviar->at(idDesconectado - 1)->parametros.continuar = false;
+				hilosLatidos->at(idDesconectado - 1)->parametros.continuar = false;
 
 			}
 			else

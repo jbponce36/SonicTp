@@ -85,6 +85,7 @@ void Hiloenviar::iniciarHiloQueue(){
 void* Hiloenviar::serverEnviarQueue(void* args){
 
 	SerParametros *parametros = (SerParametros*) args;
+
 	while(parametros->continuar == true){
 		int result = 1;
 		if(parametros->pack.estaVacia() != true)
@@ -95,7 +96,6 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 			//cout<<strlen(parametros->bufferQ)<<endl;
 
 			result = parametros->server->enviar(parametros->skt,parametros->bufferQ,strlen(parametros->bufferQ));
-			//result = 20;
 
 
 			if (result>0){
@@ -112,6 +112,7 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 				printf("El cliente se desconecto. \n");
 				parametros->continuar = false;
 			}
+
 			parametros->bufferQ = "";
 		}
 	}
