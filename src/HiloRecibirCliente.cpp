@@ -34,12 +34,13 @@ void HiloRecibirCliente::IniciarHilo(){
 void *HiloRecibirCliente::clienteRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
 
-
+	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente();
+	alc->IniciarHilo();
 	//parametros->cliente->recibir(buffer,strlen(buffer));
 	cout<<"[HILO RECIBIR CLIENTE] [CLIENTE RECIBIR] "<<endl;
-	AdministradorLatidoCliente::actualizarTiempoLatido();
+	//AdministradorLatidoCliente::actualizarTiempoLatido();
 
-
+	parametros->alc->actualizarTiempoLatido();
 	while(parametros->continuar){
 		char buffer[100];
 		int result = 1;
@@ -55,13 +56,13 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 				if (result>0){
 					cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
+					alc->actualizarTiempoLatido();
 
+					/*if (strcmp(buffer, "ESTOY VIVO") == 0){
+						printf("RECIBI estoy Vivo \n");*/
 
-					if (strcmp(buffer, "ESTOY VIVO") == 0){
-						printf("RECIBI estoy Vivo \n");
-						AdministradorLatidoCliente::actualizarTiempoLatido();
-					}
-
+					parametros->alc->actualizarTiempoLatido();
+					//}
 
 
 					if (strcmp(buffer, "Conexion rechazada") == 0){

@@ -6,7 +6,7 @@
  */
 
 #include "HiloEnviarCliente.h"
-#include "AdministradorLatidoCliente.h";
+
 
 HiloEnviarCliente::HiloEnviarCliente() : continuar(true){
 	// TODO Auto-generated constructor stub
@@ -27,21 +27,23 @@ void HiloEnviarCliente::IniciarHilo(/*struct parametrosEnviar *parametros*/){
 void *HiloEnviarCliente::clienteEnviar(void *args){
 	SerParametros *parametros = (SerParametros*) args;
 	    bool salir = false;
-		while(salir == false){
+
+	    while(salir == false){
 			int result = 1;
 				while (result>0){
+
 					//chequear el ultimo latido, si paso del tiempo salir
-					/*if (AdministradorLatidoCliente::pasoDemasiadoTiempoDelUltimoLatido()){
+					/*if (parametros->alc->pasoDemasiadoTiempoDelUltimoLatido()){
 						result = 0;
 						salir = true;
 						printf("Paso demasiado tiempo desde el ultimo latido, el cliente se desconectara \n");
-					}
-                   */
+					}*/
+
 					if(parametros->buffer != "")
 					{
 
 						result = parametros->cliente->enviar(parametros->buffer,strlen(parametros->buffer) );
-
+						cout<<"::::::::::::::::::::::::::"<<result<<endl;
 						if (result>0){
 							cout<<"server envio: "<<parametros->buffer<<endl;
 						}
@@ -60,10 +62,10 @@ void *HiloEnviarCliente::clienteEnviar(void *args){
 				}
 		}
 
-		if (AdministradorLatidoCliente::pasoDemasiadoTiempoDelUltimoLatido()){
+		/*if (parametros->alc->pasoDemasiadoTiempoDelUltimoLatido()){
 			printf("Se desconectara el cliente por falta de latidos \n");
 			parametros->cliente->cerrar();
-		}
+		}*/
 		//parametros->cliente->cerrar();
 }
 

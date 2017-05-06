@@ -13,6 +13,7 @@
 #include "Paquete.h"
 #include "VariableCondicional.h"
 #include "Definiciones.h"
+#include "AdministradorLatidoCliente.h"
 #include <pthread.h>
 
 class HiloRecibirCliente {
@@ -34,6 +35,7 @@ public:
 		Paquete colaPaquete;
 		bool continuar;
 		VariableCondicional *vcIniciarJuego;
+		AdministradorLatidoCliente *alc;
 	 };
 	Serparametros parametros;
 

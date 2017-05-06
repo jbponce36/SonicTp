@@ -19,6 +19,7 @@
 #include "HiloEnviarCliente.h"
 #include "HiloRecibirCliente.h"
 #include "VariableCondicional.h"
+#include "AdministradorLatidoCliente.h"
 
 
 #define CONEXION_RECHAZADA 1
