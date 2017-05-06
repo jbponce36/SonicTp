@@ -7,10 +7,12 @@
 
 #include "AdministradorLatidoCliente.h"
 #include <stdio.h>
+#include <iostream>
+#include <math.h>
 
 namespace std {
-
-clock_t tiempoUltimoLatido;
+//clock_t tiempoUltimoLatido;
+time_t start_t, end_t;
 
 AdministradorLatidoCliente::AdministradorLatidoCliente() {
 	// TODO Auto-generated constructor stub
@@ -23,20 +25,24 @@ AdministradorLatidoCliente::~AdministradorLatidoCliente() {
 
 void AdministradorLatidoCliente::actualizarTiempoLatido(){
 	printf("Se actualiza el tiempo \n");
-	//AdministradorLatidoCliente::tiempoUltimoLatido = clock();
-	tiempoUltimoLatido = clock();
+
+	time(&end_t);
 }
 
 bool AdministradorLatidoCliente::pasoDemasiadoTiempoDelUltimoLatido(){
-	float tiempoTranscurrido = ( clock () - tiempoUltimoLatido ) /  CLOCKS_PER_SEC;
 
-	//if (tiempoTranscurrido > 5){
-    //  return true;
-	//}
+	double diff_t;
+	time(&start_t);
+	diff_t = difftime(start_t, end_t);
+	diff_t = fabs(diff_t);
+	///printf("Transcurrio : %f \n", diff_t);
 
-	//printf("Tiempo transcurrido %d \n", tiempoTranscurrido);
+	if(diff_t > 6.0){
+		//printf("Me pase de los 5 segundos \n");
+		return true;
+	}
 
-	return false;
+	 return false;
 }
 
 

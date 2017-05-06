@@ -88,7 +88,7 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 	bool salir = false;
 	while(salir == false){
 		int result = 1;
-			//while (result>0){
+		while (result>0){
 
 			if(parametros->pack.estaVacia() != true)
 			{
@@ -120,7 +120,7 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 				parametros->bufferQ = "";
 				cout << "Voy a salir bien." << endl;
 			}
-			//}
+		}
 	}
 
 	printf("Se termino el thread hilo Enviar. \n");

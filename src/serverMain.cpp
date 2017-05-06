@@ -67,6 +67,10 @@ int main(int argc, char *argv[]) {
 
 	int id = 1;
 
+
+
+
+
 	while(server->noSeConectaronTodos()){
 	//while(1){
 		int skt = server->aceptarcliente();
@@ -85,9 +89,11 @@ int main(int argc, char *argv[]) {
 			hrecibir->IniciarHilo();
 			hrRecibir.push_back(hrecibir);
 
+			//comentar
 			Hiloenviar *henviar = new Hiloenviar();
 			henviar->parametros.server = server;
 			henviar->parametros.skt = skt;
+
 
 
 			HilolatidoSer *hilolatidoS = new HilolatidoSer();
@@ -108,6 +114,7 @@ int main(int argc, char *argv[]) {
 	//Idea: estaria bueno un generador de ID que sepa cuales son los id libres.
 	//Sino al desconectarse clientes quedan mal los ids.
 
+			//comentar
 			henviar->enviarDato(buffer);
 			henviar->iniciarHiloQueue();
 			hrEnviar.push_back(henviar);
@@ -145,6 +152,13 @@ int main(int argc, char *argv[]) {
 			henviar->parametros.server = server;
 			henviar->parametros.skt = skt;
 
+
+			HilolatidoSer *hilolatidoS = new HilolatidoSer();
+			hilolatidoS->parametros.server = server;
+			hilolatidoS->parametros.skt = skt;
+			hilolatidoS->IniciarHilo();
+			hrLatidos.push_back(hilolatidoS);
+
 			//Le mando un ID a cada cliente a medida que se conectan y la cantidad maxima de jugadores
 			char buffer[2] = "";
 			string temp = oss.str();
@@ -167,6 +181,8 @@ int main(int argc, char *argv[]) {
 
 	juego->terminarHiloJuego();
 
+
+
 	vector<Hilorecibir*>::iterator posrecibir;
 	vector<Hiloenviar*>::iterator posenviar;
 	vector<HilolatidoSer*>::iterator poslatido;
@@ -184,6 +200,8 @@ int main(int argc, char *argv[]) {
 
 
 	//Cerrar y liberar memoria
+
+	//hilolatidoS->gethilo().Join();
 	server->cerrar();
 
 	/*for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
