@@ -183,7 +183,7 @@ int main(int argc, char *argv[]) {
 	}
 	for(posenviar = hrEnviar.begin(); posenviar!=hrEnviar.end(); posenviar++){
 		(*posenviar)->gethilo().Join();
-     }*/
+     }
 
 
 	//Cerrar y liberar memoria
