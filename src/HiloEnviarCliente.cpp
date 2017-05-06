@@ -6,7 +6,7 @@
  */
 
 #include "HiloEnviarCliente.h"
-
+#include "AdministradorLatidoCliente.h"
 
 HiloEnviarCliente::HiloEnviarCliente() : continuar(true){
 	// TODO Auto-generated constructor stub

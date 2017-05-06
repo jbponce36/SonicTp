@@ -38,6 +38,7 @@ public:
     void Join();
     std::string obtenerElementoDeLaCola();
     std::string obtenerPosicionDeLaCola();
+    bool continua();
 
 
 private:

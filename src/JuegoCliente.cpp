@@ -62,9 +62,22 @@ void JuegoCliente::iniciarHilos()
 	vista->mostrarEsperarJugadores(log, juegoIniciado);
 }
 
+std::string intToString(int number)
+{
+	ostringstream oss;
+	oss<< number;
+	return oss.str();
+}
+
 void JuegoCliente::terminarHilos()
 {
 	hiloJuego->Join();
+
+	std::string mensaje = MENSAJE_DESCONEXION_CLIENTE + intToString(sonic->getId());
+	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
+	strcpy(buffer, mensaje.c_str());
+	cliente->enviar(buffer, strlen(buffer));
+
 	//hiloRecibir->Join();
 	//hiloEnviar->Join();
 }
@@ -73,18 +86,16 @@ int JuegoCliente::inicializarJuegoCliente()
 {
 	//Espera hasta recibir el primer mensaje que debe ser el id.
 	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
-	while (mensaje == "Sin elementos"){
+	while (mensaje.substr(0, 3) != MENSAJE_ID){
 		mensaje = hiloRecibir->obtenerElementoDeLaCola();
+		if (mensaje == "Conexion rechazada")
+		{
+			return CONEXION_RECHAZADA;
+		}
 	}
 
-	if (mensaje == "Conexion rechazada")
-	{
-		return CONEXION_RECHAZADA;
-	}
-
-
-	std::string ident = mensaje.substr(0,1);
-	std::string maxJug = mensaje.substr(1,1);
+	std::string ident = mensaje.substr(3,1);
+	std::string maxJug = mensaje.substr(4,1);
 	int id = atoi(ident.c_str());
 	maxJugadores = atoi(maxJug.c_str());
 

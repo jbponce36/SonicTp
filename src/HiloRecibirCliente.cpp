@@ -55,15 +55,12 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				//Cuando recibe estoy vivo actualiza el tiempo de latido
 
 				if (result>0){
+
 					cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
 					alc->actualizarTiempoLatido();
 
-					/*if (strcmp(buffer, "ESTOY VIVO") == 0){
-						printf("RECIBI estoy Vivo \n");*/
 
 					parametros->alc->actualizarTiempoLatido();
-					//}
-
 
 					if (strcmp(buffer, "Conexion rechazada") == 0){
 					    printf("****** La conexion fue rechaza por el servidor ******* \n");
@@ -74,6 +71,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				         //parametros->colaPaquete.agregar("[INICIAR JUEGO]");
 				         if(parametros->vcIniciarJuego != NULL)
 				         {
+				        	 cout << "Ya notifique" << endl;
 				        	 parametros->vcIniciarJuego->notificarTodos();
 				         }
 					}

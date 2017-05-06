@@ -14,6 +14,7 @@ namespace std {
 HilolatidoSer::HilolatidoSer() {
 	// TODO Auto-generated constructor stub
 	this->salir = false;
+	parametros.continuar = true;
 }
 
 HilolatidoSer::~HilolatidoSer() {
@@ -41,36 +42,30 @@ void *HilolatidoSer::serverEnviarRecibir(void *args){
 	cout<<" Inicio el hilo de latidos del servidor: "<<endl;
 
 	Serparametros *parametros = (Serparametros*) args;
-	char buffer[11] = "ESTOY VIVO";
+	char buffer[10] = "ESTOYVIVO";
 
 
-	 int status = parametros->server->enviarAsincronico(parametros->skt,buffer,strlen(buffer));
+	//int status = parametros->server->enviarAsincronico(parametros->skt,buffer,strlen(buffer));
 
 	bool salir = false;
-	while (!salir){
-
+	while (parametros->continuar){
 		int result = 1;
-
 		while (result>0){
 
-			 int status = parametros->server->enviarAsincronico(parametros->skt,buffer,strlen(buffer));
+			int status = parametros->server->enviarAsincronico(parametros->skt,buffer,strlen(buffer));
 
-			  if (status>0){
+			if (status>0){
+				cout<<"server envio: "<<buffer<< " a " << parametros->skt <<endl;
+			}
 
-				 cout<<"server envio: "<<buffer<< " a " << parametros->skt <<endl;
-
-			  }
-
-			  if(status <= 0){
-
+			if(status <= 0){
 				cout<<" Hilo latido envio error"<<endl;
-				salir = true;
-
+				parametros->continuar = false;
 			}
 
 			sleep(5);
      	}
-  }
+	}
 }
 
 void HilolatidoSer::enviarDato(char* dato){

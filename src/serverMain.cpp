@@ -13,6 +13,7 @@
 #include <fstream>
 #include "JuegoServidor.h"
 #include "HilolatidoSer.h"
+#include "Definiciones.h"
 
 using namespace std;
 
@@ -64,15 +65,9 @@ int main(int argc, char *argv[]) {
 	vector<Hiloenviar*> hrEnviar;
 	vector<HilolatidoSer*> hrLatidos;
 
-
 	int id = 1;
 
-
-
-
-
 	while(server->noSeConectaronTodos()){
-	//while(1){
 		int skt = server->aceptarcliente();
 
 		if(skt <= 0) {
@@ -80,7 +75,7 @@ int main(int argc, char *argv[]) {
 		}
 		else {
 			ostringstream oss;
-			oss<< id << maxConexiones;
+			oss<< MENSAJE_ID <<id << maxConexiones;
 
 			Hilorecibir *hrecibir = new Hilorecibir();
 			hrecibir->parametros.server = server;
@@ -89,7 +84,6 @@ int main(int argc, char *argv[]) {
 			hrecibir->IniciarHilo();
 			hrRecibir.push_back(hrecibir);
 
-			//comentar
 			Hiloenviar *henviar = new Hiloenviar();
 			henviar->parametros.server = server;
 			henviar->parametros.skt = skt;
@@ -104,30 +98,27 @@ int main(int argc, char *argv[]) {
 
 
 			//Le mando un ID a cada cliente a medida que se conectan y la cantidad maxima de jugadores
-
-			char buffer[2] = "";
+			char buffer[5] = "";
 			string temp = oss.str();
 			strcpy(buffer, temp.c_str());
 			cout << "Server envio ID+maxConexiones: " << buffer << endl;
 			id++;
 
-	//Idea: estaria bueno un generador de ID que sepa cuales son los id libres.
-	//Sino al desconectarse clientes quedan mal los ids.
-
-			//comentar
 			henviar->enviarDato(buffer);
 			henviar->iniciarHiloQueue();
 			hrEnviar.push_back(henviar);
+
+			//hilolatidoS->IniciarHilo();
 
 		}
     }
 
 	//Empieza la partida
 	printf("Empieza la partida \n");
-	sleep(1); //Le da tiempo al ultimo jugador en conectarse a inicializar su juego.
+	sleep(2); //Le da tiempo al ultimo jugador en conectarse a inicializar su juego.
 	server->comenzarPartida(hrEnviar);
 
-	JuegoServidor *juego = new JuegoServidor(server, hrEnviar, hrRecibir, log);
+	JuegoServidor *juego = new JuegoServidor(server, hrEnviar, hrRecibir, hrLatidos, log);
 	juego->iniciarHiloJuego();
 
 	while(!server->finalizar()){
@@ -138,8 +129,11 @@ int main(int argc, char *argv[]) {
 		  cout << "Error on accept"<<endl;
 		}
 		else {
+			juego->reconectar(skt);
+			/*id = juego->obtenerIdLibre();
 			ostringstream oss;
 			oss<< id << maxConexiones;
+
 
 			Hilorecibir *hrecibir = new Hilorecibir();
 			hrecibir->parametros.server = server;
@@ -165,16 +159,9 @@ int main(int argc, char *argv[]) {
 			strcpy(buffer, temp.c_str());
 			cout << "Server envio ID+maxConexiones: " << buffer << endl;
 
-
-	//Idea: estaria bueno un generador de ID que sepa cuales son los id libres.
-	//Sino al desconectarse clientes quedan mal los ids.
-
 			henviar->enviarDato(buffer);
 			henviar->iniciarHiloQueue();
-			hrEnviar.push_back(henviar);
-
-			juego->agregarJugador(id);
-			id++;
+			hrEnviar.push_back(henviar);*/
 
 		}
     }
@@ -191,7 +178,7 @@ int main(int argc, char *argv[]) {
 			(*poslatido)->terminarHilo();
 	}*/
 
-	/*for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
+	for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
 		(*posrecibir)->gethilo().Join();
 	}
 	for(posenviar = hrEnviar.begin(); posenviar!=hrEnviar.end(); posenviar++){

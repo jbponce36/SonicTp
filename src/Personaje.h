@@ -23,6 +23,7 @@ class Personaje
 	private:
 
 		Textura *texturaSonic;
+		Textura *texturaCongelado;
 
 		int id;
 		int personajeAncho;
@@ -40,6 +41,7 @@ class Personaje
 		Animacion animacionCaminarIzq;
 		Animacion animacionCorrerIzq;
 		Animacion animacionSaltarIzq;
+		Animacion animacionCongelado;
 
 		Animacion *animacionActual;
 
@@ -48,6 +50,7 @@ class Personaje
 		bool saltando;
 		bool corriendo;
 		bool estaQuieto;
+		bool congelado;
 
 		Logger *log;
 
@@ -87,8 +90,11 @@ class Personaje
 		void irIzquierda();
 		void irDerecha();
 		void parar();
+		void congelar();
+		void descongelar();
 
 		bool bloqueaCamara(SDL_Rect *limites);
+		bool estaCongelado();
 
 		void enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje);
 		void enviarPosicionServer(HiloEnviarCliente *hiloEnviar, Posicion *pos);

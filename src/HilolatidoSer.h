@@ -28,7 +28,7 @@ public:
 			int skt;
 			Paquete pack;
 			char *bufferQ;
-
+			bool continuar;
 	};
 	Serparametros parametros;
 	Hilo gethilo();

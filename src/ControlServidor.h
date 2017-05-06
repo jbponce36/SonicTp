@@ -14,6 +14,7 @@
 #include "Logger.h"
 #include "Hiloenviar.h"
 #include "Hilorecibir.h"
+#include "HilolatidoSer.h"
 #include "Definiciones.h"
 #include <string>
 #include <vector>
@@ -37,6 +38,7 @@ private:
 	std::map<int, Personaje*> *sonics;
 	std::vector<Hiloenviar*> *hilosEnviar;
 	std::vector<Hilorecibir*> *hilosRecibir;
+	std::vector<HilolatidoSer*> *hilosLatidos;
 
 	typedef struct posSonic{
 		int ultimaPosicionX;
@@ -57,7 +59,8 @@ private:
 
 public:
 	ControlServidor(int altura, int anchura, std::map<int, Personaje*> *sonics,
-		std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir, ConexServidor *server, Logger *log);
+		std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
+		std::vector<HilolatidoSer*> *hilosLatidos, ConexServidor *server, Logger *log);
 	virtual ~ControlServidor();
 
 	void ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado);

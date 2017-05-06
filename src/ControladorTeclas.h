@@ -28,7 +28,6 @@ public:
 	virtual ~ControladorTeclas();
 	void procesarEvento(SDL_Event &e,Personaje *sonic, HiloEnviarCliente *hiloEnviar);
 	void administrarTeclas(Personaje *sonic);
-	string getFechaActual();
 
 private:
 };

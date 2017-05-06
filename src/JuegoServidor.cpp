@@ -8,9 +8,10 @@
 #include "JuegoServidor.h"
 
 JuegoServidor::JuegoServidor(ConexServidor *server,
-	std::vector<Hiloenviar*> hiloEnviar, std::vector<Hilorecibir*> hiloRecibir, Logger *log)
+	std::vector<Hiloenviar*> hiloEnviar, std::vector<Hilorecibir*> hiloRecibir,
+	std::vector<HilolatidoSer*> hilosLatidos, Logger *log)
 : vista(NULL), control(NULL),server(server), log(log),
-  hiloJuego(NULL), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir),
+  hiloJuego(NULL), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir), hilosLatidos(hilosLatidos),
   cantJugadores(server->getCantclientes()), sonics(), juegoTerminado(false), velocidad(0),
   altoEscenario(0){
 	//Vista, sonic y control se setean desde el thread
@@ -40,7 +41,7 @@ void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
 		sonics[id] = sonic;
 	}
 
-	control = new ControlServidor(0, 0, &sonics, &hilosEnviar, &hilosRecibir, server,log);
+	control = new ControlServidor(0, 0, &sonics, &hilosEnviar, &hilosRecibir, &hilosLatidos, server,log);
 }
 
 void JuegoServidor::iniciarJuegoControlServidor()
@@ -89,8 +90,9 @@ void JuegoServidor::terminarHiloJuego()
 
 void JuegoServidor::agregarJugador(int id)
 {
-	sonics[id] = new Personaje(id, velocidad, vista->obtenerRender(), altoEscenario, log);
-	control->agregarSonic(id);
+	//No usar.
+	//sonics[id] = new Personaje(id, velocidad, vista->obtenerRender(), altoEscenario, log);
+	//control->agregarSonic(id);
 }
 
 void JuegoServidor::enviarATodosLosClientes(std::string mensaje)
@@ -98,3 +100,68 @@ void JuegoServidor::enviarATodosLosClientes(std::string mensaje)
 	control->enviarATodos(mensaje);
 }
 
+
+
+int JuegoServidor::obtenerIdLibre()
+{
+	std::map<int ,Personaje*>::iterator pos;
+	for(pos = sonics.begin();pos != sonics.end();pos++){
+		if((*pos).second->estaCongelado())
+		{
+			return (*pos).first; //Devuelve el id de algun sonic congelado.
+		}
+	}
+	return 0;
+}
+
+void JuegoServidor::reconectar(int sock)
+{
+	int idLibre = obtenerIdLibre();
+	if(idLibre == 0)
+	{
+		cout << "No hay ningun sonic desconectado." << endl;
+		return;
+	}
+
+	Hilorecibir *hrecibir = hilosRecibir.at(idLibre-1);
+	Hiloenviar *henviar = hilosEnviar.at(idLibre-1);
+	HilolatidoSer *hlatidos = hilosLatidos.at(idLibre-1);
+
+	if((hrecibir->continua()) || (henviar->continua()))
+	{
+		cout << "Los hilos enviar/recibir aun no terminaron." << endl;
+		return;
+	}
+
+	hrecibir->parametros.skt = sock;
+	hrecibir->parametros.continuar = true;
+	hrecibir->IniciarHilo();
+
+	henviar->parametros.skt = sock;
+	henviar->parametros.continuar = true;
+
+	hlatidos->parametros.skt = sock;
+	hlatidos->parametros.continuar = true;
+
+
+	//Le mando un ID y la cantidad maxima de jugadores
+	ostringstream oss;
+	oss<< MENSAJE_ID << idLibre << server->getCantMaximaClientes();
+	char buffer[5] = "";
+	string temp = oss.str();
+	strcpy(buffer, temp.c_str());
+	cout << "Server envio ID+maxConexiones: " << buffer << endl;
+
+	henviar->enviarDato(buffer);
+	henviar->iniciarHiloQueue();
+
+	sleep(1);
+	char *inicio = "[INICIAR JUEGO]";
+	henviar->enviarDato(inicio);
+	//server->comenzarPartida(henviar);
+
+	sleep(1);
+	//hlatidos->IniciarHilo();
+
+	sonics.at(idLibre)->descongelar();
+}
