@@ -68,6 +68,7 @@ public:
     int obtenerVelocidadDeScroll();
     void validacionesVentana();
     int mostraMenuInicial(Logger *logger);
+    void mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado);
     void cerrar();
     ~VistaSDL();
     void mostrarEntidades(SDL_Rect *camara, int indexZ);

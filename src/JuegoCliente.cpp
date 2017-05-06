@@ -57,7 +57,7 @@ void JuegoCliente::iniciarHilos()
 
 	hiloJuego->Create((void *)iniciarJuegoCliente, (void *)this);
 
-	//Idea: Hilo vista? Hasta que juegoIniciado sea true? Despues adios
+	vista->mostrarEsperarJugadores(log, juegoIniciado);
 }
 
 void JuegoCliente::terminarHilos()
@@ -121,9 +121,6 @@ void JuegoCliente::inicializarOtrosSonics(int id)
 
 void JuegoCliente::iniciarJuegoControlCliente()
 {
-	//Info: Si tarda mucho va a hacer que la pantalla se ponga en blanco y negro hasta que se conecten todos.
-	//No se como sacarlo por ahora... Pero por ahora sirve.
-
 	cout << "Esperando que se conecten jugadores..." << endl;
 	hiloRecibir->setVariableCondicional(&vcIniciarJuego);
 	vcIniciarJuego.bloquearMutex();

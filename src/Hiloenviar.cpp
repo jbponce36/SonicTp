@@ -85,14 +85,11 @@ void Hiloenviar::iniciarHiloQueue(){
 void* Hiloenviar::serverEnviarQueue(void* args){
 
 	SerParametros *parametros = (SerParametros*) args;
-	bool salir = false;
-	while(salir == false){
-		int result = 1;
-		while (result>0){
-
+		bool salir = false;
+		while(salir == false){
+			int result = 1;
 			if(parametros->pack.estaVacia() != true)
 			{
-				cout << "No esta vacia. Todo ok." << endl;
 				parametros->bufferQ = parametros->pack.obtenerElementoDelaCola();
 
 				cout<<"tamanio buffer  :"<<sizeof(parametros->bufferQ)<<endl;
@@ -103,9 +100,8 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 
 
 				if (result>0){
-					cout<<"server envio: "<<parametros->bufferQ<<"envio n° de datos:"<<result<<endl;
+					cout<<"server envio: "<<parametros->bufferQ<<" envio n° de datos:"<<result<<endl;
 					parametros->pack.eliminarElPrimetoDeLaCola();
-					cout << "Elimine bien." << endl;
 				}
 
 				if (result==0){
@@ -118,10 +114,8 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 					salir = true;
 				}
 				parametros->bufferQ = "";
-				cout << "Voy a salir bien." << endl;
 			}
 		}
-	}
 
 	printf("Se termino el thread hilo Enviar. \n");
 }

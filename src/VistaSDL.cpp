@@ -362,6 +362,43 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 	return seleccion;
 }
 
+void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado){
+	Textura *imagenEspera = new Textura();
 
+	imagenEspera->cargarImagen("images/imagenesMenu/esperar.png", "images/entidaddefault.png",this->renderizador, logger);
+
+	SDL_Rect camara;
+	SDL_Rect imagenMostrar;
+
+	camara.x = 0;
+	camara.y = 0;
+	camara.w = imagenEspera->obtenerAnchoTextura();
+	camara.h = imagenEspera->obtenerAltoTextura();
+
+	imagenMostrar.x = anchoVentana - camara.w;
+	imagenMostrar.y = altoVentana - camara.h;
+	imagenMostrar.w = camara.w;
+	imagenMostrar.h = camara.h;
+
+	imagenEspera->renderizar(&camara,&imagenMostrar);
+	SDL_RenderPresent(this->renderizador);
+
+	bool salir = false;
+	SDL_Event e;
+	while(!juegoIniciado)
+	{
+		//manejar eventos en la cola
+		while( SDL_PollEvent( &e ) != 0 )
+		{
+			if( e.type == SDL_QUIT )
+			{
+				salir = true;
+				//Esto no va a hacer nada ni salir. Por ahora dejemoslo asi.
+				//Sale de este while cuando se conectan todos los jugadores.
+			}
+		}
+	}
+
+}
 
 
