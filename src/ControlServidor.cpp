@@ -97,7 +97,7 @@ void ControlServidor::administrarTeclasServidor()
 				//Detengo la ejecucion de los hilos
 				(*pos)->parametros.continuar = false;
 				hilosEnviar->at(idDesconectado - 1)->parametros.continuar = false;
-				hilosLatidos->at(idDesconectado - 1)->parametros.continuar = false;
+				//hilosLatidos->at(idDesconectado - 1)->parametros.continuar = false;
 
 			}
 			else

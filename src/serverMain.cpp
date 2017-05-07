@@ -90,13 +90,6 @@ int main(int argc, char *argv[]) {
 
 
 
-			/*HilolatidoSer *hilolatidoS = new HilolatidoSer();
-			hilolatidoS->parametros.server = server;
-			hilolatidoS->parametros.skt = skt;
-			hilolatidoS->IniciarHilo();
-			hrLatidos.push_back(hilolatidoS);*/
-
-
 			//Le mando un ID a cada cliente a medida que se conectan y la cantidad maxima de jugadores
 			char buffer[5] = "";
 			string temp = oss.str();
