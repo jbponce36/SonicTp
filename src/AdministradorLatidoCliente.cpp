@@ -68,14 +68,19 @@ AdministradorLatidoCliente *alc = (AdministradorLatidoCliente*)arg;
 			diff_t = fabs(diff_t);
 			//printf("Transcurrio : %f \n", diff_t);
 
-			}while(!(diff_t > 6.0));
+			}while(!(diff_t > 6.0) && (alc->iniciar == true));
 
 	printf("Se desconectara el cliente por falta de latidos \n");
 
     //cout<<alc->getconexcliente()->cerrar()<<endl;
     alc->colaPaquete->agregar("Servidor Desconectado");
 }
-
+bool  AdministradorLatidoCliente::isIniciar(){
+	this->iniciar;
+}
+void AdministradorLatidoCliente::setIniciar(bool ini){
+	this->iniciar = ini;
+}
 Hilo AdministradorLatidoCliente::gethilo(){
 	return this->h;
 }

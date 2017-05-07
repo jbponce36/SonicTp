@@ -37,7 +37,8 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaPaquete);
 	alc->IniciarHilo();
     alc->setconexcliente(alc->parametros.cliente);
-	//parametros->cliente->recibir(buffer,strlen(buffer));
+	alc->setIniciar(false);
+    //parametros->cliente->recibir(buffer,strlen(buffer));
 	cout<<"[HILO RECIBIR CLIENTE] [CLIENTE RECIBIR] "<<endl;
 
 
@@ -68,9 +69,12 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 					if (strcmp(buffer, "[INICIAR JUEGO]") == 0){
 				         printf("****** VOY A INICIAR EL JUEGO ******* \n");
+				         alc->actualizarTiempoLatido();
+                         alc->setIniciar(true);
 				         //parametros->colaPaquete.agregar("[INICIAR JUEGO]");
 				         if(parametros->vcIniciarJuego != NULL)
 				         {
+
 				        	 cout << "Ya notifique" << endl;
 				        	 parametros->vcIniciarJuego->notificarTodos();
 				         }

@@ -20,6 +20,7 @@ private:
 	ConexCliente *cliente;
 	Paquete *colaPaquete;
 	Hilo h;
+	bool iniciar;
 public:
 
 
@@ -43,6 +44,9 @@ public:
 
 	void setH(Hilo);
 
+	bool isIniciar();
+
+	void setIniciar(bool ini);
 };
 
 } /* namespace std */
