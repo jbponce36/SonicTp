@@ -88,11 +88,14 @@ int main(int argc, char *argv[]) {
 			henviar->parametros.server = server;
 			henviar->parametros.skt = skt;
 
-			HilolatidoSer *hilolatidoS = new HilolatidoSer();
+
+
+			/*HilolatidoSer *hilolatidoS = new HilolatidoSer();
 			hilolatidoS->parametros.server = server;
 			hilolatidoS->parametros.skt = skt;
+			hilolatidoS->IniciarHilo();
+			hrLatidos.push_back(hilolatidoS);*/
 
-			hrLatidos.push_back(hilolatidoS);
 
 			//Le mando un ID a cada cliente a medida que se conectan y la cantidad maxima de jugadores
 			char buffer[5] = "";
@@ -144,11 +147,11 @@ int main(int argc, char *argv[]) {
 			henviar->parametros.skt = skt;
 
 
-			HilolatidoSer *hilolatidoS = new HilolatidoSer();
-			hilolatidoS->parametros.server = server;
-			hilolatidoS->parametros.skt = skt;
-			hilolatidoS->IniciarHilo();
-			hrLatidos.push_back(hilolatidoS);
+			//HilolatidoSer *hilolatidoS = new HilolatidoSer();
+			//hilolatidoS->parametros.server = server;
+			//hilolatidoS->parametros.skt = skt;
+			//hilolatidoS->IniciarHilo();
+			//hrLatidos.push_back(hilolatidoS);
 
 			//Le mando un ID a cada cliente a medida que se conectan y la cantidad maxima de jugadores
 			char buffer[2] = "";
@@ -173,14 +176,14 @@ int main(int argc, char *argv[]) {
 
 	/*for(poslatido = hrLatidos.begin(); poslatido != hrLatidos.end(); poslatido++){
 			(*poslatido)->terminarHilo();
-	}
+	}*/
 
 	for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
 		(*posrecibir)->gethilo().Join();
 	}
 	for(posenviar = hrEnviar.begin(); posenviar!=hrEnviar.end(); posenviar++){
 		(*posenviar)->gethilo().Join();
-     }*/
+     }
 
 
 	//Cerrar y liberar memoria

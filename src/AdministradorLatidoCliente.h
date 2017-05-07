@@ -10,24 +10,24 @@
 
 #include <time.h>
 #include <stdio.h>
-
+#include "Hilo.h"
 namespace std {
 
 class AdministradorLatidoCliente {
 private:
-
+	time_t end_t;
 public:
 	//static clock_t tiempoUltimoLatido;
 
-	static void actualizarTiempoLatido();
-	static bool pasoDemasiadoTiempoDelUltimoLatido();
+	void actualizarTiempoLatido();
+	bool pasoDemasiadoTiempoDelUltimoLatido();
 
 	AdministradorLatidoCliente();
-	virtual ~AdministradorLatidoCliente();
-
-
-
-
+	~AdministradorLatidoCliente();
+	void IniciarHilo();
+	static void* iniciarContador(void *ars);
+	time_t getEndT();
+	void setEndT(time_t endT);
 };
 
 } /* namespace std */

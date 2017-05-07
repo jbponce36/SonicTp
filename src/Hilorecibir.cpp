@@ -38,6 +38,7 @@ void Hilorecibir::setH(Hilo hil){
 
 void *Hilorecibir::serverRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
+
 	while(parametros->continuar){
 		char buffer[40];
 		//Posicion *pos = new Posicion();
@@ -51,7 +52,9 @@ void *Hilorecibir::serverRecibir(void *args){
 
 				if (result>0){
 					cout<<"server recibio: "<<buffer <<endl;
+
 					//parametros->colaDeMensajes.agregarPosicion(pos);
+
 					parametros->colaDeMensajes.agregar(buffer);
 
 				}
