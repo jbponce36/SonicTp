@@ -39,14 +39,14 @@ void ControlServidor::administrarTeclasServidor()
 	for(pos = hilosRecibir->begin();pos != hilosRecibir->end();pos++)
 	{
 		mensaje = (*pos)->obtenerElementoDeLaCola();
-		while ((mensaje) != ("Sin elementos"))
+		while (mensaje.compare("Sin elementos") != 0)
 		{
 			//Segun la tecla seteo el vector de teclas
 			cout << "Control recibio: "<< mensaje << endl;
 
 			//Idea: Quizas:
 			//Si la tecla ya estaba seteada significa que hubo un error y hay que corregir la posicion del sonic
-			if (mensaje.substr(1,1) == "T")
+			if (mensaje.substr(1,1).compare("T") == 0)
 			{
 				msj = parsearMensajePosicion(mensaje);
 				indice = msj.id;
@@ -70,24 +70,30 @@ void ControlServidor::administrarTeclasServidor()
 				else if(msj.tecla.compare(TECLA_ARRIBA_LIBERADA) == 0){
 					teclas.at(indice).teclaArriba = false;
 					sonics->at(indice)->dejarDeSaltar();
+					ultimasPosiciones.at(indice).ultimaPosicionX = msj.posX;
+					ultimasPosiciones.at(indice).ultimaPosicionY = msj.posY;
 				}
 				else if(msj.tecla.compare(TECLA_ABAJO_LIBERADA) == 0){
 					teclas.at(indice).teclaAbajo = false;
+					ultimasPosiciones.at(indice).ultimaPosicionX = msj.posX;
+					ultimasPosiciones.at(indice).ultimaPosicionY = msj.posY;
 				}
 				else if(msj.tecla.compare(TECLA_DERECHA_LIBERADA) == 0){
 					teclas.at(indice).teclaDerecha = false;
+					ultimasPosiciones.at(indice).ultimaPosicionX = msj.posX;
+					ultimasPosiciones.at(indice).ultimaPosicionY = msj.posY;
 				}
 				else if(msj.tecla.compare(TECLA_IZQUIERDA_LIBERADA) == 0){
 					teclas.at(indice).teclaIzquierda = false;
+					ultimasPosiciones.at(indice).ultimaPosicionX = msj.posX;
+					ultimasPosiciones.at(indice).ultimaPosicionY = msj.posY;
 				}
 				else if(msj.tecla.compare(TECLA_CORRER_LIBERADA) == 0){
 					teclas.at(indice).teclaCorrer = false;
 				}
 
-				ultimasPosiciones.at(indice).ultimaPosicionX = msj.posX;
-				ultimasPosiciones.at(indice).ultimaPosicionY = msj.posY;
 			}
-			else if (mensaje.substr(0,3) == MENSAJE_DESCONEXION_CLIENTE)
+			else if (mensaje.substr(0,3).compare(MENSAJE_DESCONEXION_CLIENTE) == 0)
 			{
 				//MENSAJE DE DESCONEXION DE UN JUGADOR
 				int idDesconectado = atoi(mensaje.substr(3,1).c_str());
@@ -162,26 +168,30 @@ void ControlServidor::moverSonicsSegunTeclas()
 			sonic->irIzquierda();
 		}
 
-		//Corregir posicion
-		/* Guardar ultima posicion del cliente en Personaje o algo asi
-		if((posXCliente > -1) || (posYCliente >-1))
-		{
-			int dx = 0, dy = 0;
-			int posXServidor = sonic->getPosicionX();
-			int posYServidor = sonic->getPosicionY();
-			if(posXCliente > -1)
-			{
-				dx = posXCliente - posXServidor;
-				dx = dx / 2;
-			}
-			if(posYCliente > -1)
-			{
-				dy = posYCliente - posYServidor;
-				dy = dy / 2;
-			}
-			sonic->posicionarseEn(posXServidor + dx, posYServidor + dy);
-		}*/
 	}
+}
+
+void ControlServidor::corregirPosicionSonic(Personaje* sonic)
+{
+	//Correccion de posiciones solo si esta quieto.
+
+	/* No usar
+	if (sonic->estaParado())
+	{
+		int posXCliente = ultimasPosiciones.at(sonic->getId()).ultimaPosicionX;
+		int posYCliente = ultimasPosiciones.at(sonic->getId()).ultimaPosicionY;
+
+		int dx = 0, dy = 0;
+		int posXServidor = sonic->getPosicionX();
+		int posYServidor = sonic->getPosicionY();
+
+		dx = posXCliente - posXServidor;
+		dx = dx / 2;
+		dy = posYCliente - posYServidor;
+		dy = dy / 2;
+
+		sonic->posicionarseEn(posXServidor + dx, posYServidor + dy);
+	}*/
 }
 
 void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara)
@@ -214,31 +224,11 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 			sonic->irIzquierda();
 		}
 
-
-		sonic->posicionarseEn(ultimasPosiciones.at(sonic->getId()).ultimaPosicionX, ultimasPosiciones.at(sonic->getId()).ultimaPosicionY);
-
-		//Correccion de posiciones. Ignoren esto. No lo puedo probar bien en mi PC. No tocar.
-		/*int posXCliente = ultimasPosiciones.at(sonic->getId()).ultimaPosicionX;
-		int posYCliente = ultimasPosiciones.at(sonic->getId()).ultimaPosicionY;
-
-		int dx = 0, dy = 0;
-		int posXServidor = sonic->getPosicionX();
-		int posYServidor = sonic->getPosicionY();
-
-		dx = posXCliente - posXServidor;
-		dx = dx / 2;
-		dy = posYCliente - posYServidor;
-		dy = dy / 2;
-
-		sonic->posicionarseEn(posXServidor + dx, posYServidor + dy);
-		Hasta aca. No descomentar..*/
-
-
 		///------------------------------------------------------------
 		tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
-		float tiempoDeFotografia = tiempoDeJuego / 1000.f;
+		//float tiempoDeFotografia = tiempoDeJuego / 1000.f;
 
-		(*pos).second->mover(camara->devolverCamara(),tiempoDeFotografia); //Se mueve segun los limites de la camara
+		(*pos).second->mover(camara->devolverCamara(), 0.04); //Se mueve segun los limites de la camara
 
 		tiempoDeJuego = SDL_GetTicks();
 

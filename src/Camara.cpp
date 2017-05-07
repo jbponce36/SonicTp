@@ -12,6 +12,7 @@ Camara::Camara(int posicionx, int posiciony, int alto, int ancho, std::map<int, 
 }
 
 void Camara::actualizar(Personaje *sonic, int maximoAncho, int maximoAlto){
+//NO SE USA!
 
 	/*A la camara la arrastran los sonics. El que llegue al margen la arrastra.
 	 Si hay un Sonic atras, se queda quieta e impide avanzar al otro Sonic.*/
@@ -53,26 +54,58 @@ void Camara::actualizar(int maximoAncho, int maximoAlto){
 	/*A la camara la arrastra el sonic de mayor posicion. El que llegue al margen la arrastra.
 	 Si hay un Sonic atras, se queda quieta e impide avanzar al otro Sonic.*/
 
-	int posicionMax = 0;
+	int posicionMax = 0, velocidadDelMax = 0, posicionMin = maximoAncho, velocidadDelMin = 0;
 	bloqueada = false;
+	bool bloqueadaADerecha = false, bloqueadaAIzquierda = false;
 	std::map<int, Personaje*>::iterator sonic;
 	for(sonic = sonics->begin();sonic != sonics->end();sonic++){
-		if (posicionMax < (*sonic).second->getPosicionX()){
-			posicionMax = (*sonic).second->getPosicionX();
+		if (!(*sonic).second->estaCongelado()){
+			if (posicionMax < (*sonic).second->getPosicionX()){
+				posicionMax = (*sonic).second->getPosicionX();
+				velocidadDelMax = (*sonic).second->getVelocidadX();
+			}
+			if (posicionMin > (*sonic).second->getPosicionX()){
+				posicionMin = (*sonic).second->getPosicionX();
+				velocidadDelMin = (*sonic).second->getVelocidadX();
+			}
 		}
 		if ((*sonic).second->bloqueaCamara(camaraImagen)){
 			bloqueada = true;
 		}
+		if ((*sonic).second->bloqueaCamaraADerecha(camaraImagen)){
+			bloqueadaADerecha = true;
+		}
+		if ((*sonic).second->bloqueaCamaraAIzquierda(camaraImagen)){
+			bloqueadaAIzquierda = true;
+		}
 	}
+
+	if(velocidadDelMax < 0)
+		velocidadDelMax = -velocidadDelMax;
+
+	if(velocidadDelMin < 0)
+			velocidadDelMin = -velocidadDelMin;
 
 	//Si el sonic de mayor posicion llega al margen y no hay nadie bloqueando, arrastra la camara
 	if(posicionMax > (camaraImagen->x + camaraImagen->w - margen))
 	{
+		/*if(!bloqueadaAIzquierda)
+			this->camaraImagen->x += velocidadDelMax*0.04;
+		else if(!bloqueadaADerecha)
+			this->camaraImagen->x += velocidadDelMin*0.04;*/
+
+
 		if(!bloqueada)
 			this->camaraImagen->x += posicionMax - (camaraImagen->x + camaraImagen->w) + margen;
 	}
 	else if(posicionMax < (camaraImagen->x + margen))
 	{
+		/*if (!bloqueadaADerecha)
+			this->camaraImagen->x -= velocidadDelMax*0.04;
+		else if(!bloqueadaAIzquierda)
+			this->camaraImagen->x -= velocidadDelMin*0.04;*/
+
+
 		this->camaraImagen->x -= (camaraImagen->x + margen) - posicionMax;
 	}
 
