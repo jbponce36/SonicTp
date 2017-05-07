@@ -35,7 +35,7 @@ public:
 		Paquete colaPaquete;
 		bool continuar;
 		VariableCondicional *vcIniciarJuego;
-		AdministradorLatidoCliente *alc;
+		//AdministradorLatidoCliente *alc;
 	 };
 	Serparametros parametros;
 

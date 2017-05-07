@@ -13,17 +13,18 @@
 namespace std {
 //clock_t tiempoUltimoLatido;
 
-AdministradorLatidoCliente::AdministradorLatidoCliente() {
+AdministradorLatidoCliente::AdministradorLatidoCliente(Paquete *colaPaquete) {
 	// TODO Auto-generated constructor stub
-
+  this->colaPaquete = colaPaquete;
 }
-time_t AdministradorLatidoCliente::getEndT(){
+/*time_t AdministradorLatidoCliente::getEndT(){
 		return end_t;
 }
 
 void AdministradorLatidoCliente::setEndT(time_t endT) {
 		end_t = endT;
 }
+*/
 AdministradorLatidoCliente::~AdministradorLatidoCliente() {
 	// TODO Auto-generated destructor stub
 }
@@ -32,27 +33,36 @@ void AdministradorLatidoCliente::actualizarTiempoLatido(){
 	printf("Se actualiza el tiempo \n");
 
 	time(&end_t);
-	cout<<"+++++++++++++++++++++++++++ :  "<<end_t<<endl;
+	//cout<<"+++++++++++++++++++++++++++ :  "<<end_t<<endl;
 }
 void AdministradorLatidoCliente::IniciarHilo(){
 
 	Hilo *hilo = new Hilo(/*log*/);
 
-	hilo->Create((void *)AdministradorLatidoCliente::iniciarContador ,  (void *)&end_t);
+	hilo->Create((void *)AdministradorLatidoCliente::iniciarContador ,  (void *)this);
 
 }
+ConexCliente* AdministradorLatidoCliente::getconexcliente(){
+	this->cliente;
+}
+
+void AdministradorLatidoCliente::setconexcliente(ConexCliente *c){
+	this->cliente = c;
+
+}
+
 void *AdministradorLatidoCliente::iniciarContador(void *arg){
-	//AdministradorLatidoCliente* alc = (AdministradorLatidoCliente*)arg;
-	time_t *end_t = (time_t*)arg;
+
+AdministradorLatidoCliente *alc = (AdministradorLatidoCliente*)arg;
+//	time_t *end_t = (time_t*)arg;
+//	SerParametros *parametros = (SerParametros*) arg;
 	double diff_t;
-
-
 
 			time_t start_t;
 			do{
 			time(&start_t);
 
-			diff_t = difftime(*end_t,start_t);
+			diff_t = difftime(alc->end_t,start_t);
 			//cout<<"tiempooooooo1 :  "<<end_t<<endl;
 			//cout<<"tiempooooooo2 :  "<<start_t<<endl;
 			diff_t = fabs(diff_t);
@@ -61,14 +71,16 @@ void *AdministradorLatidoCliente::iniciarContador(void *arg){
 			}while(!(diff_t > 6.0));
 
 	printf("Se desconectara el cliente por falta de latidos \n");
-	//parametros->cliente->cerrar();
+
+    //cout<<alc->getconexcliente()->cerrar()<<endl;
+    alc->colaPaquete->agregar("Faltalatido");
 }
-bool AdministradorLatidoCliente::pasoDemasiadoTiempoDelUltimoLatido(){
+/*bool AdministradorLatidoCliente::pasoDemasiadoTiempoDelUltimoLatido(){
 
 	double diff_t;
 	time_t start_t;
 	time(&start_t);
-	diff_t = difftime(end_t,start_t);
+	diff_t = difftime(parametros.end_t,start_t);
 	cout<<"tiempooooooo1 :  "<<end_t<<endl;
 	cout<<"tiempooooooo2 :  "<<start_t<<endl;
 	diff_t = fabs(diff_t);
@@ -83,6 +95,6 @@ bool AdministradorLatidoCliente::pasoDemasiadoTiempoDelUltimoLatido(){
 
 	 return false;
 }
-
+*/
 
 } /* namespace std */

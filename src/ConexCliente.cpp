@@ -178,12 +178,12 @@ int ConexCliente::enviar(char *buf, int size)
     	return bytes;
     }
     int ConexCliente::cerrar(){
-    	//int status = shutdown(this->getFd(), SHUT_RDWR);
-    	//status = close(this->getFd());
-    	//return status;
-    	int status;
-    	status = close(this->fd);
+    	int status = shutdown(this->getFd(), SHUT_RDWR);
+    	status = close(this->getFd());
     	return status;
+    //	int status;
+    //	status = close(this->fd);
+    //	return status;
     }
 
     string ConexCliente::intToString(int number)

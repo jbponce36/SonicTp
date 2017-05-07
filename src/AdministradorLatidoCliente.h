@@ -11,23 +11,37 @@
 #include <time.h>
 #include <stdio.h>
 #include "Hilo.h"
+#include "Paquete.h"
 namespace std {
 
 class AdministradorLatidoCliente {
 private:
 	time_t end_t;
+	ConexCliente *cliente;
+	Paquete *colaPaquete;
+
 public:
-	//static clock_t tiempoUltimoLatido;
+
 
 	void actualizarTiempoLatido();
-	bool pasoDemasiadoTiempoDelUltimoLatido();
+	//bool pasoDemasiadoTiempoDelUltimoLatido();
 
-	AdministradorLatidoCliente();
+	AdministradorLatidoCliente(Paquete *colaPaquete);
 	~AdministradorLatidoCliente();
 	void IniciarHilo();
 	static void* iniciarContador(void *ars);
-	time_t getEndT();
-	void setEndT(time_t endT);
+	//time_t getEndT();
+	//void setEndT(time_t endT);
+	struct SerParametros{
+		ConexCliente *cliente;
+	//	time_t *end_t;
+
+	};
+	SerParametros parametros;
+
+	ConexCliente* getconexcliente();
+	void setconexcliente(ConexCliente *c);
+
 };
 
 } /* namespace std */
