@@ -37,7 +37,8 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaPaquete);
 	//alc->IniciarHilo();
     alc->setconexcliente(alc->parametros.cliente);
-	//parametros->cliente->recibir(buffer,strlen(buffer));
+	alc->setIniciar(false);
+    //parametros->cliente->recibir(buffer,strlen(buffer));
 	cout<<"[HILO RECIBIR CLIENTE] [CLIENTE RECIBIR] "<<endl;
 
 
@@ -68,10 +69,12 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 					if (strcmp(buffer, "[INICIAR JUEGO]") == 0){
 				         printf("****** VOY A INICIAR EL JUEGO ******* \n");
-				         alc->IniciarHilo();
+                         alc->setIniciar(true);
+                         alc->IniciarHilo();
 				         //parametros->colaPaquete.agregar("[INICIAR JUEGO]");
 				         if(parametros->vcIniciarJuego != NULL)
 				         {
+
 				        	 cout << "Ya notifique" << endl;
 				        	 parametros->vcIniciarJuego->notificarTodos();
 				         }
@@ -85,6 +88,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					printf("El cliente se desconecto satisfactoriamente. \n");
 					parametros->colaPaquete.agregar("Servidor Desconectado");
 					parametros->continuar = false;
+                    alc->gethilo().Join();
 				}
 				//cargamos los datos de todos los personajes que vienen desde el servidor, estos datos deben actualizar
 				//la vista, etc

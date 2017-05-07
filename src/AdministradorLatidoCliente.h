@@ -19,7 +19,8 @@ private:
 	time_t end_t;
 	ConexCliente *cliente;
 	Paquete *colaPaquete;
-
+	Hilo h;
+	bool iniciar;
 public:
 
 
@@ -30,8 +31,6 @@ public:
 	~AdministradorLatidoCliente();
 	void IniciarHilo();
 	static void* iniciarContador(void *ars);
-	//time_t getEndT();
-	//void setEndT(time_t endT);
 	struct SerParametros{
 		ConexCliente *cliente;
 	//	time_t *end_t;
@@ -41,7 +40,13 @@ public:
 
 	ConexCliente* getconexcliente();
 	void setconexcliente(ConexCliente *c);
+	Hilo gethilo();
 
+	void setH(Hilo);
+
+	bool isIniciar();
+
+	void setIniciar(bool ini);
 };
 
 } /* namespace std */
