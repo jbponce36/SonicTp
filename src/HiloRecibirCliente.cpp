@@ -35,7 +35,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
 
 	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaPaquete);
-	alc->IniciarHilo();
+	//alc->IniciarHilo();
     alc->setconexcliente(alc->parametros.cliente);
 	alc->setIniciar(false);
     //parametros->cliente->recibir(buffer,strlen(buffer));
@@ -73,6 +73,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				         alc->setCadena("INICIAR JUEGO");
 				         alc->actualizarTiempoLatido();
                          alc->setIniciar(true);
+                         alc->IniciarHilo();
 				         //parametros->colaPaquete.agregar("[INICIAR JUEGO]");
 				         if(parametros->vcIniciarJuego != NULL)
 				         {

@@ -76,6 +76,7 @@ class Personaje
 		void posicionarseConAnimacion(int x, int y, std::string animacion, int indiceAnimacion);
 		int getPosicionX();
 		int getPosicionY();
+		int getVelocidadX();
 		int getAlto();
 		int getAncho();
 		int getId();
@@ -94,7 +95,10 @@ class Personaje
 		void descongelar();
 
 		bool bloqueaCamara(SDL_Rect *limites);
+		bool bloqueaCamaraADerecha(SDL_Rect *limites);
+		bool bloqueaCamaraAIzquierda(SDL_Rect *limites);
 		bool estaCongelado();
+		bool estaParado();
 
 		void enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje);
 		void enviarPosicionServer(HiloEnviarCliente *hiloEnviar, Posicion *pos);

@@ -21,7 +21,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->personajeAceleracion = velocidad/20;
 	//posicion por defecto
     this->posicionX = POSICION_INICIALX;
-    this->posicionY = altoEscenario / 2;
+    this->posicionY = 4*altoEscenario / 5 - personajeAlto;
 
     this->velocidadX = 0;
     this->velocidadY = personajeVelocidad;
@@ -54,7 +54,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->personajeAceleracion = velocidad/20;
 	//posicion por defecto
     this->posicionX = POSICION_INICIALX;
-    this->posicionY = altoEscenario / 2;
+    this->posicionY = 4*altoEscenario / 5 - personajeAlto;
 
     this->velocidadX = 0;
     this->velocidadY = personajeVelocidad;
@@ -207,7 +207,7 @@ void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, in
 	else if(animacion.compare(ANIMACION_CONGELADO) == 0){
 		animacionActual = &animacionCongelado;
 	}
-	animacionActual->cambiarSprite(indiceAnimacion);
+	//animacionActual->cambiarSprite(indiceAnimacion);
 	animacionActual->comenzar();
 }
 
@@ -218,6 +218,10 @@ int Personaje::getPosicionX()
 int Personaje::getPosicionY()
 {
 	return this->posicionY;
+}
+int Personaje::getVelocidadX()
+{
+	return this->velocidadX;
 }
 int Personaje::getAncho(){
 	return this->personajeAncho;
@@ -425,9 +429,32 @@ bool Personaje::bloqueaCamara(SDL_Rect *limites)
 	return ((posicionX <= limites->x) || (posicionX >= limites->x + limites->w));
 }
 
+bool Personaje::bloqueaCamaraADerecha(SDL_Rect *limites)
+{
+	if (congelado)
+	{
+		return false;
+	}
+	return (posicionX >= limites->x + limites->w);
+}
+
+bool Personaje::bloqueaCamaraAIzquierda(SDL_Rect *limites)
+{
+	if (congelado)
+	{
+		return false;
+	}
+	return (posicionX <= limites->x);
+}
+
 bool Personaje::estaCongelado()
 {
 	return congelado;
+}
+
+bool Personaje::estaParado()
+{
+	return ((velocidadX == 0) && (velocidadY == 0));
 }
 
 std::string Personaje::intToStringConPadding(int number)
