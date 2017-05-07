@@ -73,7 +73,7 @@ AdministradorLatidoCliente *alc = (AdministradorLatidoCliente*)arg;
 	printf("Se desconectara el cliente por falta de latidos \n");
 
     //cout<<alc->getconexcliente()->cerrar()<<endl;
-    alc->colaPaquete->agregar("Faltalatido");
+    alc->colaPaquete->agregar("Servidor Desconectado");
 }
 /*bool AdministradorLatidoCliente::pasoDemasiadoTiempoDelUltimoLatido(){
 
