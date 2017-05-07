@@ -38,7 +38,6 @@ private:
 	std::map<int, Personaje*> *sonics;
 	std::vector<Hiloenviar*> *hilosEnviar;
 	std::vector<Hilorecibir*> *hilosRecibir;
-	std::vector<HilolatidoSer*> *hilosLatidos;
 
 	typedef struct posSonic{
 		int ultimaPosicionX;
@@ -60,7 +59,7 @@ private:
 public:
 	ControlServidor(int altura, int anchura, std::map<int, Personaje*> *sonics,
 		std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
-		std::vector<HilolatidoSer*> *hilosLatidos, ConexServidor *server, Logger *log);
+		ConexServidor *server, Logger *log);
 	virtual ~ControlServidor();
 
 	void ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado);
@@ -80,6 +79,7 @@ private:
 	void administrarTeclasServidor();
 	ControlServidor::mensajeRecibido parsearMensajePosicion(std::string mensaje);
 	void moverSonicsSegunTeclas();
+	void corregirPosicionSonic(Personaje* sonic);
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor(Camara *camara);
 

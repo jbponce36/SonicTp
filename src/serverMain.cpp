@@ -63,17 +63,16 @@ int main(int argc, char *argv[]) {
 
 	vector<Hilorecibir*> hrRecibir;
 	vector<Hiloenviar*> hrEnviar;
-	vector<HilolatidoSer*> hrLatidos;
 
 	int id = 1;
 
 	while(server->noSeConectaronTodos()){
 		int skt = server->aceptarcliente();
 
-		if(skt <= 0) {
+		if(skt <= 0){
 		  cout << "Error on accept"<<endl;
 		}
-		else {
+		else{
 			ostringstream oss;
 			oss<< MENSAJE_ID <<id << maxConexiones;
 
@@ -88,15 +87,6 @@ int main(int argc, char *argv[]) {
 			henviar->parametros.server = server;
 			henviar->parametros.skt = skt;
 
-
-
-			/*HilolatidoSer *hilolatidoS = new HilolatidoSer();
-			hilolatidoS->parametros.server = server;
-			hilolatidoS->parametros.skt = skt;
-			hilolatidoS->IniciarHilo();
-			hrLatidos.push_back(hilolatidoS);*/
-
-
 			//Le mando un ID a cada cliente a medida que se conectan y la cantidad maxima de jugadores
 			char buffer[5] = "";
 			string temp = oss.str();
@@ -108,61 +98,26 @@ int main(int argc, char *argv[]) {
 			henviar->iniciarHiloQueue();
 			hrEnviar.push_back(henviar);
 
-			//hilolatidoS->IniciarHilo();
-
 		}
     }
 
 	//Empieza la partida
 	printf("Empieza la partida \n");
-	sleep(2); //Le da tiempo al ultimo jugador en conectarse a inicializar su juego.
+	sleep(1); //Le da tiempo al ultimo jugador en conectarse a inicializar su juego.
 	server->comenzarPartida(hrEnviar);
 
-	JuegoServidor *juego = new JuegoServidor(server, hrEnviar, hrRecibir, hrLatidos, log);
+	JuegoServidor *juego = new JuegoServidor(server, hrEnviar, hrRecibir, log);
 	juego->iniciarHiloJuego();
 
 	while(!server->finalizar()){
 	//while(1){
 		int skt = server->aceptarcliente();
 
-		if(skt < 0) {
+		if(skt < 0){
 		  cout << "Error on accept"<<endl;
 		}
-		else {
+		else{
 			juego->reconectar(skt);
-			/*id = juego->obtenerIdLibre();
-			ostringstream oss;
-			oss<< id << maxConexiones;
-
-
-			Hilorecibir *hrecibir = new Hilorecibir();
-			hrecibir->parametros.server = server;
-			hrecibir->parametros.skt = skt;
-			hrecibir->parametros.continuar = true;
-			hrecibir->IniciarHilo();
-			hrRecibir.push_back(hrecibir);
-
-			Hiloenviar *henviar = new Hiloenviar();
-			henviar->parametros.server = server;
-			henviar->parametros.skt = skt;
-
-
-			//HilolatidoSer *hilolatidoS = new HilolatidoSer();
-			//hilolatidoS->parametros.server = server;
-			//hilolatidoS->parametros.skt = skt;
-			//hilolatidoS->IniciarHilo();
-			//hrLatidos.push_back(hilolatidoS);
-
-			//Le mando un ID a cada cliente a medida que se conectan y la cantidad maxima de jugadores
-			char buffer[2] = "";
-			string temp = oss.str();
-			strcpy(buffer, temp.c_str());
-			cout << "Server envio ID+maxConexiones: " << buffer << endl;
-
-			henviar->enviarDato(buffer);
-			henviar->iniciarHiloQueue();
-			hrEnviar.push_back(henviar);*/
-
 		}
     }
 
@@ -172,11 +127,6 @@ int main(int argc, char *argv[]) {
 
 	vector<Hilorecibir*>::iterator posrecibir;
 	vector<Hiloenviar*>::iterator posenviar;
-	vector<HilolatidoSer*>::iterator poslatido;
-
-	/*for(poslatido = hrLatidos.begin(); poslatido != hrLatidos.end(); poslatido++){
-			(*poslatido)->terminarHilo();
-	}*/
 
 	for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
 		(*posrecibir)->gethilo().Join();
@@ -187,16 +137,14 @@ int main(int argc, char *argv[]) {
 
 
 	//Cerrar y liberar memoria
-
-	//hilolatidoS->gethilo().Join();
 	server->cerrar();
 
-	/*for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
+	for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
 		delete (*posrecibir);
 	}
 	for(posenviar = hrEnviar.begin(); posenviar!=hrEnviar.end(); posenviar++){
 		delete (*posenviar);
-	 }*/
+	 }
 
 	delete server;
 	delete jsonSer;
