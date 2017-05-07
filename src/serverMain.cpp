@@ -129,10 +129,10 @@ int main(int argc, char *argv[]) {
 	vector<Hiloenviar*>::iterator posenviar;
 
 	for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
-		(*posrecibir)->gethilo().Join();
+		(*posrecibir)->Join();
 	}
 	for(posenviar = hrEnviar.begin(); posenviar!=hrEnviar.end(); posenviar++){
-		(*posenviar)->gethilo().Join();
+		(*posenviar)->Join();
      }
 
 
