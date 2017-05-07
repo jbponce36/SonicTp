@@ -41,10 +41,9 @@ void *Hilorecibir::serverRecibir(void *args){
 
 	while(parametros->continuar){
 		char buffer[40];
-		//Posicion *pos = new Posicion();
-		//Serparametros *parametros = (Serparametros*) args;
+
 		int result = 1;
-		//parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
+
 
 		while (result>0){
 				result = parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));

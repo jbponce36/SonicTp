@@ -123,8 +123,12 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 			parsearMensajeCamara(nuevoX, nuevoY, mensaje);
 			camara->actualizarXY(nuevoX, nuevoY);
 		}
-		else
+		else if (mensaje.compare("Faltalatido"))
 		{
+			this->salir = true;
+
+		}
+		else{
 			//Otros mensajes
 			cout << mensaje << endl;
 		}

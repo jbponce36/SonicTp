@@ -43,15 +43,15 @@ void *JuegoCliente::iniciarJuegoCliente(void *datos)
 
 void JuegoCliente::iniciarHilos()
 {
-	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente();
+//	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente();
 	hiloRecibir = new HiloRecibirCliente();
 	hiloRecibir->parametros.cliente = cliente;
 	hiloRecibir->parametros.continuar = true;
-	hiloRecibir->parametros.alc = alc;
+	//hiloRecibir->parametros.alc = alc;
 	hiloRecibir->IniciarHilo();
 
 	hiloEnviar = new HiloEnviarCliente();
-	hiloEnviar->parametros.alc=alc;
+	//hiloEnviar->parametros.alc=alc;
 	hiloEnviar->parametros.cliente = cliente;
 	hiloEnviar->IniciarHilo();
 
