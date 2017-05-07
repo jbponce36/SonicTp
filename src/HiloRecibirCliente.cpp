@@ -84,6 +84,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					printf("El cliente se desconecto satisfactoriamente. \n");
 					parametros->colaPaquete.agregar("Servidor Desconectado");
 					parametros->continuar = false;
+                    alc->gethilo().Join();
 				}
 				//cargamos los datos de todos los personajes que vienen desde el servidor, estos datos deben actualizar
 				//la vista, etc

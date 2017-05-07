@@ -75,26 +75,13 @@ AdministradorLatidoCliente *alc = (AdministradorLatidoCliente*)arg;
     //cout<<alc->getconexcliente()->cerrar()<<endl;
     alc->colaPaquete->agregar("Servidor Desconectado");
 }
-/*bool AdministradorLatidoCliente::pasoDemasiadoTiempoDelUltimoLatido(){
 
-	double diff_t;
-	time_t start_t;
-	time(&start_t);
-	diff_t = difftime(parametros.end_t,start_t);
-	cout<<"tiempooooooo1 :  "<<end_t<<endl;
-	cout<<"tiempooooooo2 :  "<<start_t<<endl;
-	diff_t = fabs(diff_t);
-	//printf("Transcurrio : %f \n", diff_t);
-
-	if(diff_t > 6.0){
-		cout<<"-----------------------------------------"<<endl;
-		cout<<diff_t<<endl;
-		cout<<"´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´"<<endl;
-		return true;
-	}
-
-	 return false;
+Hilo AdministradorLatidoCliente::gethilo(){
+	return this->h;
 }
-*/
+
+void AdministradorLatidoCliente::setH(Hilo hil){
+	this->h = hil;
+}
 
 } /* namespace std */
