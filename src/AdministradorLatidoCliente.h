@@ -21,6 +21,7 @@ private:
 	Paquete *colaPaquete;
 	Hilo h;
 	bool iniciar;
+	std::string cadena;
 public:
 
 
@@ -35,6 +36,7 @@ public:
 		ConexCliente *cliente;
 	//	time_t *end_t;
 
+
 	};
 	SerParametros parametros;
 
@@ -47,6 +49,11 @@ public:
 	bool isIniciar();
 
 	void setIniciar(bool ini);
+
+	 std::string getCadena();
+
+	void setCadena(std::string c);
+
 };
 
 } /* namespace std */
