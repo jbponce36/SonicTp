@@ -32,6 +32,9 @@ public:
 	AdministradorLatidoCliente(Paquete *colaPaquete);
 	~AdministradorLatidoCliente();
 	void IniciarHilo();
+	void IniciarHiloServidorCliente();
+	static void* iniciarContadorServidorCliente(void *ars);
+
 	static void* iniciarContador(void *ars);
 	struct SerParametros{
 		ConexCliente *cliente;
