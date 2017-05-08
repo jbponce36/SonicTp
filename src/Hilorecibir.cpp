@@ -39,11 +39,15 @@ void Hilorecibir::setH(Hilo hil){
 void *Hilorecibir::serverRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
 
+	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaDeMensajes);
+	alc->actualizarTiempoLatido();
+	alc->setIniciar(true);
+	alc->IniciarHilo();
+
+	alc->setCadena("ESTOYVIVO");
 	while(parametros->continuar){
 		char buffer[40];
-
 		int result = 1;
-
 
 		while (result>0){
 				result = parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
@@ -51,10 +55,13 @@ void *Hilorecibir::serverRecibir(void *args){
 
 				if (result>0){
 					cout<<"server recibio: "<<buffer <<endl;
-
+					alc->actualizarTiempoLatido();
 					//parametros->colaDeMensajes.agregarPosicion(pos);
-
-					parametros->colaDeMensajes.agregar(buffer);
+					if(strcmp(buffer,"ESTOYVIVO") ==0){
+						cout<<"recibio estoy vivo del cliente"<<endl;
+					}else{
+						parametros->colaDeMensajes.agregar(buffer);
+					}
 
 				}
 

@@ -320,7 +320,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 		}
 
 	}
-
+	cout<<juegoTerminado<<"::juego terminado"<<endl;
 	delete camara;
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
 }

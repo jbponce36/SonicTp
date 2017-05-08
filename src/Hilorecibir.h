@@ -14,6 +14,7 @@
 #include "Paquete.h"
 #include "Posicion.h"
 #include "Definiciones.h"
+#include "AdministradorLatidoCliente.h"
 #include <string>
 
 namespace std {

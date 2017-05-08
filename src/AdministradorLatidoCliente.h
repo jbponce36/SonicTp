@@ -18,6 +18,7 @@ class AdministradorLatidoCliente {
 private:
 	time_t end_t;
 	ConexCliente *cliente;
+	ConexServidor *servidor;
 	Paquete *colaPaquete;
 	Hilo h;
 	bool iniciar;
@@ -34,6 +35,7 @@ public:
 	static void* iniciarContador(void *ars);
 	struct SerParametros{
 		ConexCliente *cliente;
+		ConexServidor *servidor;
 	//	time_t *end_t;
 
 
@@ -42,6 +44,7 @@ public:
 
 	ConexCliente* getconexcliente();
 	void setconexcliente(ConexCliente *c);
+	void setconexServidor(ConexServidor *s);
 	Hilo gethilo();
 
 	void setH(Hilo);

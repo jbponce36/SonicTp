@@ -50,6 +50,9 @@ void AdministradorLatidoCliente::setconexcliente(ConexCliente *c){
 	this->cliente = c;
 
 }
+void AdministradorLatidoCliente::setconexServidor(ConexServidor *s){
+
+}
 std::string AdministradorLatidoCliente::getCadena(){
 	this->cadena;
 }
