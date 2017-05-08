@@ -14,6 +14,7 @@
 #include "Logger.h"
 #include "Hiloenviar.h"
 #include "Hilorecibir.h"
+#include "HilolatidoSer.h"
 #include "Definiciones.h"
 #include <string>
 #include <vector>
@@ -57,7 +58,8 @@ private:
 
 public:
 	ControlServidor(int altura, int anchura, std::map<int, Personaje*> *sonics,
-		std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir, ConexServidor *server, Logger *log);
+		std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
+		ConexServidor *server, Logger *log);
 	virtual ~ControlServidor();
 
 	void ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado);
@@ -77,6 +79,7 @@ private:
 	void administrarTeclasServidor();
 	ControlServidor::mensajeRecibido parsearMensajePosicion(std::string mensaje);
 	void moverSonicsSegunTeclas();
+	void corregirPosicionSonic(Personaje* sonic);
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor(Camara *camara);
 

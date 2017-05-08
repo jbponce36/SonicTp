@@ -8,8 +8,10 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 {
 	this->id = id;
 	this->texturaSonic = new Textura();
+	this->texturaCongelado = new Textura();
 	std::string rutaImagen = "images/sonicSprite" + intToString(id) +".png";
 	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
+	this->texturaCongelado->cargarImagen("images/sonicCongelado.png", IMAGEN_POR_DEFECTO, render, log);
 
 	//dimensiones del personaje por defecto
 	this->personajeAncho = 50;
@@ -19,7 +21,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->personajeAceleracion = velocidad/20;
 	//posicion por defecto
     this->posicionX = POSICION_INICIALX;
-    this->posicionY = altoEscenario / 2;
+    this->posicionY = 4*altoEscenario / 5 - personajeAlto;
 
     this->velocidadX = 0;
     this->velocidadY = personajeVelocidad;
@@ -29,6 +31,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->saltando = true;
     this->corriendo = false;
     this->estaQuieto = true;
+    this->congelado = false;
     cargarSpriteSonic();
 
     this->log = log;
@@ -38,8 +41,10 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 {
 	this->id = id;
 	this->texturaSonic = new Textura();
+	this->texturaCongelado = new Textura();
 	std::string rutaImagen = "images/sonicSprite" + intToString(id) +".png";
 	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
+	this->texturaCongelado->cargarImagen("images/sonicCongelado.png", IMAGEN_POR_DEFECTO, render, log);
 
 	//dimensiones del personaje por defecto
 	this->personajeAncho = 50;
@@ -49,7 +54,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->personajeAceleracion = velocidad/20;
 	//posicion por defecto
     this->posicionX = POSICION_INICIALX;
-    this->posicionY = altoEscenario / 2;
+    this->posicionY = 4*altoEscenario / 5 - personajeAlto;
 
     this->velocidadX = 0;
     this->velocidadY = personajeVelocidad;
@@ -59,6 +64,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->saltando = true;
     this->corriendo = false;
     this->estaQuieto = true;
+    this->congelado = false;
     cargarSpriteSonic();
 
     this->log = log;
@@ -124,7 +130,7 @@ void Personaje::cargarSpriteSonic(){
 	animacionCaminarIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CAMINAR_IZQUIERDA);
 	animacionCorrerIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CORRER_IZQUIERDA);
 	animacionSaltarIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_SALTAR_IZQUIERDA);
-
+	animacionCongelado = Animacion(texturaCongelado, personajeAncho, 1, ANIMACION_CONGELADO);
 
 	for (int i=0; i<10; i++){
 		animacionQuietoDer.cargarSprites(0, 0, 1);
@@ -147,6 +153,8 @@ void Personaje::cargarSpriteSonic(){
 	animacionCaminarIzq.cargarSprites(9, 3, 8);
 	animacionCorrerIzq.cargarSprites(13, 1, 5);
 	animacionSaltarIzq.cargarSprites(13, 1, 5);
+
+	animacionCongelado.cargarSprites(0, 0, 1);
 
 	animacionActual = &animacionQuietoDer;
 
@@ -196,7 +204,10 @@ void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, in
 	else if(animacion.compare(ANIMACION_SALTAR_IZQUIERDA) == 0){
 		animacionActual = &animacionSaltarIzq;
 	}
-	animacionActual->cambiarSprite(indiceAnimacion);
+	else if(animacion.compare(ANIMACION_CONGELADO) == 0){
+		animacionActual = &animacionCongelado;
+	}
+	//animacionActual->cambiarSprite(indiceAnimacion);
 	animacionActual->comenzar();
 }
 
@@ -207,6 +218,10 @@ int Personaje::getPosicionX()
 int Personaje::getPosicionY()
 {
 	return this->posicionY;
+}
+int Personaje::getVelocidadX()
+{
+	return this->velocidadX;
 }
 int Personaje::getAncho(){
 	return this->personajeAncho;
@@ -230,6 +245,10 @@ Personaje::~Personaje(){
 	if (texturaSonic != NULL)
 	{
 		delete texturaSonic;
+	}
+	if (texturaCongelado != NULL)
+	{
+		delete texturaCongelado;
 	}
 }
 
@@ -389,9 +408,53 @@ void Personaje::parar()
 	}
 }
 
+void Personaje::congelar()
+{
+	animacionActual = &animacionCongelado;
+	congelado = true;
+}
+
+void Personaje::descongelar()
+{
+	animacionActual = &animacionQuietoDer;
+	congelado = false;
+}
+
 bool Personaje::bloqueaCamara(SDL_Rect *limites)
 {
+	if (congelado)
+	{
+		return false;
+	}
 	return ((posicionX <= limites->x) || (posicionX >= limites->x + limites->w));
+}
+
+bool Personaje::bloqueaCamaraADerecha(SDL_Rect *limites)
+{
+	if (congelado)
+	{
+		return false;
+	}
+	return (posicionX >= limites->x + limites->w);
+}
+
+bool Personaje::bloqueaCamaraAIzquierda(SDL_Rect *limites)
+{
+	if (congelado)
+	{
+		return false;
+	}
+	return (posicionX <= limites->x);
+}
+
+bool Personaje::estaCongelado()
+{
+	return congelado;
+}
+
+bool Personaje::estaParado()
+{
+	return ((velocidadX == 0) && (velocidadY == 0));
 }
 
 std::string Personaje::intToStringConPadding(int number)

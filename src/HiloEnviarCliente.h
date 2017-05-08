@@ -11,6 +11,7 @@
 #include "ConexCliente.h"
 #include "Hilo.h"
 #include "Paquete.h"
+#include  "AdministradorLatidoCliente.h"
 
 class HiloEnviarCliente {
 private:
@@ -28,6 +29,7 @@ public:
 			int skt;
 			Paquete pack;
 			char *bufferQ;
+			AdministradorLatidoCliente *alc;
 		};
 	SerParametros parametros;
 	void iniciarHiloQueue();

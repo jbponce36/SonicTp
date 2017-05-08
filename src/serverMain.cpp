@@ -13,6 +13,7 @@
 #include <fstream>
 #include "JuegoServidor.h"
 #include "HilolatidoSer.h"
+#include "Definiciones.h"
 
 using namespace std;
 
@@ -62,25 +63,18 @@ int main(int argc, char *argv[]) {
 
 	vector<Hilorecibir*> hrRecibir;
 	vector<Hiloenviar*> hrEnviar;
-	vector<HilolatidoSer*> hrLatidos;
-
 
 	int id = 1;
 
-
-
-
-
 	while(server->noSeConectaronTodos()){
-	//while(1){
 		int skt = server->aceptarcliente();
 
-		if(skt <= 0) {
+		if(skt <= 0){
 		  cout << "Error on accept"<<endl;
 		}
-		else {
+		else{
 			ostringstream oss;
-			oss<< id << maxConexiones;
+			oss<< MENSAJE_ID <<id << maxConexiones;
 
 			Hilorecibir *hrecibir = new Hilorecibir();
 			hrecibir->parametros.server = server;
@@ -89,32 +83,17 @@ int main(int argc, char *argv[]) {
 			hrecibir->IniciarHilo();
 			hrRecibir.push_back(hrecibir);
 
-			//comentar
 			Hiloenviar *henviar = new Hiloenviar();
 			henviar->parametros.server = server;
 			henviar->parametros.skt = skt;
 
-
-
-			HilolatidoSer *hilolatidoS = new HilolatidoSer();
-			hilolatidoS->parametros.server = server;
-			hilolatidoS->parametros.skt = skt;
-			hilolatidoS->IniciarHilo();
-			hrLatidos.push_back(hilolatidoS);
-
-
 			//Le mando un ID a cada cliente a medida que se conectan y la cantidad maxima de jugadores
-
-			char buffer[2] = "";
+			char buffer[5] = "";
 			string temp = oss.str();
 			strcpy(buffer, temp.c_str());
 			cout << "Server envio ID+maxConexiones: " << buffer << endl;
 			id++;
 
-	//Idea: estaria bueno un generador de ID que sepa cuales son los id libres.
-	//Sino al desconectarse clientes quedan mal los ids.
-
-			//comentar
 			henviar->enviarDato(buffer);
 			henviar->iniciarHiloQueue();
 			hrEnviar.push_back(henviar);
@@ -134,48 +113,11 @@ int main(int argc, char *argv[]) {
 	//while(1){
 		int skt = server->aceptarcliente();
 
-		if(skt < 0) {
+		if(skt < 0){
 		  cout << "Error on accept"<<endl;
 		}
-		else {
-			ostringstream oss;
-			oss<< id << maxConexiones;
-
-			Hilorecibir *hrecibir = new Hilorecibir();
-			hrecibir->parametros.server = server;
-			hrecibir->parametros.skt = skt;
-			hrecibir->parametros.continuar = true;
-			hrecibir->IniciarHilo();
-			hrRecibir.push_back(hrecibir);
-
-			Hiloenviar *henviar = new Hiloenviar();
-			henviar->parametros.server = server;
-			henviar->parametros.skt = skt;
-
-
-			HilolatidoSer *hilolatidoS = new HilolatidoSer();
-			hilolatidoS->parametros.server = server;
-			hilolatidoS->parametros.skt = skt;
-			hilolatidoS->IniciarHilo();
-			hrLatidos.push_back(hilolatidoS);
-
-			//Le mando un ID a cada cliente a medida que se conectan y la cantidad maxima de jugadores
-			char buffer[2] = "";
-			string temp = oss.str();
-			strcpy(buffer, temp.c_str());
-			cout << "Server envio ID+maxConexiones: " << buffer << endl;
-
-
-	//Idea: estaria bueno un generador de ID que sepa cuales son los id libres.
-	//Sino al desconectarse clientes quedan mal los ids.
-
-			henviar->enviarDato(buffer);
-			henviar->iniciarHiloQueue();
-			hrEnviar.push_back(henviar);
-
-			juego->agregarJugador(id);
-			id++;
-
+		else{
+			juego->reconectar(skt);
 		}
     }
 
@@ -185,31 +127,24 @@ int main(int argc, char *argv[]) {
 
 	vector<Hilorecibir*>::iterator posrecibir;
 	vector<Hiloenviar*>::iterator posenviar;
-	vector<HilolatidoSer*>::iterator poslatido;
 
-	for(poslatido = hrLatidos.begin(); poslatido != hrLatidos.end(); poslatido++){
-			(*poslatido)->terminarHilo();
-	}
-
-	/*for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
-		(*posrecibir)->gethilo().Join();
+	for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
+		(*posrecibir)->Join();
 	}
 	for(posenviar = hrEnviar.begin(); posenviar!=hrEnviar.end(); posenviar++){
-		(*posenviar)->gethilo().Join();
-     }*/
+		(*posenviar)->Join();
+     }
 
 
 	//Cerrar y liberar memoria
-
-	//hilolatidoS->gethilo().Join();
 	server->cerrar();
 
-	/*for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
+	for(posrecibir = hrRecibir.begin(); posrecibir != hrRecibir.end(); posrecibir++){
 		delete (*posrecibir);
 	}
 	for(posenviar = hrEnviar.begin(); posenviar!=hrEnviar.end(); posenviar++){
 		delete (*posenviar);
-	 }*/
+	 }
 
 	delete server;
 	delete jsonSer;

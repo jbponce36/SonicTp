@@ -34,12 +34,15 @@ void HiloRecibirCliente::IniciarHilo(){
 void *HiloRecibirCliente::clienteRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
 
-
-	//parametros->cliente->recibir(buffer,strlen(buffer));
+	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaPaquete);
+	//alc->IniciarHilo();
+    alc->setconexcliente(alc->parametros.cliente);
+	alc->setIniciar(false);
+    //parametros->cliente->recibir(buffer,strlen(buffer));
 	cout<<"[HILO RECIBIR CLIENTE] [CLIENTE RECIBIR] "<<endl;
-	AdministradorLatidoCliente::actualizarTiempoLatido();
 
 
+	//parametros->alc->actualizarTiempoLatido();
 	while(parametros->continuar){
 		char buffer[100];
 		int result = 1;
@@ -54,15 +57,12 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				//Cuando recibe estoy vivo actualiza el tiempo de latido
 
 				if (result>0){
+
 					cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
+					alc->setCadena("");
+					alc->actualizarTiempoLatido();
 
-
-					if (strcmp(buffer, "ESTOY VIVO") == 0){
-						printf("RECIBI estoy Vivo \n");
-						AdministradorLatidoCliente::actualizarTiempoLatido();
-					}
-
-
+					//parametros->alc->actualizarTiempoLatido();
 
 					if (strcmp(buffer, "Conexion rechazada") == 0){
 					    printf("****** La conexion fue rechaza por el servidor ******* \n");
@@ -70,9 +70,15 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 					if (strcmp(buffer, "[INICIAR JUEGO]") == 0){
 				         printf("****** VOY A INICIAR EL JUEGO ******* \n");
+				         alc->setCadena("INICIAR JUEGO");
+				         alc->actualizarTiempoLatido();
+                         alc->setIniciar(true);
+                         alc->IniciarHilo();
 				         //parametros->colaPaquete.agregar("[INICIAR JUEGO]");
 				         if(parametros->vcIniciarJuego != NULL)
 				         {
+
+				        	 cout << "Ya notifique" << endl;
 				        	 parametros->vcIniciarJuego->notificarTodos();
 				         }
 					}
@@ -85,6 +91,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					printf("El cliente se desconecto satisfactoriamente. \n");
 					parametros->colaPaquete.agregar("Servidor Desconectado");
 					parametros->continuar = false;
+                    alc->gethilo().Join();
 				}
 				//cargamos los datos de todos los personajes que vienen desde el servidor, estos datos deben actualizar
 				//la vista, etc

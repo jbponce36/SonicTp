@@ -30,6 +30,7 @@ public:
 		int skt;
 		Paquete pack;
 		char *bufferQ;
+		bool continuar;
 	};
 	SerParametros parametros;
 
@@ -42,9 +43,10 @@ public:
 	void iniciarHiloQueue();
 	static void* serverEnviarQueue(void* args);
 	void enviarDato(char* dato);
+	bool continua();
+
 private:
 	Hilo h;
-	bool continuar;
 
 };
 

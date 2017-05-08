@@ -42,6 +42,7 @@ public:
     int cerrar();
     int getCantclientes();
     void setCantclientes(int);
+    int getCantMaximaClientes();
     bool finalizar();
 
     bool noSeConectaronTodos();

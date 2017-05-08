@@ -17,20 +17,6 @@ ControladorTeclas::~ControladorTeclas() {
 	// TODO Auto-generated destructor stub
 }
 
-string ControladorTeclas::getFechaActual(){
-	time_t t = time(0);
-	struct tm *now = localtime( & t );
-	string fecha =	(now->tm_year + 1900) + '-'
-			 + (now->tm_mon + 1) + '-'
-			 +  now->tm_mday
-			 +  " "
-			 +  now->tm_hour
-			 + now->tm_min
-			 +now->tm_sec;
-
-	return fecha;
-}
-
 void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnviarCliente *hiloEnviar)
 {
 	//Al presionar o soltar una tecla se ejecuta una sola vez el codigo correspondiente
@@ -43,28 +29,28 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 		switch( e.key.keysym.sym )
 		{
 			case SDLK_UP: {
-				mensaje = TECLA_ARRIBA_PRESIONADA + getFechaActual();
+				mensaje = TECLA_ARRIBA_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, mensaje);
 				teclaArriba = true;
 				sonic->saltar();
 				break;}
 			case SDLK_DOWN:{
-				mensaje = TECLA_ABAJO_PRESIONADA + getFechaActual();
+				mensaje = TECLA_ABAJO_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, TECLA_ABAJO_PRESIONADA);
 				teclaAbajo = true;
 				break;}
 			case SDLK_LEFT:{
-				mensaje = TECLA_IZQUIERDA_PRESIONADA + getFechaActual();
+				mensaje = TECLA_IZQUIERDA_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, TECLA_IZQUIERDA_PRESIONADA);
 				teclaIzquierda = true;
 				break;}
 			case SDLK_RIGHT:{
-				mensaje = TECLA_DERECHA_PRESIONADA + getFechaActual();
+				mensaje = TECLA_DERECHA_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, TECLA_DERECHA_PRESIONADA);
 				teclaDerecha = true;
 				break;}
 			case SDLK_a:{
-				mensaje = TECLA_CORRER_PRESIONADA + getFechaActual();
+				mensaje = TECLA_CORRER_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, TECLA_CORRER_PRESIONADA);
 				teclaCorrer = true;
 				break;}
@@ -81,28 +67,28 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 		{
 		case SDLK_UP:{
 			//Enviar al server que dejo de presionar la tecla
-			mensaje = TECLA_ARRIBA_LIBERADA + getFechaActual();
+			mensaje = TECLA_ARRIBA_LIBERADA;
 			sonic->enviarAServer(hiloEnviar, TECLA_ARRIBA_LIBERADA);
 			teclaArriba = false;
 			sonic->dejarDeSaltar();
 			break;}
 		case SDLK_DOWN:{
-			mensaje = TECLA_ABAJO_LIBERADA + getFechaActual();
+			mensaje = TECLA_ABAJO_LIBERADA;
 			sonic->enviarAServer(hiloEnviar, TECLA_ABAJO_LIBERADA);
 			teclaAbajo = false;
 			break;}
 		case SDLK_LEFT:{
-			mensaje = TECLA_IZQUIERDA_LIBERADA + getFechaActual();
+			mensaje = TECLA_IZQUIERDA_LIBERADA;
 			sonic->enviarAServer(hiloEnviar, TECLA_IZQUIERDA_LIBERADA);
 			teclaIzquierda = false;
 			break;}
 		case SDLK_RIGHT:{
-			mensaje = TECLA_DERECHA_LIBERADA + getFechaActual();
+			mensaje = TECLA_DERECHA_LIBERADA;
 			sonic->enviarAServer(hiloEnviar, TECLA_DERECHA_LIBERADA);
 			teclaDerecha = false;
 			break;}
 		case SDLK_a:{
-			mensaje = TECLA_CORRER_LIBERADA + getFechaActual();
+			mensaje = TECLA_CORRER_LIBERADA;
 			sonic->enviarAServer(hiloEnviar, TECLA_CORRER_LIBERADA);
 			teclaCorrer = false;
 			break;}

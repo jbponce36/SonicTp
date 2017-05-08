@@ -40,11 +40,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !salir ){
-		//Deberia mostrar una pantalla freezada y no dejar mover el soni hasta que no ser recibe le mensaje "[INICIAR JUEGO]"
-
-
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
-
 
 		administrarTeclas(&controlador, sonic, hiloEnviar);
 		controlDeMensajes(sonic, hiloRecibir, vista, camara);
@@ -59,9 +55,6 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 		{
 			SDL_Delay(TICKS_POR_FRAME - delta);
 		}
-
-		//Aca no pasa nunca a salir en true como para que termine el hiloJuego
-
 	}
 
 	delete camara;
@@ -92,7 +85,7 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	while ((mensaje) != ("Sin elementos"))
 	{
-		cout << "Control mensaje: " << mensaje << endl;
+		//cout << "Control mensaje: " << mensaje << endl;
 		if(mensaje.substr(1,1) == "x")
 		{
 			mensajePosicion msj;
@@ -104,12 +97,17 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 				}
 				catch (out_of_range &e)
 				{
-					//Significa que el id que me enviaron no existe. Es mayor a los que hay. Agrego un nuevo Sonic.
-					Personaje *nuevoSonic = new Personaje(msj.id, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
+					cout << "Error: El id que me enviaron no existe. Id: " << msj.id << endl;
+					//Significa que el id que me enviaron no existe.
+					/*Personaje *nuevoSonic = new Personaje(msj.id, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
 					nuevoSonic->posicionarseConAnimacion(msj.posX, msj.posY, msj.animacion, msj.indiceAnimacion);
-					sonics->push_back(nuevoSonic);
+					sonics->push_back(nuevoSonic);*/
 				}
-
+			}
+			else
+			{
+				//Recibi mi propia posicion en el server. La corrijo.
+				sonic->posicionarseEn(msj.posX, msj.posY);
 			}
 
 			//cout << msj.id << " " << msj.posX << " " << msj.posY  << " " << msj.animacion << " " << msj.indiceAnimacion << endl;
@@ -125,9 +123,14 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 			parsearMensajeCamara(nuevoX, nuevoY, mensaje);
 			camara->actualizarXY(nuevoX, nuevoY);
 		}
-		else
+		else if (mensaje.compare("Faltalatido"))
 		{
+			this->salir = true;
+
+		}
+		else{
 			//Otros mensajes
+			cout << mensaje << endl;
 		}
 
 
@@ -147,7 +150,7 @@ void Control::parsearMensajeCamara(int &xDest, int &yDest, std::string mensaje)
 	xDest = atoi(posX.c_str());
 	yDest = atoi(posY.c_str());
 
-	cout << "Camara parseo: x: " << xDest << " y: " << yDest << endl;
+	//cout << "Camara parseo: x: " << xDest << " y: " << yDest << endl;
 }
 
 

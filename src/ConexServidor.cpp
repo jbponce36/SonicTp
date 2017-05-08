@@ -160,7 +160,10 @@ void ConexServidor::setCantclientes(int CantClientes)
 	this->cantclientes = CantClientes;
 }
 
-
+int ConexServidor::getCantMaximaClientes()
+{
+	return this->cantMaximaClientes;
+}
 
 int ConexServidor::recibir(int skt, char *buf, int size)
 {
@@ -245,7 +248,9 @@ int ConexServidor::enviarAsincronico(int socket, char *buf, int size){
 	bool socketValido = true;
 	while(enviado < size && socketValido)
 	{
+		pthread_mutex_lock(&mutex);
 		envioParcial = send(socket,buf, size, MSG_DONTWAIT);
+		pthread_mutex_unlock(&mutex);
 		if(envioParcial == 0){
 		socketValido = false;
 		//this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el"+toString(),1);
@@ -284,7 +289,9 @@ int ConexServidor::enviar(int socket, char *buf, int size){
 	bool socketValido = true;
 	while(enviado < size && socketValido)
 	{
+		pthread_mutex_lock(&mutex);
 		envioParcial = send(socket,buf, size, MSG_NOSIGNAL);
+		pthread_mutex_unlock(&mutex);
 		if(envioParcial == 0){
 		socketValido = false;
 		//this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el"+toString(),1);
@@ -302,7 +309,7 @@ int ConexServidor::enviar(int socket, char *buf, int size){
 			enviado += envioParcial;
 		}
 		//this->log->addLogMessage("[ENVIAR] Terminado",2);
-		cout<<"[ENVIAR] Terminado"<<endl;
+		//cout<<"[ENVIAR] Terminado"<<endl;
 		//return status;
 		}
 		if (socketValido == false)

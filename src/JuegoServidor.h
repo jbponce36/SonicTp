@@ -18,6 +18,7 @@
 #include "Hilo.h"
 #include "Hiloenviar.h"
 #include "Hilorecibir.h"
+#include "HilolatidoSer.h"
 #include <vector>
 #include <map>
 
@@ -38,13 +39,16 @@ private:
 	int altoEscenario;
 
 public:
-	JuegoServidor(ConexServidor *server, std::vector<Hiloenviar*> hiloEnviar, std::vector<Hilorecibir*> hiloRecibir, Logger *log);
+	JuegoServidor(ConexServidor *server, std::vector<Hiloenviar*> hiloEnviar,
+			std::vector<Hilorecibir*> hiloRecibir, Logger *log);
 	virtual ~JuegoServidor();
 	void iniciarJuego();
 	void iniciarHiloJuego();
 	void terminarHiloJuego();
 	void agregarJugador(int id);
 	void enviarATodosLosClientes(std::string mensaje);
+	int obtenerIdLibre();
+	void reconectar(int socket);
 
 private:
 	static void* iniciarJuegoServidor(void *datos);

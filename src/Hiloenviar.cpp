@@ -9,8 +9,8 @@
 
 namespace std {
 
-Hiloenviar::Hiloenviar() : continuar(true){
-
+Hiloenviar::Hiloenviar(){
+	parametros.continuar = true;
 }
 
 Hiloenviar::~Hiloenviar() {
@@ -66,7 +66,7 @@ void *Hiloenviar::serverEnviar(void *args)
 
 void Hiloenviar::Join()
 {
-	continuar = false;
+	parametros.continuar = false;
 	h.Join();
 }
 
@@ -85,37 +85,37 @@ void Hiloenviar::iniciarHiloQueue(){
 void* Hiloenviar::serverEnviarQueue(void* args){
 
 	SerParametros *parametros = (SerParametros*) args;
-		bool salir = false;
-		while(salir == false){
-			int result = 1;
-			if(parametros->pack.estaVacia() != true)
-			{
-				parametros->bufferQ = parametros->pack.obtenerElementoDelaCola();
 
-				cout<<"tamanio buffer  :"<<sizeof(parametros->bufferQ)<<endl;
-				cout<<strlen(parametros->bufferQ)<<endl;
+	while(parametros->continuar == true){
+		int result = 1;
+		if(parametros->pack.estaVacia() != true)
+		{
+			parametros->bufferQ = parametros->pack.obtenerElementoDelaCola();
 
-				result = parametros->server->enviar(parametros->skt,parametros->bufferQ,strlen(parametros->bufferQ));
-				//result = 20;
+			//cout<<"tamanio buffer  :"<<sizeof(parametros->bufferQ)<<endl;
+			//cout<<strlen(parametros->bufferQ)<<endl;
+
+			result = parametros->server->enviar(parametros->skt,parametros->bufferQ,strlen(parametros->bufferQ));
 
 
-				if (result>0){
-					cout<<"server envio: "<<parametros->bufferQ<<" envio n° de datos:"<<result<<endl;
-					parametros->pack.eliminarElPrimetoDeLaCola();
-				}
-
-				if (result==0){
-					printf("El cliente se desconecto. \n");
-					salir = true;
-				}
-
-				if (result==-1){
-					printf("El cliente se desconecto. \n");
-					salir = true;
-				}
-				parametros->bufferQ = "";
+			if (result>0){
+				//cout<<"server envio: "<<parametros->bufferQ<<" envio n° de datos:"<<result<<endl;
+				parametros->pack.eliminarElPrimetoDeLaCola();
 			}
+
+			if (result==0){
+				printf("El cliente se desconecto. \n");
+				parametros->continuar = false;
+			}
+
+			if (result==-1){
+				printf("El cliente se desconecto. \n");
+				parametros->continuar = false;
+			}
+
+			parametros->bufferQ = "";
 		}
+	}
 
 	printf("Se termino el thread hilo Enviar. \n");
 }
@@ -123,5 +123,11 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 void Hiloenviar::enviarDato(char* dato){
 	parametros.pack.agregar(dato);
 }
+
+bool Hiloenviar::continua()
+{
+	return parametros.continuar;
+}
+
 }
 /* namespace std */
