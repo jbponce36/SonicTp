@@ -12,6 +12,7 @@
 #include "Hilo.h"
 #include "Paquete.h"
 #include  "AdministradorLatidoCliente.h"
+#include "HilolatidoSer.h"
 
 class HiloEnviarCliente {
 private:
