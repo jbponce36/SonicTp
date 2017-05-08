@@ -14,9 +14,6 @@ Camara::Camara(int posicionx, int posiciony, int alto, int ancho, std::map<int, 
 void Camara::actualizar(Personaje *sonic, int maximoAncho, int maximoAlto){
 //NO SE USA!
 
-	/*A la camara la arrastran los sonics. El que llegue al margen la arrastra.
-	 Si hay un Sonic atras, se queda quieta e impide avanzar al otro Sonic.*/
-
 //Fija en el sonic
 //this->camaraImagen->x = ( sonic->getPosicionX() + sonic->getAncho() / 2 ) - camaraImagen->w / 2;
 
@@ -55,7 +52,7 @@ void Camara::actualizar(int maximoAncho, int maximoAlto){
 	 Si hay un Sonic atras, se queda quieta e impide avanzar al otro Sonic.*/
 
 	int posicionMax = 0, velocidadDelMax = 0, posicionMin = maximoAncho, velocidadDelMin = 0;
-	bloqueada = false;
+	//bloqueada = false;
 	bool bloqueadaADerecha = false, bloqueadaAIzquierda = false;
 	std::map<int, Personaje*>::iterator sonic;
 	for(sonic = sonics->begin();sonic != sonics->end();sonic++){
@@ -69,9 +66,9 @@ void Camara::actualizar(int maximoAncho, int maximoAlto){
 				velocidadDelMin = (*sonic).second->getVelocidadX();
 			}
 		}
-		if ((*sonic).second->bloqueaCamara(camaraImagen)){
+		/*if ((*sonic).second->bloqueaCamara(camaraImagen)){
 			bloqueada = true;
-		}
+		}*/
 		if ((*sonic).second->bloqueaCamaraADerecha(camaraImagen)){
 			bloqueadaADerecha = true;
 		}
@@ -83,31 +80,48 @@ void Camara::actualizar(int maximoAncho, int maximoAlto){
 	if(velocidadDelMax < 0)
 		velocidadDelMax = -velocidadDelMax;
 
-	if(velocidadDelMin < 0)
-			velocidadDelMin = -velocidadDelMin;
 
 	//Si el sonic de mayor posicion llega al margen y no hay nadie bloqueando, arrastra la camara
 	if(posicionMax > (camaraImagen->x + camaraImagen->w - margen))
 	{
-		/*if(!bloqueadaAIzquierda)
-			this->camaraImagen->x += velocidadDelMax*0.04;
-		else if(!bloqueadaADerecha)
-			this->camaraImagen->x += velocidadDelMin*0.04;*/
-
-
-		if(!bloqueada)
+		if(posicionMin > (camaraImagen->x + margen))
+		{
 			this->camaraImagen->x += posicionMax - (camaraImagen->x + camaraImagen->w) + margen;
+		}
+		else //El minimo esta en el costado izquierdo
+		{
+			if(velocidadDelMin == 0)
+			{
+				if (!bloqueadaAIzquierda)
+					this->camaraImagen->x += velocidadDelMax*0.04;
+			}
+			else
+			{
+				this->camaraImagen->x += velocidadDelMin*0.04;
+			}
+		}
+
+
+		//if(!bloqueada)
+			//this->camaraImagen->x += posicionMax - (camaraImagen->x + camaraImagen->w) + margen;
 	}
-	else if(posicionMax < (camaraImagen->x + margen))
+	else if(posicionMin < (camaraImagen->x + margen))
 	{
-		/*if (!bloqueadaADerecha)
+		if(velocidadDelMax == 0)
+		{
+			if (velocidadDelMin < 0) //Quiere ir a la izquierda
+				if(!bloqueadaADerecha)
+					this->camaraImagen->x += velocidadDelMin*0.04;
+		}
+		else
+		{
 			this->camaraImagen->x -= velocidadDelMax*0.04;
-		else if(!bloqueadaAIzquierda)
-			this->camaraImagen->x -= velocidadDelMin*0.04;*/
+		}
 
-
-		this->camaraImagen->x -= (camaraImagen->x + margen) - posicionMax;
+		//this->camaraImagen->x -= (camaraImagen->x + margen) - posicionMax;
 	}
+
+
 
 	//Si llega a los limites del escenario la detiene
 	if( this->camaraImagen->x > maximoAncho - this->camaraImagen->w )

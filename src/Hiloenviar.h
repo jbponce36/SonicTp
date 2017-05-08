@@ -12,6 +12,8 @@
 #include "ConexCliente.h"
 #include "ProcesadorCliente.h"
 #include "Paquete.h"
+#include "Definiciones.h"
+#include <string>
 
 
 namespace std {
@@ -25,6 +27,7 @@ public:
 	void IniciarHilo(/*struct parametrosEnviar *parametros*/);
 	static void * serverEnviar(void *args);
 	struct SerParametros{
+		std::string idCliente;
 		ConexServidor *server;
 		char *buffer;
 		int skt;
