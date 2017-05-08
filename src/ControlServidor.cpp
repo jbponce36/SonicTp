@@ -97,12 +97,18 @@ void ControlServidor::administrarTeclasServidor()
 			{
 				//MENSAJE DE DESCONEXION DE UN JUGADOR
 				int idDesconectado = atoi(mensaje.substr(3,1).c_str());
-
-				sonics->at(idDesconectado)->congelar();
+				cout << "Id desconectado: " << idDesconectado << endl;
 
 				//Detengo la ejecucion de los hilos
 				(*pos)->parametros.continuar = false;
 				hilosEnviar->at(idDesconectado - 1)->parametros.continuar = false;
+				try{
+					sonics->at(idDesconectado)->congelar();
+				}
+				catch(std::out_of_range &e)
+				{
+					cout << "Oh no!" << endl;
+				}
 			}
 			else
 			{

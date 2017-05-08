@@ -13,6 +13,8 @@
 #include "ProcesadorCliente.h"
 #include "Paquete.h"
 #include "Posicion.h"
+#include "Definiciones.h"
+#include <string>
 
 namespace std {
 
@@ -25,6 +27,7 @@ public:
 	void IniciarHilo(/*struct Serparametros *parametros*/);
 	static void * serverRecibir(void *args);
 	struct Serparametros{
+		std::string idCliente;
 		ConexServidor *server;
 		int skt;
 		char *buffer;

@@ -76,7 +76,11 @@ int main(int argc, char *argv[]) {
 			ostringstream oss;
 			oss<< MENSAJE_ID <<id << maxConexiones;
 
+			ostringstream ossId;
+			ossId << id;
+
 			Hilorecibir *hrecibir = new Hilorecibir();
+			hrecibir->parametros.idCliente = ossId.str();
 			hrecibir->parametros.server = server;
 			hrecibir->parametros.skt = skt;
 			hrecibir->parametros.continuar = true;
@@ -84,6 +88,7 @@ int main(int argc, char *argv[]) {
 			hrRecibir.push_back(hrecibir);
 
 			Hiloenviar *henviar = new Hiloenviar();
+			henviar->parametros.idCliente = ossId.str();
 			henviar->parametros.server = server;
 			henviar->parametros.skt = skt;
 

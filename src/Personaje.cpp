@@ -180,6 +180,15 @@ void Personaje::posicionarseEn(int x, int y)
 void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, int indiceAnimacion)
 {
 	posicionarseEn(x, y);
+
+	std::string animacionAnterior = animacionActual->obtenerNombre();
+	if(animacionAnterior.compare(animacion) == 0)
+	{
+		return;
+	}
+
+	animacionActual->detener();
+
 	if(animacion.compare(ANIMACION_QUIETO_DERECHA) == 0){
 		animacionActual = &animacionQuietoDer;
 	}
@@ -207,7 +216,7 @@ void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, in
 	else if(animacion.compare(ANIMACION_CONGELADO) == 0){
 		animacionActual = &animacionCongelado;
 	}
-	//animacionActual->cambiarSprite(indiceAnimacion);
+
 	animacionActual->comenzar();
 }
 
