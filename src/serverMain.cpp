@@ -41,6 +41,8 @@ int main(int argc, char *argv[]) {
 	int puerto = jsonSer->CargarPuertoServidor();
 	int maxConexiones = jsonSer->CargarCantClientes();
 
+	cout<<"Max cant: "<<maxConexiones<<endl;
+
 	if(server->crear() == false){
 		server->cerrar();
 		delete server;
