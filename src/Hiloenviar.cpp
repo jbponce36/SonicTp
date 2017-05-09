@@ -39,7 +39,7 @@ void *Hiloenviar::serverEnviar(void *args)
 	bool salir = false;
 	while(salir == false){
 		int result = 1;
-			while (result>0){
+			//while (result>0){
 				if(parametros->buffer != "")
 				{
 
@@ -60,7 +60,7 @@ void *Hiloenviar::serverEnviar(void *args)
 				}
 				parametros->buffer = (char*)"";
 				}
-			}
+			//}
 		}
 }
 

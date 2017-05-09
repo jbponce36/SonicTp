@@ -59,8 +59,8 @@ int main(int argc, char *argv[]) {
 	switch (opcion){
 		case 0:{
 
-			int skt = cliente->conectar(/*"192.168.1.5"*/"127.0.0.1",8080);
-
+			//int skt = cliente->conectar("127.0.0.1",8080);
+			int skt = cliente->conectar("192.168.1.5",8080);
 
 			if(skt <0){
 				cout<<"El cliente no se conecto"<<endl;

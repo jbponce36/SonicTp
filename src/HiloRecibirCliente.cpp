@@ -36,22 +36,19 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaPaquete);
 	//alc->IniciarHilo();
-    alc->setconexcliente(alc->parametros.cliente);
-	alc->setIniciar(false);
+    //alc->setconexcliente(alc->parametros.cliente);
+	//alc->setIniciar(false);
     //parametros->cliente->recibir(buffer,strlen(buffer));
 	cout<<"[HILO RECIBIR CLIENTE] [CLIENTE RECIBIR] "<<endl;
 
-
+	char buffer[100];
 	//parametros->alc->actualizarTiempoLatido();
 	while(parametros->continuar){
-		char buffer[100];
-		int result = 1;
 
-
-		while (result>0){
+		//while (result>0){
 			    memset(buffer, '\0', sizeof(buffer));
 
-				result = parametros->cliente->recibir(buffer,LARGO_MENSAJE_POSICION_SERVIDOR);
+				int result = parametros->cliente->recibir(buffer,LARGO_MENSAJE_POSICION_SERVIDOR);
 				//Cuando haya separadores, cambiarlo otra vez por sizeof(buffer) a esto--^
 
 				//Cuando recibe estoy vivo actualiza el tiempo de latido
@@ -96,7 +93,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				//cargamos los datos de todos los personajes que vienen desde el servidor, estos datos deben actualizar
 				//la vista, etc
 
-		}
+		//}
 
 
 	 }

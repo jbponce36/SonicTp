@@ -44,18 +44,20 @@ void *HilolatidoSer::serverEnviarRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
 	char buffer[10] = "ESTOYVIVO";
 
+	time_t start_t,end_t;
 
 	//int status = parametros->server->enviarAsincronico(parametros->skt,buffer,strlen(buffer));
 
 	bool salir = false;
 	while (parametros->continuar){
 		int result = 1;
-		while (result>0){
+	//	while (result>0){
 
-			int status = parametros->server->enviarAsincronico(parametros->skt,buffer,strlen(buffer));
+			//int status = parametros->server->enviarAsincronico(parametros->skt,buffer,strlen(buffer));
+            int status = parametros->cliente->enviar(buffer,strlen(buffer));
 
 			if (status>0){
-				cout<<"server envio: "<<buffer<< " a " << parametros->skt <<endl;
+				cout<<"Cliente envio: "<<buffer<<endl;
 			}
 
 			if(status <= 0){
@@ -63,12 +65,10 @@ void *HilolatidoSer::serverEnviarRecibir(void *args){
 				parametros->continuar = false;
 			}
 
-			sleep(5);
-     	}
+			sleep(3);
+     	//}
 	}
 }
 
-void HilolatidoSer::enviarDato(char* dato){
-	parametros.pack.agregar(dato);
-}
+
 } /* namespace std */

@@ -8,7 +8,8 @@
 #ifndef HILOLATIDOSER_H_
 #define HILOLATIDOSER_H_
 #include "Hilo.h"
-#include "ConexServidor.h"
+
+#include "ConexCliente.h"
 #include "Paquete.h"
 
 namespace std {
@@ -24,7 +25,8 @@ public:
 	static void * serverEnviarRecibir(void *args);
 
 	struct Serparametros{
-			ConexServidor *server;
+			//ConexServidor *server;
+			ConexCliente  *cliente;
 			int skt;
 			Paquete pack;
 			char *bufferQ;
@@ -34,7 +36,7 @@ public:
 	Hilo gethilo();
 
 	void setH(Hilo);
-	void enviarDato(char* dato);
+
 private:
 		Hilo h;
 };

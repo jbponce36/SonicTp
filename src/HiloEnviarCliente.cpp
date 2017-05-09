@@ -26,11 +26,14 @@ void HiloEnviarCliente::IniciarHilo(/*struct parametrosEnviar *parametros*/){
 }
 void *HiloEnviarCliente::clienteEnviar(void *args){
 	SerParametros *parametros = (SerParametros*) args;
+	vector<HilolatidoSer*> hlser;
+	vector<HilolatidoSer*>::iterator poshlser;
+
 	    bool salir = false;
 
 	    while(salir == false){
 			int result = 1;
-				while (result>0){
+				//while (result>0){
 
 					//chequear el ultimo latido, si paso del tiempo salir
 					/*if (parametros->alc->pasoDemasiadoTiempoDelUltimoLatido()){
@@ -39,12 +42,15 @@ void *HiloEnviarCliente::clienteEnviar(void *args){
 						printf("Paso demasiado tiempo desde el ultimo latido, el cliente se desconectara \n");
 					}*/
 
+
 					if(parametros->buffer != "")
 					{
 
 						result = parametros->cliente->enviar(parametros->buffer,strlen(parametros->buffer) );
 						cout<<"::::::::::::::::::::::::::"<<result<<endl;
 						if (result>0){
+
+
 							cout<<"server envio: "<<parametros->buffer<<endl;
 						}
 
@@ -60,13 +66,9 @@ void *HiloEnviarCliente::clienteEnviar(void *args){
 						parametros->buffer = (char*)"";
 					}
 				}
-		}
 
-		/*if (parametros->alc->pasoDemasiadoTiempoDelUltimoLatido()){
-			printf("Se desconectara el cliente por falta de latidos \n");
-			parametros->cliente->cerrar();
-		}*/
-		//parametros->cliente->cerrar();
+
+
 }
 
 void HiloEnviarCliente::Join()
