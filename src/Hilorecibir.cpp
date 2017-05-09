@@ -40,11 +40,10 @@ void *Hilorecibir::serverRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
 
 	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaDeMensajes);
-	alc->actualizarTiempoLatido();
-	alc->setIniciar(true);
-	alc->IniciarHilo();
-
-	alc->setCadena("ESTOYVIVO");
+	alc->setidCliente(parametros->idCliente);
+    alc->IniciarHiloServidorCliente();
+    alc->actualizarTiempoLatido();
+	//alc->setCadena("ESTOYVIVO");
 	while(parametros->continuar){
 		char buffer[40];
 		int result = 1;

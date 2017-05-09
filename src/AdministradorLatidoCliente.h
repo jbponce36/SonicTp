@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "Hilo.h"
 #include "Paquete.h"
+#include "Definiciones.h"
 namespace std {
 
 class AdministradorLatidoCliente {
@@ -22,6 +23,7 @@ private:
 	Paquete *colaPaquete;
 	Hilo h;
 	bool iniciar;
+	std::string idCliente;
 	std::string cadena;
 public:
 
@@ -34,7 +36,9 @@ public:
 	void IniciarHilo();
 	void IniciarHiloServidorCliente();
 	static void* iniciarContadorServidorCliente(void *ars);
+	std::string getidCliente();
 
+	void setidCliente(std::string id);
 	static void* iniciarContador(void *ars);
 	struct SerParametros{
 		ConexCliente *cliente;

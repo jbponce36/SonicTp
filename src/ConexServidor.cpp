@@ -138,7 +138,7 @@ int ConexServidor::aceptarcliente()
 			//printf("Cliente aceptado \n");
 			printf("Cantidad de clientes conectados:%d \n", this->cantclientes);
 			this->listaClientes.push_back(fdCliente);
-
+            this->setCantclientes(cantclientes);
 			this->setListaClientes(listaClientes);
 		}
     }
@@ -169,6 +169,8 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 {
 	this->log->addLogMessage("[RECIBIR] Iniciado",2);
 	int bytes = recv(skt, buf, size, MSG_NOSIGNAL);
+	//int bytes = recv(skt, buf, size, MSG_DONTWAIT);
+
 	//recv devuelve 0 si el cliente se desconecto satisfactoriamente
 	//devuelve -1 si ubo algun error
 	//en ambos casos hay que restar la cantidad de clientes
@@ -178,6 +180,7 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 	if (bytes <= 0){
 		this->log->addLogMessage("[RECIBIR] Error",2);
 		this->cantclientes = this->cantclientes -1;
+		this->setCantclientes(cantclientes);
 		this->listaClientes.remove(fdCliente);
 		this->setListaClientes(listaClientes);
 		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
@@ -290,7 +293,10 @@ int ConexServidor::enviar(int socket, char *buf, int size){
 	while(enviado < size && socketValido)
 	{
 		pthread_mutex_lock(&mutex);
-		envioParcial = send(socket,buf, size, MSG_NOSIGNAL);
+		//cout<<":::::::::"<<"tendria que entrar en send"<<endl;
+		envioParcial = send(socket,buf, size,MSG_DONTWAIT);
+		//cout<<":::::::::"<<"sali de send"<<endl;
+		//cout<<":::::::::"<<envioParcial<<endl;
 		pthread_mutex_unlock(&mutex);
 		if(envioParcial == 0){
 		socketValido = false;
