@@ -41,13 +41,15 @@ int main(int argc, char *argv[]) {
 	//char *clientConfig = getJson(argc, argv);
 	char *archivoLog=(char*)"configuracion/log.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "CLIENTE");
-	char* hostname = (char*)"127.0.0.1";
-	int puerto = 8080;
+
 
 	ConexCliente *cliente = new ConexCliente(log);
 	cliente->crear();
-	//parseadorJsonCli *parseadorCliente = new parseadorJsonCli();
-	//parseadorCliente->parsearArchivo(cliente->cargarNombreArchivo());
+	parseadorJsonCli *parseadorCliente = new parseadorJsonCli(log);
+	parseadorCliente->parsearArchivo(cliente->cargarNombreArchivo());
+
+	const char* hostname = parseadorCliente->CargarIPCliente();  //(char*)"127.0.0.1";
+	int puerto =  parseadorCliente->CargarPuertoCliente(); // 8080;
 
 	JuegoCliente juego = JuegoCliente(cliente, log);
 

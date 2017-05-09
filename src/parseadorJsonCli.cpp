@@ -12,9 +12,11 @@
 
 namespace std {
 
-parseadorJsonCli::parseadorJsonCli() {
+parseadorJsonCli::parseadorJsonCli(Logger *log ) {
 	// TODO Auto-generated constructor stub
 	this->raiz = NULL;
+	this->log = log;
+	this->log->setModulo("PARSEADOR CLI");
 
 }
 
