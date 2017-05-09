@@ -85,7 +85,7 @@ void Hiloenviar::iniciarHiloQueue(){
 void* Hiloenviar::serverEnviarQueue(void* args){
 
 	SerParametros *parametros = (SerParametros*) args;
-
+	time_t tiempo;
 	while(parametros->continuar == true){
 		int result = 1;
 		if(parametros->pack.estaVacia() != true)
@@ -94,9 +94,7 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 
 			//cout<<"tamanio buffer  :"<<sizeof(parametros->bufferQ)<<endl;
 			//cout<<strlen(parametros->bufferQ)<<endl;
-
 			result = parametros->server->enviar(parametros->skt,parametros->bufferQ,strlen(parametros->bufferQ));
-
 
 			if (result>0){
 				//cout<<"server envio: "<<parametros->bufferQ<<" envio n° de datos:"<<result<<endl;

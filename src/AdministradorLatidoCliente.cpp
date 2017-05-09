@@ -55,20 +55,27 @@ void* AdministradorLatidoCliente::iniciarContadorServidorCliente(void *ars){
 	diff_t = fabs(diff_t);
 	//cout<<"CADENAAA"<<endl;
 	//cout<<alc->cadena<<endl;
-	bool comenzo = true;
-	while(comenzo){
-		while(diff_t < 6.0){
+	//bool comenzo = true;
+	//while(comenzo){
+	while(diff_t < 6.0){
 			 time(&start_t);
 
 			 diff_t = difftime(alc->end_t,start_t);
 			 diff_t = fabs(diff_t);
+			 //cout<<diff_t<<endl;
 
 	}
 	 printf("Se desconecto al cliente por falta de latidos \n");
-	 //alc->colaPaquete->agregar("Servidor Desconectado");
-	 comenzo = false;
 
-}
+	 char buffer[40];
+	 std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + alc->idCliente;
+	 strcpy(buffer, msjDesconexion.c_str());
+	 alc->colaPaquete->agregar(buffer);
+
+	 //alc->colaPaquete->agregar("Servidor Desconectado");
+	// comenzo = false;
+
+//}
 }
 ConexCliente* AdministradorLatidoCliente::getconexcliente(){
 	this->cliente;
@@ -99,8 +106,9 @@ AdministradorLatidoCliente *alc = (AdministradorLatidoCliente*)arg;
 	//cout<<"CADENAAA"<<endl;
 	//cout<<alc->cadena<<endl;
 bool comenzo = true;
-while(comenzo){
+while((comenzo)){
 	if(alc->cadena.compare("INICIAR JUEGO") == 0){
+
 		while(diff_t < 6.0){
 			 time(&start_t);
 
@@ -112,6 +120,7 @@ while(comenzo){
 		 alc->colaPaquete->agregar("Servidor Desconectado");
 		 comenzo = false;
 	}
+
 }
  // printf("Se desconectara el cliente por falta de latidos \n");
 
@@ -131,5 +140,11 @@ Hilo AdministradorLatidoCliente::gethilo(){
 void AdministradorLatidoCliente::setH(Hilo hil){
 	this->h = hil;
 }
+std::string AdministradorLatidoCliente::getidCliente(){
+	return this->idCliente;
+}
 
+void AdministradorLatidoCliente::setidCliente(std::string id){
+	this->idCliente = id;
+}
 } /* namespace std */
