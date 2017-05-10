@@ -36,14 +36,19 @@ void AdministradorLatidoCliente::actualizarTiempoLatido(){
 }
 void AdministradorLatidoCliente::IniciarHilo(){
 
-	Hilo *hilo = new Hilo(/*log*/);
+	//Hilo *hilo = new Hilo(/*log*/);
 
-	hilo->Create((void *)AdministradorLatidoCliente::iniciarContador ,  (void *)this);
-
+	//hilo->Create((void *)AdministradorLatidoCliente::iniciarContador ,  (void *)this);
+	Hilo hilo = Hilo(/*log*/);
+	hilo.Create((void *)AdministradorLatidoCliente::iniciarContador ,  (void *)this);
+	this->setH(hilo);
 }
 void AdministradorLatidoCliente::IniciarHiloServidorCliente(){
-	Hilo *hilo = new Hilo(/*log*/);
-	hilo->Create((void *)AdministradorLatidoCliente::iniciarContadorServidorCliente ,  (void *)this);
+	//Hilo *hilo = new Hilo(/*log*/);
+	//hilo->Create((void *)AdministradorLatidoCliente::iniciarContadorServidorCliente ,  (void *)this);
+	Hilo hilo = Hilo(/*log*/);
+	hilo.Create((void *)AdministradorLatidoCliente::iniciarContadorServidorCliente ,  (void *)this);
+	this->setH(hilo);
 }
 void* AdministradorLatidoCliente::iniciarContadorServidorCliente(void *ars){
 	AdministradorLatidoCliente *alc = (AdministradorLatidoCliente*)ars;

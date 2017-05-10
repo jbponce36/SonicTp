@@ -64,23 +64,17 @@ void *Hilorecibir::serverRecibir(void *args){
 
 				}
 
-				if (result==0){
+				if (result<=0){
 					printf("El cliente se desconecto satisfactoriamente. \n");
 					parametros->continuar = false;
 
 					std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + parametros->idCliente;
 					strcpy(buffer, msjDesconexion.c_str());
 					parametros->colaDeMensajes.agregar(buffer); //Asi ControlServidor lo congela
+					alc->gethilo().Join();
 				}
 
-				if (result==-1){
-					printf("El cliente se desconecto satisfactoriamente. \n");
-					parametros->continuar = false;
 
-					std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + parametros->idCliente;
-					strcpy(buffer, msjDesconexion.c_str());
-					parametros->colaDeMensajes.agregar(buffer); //Asi ControlServidor lo congela
-				}
 
 		}
 	}
