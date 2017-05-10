@@ -29,7 +29,8 @@
 Si no se agrega ese parámetro, o es incorrecto, por default toma el valor 2.
 Al ejecutar el cliente y el servidor, al iniciar pide ingresar el nombre del archivo de configuración de cada uno.
 El nombre de los archivos son :
-      configuracion/servidor.json
-      configuracion/cliente.json
+
+    configuracion/servidor.json
+    configuracion/cliente.json
 
 Si se ingresa mal el nombre de los archivos, el programa toma uno por defecto.
