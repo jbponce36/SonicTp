@@ -1,4 +1,4 @@
-#  Taller de programación 1: 2017 1er Cuatrimestre, 2er tp.
+#  Taller de programación 1: 2017 1er Cuatrimestre, 2do tp.
 #  Integrantes 
     Añez Johana 93042,
     Dimasi Patricia 79478,
