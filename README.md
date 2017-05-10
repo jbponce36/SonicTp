@@ -16,14 +16,14 @@
     pthread, libreria standard de ubuntu
 # Compilación por consola
     servidor:
-       g++  src/serverMain.cpp src/Textura.cpp src/VistaSDL.cpp src/Circulo.cpp src/HiloEnviarCliente.cpp src/jentidades.cpp        src/Logger.cpp src/ConstructorEntidades.cpp src/Hilorecibir.cpp src/jventana.cpp src/AdministradorLatidoCliente.cpp src/Personaje.cpp src/jcuadrado.cpp src/ConexCliente.cpp src/ProcesadorCliente.cpp src/VariableCondicional.cpp src/Posicion.cpp src/jpruebas.cpp src/jconfiguracion.cpp src/Animacion.cpp src/ConexServidor.cpp src/Control.cpp src/Camara.cpp src/Hilo.cpp src/Hiloenviar.cpp src/parseadorJsonSer.cpp src/HilolatidoSer.cpp src/jservidor.cpp src/Rectangulo.cpp src/capas.cpp src/jcirculo.cpp src/HiloRecibirCliente.cpp src/parseadorJson.cpp src/ControlServidor.cpp src/jescenario.cpp src/Mensaje.cpp src/Paquete.cpp src/Sockets.cpp src/HiloConexion.cpp src/ControladorTeclas.cpp src/parseadorJsonCli.cpp src/jescenarioJuego.cpp src/jrectangulo.cpp src/Hilolatidocliente.cpp src/dimensiones.cpp src/JuegoServidor.cpp src/JuegoCliente.cpp src/Entidad.cpp -w -g -O0 -Wall -std=c++11 -lpthread -lSDL2 -lSDL2_image -ljansson -o servidor
+       make servidor
 
     
     cliente:
-    g++  src/Textura.cpp src/VistaSDL.cpp src/Circulo.cpp src/HiloEnviarCliente.cpp src/jentidades.cpp src/Logger.cpp src/ConstructorEntidades.cpp src/Hilorecibir.cpp src/jventana.cpp src/AdministradorLatidoCliente.cpp src/clientMain.cpp src/Personaje.cpp src/jcuadrado.cpp src/ConexCliente.cpp src/ProcesadorCliente.cpp src/VariableCondicional.cpp src/Posicion.cpp src/jpruebas.cpp src/jconfiguracion.cpp src/Animacion.cpp src/ConexServidor.cpp src/Control.cpp src/Camara.cpp src/Hilo.cpp src/Hiloenviar.cpp src/parseadorJsonSer.cpp src/HilolatidoSer.cpp src/jservidor.cpp src/Rectangulo.cpp src/capas.cpp src/jcirculo.cpp src/HiloRecibirCliente.cpp src/parseadorJson.cpp src/ControlServidor.cpp src/jescenario.cpp src/Mensaje.cpp src/Paquete.cpp src/Sockets.cpp src/HiloConexion.cpp src/ControladorTeclas.cpp src/parseadorJsonCli.cpp src/jescenarioJuego.cpp src/jrectangulo.cpp src/Hilolatidocliente.cpp src/dimensiones.cpp src/JuegoServidor.cpp src/JuegoCliente.cpp src/Entidad.cpp -w -g -O0 -Wall -std=c++11 -lpthread -lSDL2 -lSDL2_image -ljansson -o cliente
-     
+        make cliente
 # Ejecución
     ./servidor
     ./cliente
+    
 1 es el nivel del logger, puede ser 2 o 3.
 Si no se agrega ese parámetro, o es incorrecto, por default toma el valor 2.
