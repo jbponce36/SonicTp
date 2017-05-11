@@ -115,7 +115,11 @@ int main(int argc, char *argv[]) {
 	juego->iniciarHiloJuego();
 
 	printf("Empieza la partida \n");
-	sleep(7); //Le da tiempo al ultimo jugador en conectarse a inicializar su juego.
+	sleep(4); //Le da tiempo al ultimo jugador en conectarse a inicializar su juego.
+
+	//TODO: Nota chicos! Si se les desconectan todos los clientes por falta de latidos ni bien empieza la partida,
+	//cambienle el sleep(3) por otro numero mayor o menor dependiendo la cant de clientes.
+
 	server->comenzarPartida(hrEnviar);
 
 

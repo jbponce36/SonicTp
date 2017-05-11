@@ -14,16 +14,23 @@ JuegoCliente::JuegoCliente()
 }
 
 JuegoCliente::~JuegoCliente() {
-	delete vista;
-	delete control;
+	if(vista != NULL)
+		delete vista;
+	if(control != NULL)
+		delete control;
 
-	delete hiloJuego;
-	delete hiloRecibir;
-	delete hiloEnviar;
+	if(hiloJuego != NULL)
+		delete hiloJuego;
+	if(hiloRecibir != NULL)
+		delete hiloRecibir;
+	if(hiloEnviar != NULL)
+		delete hiloEnviar;
 
-	std::vector<Personaje*>::iterator pos;
-	for(pos = sonics.begin();pos != sonics.end();pos++){
-		delete (*pos);
+	if(!sonics.empty()){
+		std::vector<Personaje*>::iterator pos;
+		for(pos = sonics.begin();pos != sonics.end();pos++){
+			delete (*pos);
+		}
 	}
 }
 
@@ -76,13 +83,16 @@ std::string intToString(int number)
 
 void JuegoCliente::terminarHilos()
 {
+	cout << "Voy a terminar el hilo juego \n";
 	hiloJuego->Join();
+	cout << "Termine bien hilo juego \n";
 
-	std::string mensaje = MENSAJE_DESCONEXION_CLIENTE + intToString(sonic->getId());
-	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
-	strcpy(buffer, mensaje.c_str());
-	cliente->enviar(buffer, strlen(buffer));
-
+	if(!juegoIniciado){
+		std::string mensaje = MENSAJE_DESCONEXION_CLIENTE + intToString(sonic->getId());
+		char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
+		strcpy(buffer, mensaje.c_str());
+		cliente->enviar(buffer, strlen(buffer));
+	}
 	//hiloRecibir->Join();
 	//hiloEnviar->Join();
 }
@@ -93,8 +103,10 @@ int JuegoCliente::inicializarJuegoCliente()
 	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	while (mensaje.substr(0, 3) != MENSAJE_ID){
 		mensaje = hiloRecibir->obtenerElementoDeLaCola();
-		if (mensaje == "Conexion rechazada")
+		if (mensaje == "Conex rechazada")
 		{
+
+			juegoIniciado = true; //Para que salga del menu
 			return CONEXION_RECHAZADA;
 		}
 	}
