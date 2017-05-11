@@ -111,8 +111,7 @@ int ConexServidor::aceptarcliente()
 	sockaddr_in direccionclient;
 
     longitud_dircliente= sizeof(struct sockaddr_in);
-     fdCliente = accept(this->sock_recep,(struct sockaddr *)&direccionclient,(socklen_t*)&longitud_dircliente);
-
+    fdCliente = accept(this->sock_recep,(struct sockaddr *)&direccionclient,(socklen_t*)&longitud_dircliente);
     pthread_mutex_lock(&mutex);
 
     if (fdCliente==-1){
@@ -181,9 +180,9 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 	if (bytes <= 0){
 		this->log->addLogMessage("[RECIBIR] Error",2);
 		this->cantclientes = this->cantclientes -1;
-		this->setCantclientes(cantclientes);
+		//this->setCantclientes(cantclientes);
 		this->listaClientes.remove(fdCliente);
-		this->setListaClientes(listaClientes);
+		//this->setListaClientes(listaClientes);
 		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
 
 

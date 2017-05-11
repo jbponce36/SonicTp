@@ -54,7 +54,7 @@ void *Hilorecibir::serverRecibir(void *args){
 				memset(buffer, '\0', sizeof(buffer));
 				result = parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
 				//result = parametros->server->recibirPosicion(parametros->skt, pos, sizeof(pos));
-
+				cout << "Result: " <<result << endl;
 				if (result>0){
 					cout<<"server recibio: "<<buffer <<endl;
 					alc->actualizarTiempoLatido();
@@ -74,7 +74,8 @@ void *Hilorecibir::serverRecibir(void *args){
 					std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + parametros->idCliente;
 					strcpy(buffer, msjDesconexion.c_str());
 					parametros->colaDeMensajes.agregar(buffer); //Asi ControlServidor lo congela
-					alc->gethilo().Join();
+					cout << "Agregue el mensaje " << msjDesconexion << endl;
+					alc->Join();
 				}
 
 

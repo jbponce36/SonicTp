@@ -103,9 +103,9 @@ int JuegoCliente::inicializarJuegoCliente()
 	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	while (mensaje.substr(0, 3) != MENSAJE_ID){
 		mensaje = hiloRecibir->obtenerElementoDeLaCola();
-		if (mensaje == "Conex rechazada")
+		if ((mensaje.compare("Conex rechazada") == 0) || (mensaje.compare("Servidor Desconectado") == 0))
 		{
-
+			cout << "Mensaje: " << mensaje << endl;
 			juegoIniciado = true; //Para que salga del menu
 			return CONEXION_RECHAZADA;
 		}

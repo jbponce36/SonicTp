@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 		delete log;
 		return 1;
 	}
-	if(server->enlazar(8080) == false){
+	if(server->enlazar(puerto) == false){
 		server->cerrar();
 		delete server;
 		delete jsonSer;
@@ -115,10 +115,7 @@ int main(int argc, char *argv[]) {
 	juego->iniciarHiloJuego();
 
 	printf("Empieza la partida \n");
-	sleep(4); //Le da tiempo al ultimo jugador en conectarse a inicializar su juego.
-
-	//TODO: Nota chicos! Si se les desconectan todos los clientes por falta de latidos ni bien empieza la partida,
-	//cambienle el sleep(3) por otro numero mayor o menor dependiendo la cant de clientes.
+	sleep(2); //Le da tiempo al ultimo jugador en conectarse a inicializar su juego.
 
 	server->comenzarPartida(hrEnviar);
 

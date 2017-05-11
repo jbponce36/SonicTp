@@ -20,8 +20,7 @@ Hilo::~Hilo() {
 }
 
 int Hilo::Join(){
-	 pthread_join(this->tid,NULL);
-	 return 0;
+	 return pthread_join(this->tid,NULL);
 }
 
 int Hilo::Create(void *Callback,void *args){

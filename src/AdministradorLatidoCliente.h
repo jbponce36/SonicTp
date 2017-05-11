@@ -62,10 +62,10 @@ public:
 
 	void setIniciar(bool ini);
 
-	 std::string getCadena();
+	std::string getCadena();
 
 	void setCadena(std::string c);
-
+	int Join();
 };
 
 } /* namespace std */

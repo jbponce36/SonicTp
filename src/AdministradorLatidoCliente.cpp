@@ -39,16 +39,16 @@ void AdministradorLatidoCliente::IniciarHilo(){
 	//Hilo *hilo = new Hilo(/*log*/);
 
 	//hilo->Create((void *)AdministradorLatidoCliente::iniciarContador ,  (void *)this);
-	Hilo hilo = Hilo(/*log*/);
-	hilo.Create((void *)AdministradorLatidoCliente::iniciarContador ,  (void *)this);
-	this->setH(hilo);
+	//Hilo hilo = Hilo(/*log*/);
+	h.Create((void *)AdministradorLatidoCliente::iniciarContador ,  (void *)this);
+	//this->setH(hilo);
 }
 void AdministradorLatidoCliente::IniciarHiloServidorCliente(){
 	//Hilo *hilo = new Hilo(/*log*/);
 	//hilo->Create((void *)AdministradorLatidoCliente::iniciarContadorServidorCliente ,  (void *)this);
-	Hilo hilo = Hilo(/*log*/);
-	hilo.Create((void *)AdministradorLatidoCliente::iniciarContadorServidorCliente ,  (void *)this);
-	this->setH(hilo);
+	//Hilo hilo = Hilo(/*log*/);
+	h.Create((void *)AdministradorLatidoCliente::iniciarContadorServidorCliente ,  (void *)this);
+	//this->setH(hilo);
 }
 void* AdministradorLatidoCliente::iniciarContadorServidorCliente(void *ars){
 	AdministradorLatidoCliente *alc = (AdministradorLatidoCliente*)ars;
@@ -107,16 +107,23 @@ void *AdministradorLatidoCliente::iniciarContador(void *arg){
 
 AdministradorLatidoCliente *alc = (AdministradorLatidoCliente*)arg;
 
-  double diff_t;
+ /* double diff_t;
   time_t start_t;
 	time(&start_t);
 	diff_t = difftime(alc->end_t,start_t);
-	diff_t = fabs(diff_t);
+	diff_t = fabs(diff_t);*/
 	//cout<<"CADENAAA"<<endl;
 	//cout<<alc->cadena<<endl;
 bool comenzo = true;
 while((comenzo)){
-	if(alc->cadena.compare("INICIAR JUEGO") == 0){
+	if(alc->cadena.compare("INICIAR JUEGO") == 0)
+	{
+		alc->actualizarTiempoLatido();
+		double diff_t;
+		time_t start_t;
+		time(&start_t);
+		diff_t = difftime(alc->end_t,start_t);
+		diff_t = fabs(diff_t);
 
 		while(diff_t < 6.0){
 			 time(&start_t);
@@ -160,5 +167,10 @@ std::string AdministradorLatidoCliente::getidCliente(){
 
 void AdministradorLatidoCliente::setidCliente(std::string id){
 	this->idCliente = id;
+}
+
+int AdministradorLatidoCliente::Join()
+{
+	return h.Join();
 }
 } /* namespace std */
