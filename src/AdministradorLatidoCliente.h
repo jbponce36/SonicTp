@@ -20,6 +20,7 @@ private:
 	time_t end_t;
 	ConexCliente *cliente;
 	ConexServidor *servidor;
+	int skt;
 	Paquete *colaPaquete;
 	Hilo h;
 	bool iniciar;
@@ -55,7 +56,8 @@ public:
 	Hilo gethilo();
 
 	void setH(Hilo);
-
+	int getSkt();
+	void setSkt(int s);
 	bool isIniciar();
 
 	void setIniciar(bool ini);

@@ -40,6 +40,8 @@ void *Hilorecibir::serverRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
 
 	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaDeMensajes);
+	cout<<"SOCKET DEL CLIENTE: "<<parametros->skt<<endl;
+	alc->setSkt(parametros->skt);
 	alc->setidCliente(parametros->idCliente);
     alc->IniciarHiloServidorCliente();
     alc->actualizarTiempoLatido();

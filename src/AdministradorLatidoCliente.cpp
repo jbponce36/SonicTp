@@ -76,6 +76,10 @@ void* AdministradorLatidoCliente::iniciarContadorServidorCliente(void *ars){
 	 std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + alc->idCliente;
 	 strcpy(buffer, msjDesconexion.c_str());
 	 alc->colaPaquete->agregar(buffer);
+	 cout<<"VOY A CERRAR EL CLIENTE"<<endl;
+	 cout<<"PARAMETROS ALC CLIENTES:::"<<alc->getSkt()<<endl;
+	 close(alc->getSkt());
+	 cout<<"SE CERRO"<<endl;
 
 	 //alc->colaPaquete->agregar("Servidor Desconectado");
 	// comenzo = false;
@@ -141,7 +145,12 @@ void AdministradorLatidoCliente::setIniciar(bool ini){
 Hilo AdministradorLatidoCliente::gethilo(){
 	return this->h;
 }
-
+int AdministradorLatidoCliente::getSkt(){
+	this->skt;
+}
+void AdministradorLatidoCliente::setSkt(int s){
+		this->skt  = s;
+}
 void AdministradorLatidoCliente::setH(Hilo hil){
 	this->h = hil;
 }
