@@ -46,7 +46,7 @@ public:
     bool finalizar();
 
     bool noSeConectaronTodos();
-    void comenzarPartida(std::vector<Hiloenviar*> hrEnviar);
+    void comenzarPartida(std::vector<Hiloenviar*> &hrEnviar);
 
 	bool getFinalizarConexion();
 	void setFinalizarConexion(bool);

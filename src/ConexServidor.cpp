@@ -358,9 +358,6 @@ void ConexServidor::setHostname(string hostname)
 	this->hostname = hostname;
 }
 
-
-}
-
 string ConexServidor::intToString(int number)
 {
   ostringstream oss;
@@ -378,7 +375,7 @@ bool ConexServidor::getFinalizarConexion(){
 void ConexServidor::setFinalizarConexion(bool FinalizarConexion){
 	 this->finalizarConexion = FinalizarConexion;
 }
-void ConexServidor::comenzarPartida(std::vector<Hiloenviar*> hrEnviar)
+void ConexServidor::comenzarPartida(std::vector<Hiloenviar*> &hrEnviar)
 {
 	pthread_mutex_lock(&mutex);
 	this->partidaComenzada = true;
@@ -399,3 +396,5 @@ void ConexServidor::comenzarPartida(std::vector<Hiloenviar*> hrEnviar)
 	    */
 	pthread_mutex_unlock(&mutex);
 }
+
+}//Namespace

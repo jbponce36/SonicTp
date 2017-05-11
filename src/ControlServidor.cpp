@@ -119,8 +119,6 @@ void ControlServidor::administrarTeclasServidor()
 
 		}
 	}
-	//moverSonicsSegunTeclas();
-
 }
 
 ControlServidor::mensajeRecibido ControlServidor::parsearMensajePosicion(std::string mensaje)
@@ -147,7 +145,9 @@ void ControlServidor::moverSonicsSegunTeclas()
 	std::map<int, Personaje*>::iterator pos;
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
+		cout << "Error en teclas?" << endl;
 		teclasPresionadas t = teclas.at((*pos).first);
+		cout << "No error en teclas" << endl;
 		Personaje* sonic = (*pos).second;
 
 		if((!t.teclaArriba) && (!t.teclaAbajo) && (!t.teclaDerecha) && (!t.teclaIzquierda)){
@@ -173,29 +173,6 @@ void ControlServidor::moverSonicsSegunTeclas()
 		}
 
 	}
-}
-
-void ControlServidor::corregirPosicionSonic(Personaje* sonic)
-{
-	//Correccion de posiciones solo si esta quieto.
-
-	/* No usar
-	if (sonic->estaParado())
-	{
-		int posXCliente = ultimasPosiciones.at(sonic->getId()).ultimaPosicionX;
-		int posYCliente = ultimasPosiciones.at(sonic->getId()).ultimaPosicionY;
-
-		int dx = 0, dy = 0;
-		int posXServidor = sonic->getPosicionX();
-		int posYServidor = sonic->getPosicionY();
-
-		dx = posXCliente - posXServidor;
-		dx = dx / 2;
-		dy = posYCliente - posYServidor;
-		dy = dy / 2;
-
-		sonic->posicionarseEn(posXServidor + dx, posYServidor + dy);
-	}*/
 }
 
 void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara)
@@ -230,7 +207,6 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 
 		///------------------------------------------------------------
 		tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
-		//float tiempoDeFotografia = tiempoDeJuego / 1000.f;
 
 		(*pos).second->mover(camara->devolverCamara(), 0.04); //Se mueve segun los limites de la camara
 
@@ -272,7 +248,6 @@ std::string ControlServidor::intToString(int number)
 void ControlServidor::enviarATodos(std::string mensaje)
 {
 	//Envia el mensaje a todos los hilos enviar para que se lo mande a todos los clientes
-	//TODO: Agregarle ids a los hilos sino si se desconecta un cliente aun le envia
 	char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
 	strcpy(buffer, mensaje.c_str());
 
@@ -286,9 +261,7 @@ void ControlServidor::enviarATodos(std::string mensaje)
 		}
 		id++;
 	}
-
 }
-
 
 void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado){
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Iniciado.", 2);
@@ -298,6 +271,10 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,
 			vista->obtenerAltoVentana(),vista->obtenerAnchoVentana(), sonics);
+
+	//Le aviso a todos los jugadores que inicio el juego
+	printf("Empieza la partida \n");
+	server->comenzarPartida(*hilosEnviar);
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !juegoTerminado ){

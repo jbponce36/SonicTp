@@ -114,10 +114,10 @@ int main(int argc, char *argv[]) {
 	JuegoServidor *juego = new JuegoServidor(server, hrEnviar, hrRecibir, log);
 	juego->iniciarHiloJuego();
 
-	printf("Empieza la partida \n");
-	sleep(2); //Le da tiempo al ultimo jugador en conectarse a inicializar su juego.
+	//printf("Empieza la partida \n");
+	//sleep(2); //Le da tiempo al ultimo jugador en conectarse a inicializar su juego.
 
-	server->comenzarPartida(hrEnviar);
+	//server->comenzarPartida(hrEnviar); Lo puse adentro de ControlServidor::ControlarJuegoServidor(...)
 
 
 
