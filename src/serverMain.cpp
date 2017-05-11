@@ -36,8 +36,12 @@ int main(int argc, char *argv[]) {
 
 	ConexServidor *server = new ConexServidor(log);
 	parseadorJsonSer *jsonSer = new parseadorJsonSer(log);
-	//jsonSer->parsearArchivo(server->cargarNombreArchivo());
-	int maxConexiones = 2;
+	jsonSer->parsearArchivo(server->cargarNombreArchivo());
+
+	int puerto = jsonSer->CargarPuertoServidor();
+	int maxConexiones = jsonSer->CargarCantClientes();
+
+	cout<<"Max cant: "<<maxConexiones<<endl;
 
 	if(server->crear() == false){
 		server->cerrar();

@@ -61,7 +61,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 					//parametros->alc->actualizarTiempoLatido();
 
-					if (strcmp(buffer, "Conexion rechazada") == 0){
+					if (strcmp(buffer, "Conex rechazada") == 0){
 					    printf("****** La conexion fue rechaza por el servidor ******* \n");
 					}
 

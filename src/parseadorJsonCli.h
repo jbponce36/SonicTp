@@ -18,7 +18,7 @@ namespace std {
 
 class parseadorJsonCli {
 public:
-	parseadorJsonCli();
+	parseadorJsonCli(Logger *log);
 	virtual ~parseadorJsonCli();
 	void parsearArchivo(std::string  nombreArchivo);
 	int CargarPuertoCliente();

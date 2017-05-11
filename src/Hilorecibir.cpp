@@ -40,11 +40,12 @@ void *Hilorecibir::serverRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
 
 	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaDeMensajes);
-	alc->actualizarTiempoLatido();
-	alc->setIniciar(true);
-	alc->IniciarHilo();
-
-	alc->setCadena("ESTOYVIVO");
+	cout<<"SOCKET DEL CLIENTE: "<<parametros->skt<<endl;
+	alc->setSkt(parametros->skt);
+	alc->setidCliente(parametros->idCliente);
+    alc->IniciarHiloServidorCliente();
+    alc->actualizarTiempoLatido();
+	//alc->setCadena("ESTOYVIVO");
 	while(parametros->continuar){
 		char buffer[40];
 		int result = 1;
@@ -66,23 +67,17 @@ void *Hilorecibir::serverRecibir(void *args){
 
 				}
 
-				if (result==0){
+				if (result<=0){
 					printf("El cliente se desconecto satisfactoriamente. \n");
 					parametros->continuar = false;
 
 					std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + parametros->idCliente;
 					strcpy(buffer, msjDesconexion.c_str());
 					parametros->colaDeMensajes.agregar(buffer); //Asi ControlServidor lo congela
+					alc->gethilo().Join();
 				}
 
-				if (result==-1){
-					printf("El cliente se desconecto satisfactoriamente. \n");
-					parametros->continuar = false;
 
-					std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + parametros->idCliente;
-					strcpy(buffer, msjDesconexion.c_str());
-					parametros->colaDeMensajes.agregar(buffer); //Asi ControlServidor lo congela
-				}
 
 		}
 	}
