@@ -107,7 +107,7 @@ void ControlServidor::administrarTeclasServidor()
 				}
 				catch(std::out_of_range &e)
 				{
-					cout << "Oh no!" << endl;
+					cout << "El cliente ya se habia desconectado." << endl;
 				}
 			}
 			else

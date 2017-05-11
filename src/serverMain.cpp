@@ -31,7 +31,7 @@ int getNivelLogger(int argc, char *argv[]){
 
 int main(int argc, char *argv[]) {
 	char *archivoLog=(char*)"configuracion/log.txt";
-	Logger *log = new Logger(archivoLog, 2/*getNivelLogger(argc,argv)*/, "SERVER");
+	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv), "SERVER");
 	log->iniciarLog("INICIAR LOGGER");
 
 	ConexServidor *server = new ConexServidor(log);
@@ -107,12 +107,14 @@ int main(int argc, char *argv[]) {
     }
 
 	//Empieza la partida
-	printf("Empieza la partida \n");
-	sleep(1); //Le da tiempo al ultimo jugador en conectarse a inicializar su juego.
-	server->comenzarPartida(hrEnviar);
-
 	JuegoServidor *juego = new JuegoServidor(server, hrEnviar, hrRecibir, log);
 	juego->iniciarHiloJuego();
+
+	printf("Empieza la partida \n");
+	sleep(7); //Le da tiempo al ultimo jugador en conectarse a inicializar su juego.
+	server->comenzarPartida(hrEnviar);
+
+
 
 	while(!server->finalizar()){
 	//while(1){

@@ -50,6 +50,7 @@ void *Hilorecibir::serverRecibir(void *args){
 		int result = 1;
 
 		while (result>0){
+				memset(buffer, '\0', sizeof(buffer));
 				result = parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
 				//result = parametros->server->recibirPosicion(parametros->skt, pos, sizeof(pos));
 

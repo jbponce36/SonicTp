@@ -51,16 +51,14 @@ int main(int argc, char *argv[]) {
 
 	JuegoCliente juego = JuegoCliente(cliente, log);
 
-	/*----si no quieren ver elmenu choto comenten esto---*/
 	juego.CargarVistaParaElMenu();
-	/* y pongan a la variable  opcion = 0 */
 
 	int opcion = juego.elegirOpcionDeMenu(log);
 	switch (opcion){
 		case 0:{
 
-			//int skt = cliente->conectar("127.0.0.1",8080);
-			int skt = cliente->conectar("192.168.1.5",8080);
+			int skt = cliente->conectar("127.0.0.1",8080);
+			//int skt = cliente->conectar("192.168.1.5",8080);
 
 			if(skt <0){
 				cout<<"El cliente no se conecto"<<endl;
@@ -68,29 +66,8 @@ int main(int argc, char *argv[]) {
 				return -1;
 
 			}else{
-
-		//		Hilolatidocliente* hilolatido = new Hilolatidocliente;
-		//		hilolatido->latido();
-
-				/*int skt;
-				char buf[40]="d";
-				skt= send(cliente->getFd(),buf, sizeof(buf), MSG_NOSIGNAL);
-				cout<<"---------"<<skt<<endl;
-				skt= send(cliente->getFd(),buf, sizeof(buf), MSG_NOSIGNAL);
-				cout<<"---------"<<skt<<endl;
-				cout<<"dormmir 7 segundo"<<endl;
-				sleep(15);//
-				cout<<"termino 7 segundo"<<endl;
-				skt= send(cliente->getFd(),buf, sizeof(buf), MSG_NOSIGNAL);
-				cout<<"---------"<<skt<<endl;
-				cout<<"------------------------------------"<<endl;*/
-
-				/*------INICIA EL JUEGO DEL CLIENTE------*/
-				/* Comentar esto si quieren que no se abra la pantallita! */
-				//cout<<"se conecto cliente"<<endl;
 				juego.iniciarHilos();
 				juego.terminarHilos();
-				/* Hasta aca */
 			}
 		}
 		break;
@@ -99,17 +76,6 @@ int main(int argc, char *argv[]) {
 		case 2:cout<<"salir"<<endl;
 		break;
 	}
-
-	//sleep(40);
-
-	/*char buffer[11]="mashambre";
-	cout<<"cliente envio: "<<buffer<<endl;
-	cliente->enviar(buffer,11);
-	cout<<"cliente envio: "<<buffer<<cliente->toString()<<endl;
-
-	char buffer2[40]="0";
-	cliente->recibir(buffer2,sizeof(buffer2));
-	cout<<"cliente recibio: "<<buffer2<<endl;*/
 
 	cliente->cerrar();
 	delete cliente;
