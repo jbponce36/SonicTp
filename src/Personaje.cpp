@@ -444,7 +444,7 @@ bool Personaje::bloqueaCamaraADerecha(SDL_Rect *limites)
 	{
 		return false;
 	}
-	return (posicionX >= limites->x + limites->w);
+	return (posicionX + personajeAncho >= limites->x + limites->w);
 }
 
 bool Personaje::bloqueaCamaraAIzquierda(SDL_Rect *limites)
