@@ -19,6 +19,7 @@ using namespace std;
 #include "Logger.h"
 #include <list>
 #include <vector>
+#include <unistd.h>
 #ifndef VISTASDL_H_
 #define VISTASDL_H_
 #define ANCHO_VENTANA_POR_DEFECTO 640

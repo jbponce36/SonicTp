@@ -15,6 +15,7 @@ using namespace std;
 #include "ConstructorEntidades.h"
 
 
+
 VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario *jescenario, Logger *logger, bool oculta)
 {
 	this->renderizador = NULL;
@@ -299,7 +300,7 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 				salir = true;
 				seleccion = 2;
 			}
-			else if(e.type == SDL_KEYDOWN){
+			else if((e.type == SDL_KEYDOWN) && (e.key.repeat == 0)){
 					switch (e.key.keysym.sym){
 						case SDLK_UP:
 							seleccion--;

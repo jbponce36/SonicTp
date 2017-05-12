@@ -75,7 +75,7 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 
 		if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
 		{
-			if( e.key.keysym.sym == SDLK_ESCAPE) {
+			if( e.key.keysym.sym == SDLK_q) {
 					//cout << "Tecla escape presionada" << endl;
 					int opcion = vista->mostraMenuInicial(this->log);
 					if (opcion == 2){

@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
 	jsonSer->parsearArchivo(server->cargarNombreArchivo());
 
 	int puerto = jsonSer->CargarPuertoServidor();
-	int maxConexiones = 2;//jsonSer->CargarCantClientes();
+	int maxConexiones = jsonSer->CargarCantClientes();
 
 	cout<<"Max cant: "<<maxConexiones<<endl;
 
