@@ -51,6 +51,7 @@ int main(int argc, char *argv[]) {
 	const char* hostname = parseadorCliente->CargarIPCliente();
 	int puerto =  parseadorCliente->CargarPuertoCliente(); // 8080;
 
+
 	JuegoCliente juego = JuegoCliente(cliente, log);
 
 	juego.CargarVistaParaElMenu();
