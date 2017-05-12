@@ -42,7 +42,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	while( !salir ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
-		administrarTeclas(&controlador, sonic, hiloEnviar);
+		administrarTeclas(&controlador, sonic, vista, hiloEnviar);
 		controlDeMensajes(sonic, hiloRecibir, vista, camara);
 		moverPersonaje(tiempoDeJuego, vista, sonic, camara);
 		/////Corregir posicion????
@@ -61,7 +61,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	this->log->addLogMessage("[CONTROLAR JUEGO] Terminado. \n", 2);
 }
 
-void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, HiloEnviarCliente *hiloEnviar)
+void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista, HiloEnviarCliente *hiloEnviar)
 {
 	SDL_Event e;
 
@@ -72,6 +72,19 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 		{
 			salir = true;
 		}
+
+		if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
+		{
+			if( e.key.keysym.sym == SDLK_ESCAPE) {
+					cout << "Tecla escape presionada" << endl;
+					int opcion = vista->mostraMenuInicial(this->log);
+					if (opcion == 2){
+						salir = true;
+					}
+					break;
+			}
+		}
+
 		controlador->procesarEvento(e, sonic, hiloEnviar); //Setea todas las teclas presionadas o liberadas
 	}
 	controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
@@ -111,6 +124,10 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 			}
 
 			//cout << msj.id << " " << msj.posX << " " << msj.posY  << " " << msj.animacion << " " << msj.indiceAnimacion << endl;
+		}
+		else if (mensaje == "Volver Al Menu")
+		{
+			vista->mostraMenuInicial(this->log);
 		}
 		else if (mensaje == "Servidor Desconectado")
 		{

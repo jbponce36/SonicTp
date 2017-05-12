@@ -167,9 +167,10 @@ int ConexServidor::getCantMaximaClientes()
 int ConexServidor::recibir(int skt, char *buf, int size)
 {
 	this->log->addLogMessage("[RECIBIR] Iniciado",2);
+	cout<<"LLEGA1"<<endl;
 
 	int bytes = recv(skt, buf, size, MSG_NOSIGNAL);
-
+	cout<<"LLEGA2"<<endl;
 
 	//recv devuelve 0 si el cliente se desconecto satisfactoriamente
 	//devuelve -1 si ubo algun error

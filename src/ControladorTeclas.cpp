@@ -54,6 +54,10 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 				sonic->enviarAServer(hiloEnviar, TECLA_CORRER_PRESIONADA);
 				teclaCorrer = true;
 				break;}
+			case SDLK_ESCAPE:{
+				cout << "Tecla escape presionada" << endl;
+				break;}
+
 			default:
 				return;
 		}
