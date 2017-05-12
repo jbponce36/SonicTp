@@ -95,10 +95,9 @@ void Camara::actualizar(int maximoAncho, int maximoAlto){
 				if (!bloqueadaAIzquierda)
 					this->camaraImagen->x += velocidadDelMax*0.04;
 			}
-			else
+			else if (velocidadDelMin > 0)
 			{
-				if(!bloqueadaADerecha)
-					this->camaraImagen->x += velocidadDelMin*0.04;
+				this->camaraImagen->x += velocidadDelMin*0.04;
 			}
 		}
 
