@@ -78,6 +78,7 @@ void* AdministradorLatidoCliente::iniciarContadorServidorCliente(void *ars){
 	 alc->colaPaquete->agregar(buffer);
 	 cout<<"VOY A CERRAR EL CLIENTE"<<endl;
 	 cout<<"PARAMETROS ALC CLIENTES:::"<<alc->getSkt()<<endl;
+	 shutdown(alc->getSkt(), SHUT_RDWR);
 	 close(alc->getSkt());
 	 cout<<"SE CERRO"<<endl;
 
@@ -87,7 +88,7 @@ void* AdministradorLatidoCliente::iniciarContadorServidorCliente(void *ars){
 //}
 }
 ConexCliente* AdministradorLatidoCliente::getconexcliente(){
-	this->cliente;
+	return this->cliente;
 }
 
 void AdministradorLatidoCliente::setconexcliente(ConexCliente *c){
@@ -153,7 +154,7 @@ Hilo AdministradorLatidoCliente::gethilo(){
 	return this->h;
 }
 int AdministradorLatidoCliente::getSkt(){
-	this->skt;
+	return this->skt;
 }
 void AdministradorLatidoCliente::setSkt(int s){
 		this->skt  = s;
