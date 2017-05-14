@@ -48,14 +48,16 @@ void AdministradorLatidoCliente::IniciarHiloServidorCliente(){
 	//hilo->Create((void *)AdministradorLatidoCliente::iniciarContadorServidorCliente ,  (void *)this);
 	//Hilo hilo = Hilo(/*log*/);
 	h.Create((void *)AdministradorLatidoCliente::iniciarContadorServidorCliente ,  (void *)this);
-	//this->setH(hilo);
+
 }
 void* AdministradorLatidoCliente::iniciarContadorServidorCliente(void *ars){
 	AdministradorLatidoCliente *alc = (AdministradorLatidoCliente*)ars;
 
+	alc->actualizarTiempoLatido();
 	double diff_t;
 	time_t start_t;
 	time(&start_t);
+
 	diff_t = difftime(alc->end_t,start_t);
 	diff_t = fabs(diff_t);
 	//cout<<"CADENAAA"<<endl;
