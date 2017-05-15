@@ -189,8 +189,8 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
 
 
-		//if (this->cantclientes==0){
-		if(listaClientes.size() == 0){
+		if (this->cantclientes==0){
+		//if(listaClientes.size() == 0){
 			printf("No hay clientes conectados \n");
 			if (this->partidaComenzada){
 
@@ -297,10 +297,9 @@ int ConexServidor::enviar(int socket, char *buf, int size){
 	while(enviado < size && socketValido)
 	{
 		pthread_mutex_lock(&mutex);
-		//cout<<":::::::::"<<"tendria que entrar en send"<<endl;
-		int flags = MSG_DONTWAIT & MSG_NOSIGNAL;
-		envioParcial = send(socket,buf, size,flags);
-		//cout<<":::::::::"<<"sali de send"<<endl;
+		cout<<":::::::::"<<"tendria que entrar en send"<<endl;
+		envioParcial = send(socket,buf, size, MSG_NOSIGNAL);
+		cout<<":::::::::"<<"sali de send"<<endl;
 		//cout<<":::::::::"<<envioParcial<<endl;
 		pthread_mutex_unlock(&mutex);
 		if(envioParcial == 0){
