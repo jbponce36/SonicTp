@@ -10,6 +10,8 @@
 #include "Definiciones.h"
 #include <vector>
 #include <algorithm>
+#include "menu.h"
+#include "Paquete.h"
 
 #define FPS 25
 #define TICKS_POR_FRAME 1000/FPS
@@ -20,6 +22,7 @@ private:
 	int posicionInicialY;
 	Logger *log;
 	bool salir;
+	Paquete *colaPaquete;
 
 	std::vector<Personaje*> *sonics; //Tiene todos los sonics
 	int maxJugadores;
@@ -32,7 +35,7 @@ public:
 			std::string animacion;
 			int indiceAnimacion;
 	}mensajePosicion;
-
+	menu *m;
 	Control(int posicionX, int posicionY, int maxJugadores, std::vector<Personaje*> *sonics, Logger *log);
 	virtual ~Control();
 	int getPosicionInicialX();
@@ -42,9 +45,8 @@ public:
 	void parsearMensajePosicion(mensajePosicion& msjParseado, std::string mensaje);
 
 
-
 private:
-	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista, HiloEnviarCliente *hiloEnviar);
+	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista, HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir);
 	void moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic, Camara* camara);
 	void controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista, Camara *camara);
 	void actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic);

@@ -10,6 +10,7 @@
 #include "HiloRecibirCliente.h"
 #include <list>
 #include "Hilolatidocliente.h"
+#include "menu.h"
 
 using namespace std;
 
@@ -54,6 +55,7 @@ int main(int argc, char *argv[]) {
 	JuegoCliente juego = JuegoCliente(cliente, log);
 
 	juego.CargarVistaParaElMenu();
+	//menu *m = new menu();
 
 	int opcion = juego.elegirOpcionDeMenu(log);
 	switch (opcion){
@@ -67,6 +69,8 @@ int main(int argc, char *argv[]) {
 				return -1;
 
 			}else{
+
+				//m->setSkt(skt);
 				juego.iniciarHilos();
 				juego.terminarHilos();
 			}
