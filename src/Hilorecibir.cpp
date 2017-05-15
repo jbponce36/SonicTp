@@ -76,7 +76,7 @@ void *Hilorecibir::serverRecibir(void *args){
 					parametros->colaDeMensajes.agregar(buffer); //Asi ControlServidor lo congela
 					cout << "Agregue el mensaje " << msjDesconexion << endl;
 
-					alc->gethilo().Join();
+					//alc->gethilo().Join();
 				}
 
 

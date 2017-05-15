@@ -183,11 +183,14 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 		this->cantclientes = this->cantclientes -1;
 		//this->setCantclientes(cantclientes);
 		this->listaClientes.remove(fdCliente);
+		cout << "Removi el cliente con fd: " << fdCliente << endl;
+		cout << "El tamanio de la lista es" << listaClientes.size() << endl;
 		//this->setListaClientes(listaClientes);
 		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
 
 
-		if (this->cantclientes==0){
+		//if (this->cantclientes==0){
+		if(listaClientes.size() == 0){
 			printf("No hay clientes conectados \n");
 			if (this->partidaComenzada){
 
@@ -295,7 +298,8 @@ int ConexServidor::enviar(int socket, char *buf, int size){
 	{
 		pthread_mutex_lock(&mutex);
 		//cout<<":::::::::"<<"tendria que entrar en send"<<endl;
-		envioParcial = send(socket,buf, size,MSG_DONTWAIT);
+		int flags = MSG_DONTWAIT & MSG_NOSIGNAL;
+		envioParcial = send(socket,buf, size,flags);
 		//cout<<":::::::::"<<"sali de send"<<endl;
 		//cout<<":::::::::"<<envioParcial<<endl;
 		pthread_mutex_unlock(&mutex);

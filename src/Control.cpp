@@ -61,7 +61,15 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	this->log->addLogMessage("[CONTROLAR JUEGO] Terminado. \n", 2);
 }
 
-void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista, HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir)
+std::string Control::intToString(int number)
+{
+	ostringstream oss;
+	oss<< number;
+	return oss.str();
+}
+
+void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic,
+		VistaSDL *vista, HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir)
 {
 	SDL_Event e;
 
@@ -75,27 +83,30 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 
 		if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
 		{
-			if( e.key.keysym.sym == SDLK_q) {
-
-					//cout << "Tecla escape presionada" << endl;
-					int opcion = vista->mostraMenuInicial(this->log);
-					if (opcion == 2){
-						salir = true;
-					}
-					break;
-					if (opcion == 1){
+			if( e.key.keysym.sym == SDLK_q)
+			{
+				int opcion = vista->mostraMenuInicial(this->log);
+				switch(opcion)
+				{
+					case 1:
+					{
 						//salir = true;
 						char buffer [40];
-						std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE /*+ hiloEnviar->parametros.skt*/;
+						std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + intToString(sonic->getId());
 						strcpy(buffer, msjDesconexion.c_str());
-						this->colaPaquete->agregar(buffer);
+						hiloEnviar->enviarDato(buffer);
 						hiloRecibir->parametros.colaPaquete.agregar("Servidor Desconectado");
 
 						//shutdown(hiloEnviar->parametros.skt, SHUT_RDWR);
 						//close(hiloEnviar->parametros.skt);
+						break;
 					}
-					break;
-
+					case 2:
+						salir = true;
+						break;
+					default:
+						break;
+				}
 			}
 		}
 
