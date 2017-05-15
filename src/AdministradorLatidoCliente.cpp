@@ -117,10 +117,6 @@ AdministradorLatidoCliente *alc = (AdministradorLatidoCliente*)arg;
 	diff_t = fabs(diff_t);*/
 	//cout<<"CADENAAA"<<endl;
 	//cout<<alc->cadena<<endl;
-bool comenzo = true;
-while((comenzo)){
-	if(alc->cadena.compare("INICIAR JUEGO") == 0)
-	{
 		alc->actualizarTiempoLatido();
 		double diff_t;
 		time_t start_t;
@@ -133,17 +129,13 @@ while((comenzo)){
 
 			 diff_t = difftime(alc->end_t,start_t);
 			 diff_t = fabs(diff_t);
+			 cout<<"la diferencia ::::::"<<diff_t<<endl;
 
 		}
 		 printf("Se desconectara el cliente por falta de latidos \n");
 		 alc->colaPaquete->agregar("Servidor Desconectado");
-		 comenzo = false;
-	}
 
-}
  // printf("Se desconectara el cliente por falta de latidos \n");
-
-
 
 }
 bool  AdministradorLatidoCliente::isIniciar(){
