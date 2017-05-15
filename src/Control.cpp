@@ -82,13 +82,13 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 					if (opcion == 2){
 						salir = true;
 					}
-					break;
+					//break;
 					if (opcion == 1){
 						//salir = true;
-						char buffer [40];
-						std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE /*+ hiloEnviar->parametros.skt*/;
-						strcpy(buffer, msjDesconexion.c_str());
-						this->colaPaquete->agregar(buffer);
+					//	char buffer [40];
+						//std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE /*+ hiloEnviar->parametros.skt*/;
+						//strcpy(buffer, msjDesconexion.c_str());
+						//this->colaPaquete->agregar(buffer);
 						hiloRecibir->parametros.colaPaquete.agregar("Servidor Desconectado");
 
 						//shutdown(hiloEnviar->parametros.skt, SHUT_RDWR);
