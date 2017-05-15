@@ -166,10 +166,10 @@ int ConexServidor::getCantMaximaClientes()
 int ConexServidor::recibir(int skt, char *buf, int size)
 {
 	this->log->addLogMessage("[RECIBIR] Iniciado",2);
-	cout<<"LLEGA1"<<endl;
+
 
 	int bytes = recv(skt, buf, size, MSG_NOSIGNAL);
-	cout<<"LLEGA2"<<endl;
+
 
 	//recv devuelve 0 si el cliente se desconecto satisfactoriamente
 	//devuelve -1 si ubo algun error
@@ -256,7 +256,7 @@ int ConexServidor::enviar(int socket, char *buf, int size){
 	{
 		pthread_mutex_lock(&mutex);
 		//cout<<":::::::::"<<"tendria que entrar en send"<<endl;
-		envioParcial = send(socket,buf, size,MSG_DONTWAIT);
+		envioParcial = send(socket,buf, size, MSG_NOSIGNAL);
 		//cout<<":::::::::"<<"sali de send"<<endl;
 		//cout<<":::::::::"<<envioParcial<<endl;
 		pthread_mutex_unlock(&mutex);

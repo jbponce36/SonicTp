@@ -64,9 +64,9 @@ void JuegoCliente::iniciarHilos()
 	hiloEnviar->parametros.cliente = cliente;
 	hiloEnviar->IniciarHilo();
 
-	HilolatidoSer* hls = new HilolatidoSer();
-	hls->parametros.cliente = cliente;
-	hls->IniciarHilo();
+	hiloLatido = new HilolatidoSer();
+	hiloLatido->parametros.cliente = cliente;
+	hiloLatido->IniciarHilo();
 
 
 	hiloJuego = new Hilo();
@@ -170,7 +170,7 @@ void JuegoCliente::iniciarJuegoControlCliente()
 	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola(); //Saca el mensaje [INICIAR JUEGO] de la cola
 
 	cout << "Inicio el juego." << endl;
-	control->ControlarJuegoCliente(vista, sonic, hiloEnviar, hiloRecibir);
+	control->ControlarJuegoCliente(vista, sonic, hiloEnviar, hiloRecibir, hiloLatido);
 }
 
 void JuegoCliente::CargarVistaParaElMenu(){

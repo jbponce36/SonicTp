@@ -76,7 +76,8 @@ void *Hilorecibir::serverRecibir(void *args){
 					strcpy(buffer, msjDesconexion.c_str());
 					parametros->colaDeMensajes.agregar(buffer); //Asi ControlServidor lo congela
 					cout << "Agregue el mensaje " << msjDesconexion << endl;
-					alc->Join();
+
+					alc->gethilo().Join();
 				}
 
 
@@ -85,15 +86,7 @@ void *Hilorecibir::serverRecibir(void *args){
 	}
 
 	printf("Salio del while y el hilo recibir va a terminar. \n");
-	/*cout<<"--------------------------------------"<<endl;
-	while (! parametros->colaDeMensajes.getColaPaquetes().empty())
-	  {
-		cout<<"lo de cola------:";
-	    cout << parametros->colaDeMensajes.obtenerElementoDelaCola() << endl;
-	    parametros->colaDeMensajes.eliminarElPrimetoDeLaCola();
-	  }*/
 
-	//int status = close(parametros->skt);
 }
 
 void Hilorecibir::Join()

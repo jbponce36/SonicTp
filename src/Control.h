@@ -10,6 +10,9 @@
 #include "Definiciones.h"
 #include <vector>
 #include <algorithm>
+#include "menu.h"
+#include "Paquete.h"
+#include "HilolatidoSer.h"
 
 #define FPS 25
 #define TICKS_POR_FRAME 1000/FPS
@@ -20,6 +23,7 @@ private:
 	int posicionInicialY;
 	Logger *log;
 	bool salir;
+	Paquete *colaPaquete;
 
 	std::vector<Personaje*> *sonics; //Tiene todos los sonics
 	int maxJugadores;
@@ -32,23 +36,22 @@ public:
 			std::string animacion;
 			int indiceAnimacion;
 	}mensajePosicion;
-
+	menu *m;
 	Control(int posicionX, int posicionY, int maxJugadores, std::vector<Personaje*> *sonics, Logger *log);
 	virtual ~Control();
 	int getPosicionInicialX();
 	int getPosicionInicialY();
-	void ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, HiloEnviarCliente *hiloEnviar, HiloRecibirCliente *hiloRecibir);
+	void ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, HiloEnviarCliente *hiloEnviar, HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido);
 	void parsearMensajeCamara(int &xDest, int &yDest, std::string mensaje);
 	void parsearMensajePosicion(mensajePosicion& msjParseado, std::string mensaje);
 
 
-
 private:
-	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista, HiloEnviarCliente *hiloEnviar);
+	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista, HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido);
 	void moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic, Camara* camara);
 	void controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista, Camara *camara);
 	void actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic);
-
+	std::string intToString(int numero);
 
 };
 

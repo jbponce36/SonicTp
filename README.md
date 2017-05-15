@@ -34,3 +34,8 @@ El nombre de los archivos son :
     configuracion/cliente.json
 
 Si se ingresa mal el nombre de los archivos, el programa toma uno por defecto.
+
+# Problemas con el puerto
+Si el puerto figura como ocupado, podemos cerrarlo de la siguiente forma
+
+    fuser -k -n tcp 37

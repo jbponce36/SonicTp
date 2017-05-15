@@ -10,6 +10,7 @@
 #include "HiloRecibirCliente.h"
 #include <list>
 #include "Hilolatidocliente.h"
+#include "menu.h"
 
 using namespace std;
 
@@ -56,34 +57,37 @@ int main(int argc, char *argv[]) {
 
 	juego.CargarVistaParaElMenu();
 
-	int opcion = juego.elegirOpcionDeMenu(log);
-	switch (opcion){
-		case 0:{
-			int skt = cliente->conectar(hostname, puerto);
-		//	int skt = cliente->conectar("192.168.1.5",8080);
+	//menu *m = new menu();
 
-			if(skt <0){
-				cout<<"El cliente no se conecto"<<endl;
-				log->addLogMessage("[CLIENTE] El cliente no se conecto.",1);
-				cliente->cerrar();
-				return -1;
+	int opcion = -1;
+	while (opcion != 2){
+		opcion = juego.elegirOpcionDeMenu(log);
+		switch (opcion){
+			case 0:{
+				int skt = cliente->conectar(hostname, puerto);
+			//	int skt = cliente->conectar("192.168.1.5",8080);
 
-			}else{
-				juego.iniciarHilos();
-				juego.terminarHilos();
+				if(skt <0){
+					cout<<"El cliente no se conecto"<<endl;
+					log->addLogMessage("[CLIENTE] El cliente no se conecto.",1);
+					cliente->cerrar();
+					return -1;
+
+				}else{
+
+					//m->setSkt(skt);
+					juego.iniciarHilos();
+					juego.terminarHilos();
+				}
 			}
-		}
-		break;
-		case 1:{
+			break;
+			case 1:cout<<"se desconecto"<<endl;
 			log->addLogMessage("[CLIENTE] El "+cliente->toString()+" se desconecto.", 1);
-			cout<<"se desconecto"<<endl;
-		}
-		break;{
-			log->addLogMessage("[CLIENTE] El "+cliente->toString()+" salio.", 1);
+			break;
 			case 2:cout<<"salir"<<endl;
+			log->addLogMessage("[CLIENTE] El "+cliente->toString()+" salio.", 1);
+			break;
 		}
-
-		break;
 	}
 
 	cliente->cerrar();
