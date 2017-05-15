@@ -85,13 +85,14 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 					//break;
 					if (opcion == 1){
 						//salir = true;
-					//	char buffer [40];
+						//char buffer [40];
 						//std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE /*+ hiloEnviar->parametros.skt*/;
 						//strcpy(buffer, msjDesconexion.c_str());
 						//this->colaPaquete->agregar(buffer);
 						hiloRecibir->parametros.colaPaquete.agregar("Servidor Desconectado");
 
-						//shutdown(hiloEnviar->parametros.skt, SHUT_RDWR);
+						shutdown(hiloRecibir->parametros.skt, SHUT_RDWR);
+						close(hiloRecibir->parametros.skt);
 						//close(hiloEnviar->parametros.skt);
 					}
 					break;
