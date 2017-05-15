@@ -27,19 +27,12 @@ void HiloRecibirCliente::IniciarHilo(){
 
 	hilo = new Hilo(/*log*/);
 	hilo->Create((void *)HiloRecibirCliente::clienteRecibir, (void *)&parametros);
-//	pthread_create(&this->tid, NULL, (void *(*)(void *))clienteRecibir, (void *)&parametros);
-
 
 }
 void *HiloRecibirCliente::clienteRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
-
+	parametros->cliente->getLog()->addLogMessage("",2);
 	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaPaquete);
-	//alc->IniciarHilo();
-    //alc->setconexcliente(alc->parametros.cliente);
-	//alc->setIniciar(false);
-    //parametros->cliente->recibir(buffer,strlen(buffer));
-	cout<<"[HILO RECIBIR CLIENTE] [CLIENTE RECIBIR] "<<endl;
 
 	char buffer[100];
 	//parametros->alc->actualizarTiempoLatido();

@@ -25,12 +25,13 @@ int getNivelLogger(int argc, char *argv[]){
 		nivelLog = argv[2];
 	}
 	char *nivel= (char*)nivelLog;
+
 	return atoi(nivel);
 }
 
 
 int main(int argc, char *argv[]) {
-	char *archivoLog=(char*)"configuracion/log.txt";
+	char *archivoLog=(char*)"configuracion/logServidor.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv), "SERVER");
 	log->iniciarLog("INICIAR LOGGER");
 
@@ -75,6 +76,7 @@ int main(int argc, char *argv[]) {
 
 		if(skt <= 0){
 		  cout << "Error on accept"<<endl;
+		  log->addLogMessage("[SERVER] No se pudo aceptar el cliente",1);
 		}
 		else{
 			ostringstream oss;
@@ -163,5 +165,6 @@ int main(int argc, char *argv[]) {
 	delete juego;
 	delete log;
 
+	log->iniciarLog("TERMINAR LOGGER");
 	return 0;
 }

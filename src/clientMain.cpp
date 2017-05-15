@@ -18,7 +18,7 @@ int getNivelLogger(int argc, char *argv[]){
 
 	char *nivelLog = (char*)"2";
 	if(argc>2){
-		nivelLog = argv[2];
+		nivelLog = argv[1];
 	}
 
 	char *nivel= (char*)nivelLog;
@@ -30,7 +30,7 @@ char* getJson(int argc, char *argv[]){
 
 	char *clientConfig = (char*)"client.json";
 	if(argc>2){
-		clientConfig = argv[1];
+		clientConfig = argv[2];
 	}
 
 	return clientConfig;
@@ -39,9 +39,10 @@ char* getJson(int argc, char *argv[]){
 int main(int argc, char *argv[]) {
 
 	//char *clientConfig = getJson(argc, argv);
-	char *archivoLog=(char*)"configuracion/log.txt";
+	char *archivoLog=(char*)"configuracion/logCliente.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "CLIENTE");
 
+	log->iniciarLog("INICIAR LOGGER");
 
 	ConexCliente *cliente = new ConexCliente(log);
 	cliente->crear();
@@ -63,6 +64,7 @@ int main(int argc, char *argv[]) {
 
 			if(skt <0){
 				cout<<"El cliente no se conecto"<<endl;
+				log->addLogMessage("[CLIENTE] El cliente no se conecto.",1);
 				cliente->cerrar();
 				return -1;
 
@@ -72,13 +74,20 @@ int main(int argc, char *argv[]) {
 			}
 		}
 		break;
-		case 1:cout<<"se desconecto"<<endl;
-		break;
-		case 2:cout<<"salir"<<endl;
+		case 1:{
+			log->addLogMessage("[CLIENTE] El "+cliente->toString()+" se desconecto.", 1);
+			cout<<"se desconecto"<<endl;
+		}
+		break;{
+			log->addLogMessage("[CLIENTE] El "+cliente->toString()+" salio.", 1);
+			case 2:cout<<"salir"<<endl;
+		}
+
 		break;
 	}
 
 	cliente->cerrar();
+
 	delete cliente;
 	return 0;
 }

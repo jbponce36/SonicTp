@@ -101,14 +101,10 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 				parametros->pack.eliminarElPrimetoDeLaCola();
 			}
 
-			if (result==0){
+			if (result<=0){
 				printf("El cliente se desconecto. \n");
 				parametros->continuar = false;
-			}
 
-			if (result==-1){
-				printf("El cliente se desconecto. \n");
-				parametros->continuar = false;
 			}
 
 			parametros->bufferQ = "";

@@ -190,6 +190,13 @@ bool parseadorJson::validarVentana(json_t* raiz,const char* nomvent,const char* 
    return validarvent;
 }
 
+std::string parseadorJson::intToString(int number)
+{
+	ostringstream oss;
+	oss<< number;
+	return oss.str();
+}
+
 jconfiguracion* parseadorJson::cargarConfiguracion(json_t* raiz){
 
 	 json_t *jsonconfiguracion;
@@ -210,7 +217,7 @@ jconfiguracion* parseadorJson::cargarConfiguracion(json_t* raiz){
     	 configuracion->setvelscroll(15);
      }
 
-     this->log->imprimirMensajeNivelAlto("[CARGAR VELOCIDAD DE SCROLL] Velocidad de scroll: ", configuracion->getvelscroll());
+     this->log->addLogMessage("[CARGAR VELOCIDAD DE SCROLL] Velocidad de scroll: "+intToString(configuracion->getvelscroll()),3);
      this->log->addLogMessage("[CARGAR VELOCIDAD DE SCROLL] Terminado.", 2);
 	 return configuracion;
 }

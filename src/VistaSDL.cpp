@@ -74,23 +74,23 @@ void VistaSDL::validacionesVentana()
 	if ( this->anchoVentana > MAX_ANCHO_VENTANA )
 	{
 		this->anchoVentana = MAX_ANCHO_VENTANA;
-		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Ancho:",MAX_ANCHO_VENTANA);
+		this->log->addLogMessage("[VALIDACIONES VENTANA] Ventana Ancho:"+intToString(MAX_ANCHO_VENTANA),3);
 
 	}
 	else if( this->anchoVentana < MIN_ANCHO_VENTANA_PERMITIDO )
 	{
 		this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
-		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Ancho:",ANCHO_VENTANA_POR_DEFECTO);
+		this->log->addLogMessage("[VALIDACIONES VENTANA] Ventana Ancho:"+intToString(ANCHO_VENTANA_POR_DEFECTO),3);
 	}
 	if ( this->altoVentana > MAX_ALTO_VENTANA  )
 	{
 		this->altoVentana = MAX_ALTO_VENTANA;
-		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Alto:",MAX_ALTO_VENTANA);
+		this->log->addLogMessage("[VALIDACIONES VENTANA] Ventana Alto:"+intToString( MAX_ALTO_VENTANA),3);
 	}
 	else if( this->altoVentana < MIN_ALTO_VENTANA_PERMITIDO )
 	{
 		this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
-		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Alto:",ALTO_VENTANA_POR_DEFECTO);
+		this->log->addLogMessage("[VALIDACIONES VENTANA] Ventana Alto:"+intToString( ALTO_VENTANA_POR_DEFECTO),3);
 	}
 	this->log->addLogMessage("[VALIDACIONES VENTANA] Terminado.",2);
 }
@@ -262,6 +262,8 @@ VistaSDL::~VistaSDL()
 	{
 		this->capasFondo[i]->liberarTextura();
 	}
+	this->log->iniciarLog("TERMINAR LOGGER");
+	//~this->log;
 }
 
 void VistaSDL::mostrarEntidades(SDL_Rect *camara, int indexZ)
@@ -278,7 +280,16 @@ void VistaSDL::setLog(Logger *log)
 {
     this->log = log;
 }
+
+std::string VistaSDL::intToString(int number)
+{
+	ostringstream oss;
+	oss<< number;
+	return oss.str();
+}
+
 int VistaSDL::mostraMenuInicial(Logger *logger){
+	this->log->addLogMessage("[MOSTRAR MENU INICIAL] Iniciado.",2);
 	Textura *menuInicial = new Textura();
 	Textura *texturaConectar = new Textura();
 	Textura *texturaDesconectar = new Textura();
@@ -299,6 +310,7 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 			{
 				salir = true;
 				seleccion = 2;
+				this->log->addLogMessage("[MOSTRAR MENU INICIAL] Saliendo del menu.",2);
 			}
 			else if((e.type == SDL_KEYDOWN) && (e.key.repeat == 0)){
 					switch (e.key.keysym.sym){
@@ -351,19 +363,24 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 
 			case 1:
 			texturaDesconectar->renderizar(&imagenMostrar,&camara);
+			this->log->addLogMessage("[MOSTRAR MENU INICIAL] Desconectando al servidor.",2);
 			break;
 
 			case 2:
 			texturaSalir->renderizar(&imagenMostrar,&camara);
+			this->log->addLogMessage("[MOSTRAR MENU INICIAL] Saliendo del juego.",2);
 			break;
 		}
 
 		SDL_RenderPresent(this->renderizador);
 	}
+
+	this->log->addLogMessage("[MOSTRAR MENU INICIAL] Terminado.",2);
 	return seleccion;
 }
 
 void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado){
+	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Iniciado.",2);
 	Textura *imagenEspera = new Textura();
 
 	imagenEspera->cargarImagen("images/imagenesMenu/esperar.png", "images/entidaddefault.png",this->renderizador, logger);
@@ -399,6 +416,8 @@ void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado){
 			}
 		}
 	}
+
+	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Terminado.",2);
 
 }
 

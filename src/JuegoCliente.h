@@ -54,6 +54,7 @@ public:
 	void iniciarJuego(); //Crea el parseador e inicia el juego
 	void CargarVistaParaElMenu();
 	int elegirOpcionDeMenu(Logger *log);
+	std::string intToString(int number);
 	struct Datos{
 		ConexCliente *cliente;
 		Logger *log;

@@ -43,7 +43,8 @@ void *Hilorecibir::serverRecibir(void *args){
 	cout<<"SOCKET DEL CLIENTE: "<<parametros->skt<<endl;
 	alc->setSkt(parametros->skt);
 	alc->setidCliente(parametros->idCliente);
-    alc->IniciarHiloServidorCliente();
+
+	alc->IniciarHiloServidorCliente();
     alc->actualizarTiempoLatido();
 	//alc->setCadena("ESTOYVIVO");
 	while(parametros->continuar){
