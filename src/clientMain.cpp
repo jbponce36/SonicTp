@@ -57,29 +57,33 @@ int main(int argc, char *argv[]) {
 	juego.CargarVistaParaElMenu();
 	//menu *m = new menu();
 
-	int opcion = juego.elegirOpcionDeMenu(log);
-	switch (opcion){
-		case 0:{
-			int skt = cliente->conectar(hostname, puerto);
-		//	int skt = cliente->conectar("192.168.1.5",8080);
+	int opcion = -1;
+	while (opcion != 2){
+		opcion = juego.elegirOpcionDeMenu(log);
+		switch (opcion){
+			case 0:{
+				int skt = cliente->conectar(hostname, puerto);
+			//	int skt = cliente->conectar("192.168.1.5",8080);
 
-			if(skt <0){
-				cout<<"El cliente no se conecto"<<endl;
-				cliente->cerrar();
-				return -1;
+				if(skt <0){
+					cout<<"El cliente no se conecto"<<endl;
+					cliente->cerrar();
+					return -1;
 
-			}else{
+				}else{
 
-				//m->setSkt(skt);
-				juego.iniciarHilos();
-				juego.terminarHilos();
+					//m->setSkt(skt);
+					juego.iniciarHilos();
+					juego.terminarHilos();
+				}
 			}
+			break;
+			case 1:cout<<"se desconecto"<<endl;
+			break;
+			case 2:cout<<"salir"<<endl;
+			break;
 		}
-		break;
-		case 1:cout<<"se desconecto"<<endl;
-		break;
-		case 2:cout<<"salir"<<endl;
-		break;
+
 	}
 
 	cliente->cerrar();
