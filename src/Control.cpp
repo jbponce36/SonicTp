@@ -97,7 +97,8 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 						hiloEnviar->enviarDato(buffer);
 						hiloRecibir->parametros.colaPaquete.agregar("Servidor Desconectado");
 
-						//shutdown(hiloEnviar->parametros.skt, SHUT_RDWR);
+						shutdown(hiloRecibir->parametros.skt, SHUT_RDWR);
+						close(hiloRecibir->parametros.skt);
 						//close(hiloEnviar->parametros.skt);
 						break;
 					}
