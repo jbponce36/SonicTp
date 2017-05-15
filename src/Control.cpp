@@ -15,7 +15,7 @@ int Control::getPosicionInicialY(){
 	return this->posicionInicialY;
 }
 void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
-		HiloEnviarCliente *hiloEnviar, HiloRecibirCliente *hiloRecibir)
+		HiloEnviarCliente *hiloEnviar, HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido)
 {
 	SDL_Rect imagenMostrar;
 
@@ -42,7 +42,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	while( !salir ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
-		administrarTeclas(&controlador, sonic, vista, hiloEnviar,hiloRecibir);
+		administrarTeclas(&controlador, sonic, vista, hiloEnviar,hiloRecibir, hiloLatido);
 		controlDeMensajes(sonic, hiloRecibir, vista, camara);
 		moverPersonaje(tiempoDeJuego, vista, sonic, camara);
 		/////Corregir posicion????
@@ -69,7 +69,7 @@ std::string Control::intToString(int number)
 }
 
 void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic,
-		VistaSDL *vista, HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir)
+		VistaSDL *vista, HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido)
 {
 	SDL_Event e;
 
@@ -97,8 +97,10 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 						hiloEnviar->enviarDato(buffer);
 						hiloRecibir->parametros.colaPaquete.agregar("Servidor Desconectado");
 
-						shutdown(hiloRecibir->parametros.skt, SHUT_RDWR);
-						close(hiloRecibir->parametros.skt);
+						//shutdown(hiloRecibir->parametros.skt, SHUT_RDWR);
+						//close(hiloRecibir->parametros.skt);
+						hiloRecibir->parametros.continuar = false;
+						hiloLatido->parametros.continuar = false;
 						//close(hiloEnviar->parametros.skt);
 						printf("Esperando que termine el hilo recibir \n");
 						hiloRecibir->Join();

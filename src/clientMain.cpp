@@ -56,13 +56,9 @@ int main(int argc, char *argv[]) {
 
 	juego.CargarVistaParaElMenu();
 
-	menu *m = new menu(/*juego,cliente*/);
 
 	int opcion = -1;
-	while(opcion != 2)
-	{
-		//TODO : GRISAR LA OPCION DESCONECTAR
-		//       NO ES TRIVIAL, PUEDE TRAER PROBLEMAS
+	while (opcion != 2){
 
 		opcion = juego.elegirOpcionDeMenu(log);
 		switch (opcion){
@@ -88,8 +84,7 @@ int main(int argc, char *argv[]) {
 			case 2:cout<<"salir"<<endl;
 			break;
 		}
-		printf("Opcion Seleccionada %d \n", opcion);
-		printf("Estoy en el menu principal \n");
+
 	}
 
 	cliente->cerrar();
