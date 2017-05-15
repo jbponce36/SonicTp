@@ -7,7 +7,9 @@
 
 #include "menu.h"
 
-menu::menu() {
+
+
+menu::menu(/*ConexCliente *cliente,JuegoCliente *c*/) {
 	// TODO Auto-generated constructor stub
 
 }

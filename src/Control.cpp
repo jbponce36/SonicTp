@@ -100,10 +100,20 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 						shutdown(hiloRecibir->parametros.skt, SHUT_RDWR);
 						close(hiloRecibir->parametros.skt);
 						//close(hiloEnviar->parametros.skt);
+						printf("Esperando que termine el hilo recibir \n");
+						hiloRecibir->Join();
+						printf("Esperando que termine el hilo enviar \n");
+						hiloEnviar->Join();
 						break;
 					}
 					case 2:
 						salir = true;
+
+
+
+
+						//hiloRecibir->parametros.colaPaquete.agregar("VolverMenu");
+
 						break;
 					default:
 						break;
@@ -152,7 +162,7 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 
 			//cout << msj.id << " " << msj.posX << " " << msj.posY  << " " << msj.animacion << " " << msj.indiceAnimacion << endl;
 		}
-		else if (mensaje == "Volver Al Menu")
+		else if (mensaje == "VolverMenu")
 		{
 			vista->mostraMenuInicial(this->log);
 		}

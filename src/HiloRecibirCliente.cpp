@@ -65,6 +65,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					    printf("****** La conexion fue rechaza por el servidor ******* \n");
 					}
 
+
 					if (strcmp(buffer, "[INICIAR JUEGO]") == 0){
 				         printf("****** VOY A INICIAR EL JUEGO ******* \n");
 				         alc->setCadena("INICIAR JUEGO");
