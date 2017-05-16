@@ -56,7 +56,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				if (result>0){
 
 					cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
-					alc->setCadena("");
+					//alc->setCadena("");
 					alc->actualizarTiempoLatido();
 
 					//parametros->alc->actualizarTiempoLatido();
@@ -68,9 +68,9 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 					if (strcmp(buffer, "[INICIAR JUEGO]") == 0){
 				         printf("****** VOY A INICIAR EL JUEGO ******* \n");
-				         alc->setCadena("INICIAR JUEGO");
-				         alc->actualizarTiempoLatido();
-                         alc->setIniciar(true);
+				         //alc->setCadena("INICIAR JUEGO");
+				         //alc->actualizarTiempoLatido();
+                        //alc->setIniciar(true);
                          alc->IniciarHilo();
 				         //parametros->colaPaquete.agregar("[INICIAR JUEGO]");
 				         if(parametros->vcIniciarJuego != NULL)
