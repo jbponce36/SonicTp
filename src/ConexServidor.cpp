@@ -180,10 +180,17 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 	if (bytes <= 0){
 		this->cantclientes = this->cantclientes -1;
 		this->listaClientes.remove(fdCliente);
+
 		this->log->addLogMessage("[RECIBIR] Error, no se pudo recibir. Se desconectó el cliente con fd: "+intToString(skt),2);
+
+		cout << "Removi el cliente con fd: " << fdCliente << endl;
+		cout << "El tamanio de la lista es" << listaClientes.size() << endl;
+		//this->setListaClientes(listaClientes);
 		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
 
+
 		if (this->cantclientes==0){
+		//if(listaClientes.size() == 0){
 			printf("No hay clientes conectados \n");
 			if (this->partidaComenzada){
 
@@ -192,16 +199,16 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 
 				//a iria un mutex cada vez que se accede a la variable finalizarConexion
 				this->finalizarConexion = true;
-				this->log->addLogMessage("[RECIBIR] Se desconectaron todos los clientes. El servidor se desconectara.",2);
 				this->cerrar();
-				this->log->iniciarLog("TERMINAR LOGGER");
 			}
 		}
 	}
-
+	else{
+		this->log->addLogMessage("[RECIBIR] Error",2);
+	}
 	pthread_mutex_unlock(&mutex);
 
-	this->log->addLogMessage("[RECIBIR] Terminado.",2);
+	this->log->addLogMessage("[RECIBIR] Terminado",2);
 	return bytes;
 }
 

@@ -7,39 +7,44 @@
 
 #include "JuegoCliente.h"
 
-JuegoCliente::JuegoCliente()
-: vista(NULL), sonic(NULL), control(NULL), cliente(NULL), log(NULL),
-  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0), sonics(), juegoIniciado(false){
-	//Las variables se setean al llamar a iniciarJuegoCliente desde el thread
-}
-
 JuegoCliente::~JuegoCliente() {
+	cout << "vista\n";
 	if(vista != NULL)
 		delete vista;
+	cout << "control\n";
 	if(control != NULL)
 		delete control;
 
+	cout << "hiloJuego\n";
 	if(hiloJuego != NULL)
 		delete hiloJuego;
+	cout << "hiloRecibir \n";
 	if(hiloRecibir != NULL)
 		delete hiloRecibir;
+	cout << "hiloEnviar \n";
 	if(hiloEnviar != NULL)
 		delete hiloEnviar;
 
+	cout << "sonics\n";
 	if(!sonics.empty()){
 		std::vector<Personaje*>::iterator pos;
 		for(pos = sonics.begin();pos != sonics.end();pos++){
+			cout << (*pos)->getId() <<"\n";
 			delete (*pos);
 		}
 	}
 }
 
-JuegoCliente::JuegoCliente(ConexCliente *cliente, Logger *log)
+JuegoCliente::JuegoCliente(ConexCliente *cliente, Logger *log, int &opcionMenu)
 : vista(NULL), sonic(NULL), control(NULL), cliente(cliente), log(log),
-  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0), sonics(), juegoIniciado(false){
+  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0), sonics(),
+  juegoIniciado(false), opcionMenu(opcionMenu){
 	//Vista, sonic y control se setean al llamar a iniciarJuegoCliente desde el thread
 	this->log = log;
 	this->log->setModulo("JUEGO CLIENTE");
+
+	CargarVistaParaElMenu();
+
 }
 
 void *JuegoCliente::iniciarJuegoCliente(void *datos)
@@ -53,6 +58,9 @@ void *JuegoCliente::iniciarJuegoCliente(void *datos)
 void JuegoCliente::iniciarHilos()
 {
 	this->log->addLogMessage("[INICIAR HILOS] Iniciado.",2);
+
+	juegoIniciado = false;
+
 	hiloRecibir = new HiloRecibirCliente();
 	hiloRecibir->parametros.cliente = cliente;
 	hiloRecibir->parametros.continuar = true;
@@ -62,7 +70,7 @@ void JuegoCliente::iniciarHilos()
 	hiloEnviar = new HiloEnviarCliente();
 	//hiloEnviar->parametros.alc=alc;
 	hiloEnviar->parametros.cliente = cliente;
-	hiloEnviar->IniciarHilo();
+	hiloEnviar->iniciarHiloQueue();
 
 	hiloLatido = new HilolatidoSer();
 	hiloLatido->parametros.cliente = cliente;
@@ -98,9 +106,18 @@ void JuegoCliente::terminarHilos()
 		cliente->enviar(buffer, strlen(buffer));
 		this->log->addLogMessage("[TERMINAR HILOS] Se desconecto el jugador "+intToString(sonic->getId()),2);
 	}
+
 	//hiloRecibir->Join();
 	//hiloEnviar->Join();
-	this->log->addLogMessage("[TERMINAR HILOS] Iniciado",2);
+
+	cout << "Voy a terminar el hilo recibir \n";
+	hiloRecibir->Join();
+	cout << "Voy a terminar el hilo enviar \n";
+	hiloEnviar->Join();
+	cout << "Voy a terminar el hilo latidos \n";
+	hiloLatido->terminarHilo();
+	cout << "Termine todos los hilos. Todo ok \n";
+	this->log->addLogMessage("[TERMINAR HILOS] Terminado",2);
 }
 
 int JuegoCliente::inicializarJuegoCliente()
@@ -171,7 +188,7 @@ void JuegoCliente::iniciarJuegoControlCliente()
 		std::string mensaje = hiloRecibir->obtenerElementoDeLaCola(); //Saca el mensaje [INICIAR JUEGO] de la cola
 	}
 	cout << "Inicio el juego." << endl;
-	control->ControlarJuegoCliente(vista, sonic, hiloEnviar, hiloRecibir, hiloLatido);
+	control->ControlarJuegoCliente(vista, sonic, hiloEnviar, hiloRecibir, hiloLatido, opcionMenu);
 }
 
 void JuegoCliente::CargarVistaParaElMenu(){

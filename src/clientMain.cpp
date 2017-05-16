@@ -56,17 +56,18 @@ int main(int argc, char *argv[]) {
 	const char* hostname = parseadorCliente->CargarIPCliente();
 	int puerto =  parseadorCliente->CargarPuertoCliente(); // 8080;
 
-	JuegoCliente juego = JuegoCliente(cliente, log);
+	//JuegoCliente juego = JuegoCliente(cliente, log);
 
-	juego.CargarVistaParaElMenu();
-
+	//juego.CargarVistaParaElMenu();
 	//menu *m = new menu();
 
 	int opcion = -1;
 	while (opcion != 2){
+		JuegoCliente juego = JuegoCliente(cliente, log, opcion);
 		opcion = juego.elegirOpcionDeMenu(log);
 		switch (opcion){
-			case 0:{
+			case 0:
+			{
 				cliente->crear();
 				int skt = cliente->conectar(hostname, puerto);
 			//	int skt = cliente->conectar("192.168.1.5",8080);
@@ -75,6 +76,7 @@ int main(int argc, char *argv[]) {
 					cout<<"El cliente no se conecto"<<endl;
 					log->addLogMessage("[CLIENTE] El cliente no se conecto.",1);
 					cliente->cerrar();
+					delete cliente;
 					return -1;
 
 				}else{
@@ -83,18 +85,23 @@ int main(int argc, char *argv[]) {
 					juego.iniciarHilos();
 					juego.terminarHilos();
 				}
+				break;
 			}
-			break;
-			case 1:cout<<"se desconecto"<<endl;
-			log->addLogMessage("[CLIENTE] El "+cliente->toString()+" se desconecto.", 1);
-			break;
-			case 2:cout<<"salir"<<endl;
+			case 1:
+			{
+				cout<<"se desconecto"<<endl;
+				cliente->cerrar();
+				log->addLogMessage("[CLIENTE] El "+cliente->toString()+" se desconecto.", 1);
+				delete cliente;
+				return 0;
+			}
+			case 2:{cout<<"salir"<<endl;
 			log->addLogMessage("[CLIENTE] El "+cliente->toString()+" salio.", 1);
-			break;
+			break;}
 		}
-	}
 
-	cliente->cerrar();
+		cliente->cerrar();
+	}
 
 	delete cliente;
 	return 0;

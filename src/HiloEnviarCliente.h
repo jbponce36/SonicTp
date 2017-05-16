@@ -17,7 +17,6 @@
 class HiloEnviarCliente {
 private:
 	Hilo* hilo;
-	bool continuar;
 
 public:
 	HiloEnviarCliente();
@@ -31,6 +30,7 @@ public:
 			Paquete pack;
 			char *bufferQ;
 			AdministradorLatidoCliente *alc;
+			bool continuar;
 		};
 	SerParametros parametros;
 	void iniciarHiloQueue();

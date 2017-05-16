@@ -15,7 +15,7 @@ int Control::getPosicionInicialY(){
 	return this->posicionInicialY;
 }
 void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
-		HiloEnviarCliente *hiloEnviar, HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido)
+		HiloEnviarCliente *hiloEnviar, HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, int &opcionMenu)
 {
 	SDL_Rect imagenMostrar;
 
@@ -38,11 +38,13 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 
 	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana(), &sonicsMapa);
 
+	salir = false;
+
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !salir ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
-		administrarTeclas(&controlador, sonic, vista, hiloEnviar,hiloRecibir, hiloLatido);
+		administrarTeclas(&controlador, sonic, vista, hiloEnviar,hiloRecibir, hiloLatido, opcionMenu);
 		controlDeMensajes(sonic, hiloRecibir, vista, camara);
 		moverPersonaje(tiempoDeJuego, vista, sonic, camara);
 		/////Corregir posicion????
@@ -69,7 +71,7 @@ std::string Control::intToString(int number)
 }
 
 void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic,
-		VistaSDL *vista, HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido)
+		VistaSDL *vista, HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, int &opcionMenu)
 {
 	SDL_Event e;
 
@@ -80,40 +82,7 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 		{
 			salir = true;
 		}
-
-		if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
-		{
-			if( e.key.keysym.sym == SDLK_q)
-			{
-				int opcion = vista->mostraMenuInicial(this->log);
-				switch(opcion)
-				{
-					case 1:
-					{
-						//salir = true;
-						char buffer [40];
-						std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + intToString(sonic->getId());
-						strcpy(buffer, msjDesconexion.c_str());
-						hiloEnviar->enviarDato(buffer);
-						hiloRecibir->parametros.colaPaquete.agregar("Servidor Desconectado");
-
-						//shutdown(hiloRecibir->parametros.skt, SHUT_RDWR);
-						//close(hiloRecibir->parametros.skt);
-						hiloRecibir->parametros.continuar = false;
-						hiloLatido->parametros.continuar = false;
-						//close(hiloEnviar->parametros.skt);
-						break;
-					}
-					case 2:
-						salir = true;
-						break;
-					default:
-						break;
-				}
-			}
-		}
-
-		controlador->procesarEvento(e, sonic, hiloEnviar); //Setea todas las teclas presionadas o liberadas
+		controlador->procesarEvento(e, sonic, hiloEnviar, hiloRecibir, hiloLatido, vista, opcionMenu); //Setea todas las teclas presionadas o liberadas
 	}
 	controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
 
@@ -154,7 +123,7 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 
 			//cout << msj.id << " " << msj.posX << " " << msj.posY  << " " << msj.animacion << " " << msj.indiceAnimacion << endl;
 		}
-		else if (mensaje == "Volver Al Menu")
+		else if (mensaje == "VolverMenu")
 		{
 			vista->mostraMenuInicial(this->log);
 		}
