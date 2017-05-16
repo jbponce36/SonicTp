@@ -16,6 +16,7 @@ namespace std {
 AdministradorLatidoCliente::AdministradorLatidoCliente(Paquete *colaPaquete) {
 	// TODO Auto-generated constructor stub
   this->colaPaquete = colaPaquete;
+  this->iniciar = false;
 }
 /*time_t AdministradorLatidoCliente::getEndT(){
 		return end_t;
@@ -144,7 +145,7 @@ AdministradorLatidoCliente *alc = (AdministradorLatidoCliente*)arg;
 
 }
 bool  AdministradorLatidoCliente::isIniciar(){
-	this->iniciar;
+	return this->iniciar;
 }
 void AdministradorLatidoCliente::setIniciar(bool ini){
 	this->iniciar = ini;
@@ -156,7 +157,7 @@ int AdministradorLatidoCliente::getSkt(){
 	return this->skt;
 }
 void AdministradorLatidoCliente::setSkt(int s){
-		this->skt  = s;
+	this->skt  = s;
 }
 void AdministradorLatidoCliente::setH(Hilo *hil){
 	this->h = hil;
