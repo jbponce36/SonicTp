@@ -18,16 +18,19 @@ int getNivelLogger(int argc, char *argv[]){
 	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
 
 	char *nivelLog = (char*)"2";
-	if(argc>2){
+	cout<<"NIVEL: "<<nivelLog<<endl;
+	if(argc>1){
 		nivelLog = argv[1];
 	}
 
 	char *nivel= (char*)nivelLog;
+
 	return atoi(nivel);
 }
 
 char* getJson(int argc, char *argv[]){
 	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
+
 
 	char *clientConfig = (char*)"client.json";
 	if(argc>2){
@@ -46,7 +49,7 @@ int main(int argc, char *argv[]) {
 	log->iniciarLog("INICIAR LOGGER");
 
 	ConexCliente *cliente = new ConexCliente(log);
-	cliente->crear();
+	//cliente->crear();
 	parseadorJsonCli *parseadorCliente = new parseadorJsonCli(log);
 	parseadorCliente->parsearArchivo(cliente->cargarNombreArchivo());
 
@@ -64,6 +67,7 @@ int main(int argc, char *argv[]) {
 		opcion = juego.elegirOpcionDeMenu(log);
 		switch (opcion){
 			case 0:{
+				cliente->crear();
 				int skt = cliente->conectar(hostname, puerto);
 			//	int skt = cliente->conectar("192.168.1.5",8080);
 

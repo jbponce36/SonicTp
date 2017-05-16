@@ -21,8 +21,9 @@ int getNivelLogger(int argc, char *argv[]){
 	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
 
 	char *nivelLog = (char*)"2";
+
 	if(argc>1){
-		nivelLog = argv[2];
+		nivelLog = argv[1];
 	}
 	char *nivel= (char*)nivelLog;
 

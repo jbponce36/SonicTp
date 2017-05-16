@@ -14,6 +14,7 @@ Logger::Logger(char *fileName,int level, string modulo){
 	this->archivo = fileName;
 	this->setLevel(level);
 	this->modulo = modulo;
+
 }
 
 void Logger::setLevel(int level)

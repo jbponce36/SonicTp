@@ -158,17 +158,18 @@ void JuegoCliente::inicializarOtrosSonics(int id)
 void JuegoCliente::iniciarJuegoControlCliente()
 {
 	cout << "Esperando que se conecten jugadores..." << endl;
-	hiloRecibir->setVariableCondicional(&vcIniciarJuego);
-	vcIniciarJuego.bloquearMutex();
-	while (!juegoIniciado)
-	{
-		vcIniciarJuego.esperarCondicion();
-		juegoIniciado = true;
+	if(!juegoIniciado){
+		hiloRecibir->setVariableCondicional(&vcIniciarJuego);
+		vcIniciarJuego.bloquearMutex();
+		while (!juegoIniciado)
+		{
+			vcIniciarJuego.esperarCondicion();
+			juegoIniciado = true;
+		}
+
+		vcIniciarJuego.desbloquearMutex();
+		std::string mensaje = hiloRecibir->obtenerElementoDeLaCola(); //Saca el mensaje [INICIAR JUEGO] de la cola
 	}
-
-	vcIniciarJuego.desbloquearMutex();
-	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola(); //Saca el mensaje [INICIAR JUEGO] de la cola
-
 	cout << "Inicio el juego." << endl;
 	control->ControlarJuegoCliente(vista, sonic, hiloEnviar, hiloRecibir, hiloLatido);
 }
