@@ -33,12 +33,9 @@ public:
 			bool continuar;
 	};
 	Serparametros parametros;
-	Hilo gethilo();
-
-	void setH(Hilo);
 
 private:
-		Hilo h;
+		Hilo *hilo;
 };
 
 } /* namespace std */

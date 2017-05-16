@@ -22,7 +22,7 @@ private:
 	ConexServidor *servidor;
 	int skt;
 	Paquete *colaPaquete;
-	Hilo h;
+	Hilo *h;
 	bool iniciar;
 	std::string idCliente;
 	std::string cadena;
@@ -53,9 +53,9 @@ public:
 	ConexCliente* getconexcliente();
 	void setconexcliente(ConexCliente *c);
 	void setconexServidor(ConexServidor *s);
-	Hilo gethilo();
+	Hilo* gethilo();
 
-	void setH(Hilo);
+	void setH(Hilo*);
 	int getSkt();
 	void setSkt(int s);
 	bool isIniciar();

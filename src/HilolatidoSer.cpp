@@ -11,7 +11,7 @@
 
 namespace std {
 
-HilolatidoSer::HilolatidoSer() {
+HilolatidoSer::HilolatidoSer() : hilo(NULL){
 	// TODO Auto-generated constructor stub
 	this->salir = false;
 	parametros.continuar = true;
@@ -19,24 +19,19 @@ HilolatidoSer::HilolatidoSer() {
 
 HilolatidoSer::~HilolatidoSer() {
 	// TODO Auto-generated destructor stub
+	delete hilo;
 }
 void HilolatidoSer::IniciarHilo(){
-	Hilo hilos = Hilo(/*log*/);
-	//hilos = new Hilo();
-	//hiloJuego = new Hilo();
-	hilos.Create((void *)HilolatidoSer::serverEnviarRecibir ,  (void *)&parametros);
+	hilo = new Hilo(/*log*/);
+	hilo->Create((void *)HilolatidoSer::serverEnviarRecibir ,  (void *)&parametros);
 }
 void HilolatidoSer::terminarHilo(){
-	this->salir = true;
+	parametros.continuar = false;
+	cout << "Voy a terminar el hiloLatidos \n";
+	hilo->Join();
+	cout << "Todo ok hiloLatidos \n";
+}
 
-}
-Hilo HilolatidoSer::gethilo(){
-	return this->h;
-}
-
-void HilolatidoSer::setH(Hilo hil){
-	this->h = hil;
-}
 void *HilolatidoSer::serverEnviarRecibir(void *args){
 
 	cout<<" Inicio el hilo de latidos del servidor: "<<endl;
