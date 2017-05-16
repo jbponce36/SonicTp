@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 
 
 	ConexCliente *cliente = new ConexCliente(log);
-	cliente->crear();
+	//cliente->crear();
 	parseadorJsonCli *parseadorCliente = new parseadorJsonCli(log);
 	parseadorCliente->parsearArchivo(cliente->cargarNombreArchivo());
 
@@ -62,6 +62,7 @@ int main(int argc, char *argv[]) {
 		opcion = juego.elegirOpcionDeMenu(log);
 		switch (opcion){
 			case 0:{
+				cliente->crear();
 				int skt = cliente->conectar(hostname, puerto);
 			//	int skt = cliente->conectar("192.168.1.5",8080);
 
