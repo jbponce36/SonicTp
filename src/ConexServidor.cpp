@@ -189,8 +189,8 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
 
 
-		//if (this->cantclientes==0){
-		if(listaClientes.size() == 0){
+		if (this->cantclientes==0){
+		//if(listaClientes.size() == 0){
 			printf("No hay clientes conectados \n");
 			if (this->partidaComenzada){
 

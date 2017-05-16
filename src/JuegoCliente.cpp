@@ -14,21 +14,28 @@ JuegoCliente::JuegoCliente()
 }
 
 JuegoCliente::~JuegoCliente() {
+	cout << "vista\n";
 	if(vista != NULL)
 		delete vista;
+	cout << "control\n";
 	if(control != NULL)
 		delete control;
 
+	cout << "hiloJuego\n";
 	if(hiloJuego != NULL)
 		delete hiloJuego;
+	cout << "hiloRecibir \n";
 	if(hiloRecibir != NULL)
 		delete hiloRecibir;
+	cout << "hiloEnviar \n";
 	if(hiloEnviar != NULL)
 		delete hiloEnviar;
 
+	cout << "sonics\n";
 	if(!sonics.empty()){
 		std::vector<Personaje*>::iterator pos;
 		for(pos = sonics.begin();pos != sonics.end();pos++){
+			cout << (*pos)->getId() <<"\n";
 			delete (*pos);
 		}
 	}
@@ -38,6 +45,8 @@ JuegoCliente::JuegoCliente(ConexCliente *cliente, Logger *log)
 : vista(NULL), sonic(NULL), control(NULL), cliente(cliente), log(log),
   hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0), sonics(), juegoIniciado(false){
 	//Vista, sonic y control se setean al llamar a iniciarJuegoCliente desde el thread
+
+	CargarVistaParaElMenu();
 }
 
 void *JuegoCliente::iniciarJuegoCliente(void *datos)
@@ -50,6 +59,7 @@ void *JuegoCliente::iniciarJuegoCliente(void *datos)
 
 void JuegoCliente::iniciarHilos()
 {
+	juegoIniciado = false;
 
 	hiloRecibir = new HiloRecibirCliente();
 	hiloRecibir->parametros.cliente = cliente;
@@ -60,7 +70,7 @@ void JuegoCliente::iniciarHilos()
 	hiloEnviar = new HiloEnviarCliente();
 	//hiloEnviar->parametros.alc=alc;
 	hiloEnviar->parametros.cliente = cliente;
-	hiloEnviar->IniciarHilo();
+	hiloEnviar->iniciarHiloQueue();
 
 	hiloLatido = new HilolatidoSer();
 	hiloLatido->parametros.cliente = cliente;
@@ -93,8 +103,13 @@ void JuegoCliente::terminarHilos()
 		strcpy(buffer, mensaje.c_str());
 		cliente->enviar(buffer, strlen(buffer));
 	}
-	//hiloRecibir->Join();
-	//hiloEnviar->Join();
+	cout << "Voy a terminar el hilo recibir \n";
+	hiloRecibir->Join();
+	cout << "Voy a terminar el hilo enviar \n";
+	hiloEnviar->Join();
+	cout << "Voy a terminar el hilo latidos \n";
+	hiloLatido->terminarHilo();
+	cout << "Termine todos los hilos. Todo ok \n";
 }
 
 int JuegoCliente::inicializarJuegoCliente()

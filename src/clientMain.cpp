@@ -52,16 +52,19 @@ int main(int argc, char *argv[]) {
 	const char* hostname = parseadorCliente->CargarIPCliente();
 	int puerto =  parseadorCliente->CargarPuertoCliente(); // 8080;
 
-	JuegoCliente juego = JuegoCliente(cliente, log);
+	//JuegoCliente juego = JuegoCliente(cliente, log);
 
-	juego.CargarVistaParaElMenu();
+	//juego.CargarVistaParaElMenu();
 	//menu *m = new menu();
 
-	int opcion = -1;
-	while (opcion != 2){
+	int opcion = 0;
+	while (opcion == 0){
+		JuegoCliente juego = JuegoCliente(cliente, log);
+
 		opcion = juego.elegirOpcionDeMenu(log);
 		switch (opcion){
-			case 0:{
+			case 0:
+			{
 				cliente->crear();
 				int skt = cliente->conectar(hostname, puerto);
 			//	int skt = cliente->conectar("192.168.1.5",8080);
@@ -77,17 +80,18 @@ int main(int argc, char *argv[]) {
 					juego.iniciarHilos();
 					juego.terminarHilos();
 				}
+				break;
 			}
-			break;
-			case 1:cout<<"se desconecto"<<endl;
-			break;
-			case 2:cout<<"salir"<<endl;
-			break;
+			case 1:{cout<<"se desconecto"<<endl;
+			break;}
+			case 2:{cout<<"salir"<<endl;
+			break;}
 		}
 
+		cliente->cerrar();
 	}
 
-	cliente->cerrar();
+
 	delete cliente;
 	return 0;
 }

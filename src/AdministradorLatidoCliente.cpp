@@ -27,10 +27,11 @@ void AdministradorLatidoCliente::setEndT(time_t endT) {
 */
 AdministradorLatidoCliente::~AdministradorLatidoCliente() {
 	// TODO Auto-generated destructor stub
+	delete h;
 }
 
 void AdministradorLatidoCliente::actualizarTiempoLatido(){
-	printf("Se actualiza el tiempo \n");
+	//printf("Se actualiza el tiempo \n");
 	time(&end_t);
 	//cout<<"+++++++++++++++++++++++++++ :  "<<end_t<<endl;
 }
@@ -40,14 +41,16 @@ void AdministradorLatidoCliente::IniciarHilo(){
 
 	//hilo->Create((void *)AdministradorLatidoCliente::iniciarContador ,  (void *)this);
 	//Hilo hilo = Hilo(/*log*/);
-	h.Create((void *)AdministradorLatidoCliente::iniciarContador ,  (void *)this);
+	h = new Hilo();
+	h->Create((void *)AdministradorLatidoCliente::iniciarContador ,  (void *)this);
 	//this->setH(hilo);
 }
 void AdministradorLatidoCliente::IniciarHiloServidorCliente(){
 	//Hilo *hilo = new Hilo(/*log*/);
 	//hilo->Create((void *)AdministradorLatidoCliente::iniciarContadorServidorCliente ,  (void *)this);
 	//Hilo hilo = Hilo(/*log*/);
-	h.Create((void *)AdministradorLatidoCliente::iniciarContadorServidorCliente ,  (void *)this);
+	h = new Hilo();
+	h->Create((void *)AdministradorLatidoCliente::iniciarContadorServidorCliente ,  (void *)this);
 
 }
 void* AdministradorLatidoCliente::iniciarContadorServidorCliente(void *ars){
@@ -118,22 +121,24 @@ AdministradorLatidoCliente *alc = (AdministradorLatidoCliente*)arg;
 	//cout<<"CADENAAA"<<endl;
 	//cout<<alc->cadena<<endl;
 		alc->actualizarTiempoLatido();
+		alc->iniciar = true;
 		double diff_t;
 		time_t start_t;
 		time(&start_t);
 		diff_t = difftime(alc->end_t,start_t);
 		diff_t = fabs(diff_t);
 
-		while(diff_t < 6.0){
+		while(diff_t < 6.0 && alc->iniciar){
 			 time(&start_t);
 
 			 diff_t = difftime(alc->end_t,start_t);
 			 diff_t = fabs(diff_t);
-			 cout<<"la diferencia ::::::"<<diff_t<<endl;
+			 //cout<<"la diferencia ::::::"<<diff_t<<endl;
 
 		}
-		 printf("Se desconectara el cliente por falta de latidos \n");
-		 alc->colaPaquete->agregar("Servidor Desconectado");
+
+		printf("Se desconectara el cliente por falta de latidos \n");
+		alc->colaPaquete->agregar("Servidor Desconectado");
 
  // printf("Se desconectara el cliente por falta de latidos \n");
 
@@ -144,7 +149,7 @@ bool  AdministradorLatidoCliente::isIniciar(){
 void AdministradorLatidoCliente::setIniciar(bool ini){
 	this->iniciar = ini;
 }
-Hilo AdministradorLatidoCliente::gethilo(){
+Hilo* AdministradorLatidoCliente::gethilo(){
 	return this->h;
 }
 int AdministradorLatidoCliente::getSkt(){
@@ -153,7 +158,7 @@ int AdministradorLatidoCliente::getSkt(){
 void AdministradorLatidoCliente::setSkt(int s){
 		this->skt  = s;
 }
-void AdministradorLatidoCliente::setH(Hilo hil){
+void AdministradorLatidoCliente::setH(Hilo *hil){
 	this->h = hil;
 }
 std::string AdministradorLatidoCliente::getidCliente(){
@@ -166,6 +171,7 @@ void AdministradorLatidoCliente::setidCliente(std::string id){
 
 int AdministradorLatidoCliente::Join()
 {
-	return h.Join();
+	this->iniciar = false;
+	return h->Join();
 }
 } /* namespace std */

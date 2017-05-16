@@ -10,11 +10,13 @@
 #include  "AdministradorLatidoCliente.h"
 
 HiloRecibirCliente::HiloRecibirCliente() : hilo(NULL) {
-		parametros.vcIniciarJuego = NULL;
+	parametros.vcIniciarJuego = NULL;
+
 }
 
 HiloRecibirCliente::~HiloRecibirCliente(){
 	// TODO Auto-generated destructor stub
+	delete hilo;
 }
 
 void HiloRecibirCliente::setVariableCondicional(VariableCondicional *varCond)
@@ -55,7 +57,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 				if (result>0){
 
-					cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
+					//cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
 					//alc->setCadena("");
 					alc->actualizarTiempoLatido();
 
@@ -88,7 +90,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					printf("El cliente se desconecto satisfactoriamente. \n");
 					parametros->colaPaquete.agregar("Servidor Desconectado");
 					parametros->continuar = false;
-                    alc->gethilo().Join();
+
 				}
 				//cargamos los datos de todos los personajes que vienen desde el servidor, estos datos deben actualizar
 				//la vista, etc
@@ -98,6 +100,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 	 }
 
+	alc->Join();
 	printf("Aca se termina el thread HiloRecibir Cliente. \n");
 
 }

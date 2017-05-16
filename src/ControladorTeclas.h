@@ -13,6 +13,9 @@
 #include "ConexCliente.h"
 #include "ConexServidor.h"
 #include "Posicion.h"
+#include "HiloRecibirCliente.h"
+#include "HilolatidoSer.h"
+#include "VistaSDL.h"
 
 class ControladorTeclas {
 
@@ -26,10 +29,12 @@ private:
 public:
 	ControladorTeclas();
 	virtual ~ControladorTeclas();
-	void procesarEvento(SDL_Event &e,Personaje *sonic, HiloEnviarCliente *hiloEnviar);
+	void procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnviarCliente *hiloEnviar,
+		HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido,  VistaSDL *vista);
 	void administrarTeclas(Personaje *sonic);
 
 private:
+	std::string intToString(int number);
 };
 
 #endif

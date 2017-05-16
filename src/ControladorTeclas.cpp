@@ -17,7 +17,15 @@ ControladorTeclas::~ControladorTeclas() {
 	// TODO Auto-generated destructor stub
 }
 
-void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnviarCliente *hiloEnviar)
+std::string ControladorTeclas::intToString(int number)
+{
+	ostringstream oss;
+	oss<< number;
+	return oss.str();
+}
+
+void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnviarCliente *hiloEnviar,
+	HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, VistaSDL *vista)
 {
 	//Al presionar o soltar una tecla se ejecuta una sola vez el codigo correspondiente
 
@@ -54,10 +62,48 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 				sonic->enviarAServer(hiloEnviar, TECLA_CORRER_PRESIONADA);
 				teclaCorrer = true;
 				break;}
-			case SDLK_ESCAPE:{
-				cout << "Tecla escape presionada" << endl;
-				break;}
+			case SDLK_q:{
+				cout << "2do Menu" << endl;
+				int opcion = vista->mostraMenuInicial(vista->getLog());
+				cout << "Fin 2do menu" << endl;
+				switch(opcion)
+				{
+					case 1:
+					{
+						//salir = true;
+						char buffer [40];
+						std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + intToString(sonic->getId());
+						strcpy(buffer, msjDesconexion.c_str());
+						hiloEnviar->enviarDato(buffer);
+						hiloRecibir->parametros.colaPaquete.agregar("Servidor Desconectado");
 
+						//shutdown(hiloRecibir->parametros.skt, SHUT_RDWR);
+						//close(hiloRecibir->parametros.skt);
+						hiloRecibir->parametros.continuar = false;
+						hiloLatido->parametros.continuar = false;
+						//close(hiloEnviar->parametros.skt);
+						break;
+					}
+					case 2:
+					{
+						//salir = true;
+						char buffer [40];
+						std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + intToString(sonic->getId());
+						strcpy(buffer, msjDesconexion.c_str());
+						hiloEnviar->enviarDato(buffer);
+						hiloRecibir->parametros.colaPaquete.agregar("Servidor Desconectado");
+
+						//shutdown(hiloRecibir->parametros.skt, SHUT_RDWR);
+						//close(hiloRecibir->parametros.skt);
+						hiloRecibir->parametros.continuar = false;
+						hiloLatido->parametros.continuar = false;
+						//close(hiloEnviar->parametros.skt);
+					}
+					default:
+						break;
+				}
+				break;
+			}
 			default:
 				return;
 		}
