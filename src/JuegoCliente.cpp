@@ -40,8 +40,11 @@ JuegoCliente::JuegoCliente(ConexCliente *cliente, Logger *log, int &opcionMenu)
   hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0), sonics(),
   juegoIniciado(false), opcionMenu(opcionMenu){
 	//Vista, sonic y control se setean al llamar a iniciarJuegoCliente desde el thread
+	this->log = log;
+	this->log->setModulo("JUEGO CLIENTE");
 
 	CargarVistaParaElMenu();
+
 }
 
 void *JuegoCliente::iniciarJuegoCliente(void *datos)
@@ -54,6 +57,8 @@ void *JuegoCliente::iniciarJuegoCliente(void *datos)
 
 void JuegoCliente::iniciarHilos()
 {
+	this->log->addLogMessage("[INICIAR HILOS] Iniciado.",2);
+
 	juegoIniciado = false;
 
 	hiloRecibir = new HiloRecibirCliente();
@@ -77,9 +82,10 @@ void JuegoCliente::iniciarHilos()
 	hiloJuego->Create((void *)iniciarJuegoCliente, (void *)this);
 
 	vista->mostrarEsperarJugadores(log, juegoIniciado);
+	this->log->addLogMessage("[INICIAR HILOS] Terminado.",2);
 }
 
-std::string intToString(int number)
+std::string JuegoCliente::intToString(int number)
 {
 	ostringstream oss;
 	oss<< number;
@@ -88,6 +94,7 @@ std::string intToString(int number)
 
 void JuegoCliente::terminarHilos()
 {
+	this->log->addLogMessage("[TERMINAR HILOS] Iniciado",2);
 	cout << "Voy a terminar el hilo juego \n";
 	hiloJuego->Join();
 	cout << "Termine bien hilo juego \n";
@@ -97,7 +104,12 @@ void JuegoCliente::terminarHilos()
 		char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
 		strcpy(buffer, mensaje.c_str());
 		cliente->enviar(buffer, strlen(buffer));
+		this->log->addLogMessage("[TERMINAR HILOS] Se desconecto el jugador "+intToString(sonic->getId()),2);
 	}
+
+	//hiloRecibir->Join();
+	//hiloEnviar->Join();
+
 	cout << "Voy a terminar el hilo recibir \n";
 	hiloRecibir->Join();
 	cout << "Voy a terminar el hilo enviar \n";
@@ -105,6 +117,7 @@ void JuegoCliente::terminarHilos()
 	cout << "Voy a terminar el hilo latidos \n";
 	hiloLatido->terminarHilo();
 	cout << "Termine todos los hilos. Todo ok \n";
+	this->log->addLogMessage("[TERMINAR HILOS] Terminado",2);
 }
 
 int JuegoCliente::inicializarJuegoCliente()
@@ -162,22 +175,24 @@ void JuegoCliente::inicializarOtrosSonics(int id)
 void JuegoCliente::iniciarJuegoControlCliente()
 {
 	cout << "Esperando que se conecten jugadores..." << endl;
-	hiloRecibir->setVariableCondicional(&vcIniciarJuego);
-	vcIniciarJuego.bloquearMutex();
-	while (!juegoIniciado)
-	{
-		vcIniciarJuego.esperarCondicion();
-		juegoIniciado = true;
+	if(!juegoIniciado){
+		hiloRecibir->setVariableCondicional(&vcIniciarJuego);
+		vcIniciarJuego.bloquearMutex();
+		while (!juegoIniciado)
+		{
+			vcIniciarJuego.esperarCondicion();
+			juegoIniciado = true;
+		}
+
+		vcIniciarJuego.desbloquearMutex();
+		std::string mensaje = hiloRecibir->obtenerElementoDeLaCola(); //Saca el mensaje [INICIAR JUEGO] de la cola
 	}
-
-	vcIniciarJuego.desbloquearMutex();
-	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola(); //Saca el mensaje [INICIAR JUEGO] de la cola
-
 	cout << "Inicio el juego." << endl;
 	control->ControlarJuegoCliente(vista, sonic, hiloEnviar, hiloRecibir, hiloLatido, opcionMenu);
 }
 
 void JuegoCliente::CargarVistaParaElMenu(){
+	this->log->addLogMessage("[CARGAR VISTA PARA EL MENU] Iniciado.",2);
 	parseadorJson parseador = parseadorJson(log);
 
 	char *file=(char*)"configuracion/configuracion.json";
@@ -187,7 +202,7 @@ void JuegoCliente::CargarVistaParaElMenu(){
 	log->addLogMessage("Se inicia el menu del juego.",2);
 
 	vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, false);
-
+	this->log->addLogMessage("[CARGAR VISTA PARA EL MENU] Terminado.",2);
 }
 
 void JuegoCliente::iniciarJuego()

@@ -14,6 +14,7 @@ Logger::Logger(char *fileName,int level, string modulo){
 	this->archivo = fileName;
 	this->setLevel(level);
 	this->modulo = modulo;
+
 }
 
 void Logger::setLevel(int level)
@@ -118,7 +119,31 @@ int Logger::addLogMessage(std::string logMessage, int nivel){
 	return -1;
 }
 
-void Logger::imprimirMensajeNivelAlto(string logMessage, int valor){
+void Logger::addMessage(char *filename,std::string message){
+	ofstream myfile;
+	myfile.open(filename, ios_base::app);
+
+	//imprime la fecha actual
+	time_t t = time(0);   // get time now
+	struct tm *now = localtime( & t );
+	myfile <<"["
+		 <<	(now->tm_year + 1900) << '-'
+		 << (now->tm_mon + 1) << '-'
+		 <<  now->tm_mday
+		 <<  " "
+		 <<  now->tm_hour
+		 <<  ":"
+		 <<  now->tm_min
+		 <<  ":"
+		 <<  now->tm_sec
+		 <<  "] ";
+
+	// imprime el nivel+ mensaje
+	myfile <<message<< endl;
+	myfile.close();
+}
+
+void Logger::imprimirMensajeNivelAlto(string logMessage, char* buffer){
 	if(this->nivel == 3){
 		ofstream myfile;
 		myfile.open(this->archivo, ios_base::app);
@@ -139,7 +164,7 @@ void Logger::imprimirMensajeNivelAlto(string logMessage, int valor){
 			 <<  "] ";
 
 		// imprime el nivel+ mensaje
-		myfile<<"["<<this->modulo<<"] "<<logMessage<< valor<<"."<<endl;
+		myfile<<"["<<this->modulo<<"] "<<logMessage<< buffer<<"."<<endl;
 		myfile.close();
 	}
 }

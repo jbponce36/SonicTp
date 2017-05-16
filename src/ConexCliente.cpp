@@ -90,7 +90,7 @@ int ConexCliente::setsocket(){
 
 int ConexCliente::enviar(char *buf, int size)
 {
-	this->log->setModulo("[CONEX SERVIDOR]");
+	this->log->setModulo("CONEX CLIENTE");
 	this->log->addLogMessage("[ENVIAR] Iniciado",2);
 	int enviado = 0;
 		int envioParcial = 0;
@@ -100,10 +100,8 @@ int ConexCliente::enviar(char *buf, int size)
 			envioParcial = send(this->fd,buf, size, MSG_NOSIGNAL);
 			if(envioParcial == 0){
 			socketValido = false;
-			//this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el"+toString(),1);
-			cout<<"[CONEX SERVIDOR][ENVIAR] No se pudo enviar"<<endl;
-			this->log->addLogMessage("[ENVIAR] Error, no se pudo enviar",2);
-			//return status;
+
+			cout<<"[CONEX CLIENTE][ENVIAR] No se pudo enviar"<<endl;
 			}
 			else if (envioParcial < 0){
 
@@ -114,19 +112,21 @@ int ConexCliente::enviar(char *buf, int size)
 
 				enviado += envioParcial;
 			}
-			//this->log->addLogMessage("[ENVIAR] Terminado",2);
+
+
+		}
+
+		if (socketValido == false)
+		{
+			cout<<"[CONEXCLIENTE][ENVIAR] No se pudo enviar."<<endl;
+			this->log->imprimirMensajeNivelAlto("[ENVIAR] No se pudo enviar el mensaje: ", buf);
+			return envioParcial;
+		}
+		else {
+			this->log->addLogMessage("[ENVIAR] Terminado.", 2);
+			this->log->imprimirMensajeNivelAlto("[ENVIAR] Se envio el mensaje: ", buf);
 			cout<<"[ENVIAR] Terminado"<<endl;
-			//return status;
-			}
-			if (socketValido == false)
-			{
-				cout<<"[CONEXCLIENTE][ENVIAR] No se pudo enviar"<<endl;
-				return envioParcial;
-			}
-			else {
-				this->log->addLogMessage("[ENVIAR] Terminado.", 2);
-				cout<<"[ENVIAR] Terminado"<<endl;
-				return enviado;
+			return enviado;
 		}
 }
 
@@ -178,12 +178,13 @@ int ConexCliente::enviar(char *buf, int size)
     	return bytes;
     }
     int ConexCliente::cerrar(){
+    	this->log->addLogMessage("[CERRAR] Iniciado.",2);
     	int status = shutdown(this->getFd(), SHUT_RDWR);
     	status = close(this->getFd());
+
+    	this->log->addLogMessage("[CERRAR] Terminado.",2);
     	return status;
-    //	int status;
-    //	status = close(this->fd);
-    //	return status;
+
     }
 
     string ConexCliente::intToString(int number)
