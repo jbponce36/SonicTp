@@ -25,7 +25,7 @@ std::string ControladorTeclas::intToString(int number)
 }
 
 void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnviarCliente *hiloEnviar,
-	HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, VistaSDL *vista)
+	HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, VistaSDL *vista, int &opcionMenu)
 {
 	//Al presionar o soltar una tecla se ejecuta una sola vez el codigo correspondiente
 
@@ -64,9 +64,9 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 				break;}
 			case SDLK_q:{
 				cout << "2do Menu" << endl;
-				int opcion = vista->mostraMenuInicial(vista->getLog());
+				opcionMenu = vista->mostraMenuInicial(vista->getLog());
 				cout << "Fin 2do menu" << endl;
-				switch(opcion)
+				switch(opcionMenu)
 				{
 					case 1:
 					{

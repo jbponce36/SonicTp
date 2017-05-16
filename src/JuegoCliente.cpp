@@ -7,12 +7,6 @@
 
 #include "JuegoCliente.h"
 
-JuegoCliente::JuegoCliente()
-: vista(NULL), sonic(NULL), control(NULL), cliente(NULL), log(NULL),
-  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0), sonics(), juegoIniciado(false){
-	//Las variables se setean al llamar a iniciarJuegoCliente desde el thread
-}
-
 JuegoCliente::~JuegoCliente() {
 	cout << "vista\n";
 	if(vista != NULL)
@@ -41,9 +35,10 @@ JuegoCliente::~JuegoCliente() {
 	}
 }
 
-JuegoCliente::JuegoCliente(ConexCliente *cliente, Logger *log)
+JuegoCliente::JuegoCliente(ConexCliente *cliente, Logger *log, int &opcionMenu)
 : vista(NULL), sonic(NULL), control(NULL), cliente(cliente), log(log),
-  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0), sonics(), juegoIniciado(false){
+  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0), sonics(),
+  juegoIniciado(false), opcionMenu(opcionMenu){
 	//Vista, sonic y control se setean al llamar a iniciarJuegoCliente desde el thread
 
 	CargarVistaParaElMenu();
@@ -179,7 +174,7 @@ void JuegoCliente::iniciarJuegoControlCliente()
 	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola(); //Saca el mensaje [INICIAR JUEGO] de la cola
 
 	cout << "Inicio el juego." << endl;
-	control->ControlarJuegoCliente(vista, sonic, hiloEnviar, hiloRecibir, hiloLatido);
+	control->ControlarJuegoCliente(vista, sonic, hiloEnviar, hiloRecibir, hiloLatido, opcionMenu);
 }
 
 void JuegoCliente::CargarVistaParaElMenu(){

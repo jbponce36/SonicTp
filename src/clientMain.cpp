@@ -57,9 +57,9 @@ int main(int argc, char *argv[]) {
 	//juego.CargarVistaParaElMenu();
 	//menu *m = new menu();
 
-	int opcion = 0;
-	while (opcion == 0){
-		JuegoCliente juego = JuegoCliente(cliente, log);
+	int opcion = -1;
+	while (opcion != 2){
+		JuegoCliente juego = JuegoCliente(cliente, log, opcion);
 
 		opcion = juego.elegirOpcionDeMenu(log);
 		switch (opcion){
@@ -72,6 +72,7 @@ int main(int argc, char *argv[]) {
 				if(skt <0){
 					cout<<"El cliente no se conecto"<<endl;
 					cliente->cerrar();
+					delete cliente;
 					return -1;
 
 				}else{
@@ -82,8 +83,13 @@ int main(int argc, char *argv[]) {
 				}
 				break;
 			}
-			case 1:{cout<<"se desconecto"<<endl;
-			break;}
+			case 1:
+			{
+				cout<<"se desconecto"<<endl;
+				cliente->cerrar();
+				delete cliente;
+				return 0;
+			}
 			case 2:{cout<<"salir"<<endl;
 			break;}
 		}

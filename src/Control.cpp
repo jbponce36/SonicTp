@@ -15,7 +15,7 @@ int Control::getPosicionInicialY(){
 	return this->posicionInicialY;
 }
 void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
-		HiloEnviarCliente *hiloEnviar, HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido)
+		HiloEnviarCliente *hiloEnviar, HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, int &opcionMenu)
 {
 	SDL_Rect imagenMostrar;
 
@@ -44,7 +44,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	while( !salir ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
-		administrarTeclas(&controlador, sonic, vista, hiloEnviar,hiloRecibir, hiloLatido);
+		administrarTeclas(&controlador, sonic, vista, hiloEnviar,hiloRecibir, hiloLatido, opcionMenu);
 		controlDeMensajes(sonic, hiloRecibir, vista, camara);
 		moverPersonaje(tiempoDeJuego, vista, sonic, camara);
 		/////Corregir posicion????
@@ -71,7 +71,7 @@ std::string Control::intToString(int number)
 }
 
 void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic,
-		VistaSDL *vista, HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido)
+		VistaSDL *vista, HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, int &opcionMenu)
 {
 	SDL_Event e;
 
@@ -82,7 +82,7 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 		{
 			salir = true;
 		}
-		controlador->procesarEvento(e, sonic, hiloEnviar, hiloRecibir, hiloLatido, vista); //Setea todas las teclas presionadas o liberadas
+		controlador->procesarEvento(e, sonic, hiloEnviar, hiloRecibir, hiloLatido, vista, opcionMenu); //Setea todas las teclas presionadas o liberadas
 	}
 	controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
 

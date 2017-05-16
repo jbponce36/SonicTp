@@ -45,11 +45,12 @@ private:
 	VariableCondicional vcIniciarJuego;
 	bool juegoIniciado;
 
+	int &opcionMenu;
+
 public:
-	JuegoCliente();
 	virtual ~JuegoCliente();
 
-	JuegoCliente(ConexCliente *cliente, Logger *log);
+	JuegoCliente(ConexCliente *cliente, Logger *log, int &opcionMenu);
 	void iniciarHilos();
 	void terminarHilos();
 	void iniciarJuego(); //Crea el parseador e inicia el juego

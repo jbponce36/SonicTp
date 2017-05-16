@@ -41,13 +41,15 @@ public:
 	virtual ~Control();
 	int getPosicionInicialX();
 	int getPosicionInicialY();
-	void ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, HiloEnviarCliente *hiloEnviar, HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido);
+	void ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, HiloEnviarCliente *hiloEnviar,
+		HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, int &opcionMenu);
 	void parsearMensajeCamara(int &xDest, int &yDest, std::string mensaje);
 	void parsearMensajePosicion(mensajePosicion& msjParseado, std::string mensaje);
 
 
 private:
-	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista, HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido);
+	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista,
+		HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, int &opcionMenu);
 	void moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic, Camara* camara);
 	void controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista, Camara *camara);
 	void actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic);
