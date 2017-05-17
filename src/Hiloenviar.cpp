@@ -46,7 +46,7 @@ void *Hiloenviar::serverEnviar(void *args)
 				result = parametros->server->enviar(parametros->skt,parametros->buffer,strlen(parametros->buffer));
 
 				if (result>0){
-					cout<<"server envio: "<<parametros->buffer<<endl;
+					//cout<<"server envio: "<<parametros->buffer<<endl;
 				}
 
 				if (result==0){
@@ -111,7 +111,7 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 		}
 	}
 
-	printf("Se termino el thread hilo Enviar. \n");
+	//printf("Se termino el thread hilo Enviar. \n");
 }
 
 void Hiloenviar::enviarDato(char* dato){

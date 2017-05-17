@@ -492,26 +492,7 @@ void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje
 	strcpy(buffer, mensaje.c_str());
 	cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
 	//hiloEnviar->parametros.buffer = buffer;
-	cout << "Cliente envio: " << buffer << endl;
-
-}
-
-
-void Personaje::enviarPosicionServer(HiloEnviarCliente *hiloEnviar, Posicion *pos)
-{
-	//mensaje = intToString(id) + pos->getCoordenadas() + "x" + intToStringConPadding(posicionX) + "y" + intToStringConPadding(posicionY);
-
-	/*char* msj = new char[mensaje.length() +1];
-	strcpy(msj, mensaje.c_str());
-	cliente->enviar(msj, strlen(msj));
-	cout << "Cliente envio: "<< msj << '\n';
-	delete[] msj;*/
-
-	//char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
-	//strcpy(buffer, mensaje.c_str());
-	cliente->enviarPosicion(pos, sizeof(pos));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
-	//hiloEnviar->parametros.buffer = buffer;
-	cout << "Cliente envio: " << pos->getCoordenadas() << endl;
+	//cout << "Cliente envio: " << buffer << endl;
 
 }
 

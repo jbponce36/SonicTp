@@ -17,7 +17,6 @@ int getNivelLogger(int argc, char *argv[]){
 	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
 
 	char *nivelLog = (char*)"2";
-	cout<<"NIVEL: "<<nivelLog<<endl;
 	if(argc>1){
 		nivelLog = argv[1];
 	}
@@ -75,22 +74,22 @@ int main(int argc, char *argv[]) {
 				}else{
 
 					//m->setSkt(skt);
-					juego.iniciarHilos();
+					juego.iniciarHilos(log);
 					juego.terminarHilos();
 				}
 				break;
 			}
 			case 1:
 			{
-				cout<<"se desconecto"<<endl;
+				//cout<<"se desconecto"<<endl;
 				cliente->cerrar();
-				log->addLogMessage("[CLIENTE] El "+cliente->toString()+" se desconecto.", 1);
 				delete cliente;
 				return 0;
 			}
-			case 2:{cout<<"salir"<<endl;
-			log->addLogMessage("[CLIENTE] El "+cliente->toString()+" salio.", 1);
-			break;}
+			case 2:{
+				//cout<<"salir"<<endl;
+				log->addLogMessage("[CLIENTE] El "+cliente->toString()+" salio.", 1);
+				break;}
 		}
 
 		cliente->cerrar();

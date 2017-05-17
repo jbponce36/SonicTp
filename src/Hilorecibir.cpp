@@ -40,7 +40,7 @@ void *Hilorecibir::serverRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
 
 	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaDeMensajes);
-	cout<<"SOCKET DEL CLIENTE: "<<parametros->skt<<endl;
+	//cout<<"SOCKET DEL CLIENTE: "<<parametros->skt<<endl;
 	alc->setSkt(parametros->skt);
 	alc->setidCliente(parametros->idCliente);
 
@@ -55,13 +55,13 @@ void *Hilorecibir::serverRecibir(void *args){
 				memset(buffer, '\0', sizeof(buffer));
 				result = parametros->server->recibir(parametros->skt,buffer,sizeof(buffer));
 				//result = parametros->server->recibirPosicion(parametros->skt, pos, sizeof(pos));
-				cout << "Result: " <<result << endl;
+
 				if (result>0){
-					cout<<"server recibio: "<<buffer <<endl;
+					//cout<<"server recibio: "<<buffer <<endl;
 					alc->actualizarTiempoLatido();
 					//parametros->colaDeMensajes.agregarPosicion(pos);
 					if(strcmp(buffer,"ESTOYVIVO") ==0){
-						cout<<"recibio estoy vivo del cliente"<<endl;
+						//cout<<"recibio estoy vivo del cliente"<<endl;
 					}else{
 						parametros->colaDeMensajes.agregar(buffer);
 					}
@@ -75,7 +75,7 @@ void *Hilorecibir::serverRecibir(void *args){
 					std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + parametros->idCliente;
 					strcpy(buffer, msjDesconexion.c_str());
 					parametros->colaDeMensajes.agregar(buffer); //Asi ControlServidor lo congela
-					cout << "Agregue el mensaje " << msjDesconexion << endl;
+					//cout << "Agregue el mensaje " << msjDesconexion << endl;
 
 					alc->gethilo()->Join();
 				}
@@ -85,7 +85,7 @@ void *Hilorecibir::serverRecibir(void *args){
 		}
 	}
 
-	printf("Salio del while y el hilo recibir va a terminar. \n");
+	//printf("Salio del while y el hilo recibir va a terminar. \n");
 
 }
 

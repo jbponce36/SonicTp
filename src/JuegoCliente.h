@@ -51,7 +51,7 @@ public:
 	virtual ~JuegoCliente();
 
 	JuegoCliente(ConexCliente *cliente, Logger *log, int &opcionMenu);
-	void iniciarHilos();
+	void iniciarHilos(Logger *log);
 	void terminarHilos();
 	void iniciarJuego(); //Crea el parseador e inicia el juego
 	void CargarVistaParaElMenu();

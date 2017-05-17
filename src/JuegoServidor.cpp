@@ -127,7 +127,7 @@ void JuegoServidor::reconectar(int sock)
 
 	if((hrecibir->continua()) || (henviar->continua()))
 	{
-		cout << "Los hilos enviar/recibir aun no terminaron." << endl;
+		//cout << "Los hilos enviar/recibir aun no terminaron." << endl;
 		return;
 	}
 

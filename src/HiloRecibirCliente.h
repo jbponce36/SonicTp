@@ -19,9 +19,10 @@
 class HiloRecibirCliente {
 private:
 	Hilo *hilo;
+	Logger *log;
 
 public:
-	HiloRecibirCliente();
+	HiloRecibirCliente(Logger *log);
 	virtual ~HiloRecibirCliente();
 	void setVariableCondicional(VariableCondicional *varCond);
 

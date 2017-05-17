@@ -102,7 +102,6 @@ int ConexCliente::enviar(char *buf, int size)
 			if(envioParcial == 0){
 			socketValido = false;
 
-			cout<<"[CONEX CLIENTE][ENVIAR] No se pudo enviar"<<endl;
 			}
 			else if (envioParcial < 0){
 
@@ -119,14 +118,14 @@ int ConexCliente::enviar(char *buf, int size)
 
 		if (socketValido == false)
 		{
-			cout<<"[CONEXCLIENTE][ENVIAR] No se pudo enviar."<<endl;
+
 			this->log->imprimirMensajeNivelAlto("[ENVIAR] No se pudo enviar el mensaje: ", buf);
 			return envioParcial;
 		}
 		else {
 			this->log->addLogMessage("[ENVIAR] Terminado.", 2);
 			this->log->imprimirMensajeNivelAlto("[ENVIAR] Se envio el mensaje: ", buf);
-			cout<<"[ENVIAR] Terminado"<<endl;
+
 			return enviado;
 		}
 }
@@ -155,7 +154,7 @@ int ConexCliente::enviar(char *buf, int size)
             }
 
             this->log->addLogMessage("[ENVIAR] Terminado.", 2);
-            cout<<"[ENVIAR] Terminado"<<endl;
+
             return status;
         }
 
@@ -181,6 +180,7 @@ int ConexCliente::enviar(char *buf, int size)
     }
 
     int ConexCliente::cerrar(){
+    	this->log->setModulo("CONEX CLIENTE");
     	this->log->addLogMessage("[CERRAR] Iniciado.",2);
     	int status = shutdown(this->getFd(), SHUT_RDWR);
     	status = close(this->getFd());
@@ -199,7 +199,7 @@ int ConexCliente::enviar(char *buf, int size)
     }
 
     string ConexCliente::toString(){
-    	return "Socket: "+intToString(this->getFd())+" hostname: "+hostname+" y puerto: "+intToString(puerto);
+    	return "CLiente con fd: "+intToString(this->getFd())+" hostname: "+hostname+" y puerto: "+intToString(puerto);
     }
 
     int ConexCliente::getFd() const

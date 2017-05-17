@@ -47,7 +47,7 @@ bool ConexServidor::enlazar(int puerto){
   server.sin_port = htons(puerto);
   server.sin_addr.s_addr = INADDR_ANY;
   bzero(&(server.sin_zero),8);
-  cout<<puerto<<endl;
+
   int resBind = bind(this->sock_recep,(struct sockaddr *)&server , sizeof(server));
 
   if( resBind < 0)
@@ -97,7 +97,7 @@ bool ConexServidor::escuchar(int cantidadMaxima)
 {
 	this->log->addLogMessage("[ESCUCHAR] Iniciado",2);
 	int escuchar = listen(this->sock_recep, cantidadMaxima);
-	cout << cantidadMaxima << endl;
+
 	this->cantMaximaClientes = cantidadMaxima;
 	if(escuchar < 0){
 		this->log->addLogMessage("[ESCUCHAR] Error, no se pudo escuchar en el puerto "+intToString(this->puerto)+
@@ -229,13 +229,12 @@ int ConexServidor::enviarAsincronico(int socket, char *buf, int size){
 		pthread_mutex_unlock(&mutex);
 		if(envioParcial == 0){
 		socketValido = false;
-		//this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el"+toString(),1);
-		cout<<"[CONEX SERVIDOR][ENVIAR] No se pudo enviar"<<endl;
+
+		//cout<<"[CONEX SERVIDOR][ENVIAR] No se pudo enviar"<<endl;
 		this->log->addLogMessage("[ENVIAR] Error, no se pudo enviar",2);
 		//return status;
 		}
 		else if (envioParcial < 0){
-
 			socketValido = false;
 		}
 
@@ -243,8 +242,7 @@ int ConexServidor::enviarAsincronico(int socket, char *buf, int size){
 
 			enviado += envioParcial;
 		}
-		//this->log->addLogMessage("[ENVIAR] Terminado",2);
-		cout<<"[ENVIAR] Terminado"<<endl;
+
 		//return status;
 		}
 		if (socketValido == false)
@@ -270,8 +268,6 @@ int ConexServidor::enviar(int socket, char *buf, int size){
 		pthread_mutex_unlock(&mutex);
 		if(envioParcial <= 0){
 			socketValido = false;
-			cout<<"[CONEX SERVIDOR][ENVIAR] No se pudo enviar"<<endl;
-
 		}
 		else{
 			enviado += envioParcial;

@@ -101,7 +101,6 @@ class Personaje
 		bool estaParado();
 
 		void enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje);
-		void enviarPosicionServer(HiloEnviarCliente *hiloEnviar, Posicion *pos);
 		std::string obtenerMensajeEstado();
 
 };

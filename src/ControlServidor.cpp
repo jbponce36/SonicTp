@@ -42,7 +42,7 @@ void ControlServidor::administrarTeclasServidor()
 		while (mensaje.compare("Sin elementos") != 0)
 		{
 			//Segun la tecla seteo el vector de teclas
-			cout << "Control recibio: "<< mensaje << endl;
+			//cout << "Control recibio: "<< mensaje << endl;
 
 			//Idea: Quizas:
 			//Si la tecla ya estaba seteada significa que hubo un error y hay que corregir la posicion del sonic
