@@ -19,7 +19,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 {
 	SDL_Rect imagenMostrar;
 
-	this->log->addLogMessage("[CONTROLAR JUEGO] Iniciado.", 2);
+	this->log->addLogMessage("[CONTROLAR JUEGO CLIENTE] Iniciado.", 2);
 	imagenMostrar.x = 0;
 	imagenMostrar.y = 0;
 	imagenMostrar.w = vista->obtenerAnchoVentana();
@@ -60,7 +60,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	}
 
 	delete camara;
-	this->log->addLogMessage("[CONTROLAR JUEGO] Terminado. \n", 2);
+	this->log->addLogMessage("[CONTROLAR JUEGO CLIENTE] Terminado. \n", 2);
 }
 
 std::string Control::intToString(int number)

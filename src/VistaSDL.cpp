@@ -363,12 +363,10 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 
 			case 1:
 			texturaDesconectar->renderizar(&imagenMostrar,&camara);
-			this->log->addLogMessage("[MOSTRAR MENU INICIAL] Desconectando al servidor.",2);
 			break;
 
 			case 2:
 			texturaSalir->renderizar(&imagenMostrar,&camara);
-			this->log->addLogMessage("[MOSTRAR MENU INICIAL] Saliendo del juego.",2);
 			break;
 		}
 
@@ -413,11 +411,12 @@ void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado){
 				salir = true;
 				//Esto no va a hacer nada ni salir. Por ahora dejemoslo asi.
 				//Sale de este while cuando se conectan todos los jugadores.
+				this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Saliendo del menu.",3);
 			}
 		}
 	}
 
-	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Terminado.",2);
+	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Terminado.\n",2);
 
 }
 

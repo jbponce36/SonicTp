@@ -10,7 +10,6 @@
 #include "Definiciones.h"
 #include <vector>
 #include <algorithm>
-#include "menu.h"
 #include "Paquete.h"
 #include "HilolatidoSer.h"
 
@@ -36,7 +35,7 @@ public:
 			std::string animacion;
 			int indiceAnimacion;
 	}mensajePosicion;
-	menu *m;
+
 	Control(int posicionX, int posicionY, int maxJugadores, std::vector<Personaje*> *sonics, Logger *log);
 	virtual ~Control();
 	int getPosicionInicialX();

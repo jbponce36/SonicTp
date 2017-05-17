@@ -57,7 +57,7 @@ class Personaje
 		void animarSalto();
 		void cargarSpriteSonic();
 		void dejarDeEstarQuieto();
-		std::string intToString(int number);
+
 		std::string intToStringConPadding(int number);
 
 		ConexCliente *cliente; //<-------- Borrarlo cuando el enviar del hilo ande bien!
@@ -71,7 +71,7 @@ class Personaje
 		void mover(SDL_Rect *limites, float tiempoDeJuego);
 
 		void render(int camX, int camY);
-
+		std::string intToString(int number);
 		void posicionarseEn(int x, int y);
 		void posicionarseConAnimacion(int x, int y, std::string animacion, int indiceAnimacion);
 		int getPosicionX();

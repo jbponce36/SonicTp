@@ -57,6 +57,9 @@ public:
 	void CargarVistaParaElMenu();
 	int elegirOpcionDeMenu(Logger *log);
 	std::string intToString(int number);
+	Personaje* getSonic();
+
+
 	struct Datos{
 		ConexCliente *cliente;
 		Logger *log;

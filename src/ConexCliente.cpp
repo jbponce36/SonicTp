@@ -18,7 +18,7 @@ std::string ConexCliente::cargarNombreArchivo(){
 	std::string nombre;
 	cout<<"Ingrese el nombre del archivo del cliente"<<endl;
 	cin>>nombre;
-	return nombre;
+	return "configuracion/"+nombre;
 }
 bool ConexCliente::crear(){
 	this->fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -69,12 +69,13 @@ ConexCliente::~ConexCliente()
         server_sock_size = sizeof (server_addr);
         int conectado = connect(this->fd, (struct sockaddr*)(&server_addr), server_sock_size);
         if(conectado < 0){
-        	this->getLog()->addLogMessage("[CONECTAR] Error, no se pudo conectar en el puerto "+intToString(puerto),2);
+        	this->getLog()->addLogMessage("[CONECTAR] Error, no se pudo conectar en el puerto "+intToString(puerto),1);
             return -1;
         }
 
         this->puerto = puerto;
         this->hostname = hostname;
+        this->getLog()->addLogMessage("[CONECTAR] El cliente se conecto al hostname "+ this->hostname+" en el puerto "+intToString(puerto), 3);
         this->getLog()->addLogMessage("[CONECTAR] Terminado",2);
         return conectado;
     }
@@ -169,19 +170,22 @@ int ConexCliente::enviar(char *buf, int size)
     	int bytes = recv(this->fd, buf, size, MSG_NOSIGNAL);
 
     	if(bytes<0){
-    		cout<<"[CONEXCLIENTE] [RECIBIR] Error en recibir"<<endl;
+    		cout<<"[CONEXCLIENTE] [RECIBIR] Error en recibir."<<endl;
     		return bytes;
     	}
 
     	//cout<<"[CONEXCLIENTE] [RECIBIR] Se recibio correctamente"<<endl;
+    	this->log->imprimirMensajeNivelAlto("[RECIBIR] Se recibio el mensaje: ",buf);
     	this->log->addLogMessage("[RECIBIR] Terminado",2);
     	return bytes;
     }
+
     int ConexCliente::cerrar(){
     	this->log->addLogMessage("[CERRAR] Iniciado.",2);
     	int status = shutdown(this->getFd(), SHUT_RDWR);
     	status = close(this->getFd());
 
+    	this->log->addLogMessage("[CERRAR] El "+toString()+" se cerro.",3);
     	this->log->addLogMessage("[CERRAR] Terminado.",2);
     	return status;
 

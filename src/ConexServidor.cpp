@@ -18,14 +18,17 @@ std::string ConexServidor::cargarNombreArchivo(){
 	std::string nombre;
 	cout<<"Ingrese el nombre del archivo del servidor"<<endl;
 	cin>>nombre;
-	return nombre;
+	return "configuracion/"+nombre;
 }
 bool ConexServidor::crear(){
 	this->sock_recep = socket(AF_INET,SOCK_STREAM,0);
 
 	if(this->sock_recep < 0){
+		this->log->addLogMessage("[CREAR] Error creando el socket para el servidor.",1);
 		return false;
 	}
+
+	this->log->addLogMessage("[CREAR] Se creo el servidor con file descriptor: "+intToString(sock_recep),3);
 	return true;
 }
 ConexServidor::~ConexServidor() {
@@ -50,14 +53,15 @@ bool ConexServidor::enlazar(int puerto){
   if( resBind < 0)
   {
 	  std::cout << "open failed, error - " << strerror(errno) << std::endl;
-	  this->log->addLogMessage("[ENLAZAR] Error, no se pudo enlazar en el puerto "+intToString(puerto),2);
+	  this->log->addLogMessage("[ENLAZAR] Error, no se pudo enlazar en el puerto "+intToString(puerto),1);
 	  this->log->iniciarLog("TERMINAR LOGGER");
 	  //exit(errno);
 	  return false;
   }
 
   this->puerto = puerto;
-  this->log->addLogMessage("[ENLAZAR] Terminado",2);
+  this->log->addLogMessage("[ENLAZAR] Se enlazo en el puerto "+intToString(puerto),3);
+  this->log->addLogMessage("[ENLAZAR] Terminado.",2);
   return true;
 }
 
@@ -96,9 +100,11 @@ bool ConexServidor::escuchar(int cantidadMaxima)
 	cout << cantidadMaxima << endl;
 	this->cantMaximaClientes = cantidadMaxima;
 	if(escuchar < 0){
-		this->log->addLogMessage("[ESCUCHAR] Error, no se pudo escuchar",1);
+		this->log->addLogMessage("[ESCUCHAR] Error, no se pudo escuchar en el puerto "+intToString(this->puerto)+
+				", actualmente escuchando a "+ intToString(this->cantclientes) +" clientes.",1);
 		return false;
 	}
+
 	this->log->addLogMessage("[ESCUCHAR] Terminado",2);
 	return true;
 }
@@ -115,8 +121,9 @@ int ConexServidor::aceptarcliente()
 
     if (fdCliente==-1){
     	printf("Estaba esperando conexiones y se deconecto el servidor  \n");
+    	this->log->addLogMessage("[ACEPTAR] Error, no se pudo aceptar un nuevo cliente en el puerto "+
+    			intToString(puerto)+", actualmente hay "+intToString(this->cantclientes)+" clientes conectados.",1);
 
-    	fdCliente = -1;
     }
     else
     {
@@ -124,6 +131,8 @@ int ConexServidor::aceptarcliente()
 
 			printf("Se ha superado la cantidad maxima de conexiones  \n");
 			const char* mensaje = "Conex rechazada";
+			this->log->addLogMessage("[ACEPTAR] Error, conexion rechazada. No se pudo aceptar un nuevo cliente en el puerto "+
+			    			intToString(puerto)+"ya estan conectados la maxima cantidad de clientes posible :"+intToString(this->cantMaximaClientes),1);
 			send(fdCliente, mensaje, strlen(mensaje), MSG_DONTWAIT);
 			close(fdCliente);
 			fdCliente = -1;
@@ -134,7 +143,9 @@ int ConexServidor::aceptarcliente()
 			this->cantclientes = this->cantclientes + 1;
 			this->finalizarConexion = false;
 			//printf("Cliente aceptado \n");
-			printf("Cantidad de clientes conectados:%d \n", this->cantclientes);
+			//printf("Cantidad de clientes conectados:%d \n", this->cantclientes);
+			this->log->addLogMessage("[ACEPTAR] Se acepto un nuevo cliente en el puerto "+
+			    			intToString(puerto)+", actualmente hay "+intToString(this->cantclientes)+" clientes conectados.",3);
 			this->listaClientes.push_back(fdCliente);
             this->setCantclientes(cantclientes);
 			this->setListaClientes(listaClientes);
@@ -167,10 +178,7 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 {
 	this->log->addLogMessage("[RECIBIR] Iniciado",2);
 
-
 	int bytes = recv(skt, buf, size, MSG_NOSIGNAL);
-
-
 	//recv devuelve 0 si el cliente se desconecto satisfactoriamente
 	//devuelve -1 si ubo algun error
 	//en ambos casos hay que restar la cantidad de clientes
@@ -182,21 +190,17 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 		this->listaClientes.remove(fdCliente);
 
 		this->log->addLogMessage("[RECIBIR] Error, no se pudo recibir. Se desconectó el cliente con fd: "+intToString(skt),2);
-
-		cout << "Removi el cliente con fd: " << fdCliente << endl;
-		cout << "El tamanio de la lista es" << listaClientes.size() << endl;
-		//this->setListaClientes(listaClientes);
 		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
 
 
 		if (this->cantclientes==0){
-		//if(listaClientes.size() == 0){
 			printf("No hay clientes conectados \n");
 			if (this->partidaComenzada){
 
 				printf("La partida habia comenzado y se desconectaron todos los clientes \n");
 				printf("El servidor se desconectara.   \n");
-
+				this->log->addLogMessage("[RECIBIR] Se desconectaron todos los clientes en el puerto "+
+				    			intToString(puerto)+", el servidor se desconectara.",1);
 				//a iria un mutex cada vez que se accede a la variable finalizarConexion
 				this->finalizarConexion = true;
 				this->cerrar();
@@ -204,7 +208,7 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 		}
 	}
 	else{
-		this->log->addLogMessage("[RECIBIR] Error",2);
+		this->log->imprimirMensajeNivelAlto("[RECIBIR] Se recibio correctamente el mensaje: ", buf);
 	}
 	pthread_mutex_unlock(&mutex);
 
@@ -262,10 +266,7 @@ int ConexServidor::enviar(int socket, char *buf, int size){
 	while(enviado < size && socketValido)
 	{
 		pthread_mutex_lock(&mutex);
-		//cout<<":::::::::"<<"tendria que entrar en send"<<endl;
 		envioParcial = send(socket,buf, size, MSG_NOSIGNAL);
-		//cout<<":::::::::"<<"sali de send"<<endl;
-		//cout<<":::::::::"<<envioParcial<<endl;
 		pthread_mutex_unlock(&mutex);
 		if(envioParcial <= 0){
 			socketValido = false;
@@ -339,6 +340,7 @@ void ConexServidor::setFinalizarConexion(bool FinalizarConexion){
 }
 void ConexServidor::comenzarPartida(std::vector<Hiloenviar*> &hrEnviar)
 {
+	this->log->addLogMessage("[COMENZAR PARTIDa] Iniciado.",2);
 	pthread_mutex_lock(&mutex);
 	this->partidaComenzada = true;
 	printf("Se comienza la partida \n");
@@ -357,6 +359,7 @@ void ConexServidor::comenzarPartida(std::vector<Hiloenviar*> &hrEnviar)
 	    }
 	    */
 	pthread_mutex_unlock(&mutex);
+	this->log->addLogMessage("[COMENZAR PARTIDA] Terminado. \n",2);
 }
 
 }//Namespace
