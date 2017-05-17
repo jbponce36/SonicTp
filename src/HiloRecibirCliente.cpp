@@ -37,6 +37,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
 
 	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaPaquete);
+	alc->setSkt(parametros->cliente->getFd());
 	//alc->IniciarHilo();
     //alc->setconexcliente(alc->parametros.cliente);
 	//alc->setIniciar(false);
@@ -65,6 +66,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 					if (strcmp(buffer, "Conex rechazada") == 0){
 					    printf("****** La conexion fue rechaza por el servidor ******* \n");
+
 					}
 
 

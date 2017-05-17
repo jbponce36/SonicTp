@@ -138,7 +138,12 @@ AdministradorLatidoCliente *alc = (AdministradorLatidoCliente*)arg;
 		}
 
 		printf("Se desconectara el cliente por falta de latidos \n");
+
+
 		alc->colaPaquete->agregar("Servidor Desconectado");
+
+		shutdown(alc->getSkt(),SHUT_RDWR);
+		close(alc->getSkt());
 
  // printf("Se desconectara el cliente por falta de latidos \n");
 

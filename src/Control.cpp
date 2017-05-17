@@ -82,54 +82,12 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 		{
 			salir = true;
 		}
-<<<<<<< HEAD
-
-		if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
-		{
-			if( e.key.keysym.sym == SDLK_q)
-			{
-				int opcion = vista->mostraMenuInicial(this->log);
-				switch(opcion)
-				{
-					case 1:
-					{
-						//salir = true;
-						char buffer [40];
-						std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + intToString(sonic->getId());
-						strcpy(buffer, msjDesconexion.c_str());
-						hiloEnviar->enviarDato(buffer);
-						hiloRecibir->parametros.colaPaquete.agregar("Servidor Desconectado");
-
-						//shutdown(hiloRecibir->parametros.skt, SHUT_RDWR);
-						//close(hiloRecibir->parametros.skt);
-						hiloRecibir->parametros.continuar = false;
-						hiloLatido->parametros.continuar = false;
-						//close(hiloEnviar->parametros.skt);
-						printf("Esperando que termine el hilo recibir \n");
-						hiloRecibir->Join();
-						printf("Esperando que termine el hilo enviar \n");
-						hiloEnviar->Join();
-						break;
-					}
-					case 2:
-						salir = true;
 
 
 
 
-						//hiloRecibir->parametros.colaPaquete.agregar("VolverMenu");
-
-						break;
-					default:
-						break;
-				}
-			}
-		}
-
-		controlador->procesarEvento(e, sonic, hiloEnviar); //Setea todas las teclas presionadas o liberadas
-=======
 		controlador->procesarEvento(e, sonic, hiloEnviar, hiloRecibir, hiloLatido, vista, opcionMenu); //Setea todas las teclas presionadas o liberadas
->>>>>>> b3476f318c7941cff85251cb68656fb32eb72f57
+
 	}
 	controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
 
