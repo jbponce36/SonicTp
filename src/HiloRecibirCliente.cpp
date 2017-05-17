@@ -35,7 +35,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
 	parametros->cliente->getLog()->addLogMessage("",2);
 	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaPaquete);
-
+    alc->setSkt(parametros->cliente->getFd());
 
 	char buffer[100];
 	//parametros->alc->actualizarTiempoLatido();
