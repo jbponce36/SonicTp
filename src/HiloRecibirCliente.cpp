@@ -38,6 +38,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 	parametros->cliente->getLog()->addLogMessage("",2);
 	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaPaquete);
 
+
 	char buffer[100];
 	//parametros->alc->actualizarTiempoLatido();
 	while(parametros->continuar){
@@ -60,6 +61,8 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 					if (strcmp(buffer, "Conex rechazada") == 0){
 					    printf("****** La conexion fue rechaza por el servidor ******* \n");
+					    parametros->continuar = false;
+
 					}
 
 
@@ -95,7 +98,9 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 	 }
 
-	alc->Join();
+	if(alc->isIniciar()){
+		alc->Join();
+	}
 	printf("Aca se termina el thread HiloRecibir Cliente. \n");
 
 }
