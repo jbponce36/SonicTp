@@ -64,7 +64,7 @@ void parseadorJsonCli::parsearArchivo(std::string  nombreArchivo){
 
 	 }
  }
-	  this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Terminado. \n", 2);
+	  this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Terminado.", 2);
 
 }
 
@@ -119,10 +119,9 @@ const char* parseadorJsonCli::leerValorStringip(json_t* padre,const char* nombre
 int parseadorJsonCli::CargarPuertoCliente(){
   json_t* raiz;
 
+  this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Iniciado.", 2);
   int puerto;
   raiz = this->getraiz();
-
-  this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Iniciado.", 2);
 
   puerto = this->leeValorEnteroServer(raiz,"puerto","CLIENTE",8080);
 
@@ -131,15 +130,11 @@ int parseadorJsonCli::CargarPuertoCliente(){
 }
 
 const char* parseadorJsonCli::CargarIPCliente(){
-
+	this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Iniciado.", 2);
 	const char* ip;
 	raiz = this->getraiz();
 
-
-	this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Iniciado.", 2);
-
 	ip = this->leerValorStringip(raiz,"ip","127.0.0.1");
-
 	this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Terminado.", 2);
 
 	return ip;

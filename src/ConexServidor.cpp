@@ -51,6 +51,7 @@ bool ConexServidor::enlazar(int puerto){
   {
 	  std::cout << "open failed, error - " << strerror(errno) << std::endl;
 	  this->log->addLogMessage("[ENLAZAR] Error, no se pudo enlazar en el puerto "+intToString(puerto),2);
+	  this->log->iniciarLog("TERMINAR LOGGER");
 	  //exit(errno);
 	  return false;
   }
@@ -66,8 +67,6 @@ int ConexServidor::setsocket(){
   tv.tv_usec = 0;
 
  setsockopt(this->sock_recep,SOL_SOCKET,SO_RCVTIMEO,(char *)&tv,sizeof(struct timeval));
-
-
 }
 
 list<int> ConexServidor::getListaClientes(){
@@ -179,10 +178,11 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 
 	pthread_mutex_lock(&mutex);
 	if (bytes <= 0){
-		this->log->addLogMessage("[RECIBIR] Error",2);
 		this->cantclientes = this->cantclientes -1;
-		//this->setCantclientes(cantclientes);
 		this->listaClientes.remove(fdCliente);
+
+		this->log->addLogMessage("[RECIBIR] Error, no se pudo recibir. Se desconectó el cliente con fd: "+intToString(skt),2);
+
 		cout << "Removi el cliente con fd: " << fdCliente << endl;
 		cout << "El tamanio de la lista es" << listaClientes.size() << endl;
 		//this->setListaClientes(listaClientes);
@@ -212,43 +212,8 @@ int ConexServidor::recibir(int skt, char *buf, int size)
 	return bytes;
 }
 
-int ConexServidor::recibirPosicion(int skt, Posicion *posicion, int size)
-{
-	this->log->addLogMessage("[RECIBIR] Iniciado",2);
-	int bytes = recv(skt, posicion, sizeof(posicion), MSG_NOSIGNAL);
-	//recv devuelve 0 si el cliente se desconecto satisfactoriamente
-	//devuelve -1 si ubo algun error
-	//en ambos casos hay que restar la cantidad de clientes
-
-
-	pthread_mutex_lock(&mutex);
-	if (bytes<=0){
-		this->log->addLogMessage("[RECIBIR] Error",2);
-		this->cantclientes = this->cantclientes -1;
-		printf("Cantidad de clientes conectados %d \n", this->cantclientes);
-
-		if (this->cantclientes==0){
-			printf("No hay clientes conectados \n");
-
-			if (this->partidaComenzada){
-
-				printf("La partida habia comenzado y se desconectaron todos los clientes \n");
-				printf("El servidor se desconectara.   \n");
-
-				//a iria un mutex cada vez que se accede a la variable finalizarConexion
-				this->finalizarConexion = true;
-				this->cerrar();
-			}
-		}
-	}
-	this->log->addLogMessage("[RECIBIR] Terminado",2);
-	pthread_mutex_unlock(&mutex);
-	return bytes;
-}
-
-
 int ConexServidor::enviarAsincronico(int socket, char *buf, int size){
-	this->log->setModulo("[CONEX SERVIDOR]");
+	this->log->setModulo("CONEX SERVIDOR");
 	this->log->addLogMessage("[ENVIAR] Iniciado",2);
 	int enviado = 0;
 	int envioParcial = 0;
@@ -289,8 +254,8 @@ int ConexServidor::enviarAsincronico(int socket, char *buf, int size){
 
 
 int ConexServidor::enviar(int socket, char *buf, int size){
-	this->log->setModulo("[CONEX SERVIDOR]");
-	this->log->addLogMessage("[ENVIAR] Iniciado",2);
+	this->log->setModulo("CONEX SERVIDOR");
+	this->log->addLogMessage("[ENVIAR] Iniciado.",2);
 	int enviado = 0;
 	int envioParcial = 0;
 	bool socketValido = true;
@@ -302,32 +267,25 @@ int ConexServidor::enviar(int socket, char *buf, int size){
 		//cout<<":::::::::"<<"sali de send"<<endl;
 		//cout<<":::::::::"<<envioParcial<<endl;
 		pthread_mutex_unlock(&mutex);
-		if(envioParcial == 0){
-		socketValido = false;
-		//this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el"+toString(),1);
-		cout<<"[CONEX SERVIDOR][ENVIAR] No se pudo enviar"<<endl;
-		this->log->addLogMessage("[ENVIAR] Error, no se pudo enviar",2);
-		//return status;
-		}
-		else if (envioParcial < 0){
-
+		if(envioParcial <= 0){
 			socketValido = false;
+			cout<<"[CONEX SERVIDOR][ENVIAR] No se pudo enviar"<<endl;
+
 		}
-
 		else{
-
 			enviado += envioParcial;
 		}
-		//this->log->addLogMessage("[ENVIAR] Terminado",2);
-		//cout<<"[ENVIAR] Terminado"<<endl;
-		//return status;
-		}
-		if (socketValido == false)
-		{
-			return envioParcial;
-		}
-		else {
-			return enviado;
+	}
+
+	if (socketValido == false)
+	{
+		this->log->imprimirMensajeNivelAlto("[ENVIAR] Error, no se pudo enviar el mensaje: ",buf);
+		return envioParcial;
+	}
+	else {
+		this->log->imprimirMensajeNivelAlto("[ENVIAR] Se envio el mensaje: ",buf);
+		this->log->addLogMessage("[ENVIAR] Terminado.",2);
+		return enviado;
 	}
 }
 

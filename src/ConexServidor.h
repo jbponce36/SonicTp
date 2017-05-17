@@ -31,7 +31,7 @@ public:
 	bool escuchar(int cantidadMaxima);
 	int aceptarcliente();
 	int recibir(int skt, char *buf, int size);
-	int recibirPosicion(int skt, Posicion *posicion, int size);
+
 	int enviar(int socket, char *buf, int size);
 	int enviarAsincronico(int socket, char *buf, int size);
 	int setsocket();

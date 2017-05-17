@@ -56,7 +56,7 @@ public:
 
 	int cargarPuerto(json_t* raiz);
 	char* cargarIP(json_t* raiz);
-
+    std::string intToString(int number);
 
 private:
 	Logger *log;
@@ -73,6 +73,7 @@ private:
     std::string leerValorStringCapas(json_t* padre,const char* nombre,std::string valorPorDefecto);
     list<capas> DevolverCapasPorDefecto();
     list<jentidades> DevolverEntidadesPorDefecto();
+
 
 };
 

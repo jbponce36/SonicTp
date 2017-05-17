@@ -29,20 +29,13 @@ void HiloRecibirCliente::IniciarHilo(){
 
 	hilo = new Hilo(/*log*/);
 	hilo->Create((void *)HiloRecibirCliente::clienteRecibir, (void *)&parametros);
-//	pthread_create(&this->tid, NULL, (void *(*)(void *))clienteRecibir, (void *)&parametros);
-
 
 }
 void *HiloRecibirCliente::clienteRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
-
+	parametros->cliente->getLog()->addLogMessage("",2);
 	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaPaquete);
-	alc->setSkt(parametros->cliente->getFd());
-	//alc->IniciarHilo();
-    //alc->setconexcliente(alc->parametros.cliente);
-	//alc->setIniciar(false);
-    //parametros->cliente->recibir(buffer,strlen(buffer));
-	cout<<"[HILO RECIBIR CLIENTE] [CLIENTE RECIBIR] "<<endl;
+
 
 	char buffer[100];
 	//parametros->alc->actualizarTiempoLatido();
@@ -66,6 +59,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 					if (strcmp(buffer, "Conex rechazada") == 0){
 					    printf("****** La conexion fue rechaza por el servidor ******* \n");
+					    parametros->continuar = false;
 
 					}
 
@@ -103,7 +97,9 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 	 }
 
-	alc->Join();
+	if(alc->isIniciar()){
+		alc->Join();
+	}
 	printf("Aca se termina el thread HiloRecibir Cliente. \n");
 
 }
