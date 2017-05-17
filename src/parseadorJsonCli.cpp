@@ -44,7 +44,7 @@ void parseadorJsonCli::setraiz(json_t* Raiz){
 void parseadorJsonCli::parsearArchivo(std::string  nombreArchivo){
  json_t *json;
  json_error_t error;
- cout<<"entro"<<endl;
+
  this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Iniciado.", 2);
 
  json = json_load_file(nombreArchivo.c_str(),0,&error);
@@ -58,10 +58,9 @@ void parseadorJsonCli::parsearArchivo(std::string  nombreArchivo){
 	 this->setraiz(json);
 	 this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Se carga un archivo por defecto: configuracion/clientedefault.json .", 1);
 	 if (!json){
-		 cout << "!!! no existe el archivo por defecto!!!" << endl;
+		 cout << "No existe el archivo por defecto" << endl;
 		 cout << error.text << endl;
 		 this->log->addLogMessage("[PARSEADOR JSON CLIENTE] No existe el archivo o directorio por defecto.", 1);
-
 	 }
  }
 	  this->log->addLogMessage("[PARSEADOR JSON CLIENTE] Terminado.", 2);
@@ -77,14 +76,14 @@ double parseadorJsonCli::leeValorEnteroServer(json_t* padre, const char* nombre,
 
  if (!elemento){
 	this->log->addLogMessage(msjobj,1);
-	cout<<msjobj<<endl;
+	//cout<<msjobj<<endl;
 	return valorPorDefecto;
 
  }
 
  if (!json_is_number(elemento)){
 	this->log->addLogMessage(msjatributo,1);
-	cout<<msjatributo<<endl;
+	//cout<<msjatributo<<endl;
 	return valorPorDefecto;
  }
 

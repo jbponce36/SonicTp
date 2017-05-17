@@ -30,6 +30,17 @@ int getNivelLogger(int argc, char *argv[]){
 	return atoi(nivel);
 }
 
+char* getJson(int argc, char *argv[]){
+	//SE LEE DE LOS ARGUMENTOS EL NOMBRE DEL JSON, SI NO ESTA, EMPIEZA A LEER DE UN JSON POR DEFAULT
+
+	char *serverConfig = (char*)"configuracion/servidor.json";
+	if(argc>2){
+		serverConfig = argv[2];
+	}
+
+	return serverConfig;
+}
+
 
 int main(int argc, char *argv[]) {
 	char *archivoLog=(char*)"configuracion/logServidor.txt";
@@ -42,8 +53,6 @@ int main(int argc, char *argv[]) {
 
 	int puerto = jsonSer->CargarPuertoServidor();
 	int maxConexiones = jsonSer->CargarCantClientes();
-
-	cout<<"Max cant: "<<maxConexiones<<endl;
 
 	if(server->crear() == false){
 		server->cerrar();

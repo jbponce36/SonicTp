@@ -79,14 +79,14 @@ double parseadorJsonSer::leeValorEnteroServer(json_t* padre, const char* nombre,
 
 	if (!elemento){
 		this->log->addLogMessage(msjobj,1);
-		cout<<msjobj<<endl;
+		//cout<<msjobj<<endl;
 		return valorPorDefecto;
 
 	}
 
 	if (!json_is_number(elemento)){
 		this->log->addLogMessage(msjatributo,1);
-		cout<<msjatributo<<endl;
+		//cout<<msjatributo<<endl;
 		return valorPorDefecto;
 	}
 

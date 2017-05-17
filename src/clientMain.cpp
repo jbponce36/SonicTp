@@ -10,7 +10,6 @@
 #include "HiloRecibirCliente.h"
 #include <list>
 #include "Hilolatidocliente.h"
-#include "menu.h"
 
 using namespace std;
 
@@ -18,7 +17,6 @@ int getNivelLogger(int argc, char *argv[]){
 	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
 
 	char *nivelLog = (char*)"2";
-	cout<<"NIVEL: "<<nivelLog<<endl;
 	if(argc>1){
 		nivelLog = argv[1];
 	}
@@ -29,10 +27,9 @@ int getNivelLogger(int argc, char *argv[]){
 }
 
 char* getJson(int argc, char *argv[]){
-	//SE LEE DE LOS ARGUMENTOS EL NIVEL DE LOG, SI NO ESTA, EMPIEZA A LOGGEAR EN MODO MEDIO
+	//SE LEE DE LOS ARGUMENTOS EL NOMBRE DEL JSON, SI NO ESTA, EMPIEZA A LEER DE UN JSON POR DEFAULT
 
-
-	char *clientConfig = (char*)"client.json";
+	char *clientConfig = (char*)"configuracion/cliente.json";
 	if(argc>2){
 		clientConfig = argv[2];
 	}
@@ -49,17 +46,12 @@ int main(int argc, char *argv[]) {
 	log->iniciarLog("INICIAR LOGGER");
 
 	ConexCliente *cliente = new ConexCliente(log);
-	//cliente->crear();
+
 	parseadorJsonCli *parseadorCliente = new parseadorJsonCli(log);
 	parseadorCliente->parsearArchivo(cliente->cargarNombreArchivo());
 
 	const char* hostname = parseadorCliente->CargarIPCliente();
 	int puerto =  parseadorCliente->CargarPuertoCliente(); // 8080;
-
-	//JuegoCliente juego = JuegoCliente(cliente, log);
-
-	//juego.CargarVistaParaElMenu();
-	//menu *m = new menu();
 
 	int opcion = -1;
 	while (opcion != 2){
@@ -74,7 +66,7 @@ int main(int argc, char *argv[]) {
 
 				if(skt <0){
 					cout<<"El cliente no se conecto"<<endl;
-					log->addLogMessage("[CLIENTE] El cliente no se conecto.",1);
+					log->addLogMessage("[CLIENTE] El cliente con id: "+juego.getSonic()->intToString(juego.getSonic()->getId())  +"no se conecto.",1);
 					cliente->cerrar();
 					delete cliente;
 					return -1;
@@ -82,22 +74,22 @@ int main(int argc, char *argv[]) {
 				}else{
 
 					//m->setSkt(skt);
-					juego.iniciarHilos();
+					juego.iniciarHilos(log);
 					juego.terminarHilos();
 				}
 				break;
 			}
 			case 1:
 			{
-				cout<<"se desconecto"<<endl;
+				//cout<<"se desconecto"<<endl;
 				cliente->cerrar();
-				log->addLogMessage("[CLIENTE] El "+cliente->toString()+" se desconecto.", 1);
 				delete cliente;
 				return 0;
 			}
-			case 2:{cout<<"salir"<<endl;
-			log->addLogMessage("[CLIENTE] El "+cliente->toString()+" salio.", 1);
-			break;}
+			case 2:{
+				//cout<<"salir"<<endl;
+				log->addLogMessage("[CLIENTE] El "+cliente->toString()+" salio.", 1);
+				break;}
 		}
 
 		cliente->cerrar();

@@ -17,8 +17,10 @@ namespace std {
 class HilolatidoSer {
 private:
 	bool salir;
+	Logger *log;
+
 public:
-	HilolatidoSer();
+	HilolatidoSer(Logger *log);
 	virtual ~HilolatidoSer();
 	void IniciarHilo();
 	void terminarHilo();

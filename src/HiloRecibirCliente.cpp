@@ -9,8 +9,10 @@
 #include <pthread.h>
 #include  "AdministradorLatidoCliente.h"
 
-HiloRecibirCliente::HiloRecibirCliente() : hilo(NULL) {
+HiloRecibirCliente::HiloRecibirCliente(Logger *log) : hilo(NULL) {
 	parametros.vcIniciarJuego = NULL;
+	this->log = log;
+	log->setModulo("HILO RECIBIR CLIENTE");
 
 }
 
@@ -73,8 +75,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				         //parametros->colaPaquete.agregar("[INICIAR JUEGO]");
 				         if(parametros->vcIniciarJuego != NULL)
 				         {
-
-				        	 cout << "Ya notifique" << endl;
+				        	 //cout << "Ya notifique" << endl;
 				        	 parametros->vcIniciarJuego->notificarTodos();
 				         }
 					}

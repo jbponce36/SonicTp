@@ -19,7 +19,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 {
 	SDL_Rect imagenMostrar;
 
-	this->log->addLogMessage("[CONTROLAR JUEGO] Iniciado.", 2);
+	this->log->addLogMessage("[CONTROLAR JUEGO CLIENTE] Iniciado.", 2);
 	imagenMostrar.x = 0;
 	imagenMostrar.y = 0;
 	imagenMostrar.w = vista->obtenerAnchoVentana();
@@ -60,7 +60,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	}
 
 	delete camara;
-	this->log->addLogMessage("[CONTROLAR JUEGO] Terminado. \n", 2);
+	this->log->addLogMessage("[CONTROLAR JUEGO CLIENTE] Terminado. \n", 2);
 }
 
 std::string Control::intToString(int number)
@@ -115,7 +115,7 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 				}
 				catch (out_of_range &e)
 				{
-					cout << "Error: El id que me enviaron no existe. Id: " << msj.id << endl;
+					//cout << "Error: El id que me enviaron no existe. Id: " << msj.id << endl;
 					//Significa que el id que me enviaron no existe.
 					/*Personaje *nuevoSonic = new Personaje(msj.id, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
 					nuevoSonic->posicionarseConAnimacion(msj.posX, msj.posY, msj.animacion, msj.indiceAnimacion);
@@ -152,7 +152,7 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 		}
 		else{
 			//Otros mensajes
-			cout << mensaje << endl;
+			//cout << mensaje << endl;
 		}
 
 

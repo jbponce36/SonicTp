@@ -51,12 +51,15 @@ public:
 	virtual ~JuegoCliente();
 
 	JuegoCliente(ConexCliente *cliente, Logger *log, int &opcionMenu);
-	void iniciarHilos();
+	void iniciarHilos(Logger *log);
 	void terminarHilos();
 	void iniciarJuego(); //Crea el parseador e inicia el juego
 	void CargarVistaParaElMenu();
 	int elegirOpcionDeMenu(Logger *log);
 	std::string intToString(int number);
+	Personaje* getSonic();
+
+
 	struct Datos{
 		ConexCliente *cliente;
 		Logger *log;

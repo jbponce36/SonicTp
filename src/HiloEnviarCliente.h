@@ -17,9 +17,10 @@
 class HiloEnviarCliente {
 private:
 	Hilo* hilo;
+	Logger *log;
 
 public:
-	HiloEnviarCliente();
+	HiloEnviarCliente(Logger *log);
 	virtual ~HiloEnviarCliente();
 	void IniciarHilo(/*struct parametrosEnviar *parametros*/);
 		static void * clienteEnviar(void *args);

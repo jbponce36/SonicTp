@@ -4,7 +4,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "Mensaje.h"
 #include <string>
 
 using namespace std;
