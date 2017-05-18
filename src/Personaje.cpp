@@ -14,8 +14,8 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->texturaCongelado->cargarImagen("images/sonicCongelado.png", IMAGEN_POR_DEFECTO, render, log);
 
 	//dimensiones del personaje por defecto
-	this->personajeAncho = 50;
-	this->personajeAlto= 50;
+	this->personajeAncho = 150;
+	this->personajeAlto= 150;
 
 	this->personajeVelocidad = velocidad;
 	this->personajeAceleracion = velocidad/20;
@@ -47,8 +47,8 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->texturaCongelado->cargarImagen("images/sonicCongelado.png", IMAGEN_POR_DEFECTO, render, log);
 
 	//dimensiones del personaje por defecto
-	this->personajeAncho = 50;
-	this->personajeAlto= 50;
+	this->personajeAncho = 150;
+	this->personajeAlto= 150;
 
 	this->personajeVelocidad = velocidad;
 	this->personajeAceleracion = velocidad/20;
