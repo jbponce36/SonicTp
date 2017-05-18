@@ -54,6 +54,7 @@ void Camara::actualizar(int maximoAncho, int maximoAlto){
 	int posicionMax = 0, velocidadDelMax = 0, posicionMin = maximoAncho, velocidadDelMin = 0;
 	//bloqueada = false;
 	bool bloqueadaADerecha = false, bloqueadaAIzquierda = false;
+	int anchoSonic;
 	std::map<int, Personaje*>::iterator sonic;
 	for(sonic = sonics->begin();sonic != sonics->end();sonic++){
 		if (!(*sonic).second->estaCongelado()){
@@ -75,6 +76,7 @@ void Camara::actualizar(int maximoAncho, int maximoAlto){
 		if ((*sonic).second->bloqueaCamaraAIzquierda(camaraImagen)){
 			bloqueadaAIzquierda = true;
 		}
+		anchoSonic = (*sonic).second->getAncho();
 	}
 
 	if(velocidadDelMax < 0)
@@ -82,7 +84,7 @@ void Camara::actualizar(int maximoAncho, int maximoAlto){
 
 
 	//Si el sonic de mayor posicion llega al margen y no hay nadie bloqueando, arrastra la camara
-	if(posicionMax > (camaraImagen->x + camaraImagen->w - margen))
+	if(posicionMax + anchoSonic > (camaraImagen->x + camaraImagen->w - margen))
 	{
 		if(posicionMin > (camaraImagen->x + margen))
 		{
@@ -110,8 +112,10 @@ void Camara::actualizar(int maximoAncho, int maximoAlto){
 		if(velocidadDelMax == 0)
 		{
 			if (velocidadDelMin < 0) //Quiere ir a la izquierda
-				if(!bloqueadaADerecha)
+				if(!bloqueadaADerecha){
 					this->camaraImagen->x += velocidadDelMin*0.04;
+					cout << "No esta bloqueada a derecha. Todo ok.\n";
+				}
 		}
 		else
 		{

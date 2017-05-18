@@ -177,18 +177,27 @@ void JuegoCliente::iniciarJuegoControlCliente()
 {
 	this->log->addLogMessage("[INICIAR JUEGO CONTROL CLIENTE] Iniciado.",2);
 
-	cout << "Esperando que se conecten jugadores..." << endl;
-	if(!juegoIniciado){
-		hiloRecibir->setVariableCondicional(&vcIniciarJuego);
-		vcIniciarJuego.bloquearMutex();
-		while (!juegoIniciado)
-		{
-			vcIniciarJuego.esperarCondicion();
-			juegoIniciado = true;
-		}
+	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
+	if(mensaje.compare("Sin elementos") == 0) //Si en el tiempo en que llego hasta aca no llego ningun mensaje mas
+	{
+		cout << "Esperando que se conecten jugadores..." << endl;
+		if(!juegoIniciado){
+			hiloRecibir->setVariableCondicional(&vcIniciarJuego);
+			vcIniciarJuego.bloquearMutex();
+			while (!juegoIniciado)
+			{
+				vcIniciarJuego.esperarCondicion();
+				juegoIniciado = true;
+			}
 
-		vcIniciarJuego.desbloquearMutex();
-		std::string mensaje = hiloRecibir->obtenerElementoDeLaCola(); //Saca el mensaje [INICIAR JUEGO] de la cola
+			vcIniciarJuego.desbloquearMutex();
+			mensaje = hiloRecibir->obtenerElementoDeLaCola(); //Saca el mensaje [INICIAR JUEGO] de la cola
+		}
+	}
+	else if(mensaje.compare("[INICIAR JUEGO]") == 0)
+	{
+		cout << "Reconectado..." << endl;
+		juegoIniciado = true;
 	}
 
 	control->ControlarJuegoCliente(vista, sonic, hiloEnviar, hiloRecibir, hiloLatido, opcionMenu);

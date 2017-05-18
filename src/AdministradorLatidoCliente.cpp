@@ -58,6 +58,8 @@ void* AdministradorLatidoCliente::iniciarContadorServidorCliente(void *ars){
 	AdministradorLatidoCliente *alc = (AdministradorLatidoCliente*)ars;
 
 	alc->actualizarTiempoLatido();
+	alc->iniciar = true;
+
 	double diff_t;
 	time_t start_t;
 	time(&start_t);
@@ -68,7 +70,7 @@ void* AdministradorLatidoCliente::iniciarContadorServidorCliente(void *ars){
 	//cout<<alc->cadena<<endl;
 	//bool comenzo = true;
 	//while(comenzo){
-	while(diff_t < 6.0){
+	while(diff_t < 6.0 && alc->iniciar){
 			 time(&start_t);
 
 			 diff_t = difftime(alc->end_t,start_t);
@@ -76,19 +78,23 @@ void* AdministradorLatidoCliente::iniciarContadorServidorCliente(void *ars){
 			 //cout<<diff_t<<endl;
 
 	}
-	 printf("Se desconecto al cliente por falta de latidos \n");
 
-	 char buffer[40];
-	 std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + alc->idCliente;
-	 strcpy(buffer, msjDesconexion.c_str());
-	 alc->colaPaquete->agregar(buffer);
-	 //cout<<"VOY A CERRAR EL CLIENTE"<<endl;
-	 //cout<<"PARAMETROS ALC CLIENTES:::"<<alc->getSkt()<<endl;
-	 shutdown(alc->getSkt(), SHUT_RDWR);
-	 close(alc->getSkt());
-	 //cout<<"SE CERRO EL CLIENTE"<<endl;
+	//Si salio del while porque diff_t > 6 (y no porque lo cerre con un Join desde el Hilorecibir)
+	if(alc->iniciar == true){
+		printf("Se desconecto al cliente por falta de latidos \n");
 
-	 //alc->colaPaquete->agregar("Servidor Desconectado");
+		char buffer[40];
+		std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + alc->idCliente;
+		strcpy(buffer, msjDesconexion.c_str());
+		alc->colaPaquete->agregar(buffer);
+		//cout<<"VOY A CERRAR EL CLIENTE"<<endl;
+		//cout<<"PARAMETROS ALC CLIENTES:::"<<alc->getSkt()<<endl;
+		shutdown(alc->getSkt(), SHUT_RDWR);
+		close(alc->getSkt());
+		//cout<<"SE CERRO EL CLIENTE"<<endl;
+	}
+
+	//alc->colaPaquete->agregar("Servidor Desconectado");
 	// comenzo = false;
 
 //}
