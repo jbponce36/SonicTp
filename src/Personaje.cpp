@@ -24,11 +24,11 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->posicionY = 4*altoEscenario / 5 - personajeAlto;
 
     this->velocidadX = 0;
-    this->velocidadY = personajeVelocidad;
+    this->velocidadY = 0;
 
     this->orientacion = DERECHA;
 
-    this->saltando = true;
+    this->saltando = false;
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
@@ -57,11 +57,11 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->posicionY = 4*altoEscenario / 5 - personajeAlto;
 
     this->velocidadX = 0;
-    this->velocidadY = personajeVelocidad;
+    this->velocidadY = 0;
 
     this->orientacion = DERECHA;
 
-    this->saltando = true;
+    this->saltando = false;
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
@@ -82,7 +82,7 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 	/*-----------------------------------------*/
 
     //mueve al personaje
-    this->posicionX += this->velocidadX * tiempoDeJuego;
+    this->posicionX += this->velocidadX * REGULADOR_ALTURA_SALTO;
 
     //se fija si se paso los limites de la pantalla
     if( posicionX < limites->x )
@@ -328,19 +328,21 @@ void Personaje::irIzquierda()
 	dejarDeEstarQuieto();
 
 	if (corriendo){
-		this->velocidadX -= 2*personajeAceleracion;
+		/*this->velocidadX -= 2*personajeAceleracion;
 		if(velocidadX < (-2*personajeVelocidad))
 		{
 			velocidadX = -2*personajeVelocidad;
-		}
+		}*/
+		this->velocidadX = -2*personajeVelocidad;
 		animacionActual = &animacionCorrerIzq;
 	}
 	else{
-		this->velocidadX -= personajeAceleracion;
+		/*this->velocidadX -= personajeAceleracion;
 		if(velocidadX < (-personajeVelocidad))
 		{
 			velocidadX = -personajeVelocidad;
-		}
+		}*/
+		this->velocidadX = -personajeVelocidad;
 		animacionActual = &animacionCaminarIzq;
 	}
 
@@ -354,19 +356,21 @@ void Personaje::irDerecha()
 	dejarDeEstarQuieto();
 
 	if (corriendo){
-		this->velocidadX += 2*personajeAceleracion;
+		/*this->velocidadX += 2*personajeAceleracion;
 		if(velocidadX > 2*personajeVelocidad)
 		{
 			velocidadX = 2*personajeVelocidad;
-		}
+		}*/
+		this->velocidadX = 2*personajeVelocidad;
 		animacionActual = &animacionCorrerDer;
 	}
 	else{
-		this->velocidadX += personajeAceleracion;
+		/*this->velocidadX += personajeAceleracion;
 		if(velocidadX > personajeVelocidad)
 		{
 			velocidadX = personajeVelocidad;
-		}
+		}*/
+		this->velocidadX = personajeVelocidad;
 		animacionActual = &animacionCaminarDer;
 	}
 
@@ -377,7 +381,7 @@ void Personaje::irDerecha()
 
 void Personaje::parar()
 {
-	if (velocidadX < 0)
+	/*if (velocidadX < 0)
 	{
 		velocidadX += 2*personajeAceleracion;
 		if (velocidadX >= 0)
@@ -388,7 +392,9 @@ void Personaje::parar()
 		velocidadX -= 2*personajeAceleracion;
 		if (velocidadX <= 0)
 			velocidadX = 0;
-	}
+	}*/
+
+	velocidadX = 0;
 
 	if (saltando)
 		return;
@@ -397,6 +403,7 @@ void Personaje::parar()
 		return;
 
 	velocidadY = 0;
+
 	if (velocidadX == 0){
 		estaQuieto = true;
 

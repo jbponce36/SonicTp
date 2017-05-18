@@ -49,7 +49,10 @@ public:
 private:
 	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista,
 		HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, int &opcionMenu);
-	void moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic, Camara* camara);
+
+	//Ya no se usa. El servidor es quien mueve el personaje y me manda mi posicion.
+	//void moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic, Camara* camara);
+
 	void controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista, Camara *camara);
 	void actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic);
 	std::string intToString(int numero);
