@@ -108,5 +108,26 @@ string Rectangulo::toString(){
 	", y: "+intToString(getY())+", index_z: "+ intToString(getIndexZ())+", ruta_imagen: "+ getRutaImagen();
 }
 
+SDL_Rect Rectangulo::obtenerLimites()
+{
+	SDL_Rect limites = { obtenerX(), obtenerY(), ancho, alto };
+	return limites;
+}
+
+bool Rectangulo::intersecta(Rectangulo &otroRectangulo)
+{
+	SDL_Rect esteRectangulo = obtenerLimites();
+	SDL_Rect elOtroRectangulo = otroRectangulo.obtenerLimites();
+
+	SDL_bool intersecta = SDL_HasIntersection(&esteRectangulo, &elOtroRectangulo);
+
+	if (intersecta == SDL_TRUE){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
 }
 
