@@ -63,9 +63,7 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 				teclaCorrer = true;
 				break;}
 			case SDLK_q:{
-				cout << "2do Menu" << endl;
 				opcionMenu = vista->mostraMenuInicial(vista->getLog());
-				cout << "Fin 2do menu" << endl;
 				switch(opcionMenu)
 				{
 					case 1:

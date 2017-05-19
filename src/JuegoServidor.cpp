@@ -87,19 +87,10 @@ void JuegoServidor::terminarHiloJuego()
 	hiloJuego->Join();
 }
 
-void JuegoServidor::agregarJugador(int id)
-{
-	//No usar.
-	//sonics[id] = new Personaje(id, velocidad, vista->obtenerRender(), altoEscenario, log);
-	//control->agregarSonic(id);
-}
-
 void JuegoServidor::enviarATodosLosClientes(std::string mensaje)
 {
 	control->enviarATodos(mensaje);
 }
-
-
 
 int JuegoServidor::obtenerIdLibre()
 {
