@@ -1,9 +1,9 @@
 {
-	"ventana": {"dimensiones": {"ancho": 800, "alto": 500}},
+	"ventana": {"dimensiones": {"ancho": 800, "alto": 700}},
 	"configuracion": {"vel_scroll": 500},
         "servidor":{"puerto": 3316,"clientes":2},
 	"escenario": {
-		"dimensiones": {"ancho": 4000, "alto": 500},
+		"dimensiones": {"ancho": 4000, "alto": 700},
 		"capas": [
 			{
 			"id": 1,
