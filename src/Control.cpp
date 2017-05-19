@@ -202,7 +202,7 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenM
 {
 	for(int contador = 0; contador < vista->cantidadCapasCargadas(); contador++)
 	{
-		imagenMostrar->h = vista->obtenerTextura(contador)->getAltoTextura();
+		imagenMostrar->h = vista->getAltoEscenario();
 		vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),imagenMostrar);
 		vista->mostrarEntidades(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
 	}
