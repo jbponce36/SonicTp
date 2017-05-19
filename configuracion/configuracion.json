@@ -21,10 +21,10 @@
 		{
 			"id": 1,
 			"tipo": "rectangulo",
-			"color": "rojo",
-			"dimensiones": {"ancho": 40, "alto": 20},
-			"coordenada": {"x": 300, "y": 300},
-			"ruta_imagen": "images/entidad1.png",
+			"color": "transparente",
+			"dimensiones": {"ancho": 140, "alto": 70},
+			"coordenada": {"x": 50, "y": 50},
+			"ruta_imagen": "images/Anilla.png",
 			"index_z": 99
 		},
 		{
@@ -44,6 +44,18 @@
 			"coordenada": {"x": 300, "y": 100},
 			"ruta_imagen": "images/entidad3.png",
 			"index_z": 99
+               },
+		{
+			"id": 4,
+			"tipo": "rectangulo",
+			"color": "amarillo",
+			"dimensiones": {"ancho": 208, "alto": 69},
+			"coordenada": {"x": 500, "y": 400},
+			"ruta_imagen": "images/Anilla.png",
+			"index_z": 99
+                       
+                        
+
 		}]
 	}
       
