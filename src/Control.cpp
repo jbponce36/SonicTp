@@ -205,6 +205,7 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenM
 		imagenMostrar->h = vista->obtenerTextura(contador)->getAltoTextura();
 		vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),imagenMostrar);
 		vista->mostrarEntidades(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
+
 	}
 
 	//dibujo todos los sonics

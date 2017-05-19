@@ -35,11 +35,20 @@ SDL_Color Entidad::convertirColor(std::string color)
 	else if (color == "verde"){
 		colorSDL.r = 0; colorSDL.g = 255; colorSDL.b = 0; colorSDL.a = 255;
 	}
+	else if (color == "transparente"){
+		//colorSDL.r = 0; colorSDL.g = 0; colorSDL.b = 0; colorSDL.a = 255;
+	//  SDL_SetAlpha(this->imagenCargada,Uint32 flag,Uint8 alpha);
+    //  SDL_SetAlpha(this->imagenCargada,SDL_ALPHA_TRANSPARENT,0);
+		SDL_SetColorKey( this->imagenCargada, SDL_TRUE, SDL_MapRGB( this->imagenCargada->format, 0, 0xFF, 0xFF ) );
+
+
+	}
 	else
 	{
 		//Color por default: rojo
 		colorSDL.r = 255; colorSDL.g = 0; colorSDL.b = 0; colorSDL.a = 255;
 	}
+
 	return colorSDL;
 }
 
@@ -83,7 +92,8 @@ int Entidad::cargarImagen(SDL_Renderer *renderer, Logger *log)
 		return error;
 	}
 
-	SDL_Surface *imagenCargada = NULL;
+	//SDL_Surface *imagenCargada = NULL;
+	imagenCargada = NULL;
 	std::string rutaSinBarra;
 	const char* barra = "/";
 

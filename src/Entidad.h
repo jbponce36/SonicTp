@@ -19,6 +19,7 @@ private:
 	int indexZ;
 	SDL_Texture *imagen;
 	Logger *log;
+	SDL_Surface *imagenCargada;
 
 public:
 	Entidad();
