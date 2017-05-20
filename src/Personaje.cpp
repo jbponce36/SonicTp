@@ -21,14 +21,14 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->personajeAceleracion = velocidad/20;
 	//posicion por defecto
     this->posicionX = POSICION_INICIALX;
-    this->posicionY = 4*altoEscenario / 5 - personajeAlto;
+    this->posicionY = 0;
 
     this->velocidadX = 0;
     this->velocidadY = 0;
 
     this->orientacion = DERECHA;
 
-    this->saltando = false;
+    this->saltando = true;
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
@@ -54,14 +54,14 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->personajeAceleracion = velocidad/20;
 	//posicion por defecto
     this->posicionX = POSICION_INICIALX;
-    this->posicionY = 4*altoEscenario / 5 - personajeAlto;
+    this->posicionY = 0;
 
     this->velocidadX = 0;
     this->velocidadY = 0;
 
     this->orientacion = DERECHA;
 
-    this->saltando = false;
+    this->saltando = true;
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
@@ -497,9 +497,10 @@ void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje
 
 	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
 	strcpy(buffer, mensaje.c_str());
-	cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
+	//cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
 	//hiloEnviar->parametros.buffer = buffer;
-	//cout << "Cliente envio: " << buffer << endl;
+	hiloEnviar->enviarDato(buffer);
+	cout << "Cliente envio: " << buffer << endl;
 
 }
 

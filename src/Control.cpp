@@ -85,10 +85,8 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 			salir = true;
 		}
 		controlador->procesarEvento(e, sonic, hiloEnviar, hiloRecibir, hiloLatido, vista, opcionMenu); //Setea todas las teclas presionadas o liberadas
-
-
 	}
-	controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
+	//controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
 }
 
 void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista, Camara *camara)
