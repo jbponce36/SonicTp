@@ -134,6 +134,7 @@ void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
 		if ((*pos)->indexZes(indexZ))
+
 		{
 			(*pos)->dibujar(renderizador, camara);
 		}
