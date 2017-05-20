@@ -2,7 +2,6 @@
 
 const int POSICION_INICIALX = 0;
 const int POSICION_INICIALY = 0;
-const float REGULADOR_ALTURA_SALTO = 0.04; //Regula la altura del salto (Es como un "promedio" de tiempoDeJuego)
 
 Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log)
 {
@@ -87,11 +86,11 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
     //se fija si se paso los limites de la pantalla
     if( posicionX < limites->x )
     {
-    	velocidadX = 0;
+    	//velocidadX = 0;
         posicionX = limites->x;
     }
     else if (posicionX + this->personajeAncho - limites->x >  maximoAncho){
-    	velocidadX = 0;
+    	//velocidadX = 0;
 		this->posicionX = maximoAncho-this->personajeAncho+limites->x;
 	}
 
