@@ -51,11 +51,13 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 				mensaje = TECLA_IZQUIERDA_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, TECLA_IZQUIERDA_PRESIONADA);
 				teclaIzquierda = true;
+				cout<<"IZQUIERDA PRES------------"<<endl;
 				break;}
 			case SDLK_RIGHT:{
 				mensaje = TECLA_DERECHA_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, TECLA_DERECHA_PRESIONADA);
 				teclaDerecha = true;
+				cout<<"DERECHA------------"<<endl;
 				break;}
 			case SDLK_a:{
 				mensaje = TECLA_CORRER_PRESIONADA;
@@ -130,11 +132,13 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 		case SDLK_LEFT:{
 			mensaje = TECLA_IZQUIERDA_LIBERADA;
 			sonic->enviarAServer(hiloEnviar, TECLA_IZQUIERDA_LIBERADA);
+			cout<<"IZQUIERDA LIBERADA------------"<<endl;
 			teclaIzquierda = false;
 			break;}
 		case SDLK_RIGHT:{
 			mensaje = TECLA_DERECHA_LIBERADA;
 			sonic->enviarAServer(hiloEnviar, TECLA_DERECHA_LIBERADA);
+			cout<<"DERECHA LIBERADA------------"<<endl;
 			teclaDerecha = false;
 			break;}
 		case SDLK_a:{
@@ -172,9 +176,11 @@ void ControladorTeclas::administrarTeclas(Personaje *sonic)
 
 	if(teclaDerecha){
 		sonic->irDerecha();
+		cout<<"IR DERECHA"<<endl;
 	}
 
 	if(teclaIzquierda){
 		sonic->irIzquierda();
+		cout<<"IR DERECHA"<<endl;
 	}
 }

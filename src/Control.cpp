@@ -89,6 +89,7 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 
 	}
 	controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
+	cout<<"TECLA PRESIONADA"<<endl;
 }
 
 void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista, Camara *camara)

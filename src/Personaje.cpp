@@ -499,7 +499,7 @@ void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje
 	strcpy(buffer, mensaje.c_str());
 	cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
 	//hiloEnviar->parametros.buffer = buffer;
-	//cout << "Cliente envio: " << buffer << endl;
+	cout << "Cliente envio: " << buffer << endl;
 
 }
 
