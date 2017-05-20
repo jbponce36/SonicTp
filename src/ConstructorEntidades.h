@@ -14,6 +14,8 @@
 #include "Circulo.h"
 #include "Logger.h"
 #include <list>
+#include "Obstaculo.h"
+#include "Anillos.h"
 
 #define MAX_ID 100
 #define MAX_ANCHO 4000

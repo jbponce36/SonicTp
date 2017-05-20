@@ -13,8 +13,8 @@ class Obstaculo {
 public:
 	Obstaculo();
 	virtual ~Obstaculo();
-	virtual void setruta(const char*) = 0;
-	virtual const char* getruta() = 0;
+	virtual void setruta(std::string) = 0;
+	virtual std::string getruta() = 0;
 
 	virtual void setancho(int) = 0;
 	virtual int getancho() = 0;

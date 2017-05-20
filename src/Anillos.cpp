@@ -17,11 +17,11 @@ Anillos::~Anillos() {
 	// TODO Auto-generated destructor stub
 }
 
-const char* Anillos::getRuta(){
+std::string Anillos::getRuta(){
 		return this->ruta;
 	}
 
-void Anillos::setRuta(const char* Ruta) {
+void Anillos::setRuta(std::string Ruta) {
 		this->ruta = Ruta;
 	}
 

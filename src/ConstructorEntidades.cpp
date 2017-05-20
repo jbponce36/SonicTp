@@ -48,6 +48,11 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 	{
 		if(((*pos).gettipo() == "rectangulo") || ((*pos).gettipo() == "cuadrado"))
 		{
+		  //if((*pos).ruta == "images/Anilla.png") {
+
+
+
+		  //}
 			id = (*pos).getid();
 			color = (*pos).getcolor();
 			ancho = (*pos).getDim()->getvalor1();

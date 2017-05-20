@@ -16,13 +16,13 @@ public:
 	virtual ~Anillos();
 
 
-	const char* getRuta();
+	std::string getRuta();
 
-	void setRuta(const char* ruta);
+	void setRuta(std::string ruta);
 
 
 private:
-	const char* ruta;
+	std::string ruta;
     int ancho;
     int alto;
 
