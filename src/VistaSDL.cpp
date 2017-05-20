@@ -420,4 +420,6 @@ void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado){
 
 }
 
-
+int VistaSDL::getAltoEscenario(){
+	return this->altoescenario;
+}
