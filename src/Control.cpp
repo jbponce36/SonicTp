@@ -85,10 +85,8 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 			salir = true;
 		}
 		controlador->procesarEvento(e, sonic, hiloEnviar, hiloRecibir, hiloLatido, vista, opcionMenu); //Setea todas las teclas presionadas o liberadas
-
-
 	}
-	controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
+	//controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
 }
 
 void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista, Camara *camara)
@@ -198,7 +196,7 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenM
 {
 	for(int contador = 0; contador < vista->cantidadCapasCargadas(); contador++)
 	{
-		imagenMostrar->h = vista->obtenerTextura(contador)->getAltoTextura();
+		imagenMostrar->h = vista->getAltoEscenario();
 		vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),imagenMostrar);
 		vista->mostrarEntidades(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
 	}

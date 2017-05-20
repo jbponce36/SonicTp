@@ -26,7 +26,6 @@ void Camara::actualizar(Personaje *sonic, int maximoAncho, int maximoAlto){
 	{
 		this->camaraImagen->x -= (camaraImagen->x + margen) - posicionXSonic;
 	}
-
 	if( this->camaraImagen->x < 0 )
 	{
 		this->camaraImagen->x = 0;
