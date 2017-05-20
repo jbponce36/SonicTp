@@ -103,7 +103,8 @@ std::string jentidades::getruta(){
 void jentidades::setruta(std::string rutaent){
 	string extensionpng = "png";
 	string extensionbmp = "bmp";
-	if (this->hasEnding(rutaent, extensionpng) || this->hasEnding(rutaent, extensionbmp)){
+	string extenciongif = "gif";
+	if (this->hasEnding(rutaent, extensionpng) || this->hasEnding(rutaent, extensionbmp) || this->hasEnding(rutaent, extenciongif)){
 		ruta = rutaent;
 	}
 	//

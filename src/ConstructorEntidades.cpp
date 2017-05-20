@@ -48,11 +48,8 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 	{
 		if(((*pos).gettipo() == "rectangulo") || ((*pos).gettipo() == "cuadrado"))
 		{
-		  //if((*pos).ruta == "images/Anilla.png") {
 
-
-
-		  //}
+           cout<<"llega rectangulo"<<endl;
 			id = (*pos).getid();
 			color = (*pos).getcolor();
 			ancho = (*pos).getDim()->getvalor1();
@@ -70,10 +67,34 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			{
 				validarCuadrado(ancho, alto);
 			}
-			Rectangulo *rectangulo = new Rectangulo(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
-			entidades.push_back(rectangulo);
-			this->log->setModulo("CONSTRUCTOR ENTIDADES");
-			this->log->addLogMessage("[CARGAR ENTIDADES] Rectangulo->"+rectangulo->toString(), 3);
+
+			if ((*pos).getruta() == "images/Anilla.png"){
+
+
+				id = (*pos).getid();
+				color = (*pos).getcolor();
+				ancho = (*pos).getDim()->getvalor1();
+				alto = (*pos).getDim()->getvalor2();
+				coordX = (*pos).getcoorx();
+				coordY = (*pos).getcoory();
+				rutaImagen = (*pos).getruta();
+				indexZ = (*pos).getindex();
+
+				Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+
+
+                 entidades.push_back(anillo);
+
+			}
+
+			else{
+
+			   Rectangulo *rectangulo = new Rectangulo(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+			   entidades.push_back(rectangulo);
+			   cout<<"listarectangulo"<<endl;
+			   this->log->setModulo("CONSTRUCTOR ENTIDADES");
+			   this->log->addLogMessage("[CARGAR ENTIDADES] Rectangulo->"+rectangulo->toString(), 3);
+			}
 		}
 
 		if((*pos).gettipo() == "circulo")
@@ -94,7 +115,9 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			this->log->setModulo("CONSTRUCTOR ENTIDADES");
 			this->log->addLogMessage("[CARGAR ENTIDADES] Circulo->"+circulo->toString(), 3);
 		}
+
 	}
+
 
 	cargarImagenes(renderizador);
 	ordenarSegunIndexZ();
@@ -115,13 +138,20 @@ void ConstructorEntidades::setLog(Logger *log)
 
 void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 {
+
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
 	this->log->addLogMessage("[CARGAR IMAGENES] Iniciado.",2);
 	list<Entidad*>::iterator pos;
+
+	for(pos = entidades.begin(); pos != entidades.end(); pos++){
+	    cout<<(*pos)->getRutaImagen()<<endl;
+	}
+
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
 		if ((*pos)->tieneRutaImagen())
 		{
+
 			(*pos)->cargarImagen(renderizador, log);
 			this->log->setModulo("CONSTRUCTOR ENTIDADES");
 			this->log->addLogMessage("[CARGAR IMAGENES] Imagen cargada en ruta: "+(*pos)->getRutaImagen(),3);
@@ -138,10 +168,13 @@ void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect
 	//this->log->addLogMessage("[MOSTRAR IMAGENES] Iniciado",2);
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
+
 		if ((*pos)->indexZes(indexZ))
 
 		{
+
 			(*pos)->dibujar(renderizador, camara);
+
 		}
 	}
 

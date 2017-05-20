@@ -39,6 +39,7 @@ void Rectangulo::mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara)
 		return;
 	}
 
+
 	int  anchoImagen, altoImagen;
 	SDL_QueryTexture(obtenerImagen(), NULL, NULL, &anchoImagen, &altoImagen);
 
