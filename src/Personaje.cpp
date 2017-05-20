@@ -20,14 +20,14 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->personajeAceleracion = velocidad/20;
 	//posicion por defecto
     this->posicionX = POSICION_INICIALX;
-    this->posicionY = 0;
+    this->posicionY = 4*altoEscenario/5 - personajeAlto;
 
     this->velocidadX = 0;
     this->velocidadY = 0;
 
     this->orientacion = DERECHA;
 
-    this->saltando = true;
+    this->saltando = false;
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
@@ -53,14 +53,14 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->personajeAceleracion = velocidad/20;
 	//posicion por defecto
     this->posicionX = POSICION_INICIALX;
-    this->posicionY = 0;
+    this->posicionY = 4*altoEscenario/5 - personajeAlto;
 
     this->velocidadX = 0;
     this->velocidadY = 0;
 
     this->orientacion = DERECHA;
 
-    this->saltando = true;
+    this->saltando = false;
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
