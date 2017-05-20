@@ -25,18 +25,23 @@ JuegoCliente::~JuegoCliente() {
 	if(hiloEnviar != NULL)
 		delete hiloEnviar;
 
+	if(hiloLatido != NULL)
+		delete hiloLatido;
+
 	if(!sonics.empty()){
 		std::vector<Personaje*>::iterator pos;
 		for(pos = sonics.begin();pos != sonics.end();pos++){
-			//cout << (*pos)->getId() <<"\n";
-			delete (*pos);
+			if((*pos) != NULL){
+				delete (*pos);
+				(*pos) = NULL;
+			}
 		}
 	}
 }
 
 JuegoCliente::JuegoCliente(ConexCliente *cliente, Logger *log, int &opcionMenu)
 : vista(NULL), sonic(NULL), control(NULL), cliente(cliente), log(log),
-  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), maxJugadores(0), sonics(),
+  hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), hiloLatido(NULL), maxJugadores(0), sonics(),
   juegoIniciado(false), opcionMenu(opcionMenu){
 	//Vista, sonic y control se setean al llamar a iniciarJuegoCliente desde el thread
 	this->log = log;
@@ -63,18 +68,16 @@ void JuegoCliente::iniciarHilos(Logger *log)
 	hiloRecibir = new HiloRecibirCliente(log);
 	hiloRecibir->parametros.cliente = cliente;
 	hiloRecibir->parametros.continuar = true;
-	//hiloRecibir->parametros.alc = alc;
 	hiloRecibir->IniciarHilo();
 
 	hiloEnviar = new HiloEnviarCliente(log);
-	//hiloEnviar->parametros.alc=alc;
 	hiloEnviar->parametros.cliente = cliente;
 	hiloEnviar->iniciarHiloQueue();
 
 	hiloLatido = new HilolatidoSer(log);
 	hiloLatido->parametros.cliente = cliente;
+	hiloLatido->parametros.continuar = true;
 	hiloLatido->IniciarHilo();
-
 
 	hiloJuego = new Hilo();
 
@@ -116,6 +119,26 @@ void JuegoCliente::terminarHilos()
 	//cout << "Voy a terminar el hilo latidos \n";
 	hiloLatido->terminarHilo();
 	//cout << "Termine todos los hilos. Todo ok \n";
+
+	delete hiloRecibir;
+	hiloRecibir = NULL;
+	delete hiloEnviar;
+	hiloEnviar = NULL;
+	delete hiloLatido;
+	hiloLatido = NULL;
+
+	if(!sonics.empty()){
+		int cant = sonics.size() - 1;
+		for(int i = cant; i >= 0; i--){
+			if(sonics.at(i) != NULL){
+				delete sonics.at(i);
+			}
+			sonics.pop_back();
+		}
+	}
+
+	sonic = NULL; //Ya libere la memoria dentro del vector.
+
 	this->log->addLogMessage("[TERMINAR HILOS] Terminado",2);
 }
 
@@ -140,11 +163,17 @@ int JuegoCliente::inicializarJuegoCliente()
 	int id = atoi(ident.c_str());
 	maxJugadores = atoi(maxJug.c_str());
 
-	cout << "Se crea personaje con id " << id << " Max jugadores: "<< maxJugadores <<endl;
+	if(sonic != NULL){
+		delete sonic;
+	}
+
 	sonic = new Personaje(id, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log, cliente);
 	this->log->addLogMessage("[INICIALIZAR JUEGO CLIENTE] Se crea personaje con id: "+sonic->intToString(sonic->getId()) ,3);
 
 	inicializarOtrosSonics(id);
+	if(control != NULL){
+		delete control;
+	}
 	control = new Control(0, 0, maxJugadores, &sonics, log);
 
 	this->log->addLogMessage("[INICIALIZAR JUEGO CLIENTE] Terminado. \n",2);
@@ -154,6 +183,7 @@ int JuegoCliente::inicializarJuegoCliente()
 void JuegoCliente::inicializarOtrosSonics(int id)
 {
 	this->log->addLogMessage("[INICIALIZAR OTROS SONICS] Iniciado.",2);
+
 	int idPropio = sonic->getId();
 
 	for (int i = 1; i < idPropio; i++)
@@ -222,7 +252,6 @@ void JuegoCliente::CargarVistaParaElMenu(){
 void JuegoCliente::iniciarJuego()
 {
 	//Inicia el juego
-
 	this->log->addLogMessage("[INICIAR JUEGO] Iniciado.",1);
 	int result = inicializarJuegoCliente(); //Inicializa vista, sonic y control.
 	if (result == CONEXION_RECHAZADA)

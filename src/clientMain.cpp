@@ -54,26 +54,25 @@ int main(int argc, char *argv[]) {
 	int puerto =  parseadorCliente->CargarPuertoCliente(); // 8080;
 
 	int opcion = -1;
+	JuegoCliente juego = JuegoCliente(cliente, log, opcion);
 	while (opcion != 2){
-		JuegoCliente juego = JuegoCliente(cliente, log, opcion);
 		opcion = juego.elegirOpcionDeMenu(log);
 		switch (opcion){
 			case 0:
 			{
 				cliente->crear();
 				int skt = cliente->conectar(hostname, puerto);
-			//	int skt = cliente->conectar("192.168.1.5",8080);
+				//int skt = cliente->conectar("192.168.1.5",8080);
 
 				if(skt <0){
 					cout<<"El cliente no se conecto"<<endl;
-					log->addLogMessage("[CLIENTE] El cliente con id: "+juego.getSonic()->intToString(juego.getSonic()->getId())  +"no se conecto.",1);
+					log->addLogMessage("[CLIENTE] El cliente no se conecto. El servidor esta desconectado.",1);
+					//Le saque lo de loguear con el id porque ese Sonic no existe si llego aca y daba segfault...
 					cliente->cerrar();
 					delete cliente;
 					return -1;
 
 				}else{
-
-					//m->setSkt(skt);
 					juego.iniciarHilos(log);
 					juego.terminarHilos();
 				}
@@ -81,13 +80,11 @@ int main(int argc, char *argv[]) {
 			}
 			case 1:
 			{
-				//cout<<"se desconecto"<<endl;
 				cliente->cerrar();
 				delete cliente;
 				return 0;
 			}
 			case 2:{
-				//cout<<"salir"<<endl;
 				log->addLogMessage("[CLIENTE] El "+cliente->toString()+" salio.", 1);
 				break;}
 		}

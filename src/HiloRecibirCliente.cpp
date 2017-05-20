@@ -101,7 +101,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 	if(alc->isIniciar()){
 		alc->Join();
 	}
-	printf("Aca se termina el thread HiloRecibir Cliente. \n");
+	//printf("Aca se termina el thread HiloRecibir Cliente. \n");
 
 }
 

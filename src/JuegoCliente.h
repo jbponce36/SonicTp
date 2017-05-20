@@ -37,7 +37,7 @@ private:
 	HiloRecibirCliente *hiloRecibir;
 	HiloEnviarCliente *hiloEnviar;
 	Hilo *hiloJuego;
-	HilolatidoSer* hiloLatido;
+	HilolatidoSer *hiloLatido;
 
 	int maxJugadores;
 	std::vector<Personaje*> sonics;

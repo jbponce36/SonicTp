@@ -20,7 +20,6 @@ HilolatidoSer::HilolatidoSer(Logger *log) : hilo(NULL){
 }
 
 HilolatidoSer::~HilolatidoSer() {
-	// TODO Auto-generated destructor stub
 	delete hilo;
 }
 void HilolatidoSer::IniciarHilo(){
