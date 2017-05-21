@@ -421,6 +421,36 @@ void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado){
 
 }
 
+void VistaSDL::mostrarServidorDesconectado()
+{
+	this->log->addLogMessage("[MOSTRAR SERVIDOR DESCONECTADO] Iniciado.",2);
+	Textura *imagenServDesc = new Textura();
+
+	imagenServDesc->cargarImagen("images/imagenesMenu/servidorDesconectado.png", "images/entidaddefault.png",this->renderizador, log);
+
+	SDL_Rect camara;
+	SDL_Rect imagenMostrar;
+
+	camara.x = 0;
+	camara.y = 0;
+	camara.w = imagenServDesc->obtenerAnchoTextura();
+	camara.h = imagenServDesc->obtenerAltoTextura();
+
+	imagenMostrar.x = anchoVentana - camara.w;
+	imagenMostrar.y = altoVentana - camara.h;
+	imagenMostrar.w = camara.w;
+	imagenMostrar.h = camara.h;
+
+	imagenServDesc->renderizar(&camara,&imagenMostrar);
+	SDL_RenderPresent(this->renderizador);
+
+	sleep(2);
+
+	delete imagenServDesc;
+	this->log->addLogMessage("[MOSTRAR SERVIDOR DESCONECTADO] Terminado.\n",2);
+
+}
+
 int VistaSDL::getAltoEscenario(){
 	return this->altoescenario;
 }

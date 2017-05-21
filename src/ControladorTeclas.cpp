@@ -73,7 +73,7 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 						std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + intToString(sonic->getId());
 						strcpy(buffer, msjDesconexion.c_str());
 						hiloEnviar->enviarDato(buffer);
-						hiloRecibir->parametros.colaPaquete.agregar("Servidor Desconectado");
+						hiloRecibir->parametros.colaPaquete.agregar("Terminar juego");
 
 						//shutdown(hiloRecibir->parametros.skt, SHUT_RDWR);
 						//close(hiloRecibir->parametros.skt);
@@ -89,7 +89,7 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 						std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + intToString(sonic->getId());
 						strcpy(buffer, msjDesconexion.c_str());
 						hiloEnviar->enviarDato(buffer);
-						hiloRecibir->parametros.colaPaquete.agregar("Servidor Desconectado");
+						hiloRecibir->parametros.colaPaquete.agregar("Terminar juego");
 
 						//shutdown(hiloRecibir->parametros.skt, SHUT_RDWR);
 						//close(hiloRecibir->parametros.skt);

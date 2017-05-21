@@ -70,6 +70,7 @@ public:
     void validacionesVentana();
     int mostraMenuInicial(Logger *logger);
     void mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado);
+    void mostrarServidorDesconectado();
     void cerrar();
     ~VistaSDL();
     void mostrarEntidades(SDL_Rect *camara, int indexZ);

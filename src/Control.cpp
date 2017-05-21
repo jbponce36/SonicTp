@@ -121,6 +121,12 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 		}
 		else if (mensaje == "Servidor Desconectado")
 		{
+			printf("Servidor desconectado. Cerrando el juego...\n");
+			this->salir = true;
+			vista->mostrarServidorDesconectado();
+		}
+		else if (mensaje == "Terminar juego")
+		{
 			printf("Cerrando el juego...\n");
 			this->salir = true;
 		}
@@ -129,11 +135,6 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 			int nuevoX, nuevoY;
 			parsearMensajeCamara(nuevoX, nuevoY, mensaje);
 			camara->actualizarXY(nuevoX, nuevoY);
-		}
-		else if (mensaje.compare("Faltalatido"))
-		{
-			this->salir = true;
-
 		}
 		else{
 			//Otros mensajes
