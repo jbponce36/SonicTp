@@ -1,20 +1,20 @@
 {
-	"ventana": {"dimensiones": {"ancho": 800, "alto": 900}},
+	"ventana": {"dimensiones": {"ancho": 1000, "alto": 700}},
 	"configuracion": {"vel_scroll": 200},
         "servidor":{"puerto": 8080,"clientes":2},
         "cliente":{"puerto": 3316,"IP":"127.0.0.1"},
 	"escenario": {
-		"dimensiones": {"ancho": 4000, "alto": 900},
+		"dimensiones": {"ancho": 4000, "alto": 700},
 		"capas": [
 			{
 			"id": 1,
 			"index_z": 99,
-			"ruta_imagen":"images/capa0.png"
+			"ruta_imagen":"images/sonicFondo1.jpg"
 			},
 			{
 			"id": 2,
 			"index_z": 98,
-			"ruta_imagen":"images/capa1r.png"
+			"ruta_imagen":"images/capa1 nivel 2 buena trasprarente.png"
 			}
 		],
 		"entidades": [
