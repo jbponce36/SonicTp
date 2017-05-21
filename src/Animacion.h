@@ -30,6 +30,7 @@ public:
 	Animacion();
 	Animacion(Textura *spriteSheet, int dimension, int retardo, std::string nombre);
 	void cargarSprites(int x, int y, int cantidad);
+	void cargarSpritesAlReves(int x, int y, int cantidad);
 	void comenzar();
 	void detener();
 	void dibujar(SDL_Rect cuadroDeVentana);
