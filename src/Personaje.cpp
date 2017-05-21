@@ -131,27 +131,42 @@ void Personaje::cargarSpriteSonic(){
 	animacionSaltarIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_SALTAR_IZQUIERDA);
 	animacionCongelado = Animacion(texturaCongelado, personajeAncho, 1, ANIMACION_CONGELADO);
 
+	//for (int i=0; i<10; i++){
+	//	animacionQuietoDer.cargarSprites(0, 0, 1);
+	//} //Agrega el primer sprite varias veces para que se quede quieto mas tiempo
+	//for (int i=0; i<5; i++){
+	//		animacionQuietoDer.cargarSprites(1, 0, 2);
+	//}  //Agrega los sprites moviendo el pie varias veces
+
+	//animacionCaminarDer.cargarSprites(0, 3, 8);
+	//animacionCorrerDer.cargarSprites(4, 1, 5);
+	//animacionSaltarDer.cargarSprites(4, 1, 5);
+
+	//for (int i=0; i<10; i++){
+	//	animacionQuietoIzq.cargarSprites(9, 0, 1);
+	//}
+	//for (int i=0; i<5; i++){
+	//	animacionQuietoIzq.cargarSprites(10, 0, 2);
+	//}
+
+	//animacionCaminarIzq.cargarSprites(9, 3, 8);
+	//animacionCorrerIzq.cargarSprites(13, 1, 5);
+	//animacionSaltarIzq.cargarSprites(13, 1, 5);
+
+	//desde aca es el codigo del nuevo set de sprites
 	for (int i=0; i<10; i++){
-		animacionQuietoDer.cargarSprites(0, 0, 1);
+			animacionQuietoDer.cargarSprites(0, 0, 1);
 	} //Agrega el primer sprite varias veces para que se quede quieto mas tiempo
-	for (int i=0; i<5; i++){
-			animacionQuietoDer.cargarSprites(1, 0, 2);
-	}  //Agrega los sprites moviendo el pie varias veces
 
-	animacionCaminarDer.cargarSprites(0, 3, 8);
-	animacionCorrerDer.cargarSprites(4, 1, 5);
-	animacionSaltarDer.cargarSprites(4, 1, 5);
-
+	animacionCaminarDer.cargarSprites(1, 0, 9);
+	animacionCorrerDer.cargarSprites(0, 1, 4);
+	animacionSaltarDer.cargarSprites(0, 2, 9);
 	for (int i=0; i<10; i++){
-		animacionQuietoIzq.cargarSprites(9, 0, 1);
+			animacionQuietoIzq.cargarSprites(9, 3, 1);
 	}
-	for (int i=0; i<5; i++){
-		animacionQuietoIzq.cargarSprites(10, 0, 2);
-	}
-
-	animacionCaminarIzq.cargarSprites(9, 3, 8);
-	animacionCorrerIzq.cargarSprites(13, 1, 5);
-	animacionSaltarIzq.cargarSprites(13, 1, 5);
+	animacionCaminarIzq.cargarSprites(0, 3, 9);
+	animacionCorrerIzq.cargarSprites(6, 4, 4);
+	animacionSaltarIzq.cargarSprites(1, 5, 9);
 
 	animacionCongelado.cargarSprites(0, 0, 1);
 
