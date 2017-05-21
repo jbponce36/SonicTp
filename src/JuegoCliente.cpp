@@ -274,3 +274,9 @@ int JuegoCliente::elegirOpcionDeMenu(Logger *log){
 Personaje* JuegoCliente::getSonic(){
 	return sonic;
 }
+
+void JuegoCliente::mostrarServidorDesconectado()
+{
+	if (vista != NULL)
+		vista->mostrarServidorDesconectado();
+}

@@ -69,8 +69,7 @@ int main(int argc, char *argv[]) {
 					log->addLogMessage("[CLIENTE] El cliente no se conecto. El servidor esta desconectado.",1);
 					//Le saque lo de loguear con el id porque ese Sonic no existe si llego aca y daba segfault...
 					cliente->cerrar();
-					delete cliente;
-					return -1;
+					juego.mostrarServidorDesconectado();
 
 				}else{
 					juego.iniciarHilos(log);

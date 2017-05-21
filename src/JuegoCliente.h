@@ -58,6 +58,7 @@ public:
 	int elegirOpcionDeMenu(Logger *log);
 	std::string intToString(int number);
 	Personaje* getSonic();
+	void mostrarServidorDesconectado();
 
 
 	struct Datos{

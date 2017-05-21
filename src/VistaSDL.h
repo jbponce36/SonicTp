@@ -27,11 +27,11 @@ using namespace std;
 #define MIN_ANCHO_VENTANA_PERMITIDO 400
 #define MIN_ALTO_VENTANA_PERMITIDO 500
 #define MAXIMO_ANCHO_ESCENARIO 4000  //ESTE DEPENDE DEL NUMERO DEL FOTOSHOP
-#define MAXIMO_ALTO_ESCENARIO 900
+#define MAXIMO_ALTO_ESCENARIO 1000
 #define ANCHO_ESCENARIO_POR_DEFAULT 4000
 #define ALTO_ESCENARIO_POR_DEFAULT 600
-#define MAX_ALTO_VENTANA 900
-#define MAX_ANCHO_VENTANA 900
+#define MAX_ANCHO_VENTANA 1900
+#define MAX_ALTO_VENTANA 1000
 
 
 class VistaSDL{
@@ -70,6 +70,7 @@ public:
     void validacionesVentana();
     int mostraMenuInicial(Logger *logger);
     void mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado);
+    void mostrarServidorDesconectado();
     void cerrar();
     ~VistaSDL();
     void mostrarEntidades(SDL_Rect *camara, int indexZ);
