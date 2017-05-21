@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
 
 	ConexServidor *server = new ConexServidor(log);
 	parseadorJsonSer *jsonSer = new parseadorJsonSer(log);
-	jsonSer->parsearArchivo(server->cargarNombreArchivo());
+	jsonSer->parsearArchivo("configuracion/servidor.json");//server->cargarNombreArchivo)());
 
 	int puerto = jsonSer->CargarPuertoServidor();
 	int maxConexiones = jsonSer->CargarCantClientes();

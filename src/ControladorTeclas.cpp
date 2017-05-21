@@ -24,6 +24,7 @@ std::string ControladorTeclas::intToString(int number)
 	return oss.str();
 }
 
+
 void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnviarCliente *hiloEnviar,
 	HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, VistaSDL *vista, int &opcionMenu)
 {
@@ -41,23 +42,25 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 				sonic->enviarAServer(hiloEnviar, mensaje);
 				teclaArriba = true;
 				sonic->saltar();
+				cout<<"ARRIBA PRESIONADA++++++++"<<endl;
 				break;}
 			case SDLK_DOWN:{
 				mensaje = TECLA_ABAJO_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, TECLA_ABAJO_PRESIONADA);
 				teclaAbajo = true;
+				cout<<"ABAJO PRESIONADA++++++++"<<endl;
 				break;}
 			case SDLK_LEFT:{
 				mensaje = TECLA_IZQUIERDA_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, TECLA_IZQUIERDA_PRESIONADA);
 				teclaIzquierda = true;
-				cout<<"IZQUIERDA PRES------------"<<endl;
+				cout<<"IZQUIERDA PRESIONADA++++++++"<<endl;
 				break;}
 			case SDLK_RIGHT:{
 				mensaje = TECLA_DERECHA_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, TECLA_DERECHA_PRESIONADA);
 				teclaDerecha = true;
-				cout<<"DERECHA------------"<<endl;
+				cout<<"DERECHA PRESIONADA++++++++"<<endl;
 				break;}
 			case SDLK_a:{
 				mensaje = TECLA_CORRER_PRESIONADA;
@@ -65,9 +68,7 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 				teclaCorrer = true;
 				break;}
 			case SDLK_q:{
-				cout << "2do Menu" << endl;
 				opcionMenu = vista->mostraMenuInicial(vista->getLog());
-				cout << "Fin 2do menu" << endl;
 				switch(opcionMenu)
 				{
 					case 1:
@@ -123,11 +124,13 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 			sonic->enviarAServer(hiloEnviar, TECLA_ARRIBA_LIBERADA);
 			teclaArriba = false;
 			sonic->dejarDeSaltar();
+			cout<<"ARRIBA LIBERADA------------"<<endl;
 			break;}
 		case SDLK_DOWN:{
 			mensaje = TECLA_ABAJO_LIBERADA;
 			sonic->enviarAServer(hiloEnviar, TECLA_ABAJO_LIBERADA);
 			teclaAbajo = false;
+			cout<<"ABAJO LIBERADA------------"<<endl;
 			break;}
 		case SDLK_LEFT:{
 			mensaje = TECLA_IZQUIERDA_LIBERADA;

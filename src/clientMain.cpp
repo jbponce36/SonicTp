@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
 	ConexCliente *cliente = new ConexCliente(log);
 
 	parseadorJsonCli *parseadorCliente = new parseadorJsonCli(log);
-	parseadorCliente->parsearArchivo(cliente->cargarNombreArchivo());
+	parseadorCliente->parsearArchivo("configuracion/cliente.json");//cliente->cargarNombreArchivo());
 
 	const char* hostname = parseadorCliente->CargarIPCliente();
 	int puerto =  parseadorCliente->CargarPuertoCliente(); // 8080;

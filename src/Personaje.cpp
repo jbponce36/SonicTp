@@ -2,7 +2,6 @@
 
 const int POSICION_INICIALX = 0;
 const int POSICION_INICIALY = 0;
-const float REGULADOR_ALTURA_SALTO = 0.04; //Regula la altura del salto (Es como un "promedio" de tiempoDeJuego)
 
 Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log)
 {
@@ -21,7 +20,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->personajeAceleracion = velocidad/20;
 	//posicion por defecto
     this->posicionX = POSICION_INICIALX;
-    this->posicionY = 4*altoEscenario / 5 - personajeAlto;
+    this->posicionY = 4*altoEscenario/5 - personajeAlto;
 
     this->velocidadX = 0;
     this->velocidadY = 0;
@@ -54,7 +53,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->personajeAceleracion = velocidad/20;
 	//posicion por defecto
     this->posicionX = POSICION_INICIALX;
-    this->posicionY = 4*altoEscenario / 5 - personajeAlto;
+    this->posicionY = 4*altoEscenario/5 - personajeAlto;
 
     this->velocidadX = 0;
     this->velocidadY = 0;
@@ -87,11 +86,11 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
     //se fija si se paso los limites de la pantalla
     if( posicionX < limites->x )
     {
-    	velocidadX = 0;
+    	//velocidadX = 0;
         posicionX = limites->x;
     }
     else if (posicionX + this->personajeAncho - limites->x >  maximoAncho){
-    	velocidadX = 0;
+    	//velocidadX = 0;
 		this->posicionX = maximoAncho-this->personajeAncho+limites->x;
 	}
 
@@ -497,8 +496,10 @@ void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje
 
 	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
 	strcpy(buffer, mensaje.c_str());
-	cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
+	//cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
 	//hiloEnviar->parametros.buffer = buffer;
+
+	hiloEnviar->enviarDato(buffer);
 	cout << "Cliente envio: " << buffer << endl;
 
 }

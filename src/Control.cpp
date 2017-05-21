@@ -85,11 +85,9 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 			salir = true;
 		}
 		controlador->procesarEvento(e, sonic, hiloEnviar, hiloRecibir, hiloLatido, vista, opcionMenu); //Setea todas las teclas presionadas o liberadas
-
-
 	}
-	controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
-	cout<<"TECLA PRESIONADA"<<endl;
+
+	//controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
 }
 
 void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista, Camara *camara)
@@ -122,13 +120,9 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 
 			//cout << msj.id << " " << msj.posX << " " << msj.posY  << " " << msj.animacion << " " << msj.indiceAnimacion << endl;
 		}
-		else if (mensaje == "VolverMenu")
-		{
-			vista->mostraMenuInicial(this->log);
-		}
 		else if (mensaje == "Servidor Desconectado")
 		{
-			printf("Aca deberia cerrar el juego. \n");
+			printf("Cerrando el juego...\n");
 			this->salir = true;
 		}
 		else if (mensaje.substr(0,3) ==  MENSAJE_CAMARA)
