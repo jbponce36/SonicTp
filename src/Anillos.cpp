@@ -32,7 +32,7 @@ void Anillos::setRuta(std::string Ruta) {
 		this->ruta = Ruta;
 }
 
-void Anillos::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
+/*void Anillos::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
 {
 	if (tieneRutaImagen())
 		{
@@ -42,13 +42,13 @@ void Anillos::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
 		else
 		{
 			setearColor(renderer);
-			SDL_Rect destino = {obtenerX() - camara->x, obtenerY() - camara->y, ancho, alto};
+
 			SDL_RenderFillRect(renderer, &destino);
 		}
 
 }
-
-void Anillos::mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara){
+*/
+void Anillos::dibujar(SDL_Renderer *renderer, SDL_Rect *camara){
 
 	if (obtenerImagen() == NULL)
 		{
@@ -56,8 +56,7 @@ void Anillos::mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara){
 			return;
 		}
 
-
-		int  anchoImagen, altoImagen;
+	    int  anchoImagen, altoImagen;
 		SDL_QueryTexture(obtenerImagen(), NULL, NULL, &anchoImagen, &altoImagen);
 
 		if ((anchoImagen >= ancho) && (altoImagen >= alto))
@@ -65,11 +64,14 @@ void Anillos::mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara){
 			//Recorta la imagen
 			SDL_Rect recorte = {0, 0, ancho, alto}; //Toma desde la esquina superior izquierda de la imagen
 			SDL_Rect destino = {obtenerX() - camara->x, obtenerY() - camara->y, ancho, alto};
+
 			SDL_RenderCopy(renderer, obtenerImagen(), &recorte, &destino);
 			return;
 		}
-		else
+
+		/*else
 		{
+			cout<<"aca2"<<endl;
 			setearColor(renderer);
 
 			if (ancho > anchoImagen)
@@ -108,9 +110,11 @@ void Anillos::mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara){
 				SDL_Rect destino = {obtenerX() - camara->x, obtenerY() - camara->y, ancho, altoImagen};
 				SDL_RenderCopy(renderer, obtenerImagen(), &recorte, &destino);
 			}
+          */
 
 			return;
-		}
+		//}
+
 }
 
 int Anillos::getAncho() {

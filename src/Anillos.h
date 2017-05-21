@@ -38,7 +38,7 @@ public:
 	int getCoory();
 	void setCoory(int Coory);
 
-	void mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara);
+//	void mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara);
 
 private:
 	std::string ruta;

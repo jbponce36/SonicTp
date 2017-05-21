@@ -68,22 +68,31 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 				validarCuadrado(ancho, alto);
 			}
 
+
 			if ((*pos).getruta() == "images/Anilla.png"){
 
-
-				id = (*pos).getid();
-				color = (*pos).getcolor();
+				coordX = 0;
 				ancho = (*pos).getDim()->getvalor1();
-				alto = (*pos).getDim()->getvalor2();
-				coordX = (*pos).getcoorx();
-				coordY = (*pos).getcoory();
-				rutaImagen = (*pos).getruta();
-				indexZ = (*pos).getindex();
+				int espacio = ancho + 10;
 
-				Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+				for(int i=0;i<2;i++){
+
+					id = (*pos).getid();
+					color = (*pos).getcolor();
+					//ancho = (*pos).getDim()->getvalor1();
+					alto = (*pos).getDim()->getvalor2();
+					coordX = /*i * (*pos).getcoorx() +*/ coordX + (*pos).getcoorx();
+					coordX = coordX + espacio;
+
+					coordY = (*pos).getcoory();
+					rutaImagen = (*pos).getruta();
+					indexZ = (*pos).getindex();
 
 
-                 entidades.push_back(anillo);
+				  Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+				  entidades.push_back(anillo);
+				}
+                 //entidades.push_back(anillo);
 
 			}
 
