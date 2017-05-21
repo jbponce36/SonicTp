@@ -206,11 +206,11 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		}
 
 		///------------------------------------------------------------
-		tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
+		//tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
 
-		(*pos).second->mover(camara->devolverCamara(), 0.04); //Se mueve segun los limites de la camara
+		(*pos).second->mover(camara->devolverCamara(), REGULADOR_ALTURA_SALTO); //Se mueve segun los limites de la camara
 
-		tiempoDeJuego = SDL_GetTicks();
+		//tiempoDeJuego = SDL_GetTicks();
 
 		//Mueve la camara segun los sonics
 		camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
@@ -280,8 +280,6 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	while( !juegoTerminado ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
-
-
 		administrarTeclasServidor();
 
 		moverPersonajesServidor(tiempoDeJuego, vista, camara);
@@ -302,10 +300,4 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
 }
 
-void ControlServidor::agregarSonic(int id)
-{
-	teclasPresionadas t = {false, false, false, false, false};
-	this->teclas[id] = t;
-
-}
 

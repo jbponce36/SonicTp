@@ -141,9 +141,9 @@ void JuegoServidor::reconectar(int sock)
 	henviar->iniciarHiloQueue();
 
 	sleep(1);
+
 	char *inicio = "[INICIAR JUEGO]";
 	henviar->enviarDato(inicio);
-	//server->comenzarPartida(henviar);
 
 	sleep(1);
 	//hlatidos->IniciarHilo();
