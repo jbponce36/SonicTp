@@ -10,7 +10,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->texturaCongelado = new Textura();
 	std::string rutaImagen = "images/sonicSprite" + intToString(id) +".png";
 	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
-	this->texturaCongelado->cargarImagen("images/sonicCongelado.png", IMAGEN_POR_DEFECTO, render, log);
+	this->texturaCongelado->cargarImagen("images/sonicgris.png", IMAGEN_POR_DEFECTO, render, log);
 
 	//dimensiones del personaje por defecto
 	this->personajeAncho = 150;
@@ -45,7 +45,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->texturaCongelado = new Textura();
 	std::string rutaImagen = "images/sonicSprite" + intToString(id) +".png";
 	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
-	this->texturaCongelado->cargarImagen("images/sonicCongelado.png", IMAGEN_POR_DEFECTO, render, log);
+	this->texturaCongelado->cargarImagen("images/sonicgris.png", IMAGEN_POR_DEFECTO, render, log);
 
 	//dimensiones del personaje por defecto
 	this->personajeAncho = 150;
