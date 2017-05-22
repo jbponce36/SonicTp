@@ -19,7 +19,9 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->personajeVelocidad = velocidad;
 	this->personajeAceleracion = velocidad/20;
 	//posicion por defecto
-    this->posicionX = POSICION_INICIALX;
+    this->posicionX = POSICION_INICIALX + id*20 - 20; //Para que no esten en el mismo lugar al empezar
+    if(posicionX < 0)
+    	posicionX = POSICION_INICIALX;
     this->posicionY = 4*altoEscenario/5 - personajeAlto;
 
     this->velocidadX = 0;
@@ -52,7 +54,9 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->personajeVelocidad = velocidad;
 	this->personajeAceleracion = velocidad/20;
 	//posicion por defecto
-    this->posicionX = POSICION_INICIALX;
+	this->posicionX = POSICION_INICIALX + id*20 - 20; //Para que no esten en el mismo lugar al empezar
+	if(posicionX < 0)
+		posicionX = POSICION_INICIALX;
     this->posicionY = 4*altoEscenario/5 - personajeAlto;
 
     this->velocidadX = 0;
@@ -68,7 +72,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 
     this->log = log;
 
-    this->cliente = cliente; //Borrar este metodo cuando ande bien el hiloEnviar!
+    this->cliente = cliente;
 }
 
 void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
@@ -76,9 +80,8 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 	int maximoAlto = limites->h;
 	int maximoAncho = limites->w;
 
-	/*---Limite en el suelo. Luego borrarlo!---*/
+	/*Limite en el suelo.*/
 	maximoAlto -= (maximoAlto/5);
-	/*-----------------------------------------*/
 
     //mueve al personaje
     this->posicionX += this->velocidadX * REGULADOR_ALTURA_SALTO;
@@ -154,19 +157,15 @@ void Personaje::cargarSpriteSonic(){
 	//animacionSaltarIzq.cargarSprites(13, 1, 5);
 
 	//desde aca es el codigo del nuevo set de sprites
-	for (int i=0; i<10; i++){
-			animacionQuietoDer.cargarSprites(0, 0, 1);
-	} //Agrega el primer sprite varias veces para que se quede quieto mas tiempo
-
+	animacionQuietoDer.cargarSprites(0, 0, 1);
 	animacionCaminarDer.cargarSprites(1, 0, 9);
 	animacionCorrerDer.cargarSprites(0, 1, 4);
 	animacionSaltarDer.cargarSprites(0, 2, 9);
-	for (int i=0; i<10; i++){
-			animacionQuietoIzq.cargarSprites(9, 3, 1);
-	}
-	animacionCaminarIzq.cargarSprites(0, 3, 9);
-	animacionCorrerIzq.cargarSprites(6, 4, 4);
-	animacionSaltarIzq.cargarSprites(1, 5, 9);
+
+	animacionQuietoIzq.cargarSpritesAlReves(9, 3, 1);
+	animacionCaminarIzq.cargarSpritesAlReves(0, 3, 9);
+	animacionCorrerIzq.cargarSpritesAlReves(6, 4, 4);
+	animacionSaltarIzq.cargarSpritesAlReves(1, 5, 9);
 
 	animacionCongelado.cargarSprites(0, 0, 1);
 
@@ -440,6 +439,12 @@ void Personaje::parar()
 
 void Personaje::congelar()
 {
+	velocidadX = 0;
+	velocidadY = 0;
+	estaQuieto = true;
+	saltando = false;
+	corriendo = false;
+	animacionActual->detener();
 	animacionActual = &animacionCongelado;
 	congelado = true;
 }
