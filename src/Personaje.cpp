@@ -158,6 +158,22 @@ void Personaje::cargarSpriteSonic(){
 
 	animacionActual = &animacionQuietoDer;
 
+	/////////////////////////////////
+	//creo los rectangulos para el saltar Der
+    for(int i=0;i < animacionSaltarDer.getSprites().size();i++){
+
+    	dividirsprite();
+    }
+
+
+}
+
+
+
+void Personaje::dividirsprite(){
+
+	this->personajeAlto;
+
 }
 
 void Personaje::render( int camX, int camY){
@@ -263,6 +279,7 @@ Personaje::~Personaje(){
 
 void Personaje::dejarDeEstarQuieto()
 {
+
 	if (estaQuieto)
 	{
 		estaQuieto = false;
@@ -293,7 +310,11 @@ void Personaje::saltar()
 		velocidadY = -personajeVelocidad;
 		saltando = true;
 	}
+
 }
+
+
+
 
 void Personaje::dejarDeSaltar()
 {

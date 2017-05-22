@@ -11,6 +11,7 @@
 #include <string>
 #include "Entidad.h"
 #include "Logger.h"
+#include "Textura.h"
 
 class Anillos: public Entidad{
 public:
@@ -38,6 +39,10 @@ public:
 	int getCoory();
 	void setCoory(int Coory);
 
+	Textura t;
+    bool intersecta(Anillos &otroRectangulo);
+    SDL_Rect obtenerLimites();
+
 //	void mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara);
 
 private:
@@ -47,6 +52,10 @@ private:
     int indexZ;
     int coorx;
     int coory;
+    SDL_Surface * image;
+
+
+
 
 };
 

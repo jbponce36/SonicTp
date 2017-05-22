@@ -48,13 +48,16 @@ void Anillos::setRuta(std::string Ruta) {
 
 }
 */
+
+
 void Anillos::dibujar(SDL_Renderer *renderer, SDL_Rect *camara){
 
-	if (obtenerImagen() == NULL)
-		{
-			std::cout << "No se cargo la imagen" << std::endl;
-			return;
-		}
+	//if (obtenerImagen() == NULL)
+		//{
+			//std::cout << "No se cargo la imagen" << std::endl;
+			//return;
+		//}
+
 
 	    int  anchoImagen, altoImagen;
 		SDL_QueryTexture(obtenerImagen(), NULL, NULL, &anchoImagen, &altoImagen);
@@ -69,52 +72,53 @@ void Anillos::dibujar(SDL_Renderer *renderer, SDL_Rect *camara){
 			return;
 		}
 
-		/*else
+
+/*	 int  anchoImagen, altoImagen,i;
+			SDL_QueryTexture(obtenerImagen(), NULL, NULL, &anchoImagen, &altoImagen);
+
+	 if ((anchoImagen >= ancho) && (altoImagen >= alto))
+	{
+		while (i!=3)
 		{
-			cout<<"aca2"<<endl;
-			setearColor(renderer);
 
-			if (ancho > anchoImagen)
-			{
-				//Rellena a la derecha de la imagen
-				SDL_Rect relleno = {obtenerX() + anchoImagen - camara->x, obtenerY() - camara->y, ancho - anchoImagen, alto};
-				SDL_RenderFillRect(renderer, &relleno);
-			}
+				Uint32 ticks = SDL_GetTicks();
+				Uint32 seconds = ticks / 1000;
+				Uint32 sprite = seconds % 9;
 
-			if (alto > altoImagen)
-			{
-				//Rellena abajo de la imagen
-				SDL_Rect relleno = {obtenerX() - camara->x, obtenerY() + altoImagen - camara->y, ancho, alto - altoImagen};
-				SDL_RenderFillRect(renderer, &relleno);
-			}
+				//Recorta la imagen
+				SDL_Rect recorte = {sprite* this->getX(), 0, ancho, alto}; //Toma desde la esquina superior izquierda de la imagen
+				SDL_Rect destino = {obtenerX() - camara->x, obtenerY() - camara->y, ancho, alto};
 
-			//Muestra la imagen
-			if ((ancho > anchoImagen) && (alto > altoImagen))
-			{
-				//Muestra toda la imagen
-				SDL_Rect recorte = {0, 0, anchoImagen, altoImagen};
-				SDL_Rect destino = {obtenerX() - camara->x, obtenerY() - camara->y, anchoImagen, altoImagen};
 				SDL_RenderCopy(renderer, obtenerImagen(), &recorte, &destino);
-			}
-			else if (ancho > anchoImagen)
-			{
-				//Muestra la parte superior de la imagen
-				SDL_Rect recorte = {0, 0, anchoImagen, alto};
-				SDL_Rect destino = {obtenerX() - camara->x, obtenerY() - camara->y, anchoImagen, alto};
-				SDL_RenderCopy(renderer, obtenerImagen(), &recorte, &destino);
-			}
-			else if (alto > altoImagen)
-			{
-				//Muestra la parte izquierda de la imagen
-				SDL_Rect recorte = {0, 0, ancho, altoImagen};
-				SDL_Rect destino = {obtenerX() - camara->x, obtenerY() - camara->y, ancho, altoImagen};
-				SDL_RenderCopy(renderer, obtenerImagen(), &recorte, &destino);
-			}
-          */
-
+				return;
+			i--;
+		 }
+	 }
 			return;
-		//}
+*/
 
+}
+
+SDL_Rect Anillos::obtenerLimites()
+{
+	SDL_Rect limites = { obtenerX(), obtenerY(), ancho, alto };
+	return limites;
+}
+
+bool Anillos::intersecta(Anillos &otroRectangulo)
+{
+	SDL_Rect esteRectangulo = obtenerLimites();
+	SDL_Rect elOtroRectangulo = otroRectangulo.obtenerLimites();
+
+    SDL_bool intersecta = SDL_HasIntersection(&esteRectangulo, &elOtroRectangulo);
+	if (intersecta == SDL_TRUE){
+		return true;
+		cout<<"INTERSECTO"<<endl;
+	}
+	else{
+		return false;
+		cout<<"NOINTERSECTO"<<endl;
+	}
 }
 
 int Anillos::getAncho() {

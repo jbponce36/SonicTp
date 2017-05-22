@@ -38,6 +38,10 @@ public:
 	void cambiarSprite(int indice);
 	virtual ~Animacion();
 
+	std::vector<SDL_Rect> getSprites();
+
+	void setSprites(std::vector<SDL_Rect>sprites);
+
 private:
 	void renderizar(SDL_Rect cuadroDeVentana);
 };

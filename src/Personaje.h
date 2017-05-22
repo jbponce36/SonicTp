@@ -11,6 +11,7 @@
 #include "ConexCliente.h"
 #include "HiloEnviarCliente.h"
 #include "Definiciones.h"
+#include "Anillos.h"
 
 #define GRAVEDAD 9
 #define IMAGEN_POR_DEFECTO "images/sonicSprite.png"
@@ -24,6 +25,7 @@ class Personaje
 
 		Textura *texturaSonic;
 		Textura *texturaCongelado;
+		Anillos *anillo;
 
 		int id;
 		int personajeAncho;
@@ -99,9 +101,13 @@ class Personaje
 		bool bloqueaCamaraAIzquierda(SDL_Rect *limites);
 		bool estaCongelado();
 		bool estaParado();
+		void dividirsprite();
+
+
 
 		void enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje);
 		std::string obtenerMensajeEstado();
+
 
 };
 

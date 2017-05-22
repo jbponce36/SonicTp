@@ -93,3 +93,11 @@ void Animacion::cambiarSprite(int indice)
 {
 	indiceSprite = indice;
 }
+
+std::vector<SDL_Rect> Animacion::getSprites(){
+		return sprites;
+}
+
+void Animacion::setSprites(std::vector<SDL_Rect> sprites) {
+		this->sprites = sprites;
+	}
