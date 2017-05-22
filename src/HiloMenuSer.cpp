@@ -20,7 +20,7 @@ void HiloMenuSer::IniciarHilo(bool *juegoTerminado)
 {
 	hilo = new Hilo();
 	log->addLogMessage("[HILO MENU SERVIDOR] Iniciado.", 2);
-	hilo->Create((void*)HiloMenuSer::menuSalir, (void*)&juegoTerminado);
+	hilo->Create((void*)HiloMenuSer::menuSalir, (void*)juegoTerminado);
 	log->addLogMessage("[HILO MENU SERVIDOR] Terminado.", 2);
 }
 
@@ -28,16 +28,16 @@ void* HiloMenuSer::menuSalir(void *args)
 {
 	bool *juegoTerminado = (bool*)args;
 
-	int opcion = 1;
-	while(opcion != 2)
-	{
-		cout<<"\t 2: Salir. \n"<<endl;
-		cin >> opcion;
-		if (opcion != 2)
-		{
+    int opcion = 0;
+
+	while (opcion !=2 || cin.fail() || !cin){
+			cin.clear(); // Si ingreso un caracter no numerico
+			cin.ignore();
 			cout<<"Opcion incorrecta, presione una de las opciones posibles.\n"<<endl;
+			cin>>opcion;
 		}
-	}
-	juegoTerminado = true;
+
+
+	*juegoTerminado = true;
 
 }

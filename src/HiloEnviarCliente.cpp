@@ -30,7 +30,7 @@ void HiloEnviarCliente::IniciarHilo(/*struct parametrosEnviar *parametros*/){
 }
 void *HiloEnviarCliente::clienteEnviar(void *args){
 	SerParametros *parametros = (SerParametros*) args;
-	vector<HilolatidoSer*> hlser;
+	vector<HilolatidoSer*> hrlser;
 	vector<HilolatidoSer*>::iterator poshlser;
 
 	    bool salir = false;

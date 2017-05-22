@@ -64,7 +64,7 @@ void *HilolatidoSer::serverEnviarRecibir(void *args){
 			}
 
 			if(status <= 0){
-				cout<<" Hilo latido envio error"<<endl;
+				//cout<<" Hilo latido envio error"<<endl;
 
 
 				parametros->continuar = false;
