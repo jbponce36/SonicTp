@@ -29,6 +29,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 
 	ControladorTeclas controlador = ControladorTeclas();
 
+
 	std::map<int, Personaje*> sonicsMapa;
 	std::vector<Personaje*>::iterator pos;
 	for(pos = sonics->begin();pos != sonics->end();pos++)
@@ -39,6 +40,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana(), &sonicsMapa);
 
 	salir = false;
+	//Colicion c = new colicion();
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !salir ){
@@ -49,6 +51,20 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 		//Info: moverPersonaje(...) ya no se usa. El servidor es quien mueve el personaje y me manda mi posicion.
 		//La posicion y animacion se setea en controlDeMensajes(...) al recibir mi propia posicion.
 		//moverPersonaje(tiempoDeJuego, vista, sonic, camara);
+		//Chequear coliones
+
+
+		/*foreach (sonic){
+			foreach (entidad en vista->constructorEntidades->entidades){
+				//if me fijo si es una anilla
+				//si es una anilla cqueo la colision
+				if (c.ColicionAnillo(entidad casteada como anilla, sonic->colicion.getDer())){
+					printf("colisiono \n");
+				}
+			}
+		}*/
+
+
 		actualizarVista(camara, vista, &imagenMostrar, sonic);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
@@ -159,7 +175,7 @@ void Control::parsearMensajeCamara(int &xDest, int &yDest, std::string mensaje)
 	xDest = atoi(posX.c_str());
 	yDest = atoi(posY.c_str());
 
-	//cout << "Camara parseo: x: " << xDest << " y: " << yDest << endl;
+	//cout << "Camara parseo: x: " << xDestf << " y: " << yDest << endl;
 }
 
 

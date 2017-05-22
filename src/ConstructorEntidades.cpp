@@ -69,6 +69,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			}
 
 
+
 			if ((*pos).getruta() == "images/Anilla.png"){
 
 
@@ -76,13 +77,15 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 				ancho = (*pos).getDim()->getvalor1();
 				int espacio = ancho + 10;
 
-				for(int i=0;i<1;i++){
+				int cantidadAnillas = (rand() % 5) + 1;
+
+				for(int i=0;i<cantidadAnillas;i++){
 
 					id = (*pos).getid();
 					color = (*pos).getcolor();
 					//ancho = (*pos).getDim()->getvalor1();
 					alto = (*pos).getDim()->getvalor2();
-					coordX = /*i * (*pos).getcoorx() +*/ coordX + (*pos).getcoorx();
+					coordX = /*i * (*pos).getcoorx() +*/ coordX + (*pos).getcoorx() + (i*5);
 					coordX = coordX + espacio;
 
 					coordY = (*pos).getcoory();

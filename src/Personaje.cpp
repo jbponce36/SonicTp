@@ -159,20 +159,30 @@ void Personaje::cargarSpriteSonic(){
 	animacionActual = &animacionQuietoDer;
 
 	/////////////////////////////////
+	//creo un objeto colicion....no quiero creo mas objetos....va reventar todo...
+     colicion = new Colicion();
 	//creo los rectangulos para el saltar Der
     for(int i=0;i < animacionSaltarDer.getSprites().size();i++){
 
-    	dividirsprite();
-    }
+    	//dividirspritesalto(animacionSaltarDer.sprites[i]);
+    	dividirspritesalto(animacionSaltarDer.getSprites()[i]);
+     }
 
 
 }
 
 
+void Personaje::dividirspritesalto(SDL_Rect  SaltarDer){
 
-void Personaje::dividirsprite(){
+	//cout<<this->personajeAlto<<endl;
+   //150 tiene el alto del personaje
+	//puedo tener tres rectangulos de un alto de 50 , Ancho idem al que tenian
 
-	this->personajeAlto;
+	std::vector<SDL_Rect> rect_saltarderecha;
+	rect_saltarderecha = {{(SaltarDer.h)/3, SaltarDer.w, this->posicionX, this->posicionY},{(SaltarDer.h)/3, SaltarDer.w, this->posicionX, this->posicionY},{(SaltarDer.h)/3, SaltarDer.w, this->posicionX, this->posicionY}};
+	// SDL_Rect rect_saltarderecha[3] = {{(SaltarDer.h)/3, SaltarDer.w, this->posicionX, this->posicionY},{(SaltarDer.h)/3, SaltarDer.w, this->posicionX, this->posicionY},{(SaltarDer.h)/3, SaltarDer.w, this->posicionX, this->posicionY}};
+     colicion->setSaltoDerecha(rect_saltarderecha);
+
 
 }
 

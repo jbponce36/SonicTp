@@ -12,6 +12,7 @@
 #include "HiloEnviarCliente.h"
 #include "Definiciones.h"
 #include "Anillos.h"
+#include "Colicion.h"
 
 #define GRAVEDAD 9
 #define IMAGEN_POR_DEFECTO "images/sonicSprite.png"
@@ -64,6 +65,8 @@ class Personaje
 
 		ConexCliente *cliente; //<-------- Borrarlo cuando el enviar del hilo ande bien!
 
+		Colicion *colicion;
+
     public:
 
 		Personaje(int id, int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log);
@@ -101,7 +104,7 @@ class Personaje
 		bool bloqueaCamaraAIzquierda(SDL_Rect *limites);
 		bool estaCongelado();
 		bool estaParado();
-		void dividirsprite();
+		void dividirspritesalto(SDL_Rect  SaltarDer);
 
 
 
