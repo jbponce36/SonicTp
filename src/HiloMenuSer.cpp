@@ -20,7 +20,7 @@ void HiloMenuSer::IniciarHilo(bool *juegoTerminado)
 {
 	hilo = new Hilo();
 	log->addLogMessage("[HILO MENU SERVIDOR] Iniciado.", 2);
-	hilo->Create((void*)HiloMenuSer::menuSalir, (void*)&juegoTerminado);
+	hilo->Create((void*)HiloMenuSer::menuSalir, (void*)juegoTerminado);
 	log->addLogMessage("[HILO MENU SERVIDOR] Terminado.", 2);
 }
 
@@ -38,6 +38,6 @@ void* HiloMenuSer::menuSalir(void *args)
 			cout<<"Opcion incorrecta, presione una de las opciones posibles.\n"<<endl;
 		}
 	}
-	juegoTerminado = true;
+	*juegoTerminado = true;
 
 }

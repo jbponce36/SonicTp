@@ -19,7 +19,7 @@ public:
 	HiloMenuSer(Logger *log);
 	virtual ~HiloMenuSer();
 	void IniciarHilo(bool *juegoTerminado);
-	void *menuSalir(void *arg);
+	static void *menuSalir(void *arg);
 };
 
 #endif /* HILOMENUSER_H_ */
