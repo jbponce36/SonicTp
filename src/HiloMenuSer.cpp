@@ -37,7 +37,6 @@ void* HiloMenuSer::menuSalir(void *args)
 			cin>>opcion;
 		}
 
-
 	*juegoTerminado = true;
 
 }
