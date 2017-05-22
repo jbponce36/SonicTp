@@ -15,6 +15,7 @@
 #include "JuegoServidor.h"
 #include "HilolatidoSer.h"
 #include "Definiciones.h"
+#include "HiloMenuSer.h"
 
 using namespace std;
 
@@ -71,6 +72,8 @@ int main(int argc, char *argv[]) {
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv), "SERVER");
 	log->iniciarLog("INICIAR LOGGER");
 
+	bool juegoTerminado = false;
+
 	int opcion = mostrarMenuServer();
 
 	if ( opcion == 1 ){
@@ -105,9 +108,12 @@ int main(int argc, char *argv[]) {
 
 		vector<Hilorecibir*> hrRecibir;
 		vector<Hiloenviar*> hrEnviar;
+		JuegoServidor *juego = new JuegoServidor(server, hrEnviar, hrRecibir, log, juegoTerminado);
+
+		HiloMenuSer *hiloMenu = new HiloMenuSer(log);
+		hiloMenu->IniciarHilo(&juegoTerminado);
 
 		int id = 1;
-
 		while(server->noSeConectaronTodos()){
 			int skt = server->aceptarcliente();
 
@@ -150,7 +156,6 @@ int main(int argc, char *argv[]) {
 	    }
 
 		//Empieza la partida
-		JuegoServidor *juego = new JuegoServidor(server, hrEnviar, hrRecibir, log);
 		juego->iniciarHiloJuego();
 
 		//printf("Empieza la partida \n");

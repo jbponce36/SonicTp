@@ -8,10 +8,10 @@
 #include "JuegoServidor.h"
 
 JuegoServidor::JuegoServidor(ConexServidor *server,
-	std::vector<Hiloenviar*> hiloEnviar, std::vector<Hilorecibir*> hiloRecibir, Logger *log)
+	std::vector<Hiloenviar*> &hiloEnviar, std::vector<Hilorecibir*> &hiloRecibir, Logger *log, bool &juegoTerminado)
 : vista(NULL), control(NULL),server(server), log(log),
   hiloJuego(NULL), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir),
-  cantJugadores(server->getCantclientes()), sonics(), juegoTerminado(false), velocidad(0),
+  cantJugadores(server->getCantclientes()), sonics(), juegoTerminado(juegoTerminado), velocidad(0),
   altoEscenario(0){
 	//Vista, sonic y control se setean desde el thread
 
