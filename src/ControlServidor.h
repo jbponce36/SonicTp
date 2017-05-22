@@ -65,6 +65,7 @@ public:
 
 	void ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado);
 	void enviarATodos(std::string mensaje);
+	int mostrarMenuServer();
 
 	typedef struct mensajeRecibido{
 		int id;
@@ -72,6 +73,7 @@ public:
 		int posX;
 		int posY;
 	}mensajeRecibido;
+
 
 
 

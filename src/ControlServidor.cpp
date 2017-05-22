@@ -273,8 +273,9 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 			vista->obtenerAltoVentana(),vista->obtenerAnchoVentana(), sonics);
 
 	//Le aviso a todos los jugadores que inicio el juego
-	printf("Empieza la partida \n");
 	server->comenzarPartida(*hilosEnviar);
+
+	//POR ACA DEBERIA IR mostrarMenuServer() en un hilo?Analizar que conviene.
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !juegoTerminado ){
@@ -300,4 +301,24 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
 }
 
+int ControlServidor::mostrarMenuServer(){
+	int opcion = 0;
+	cout<<"\n \t Opciones: \n"<<endl;
+	cout<<"\t 1: Conectar."<<endl;
+	cout<<"\t 2: Salir. \n"<<endl;
+	cin>>opcion;
 
+	while (opcion < 1 || opcion > 2 || cin.fail() || !cin){
+		cin.clear(); // Si ingreso un caracter no numerico
+		cin.ignore();
+		cout<<"Opcion incorrecta, presione una de las opciones posibles.\n"<<endl;
+		cin>>opcion;
+	}
+
+	//TODO: Validar cuando se ingresa un string y si  alguno es numero,
+	//tira mensaje de largo de la cadena hasta el numero: ejemplo kih2, tira 3 veces el error de opcion incorrecta!
+
+	cout<<opcion<<"----------"<<endl;
+
+	return opcion;
+}
