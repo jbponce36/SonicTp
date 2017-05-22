@@ -515,7 +515,7 @@ void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje
 	//hiloEnviar->parametros.buffer = buffer;
 
 	hiloEnviar->enviarDato(buffer);
-	cout << "Cliente envio: " << buffer << endl;
+	//cout << "Cliente envio: " << buffer << endl;
 
 }
 
