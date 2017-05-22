@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "Logger.h"
 #include "ConexServidor.h"
 #include "ConexCliente.h"
@@ -41,6 +42,23 @@ char* getJson(int argc, char *argv[]){
 	return serverConfig;
 }
 
+int mostrarMenuServer(){
+	int opcion = 0;
+	cout<<"\n \t Opciones: \n"<<endl;
+	cout<<"\t 1: Conectar."<<endl;
+	cout<<"\t 2: Salir. \n"<<endl;
+	cin>>opcion;
+
+	while (opcion < 1 || opcion > 2 || cin.fail() || !cin){
+		cin.clear(); // Si ingreso un caracter no numerico
+		cin.ignore();
+		cout<<"Opcion incorrecta, presione una de las opciones posibles.\n"<<endl;
+		cin>>opcion;
+	}
+
+	return opcion;
+}
+
 
 int main(int argc, char *argv[]) {
 	char *archivoLog=(char*)"configuracion/logServidor.txt";
@@ -53,6 +71,16 @@ int main(int argc, char *argv[]) {
 
 	int puerto = jsonSer->CargarPuertoServidor();
 	int maxConexiones = jsonSer->CargarCantClientes();
+
+	int opcion = mostrarMenuServer();
+
+	if (opcion == 1){
+		cout<<"Conectar"<<endl;
+	}
+	if(opcion == 2){
+		cout<<"SALIR"<<endl;
+	}
+
 
 	if(server->crear() == false){
 		server->cerrar();
