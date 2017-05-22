@@ -28,16 +28,15 @@ void* HiloMenuSer::menuSalir(void *args)
 {
 	bool *juegoTerminado = (bool*)args;
 
-	int opcion = 1;
-	while(opcion != 2)
-	{
-		cout<<"\t 2: Salir. \n"<<endl;
+	int opcion =0;
+
+	while(opcion != 2 || cin.fail() || !cin ){
+		cin.clear();
+		cin.ignore();
+		cout<<"Opcion incorrecta, presione una de las opciones posibles.\n"<<endl;
 		cin >> opcion;
-		if (opcion != 2)
-		{
-			cout<<"Opcion incorrecta, presione una de las opciones posibles.\n"<<endl;
-		}
 	}
+
 	*juegoTerminado = true;
 
 }

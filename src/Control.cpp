@@ -122,7 +122,9 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 		}
 		else if (mensaje == "Servidor Desconectado")
 		{
-			printf("Servidor desconectado. Cerrando el juego...\n");
+			if(salir != true){
+				printf("Servidor desconectado. Cerrando el juego...\n");
+			}
 			this->salir = true;
 			vista->mostrarServidorDesconectado();
 		}
