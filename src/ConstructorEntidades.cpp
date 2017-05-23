@@ -219,4 +219,11 @@ void ConstructorEntidades::validarCuadrado(int &ancho, int &alto)
 	}
 }
 
+list<Entidad*> ConstructorEntidades::getEntidades() {
+		return entidades;
+}
+
+void ConstructorEntidades::setEntidades(list<Entidad*> Entidades) {
+		this->entidades = Entidades;
+}
 }

@@ -36,6 +36,7 @@
 #define MENSAJE_POSICION			"POS"
 #define MENSAJE_DESCONEXION_CLIENTE	"DES"
 #define MENSAJE_ID					"IDi"
+#define ANILLOS                     "ani"
 
 #define PADDING 						'-'
 #define MAX_CANT_DIGITOS_POS 			4

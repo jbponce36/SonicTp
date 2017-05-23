@@ -11,6 +11,8 @@
 #include "Entidad.h"
 #include "Logger.h"
 #include "Textura.h"
+#include "Animacion.h"
+#include "Definiciones.h"
 
 class Anillos:public Entidad {
 public:
@@ -42,14 +44,25 @@ public:
 	bool intersecta(Anillos &otroRectangulo);
 	SDL_Rect obtenerLimites();
 
+	void cargarspriteanillo();
+	void cargardatos(SDL_Renderer *render);
+
+	void render(int camX, int camY);
+
 private:
 	std::string ruta;
 	int ancho;
 	int alto;
 	int indexZ;
-	int coorx;
-	int coory;
-	SDL_Surface * image;
+	//int coorx;
+	//int coory;
+    int x;
+    int y;
+
+	Textura *texturaAnillo;
+
+	Animacion Anianillo;
+	Animacion *animacionActual;
 
 };
 

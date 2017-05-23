@@ -171,6 +171,7 @@ void Personaje::cargarSpriteSonic(){
 
 	animacionActual = &animacionQuietoDer;
 
+
 }
 
 void Personaje::render( int camX, int camY){

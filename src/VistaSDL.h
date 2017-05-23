@@ -53,6 +53,7 @@ private:
     Logger *log;
     bool oculta;
 public:
+  //  ConstructorEntidades *constructorEntidades;
     VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion, jescenario *jescenario, Logger *logger, bool oculta);
     void cargarImagen();
     int obtenerAltoVentana();
@@ -78,6 +79,10 @@ public:
     void setLog(Logger *log);
     string intToString(int number);
     int getAltoEscenario();
+
+	ConstructorEntidades* getConstructorEntidades();
+
+	void setConstructorEntidades(ConstructorEntidades* ConstructorEntidades);
 };
 
 

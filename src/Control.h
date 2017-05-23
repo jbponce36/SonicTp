@@ -12,6 +12,7 @@
 #include <algorithm>
 #include "Paquete.h"
 #include "HilolatidoSer.h"
+#include "ConstructorEntidades.h"
 
 #define FPS 25
 #define TICKS_POR_FRAME 1000/FPS
@@ -43,8 +44,9 @@ public:
 	void ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, HiloEnviarCliente *hiloEnviar,
 		HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, int &opcionMenu);
 	void parsearMensajeCamara(int &xDest, int &yDest, std::string mensaje);
-	void parsearMensajePosicion(mensajePosicion& msjParseado, std::string mensaje);
+	void parsearMensajePosicion(mensajePosicion& msjParseado, std::string mens0aje);
 
+	void moverAnilla(VistaSDL *vista);
 
 private:
 	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista,

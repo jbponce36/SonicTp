@@ -10,7 +10,7 @@
 Anillos::Anillos(int ancho, int alto, unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ, Logger *log)
 : Entidad(id, color, rutaImagen, x, y, indexZ, log), ancho(ancho), alto(alto)
 {
-	getLog()->setModulo("NILLO");
+	getLog()->setModulo("ANILLO");
 }
 
 Anillos::~Anillos() {
@@ -24,6 +24,13 @@ std::string Anillos::getRuta(){
 
 void Anillos::setRuta(std::string Ruta) {
 		this->ruta = Ruta;
+}
+
+void Anillos::cargardatos(SDL_Renderer *render){
+
+//	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
+ this->texturaAnillo->cargarImagen("Anillas.png","Anillas.png",render,this->getLog());
+ this->cargarspriteanillo();
 }
 
 /*void Anillos::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
@@ -109,29 +116,7 @@ void Anillos::dibujar(SDL_Renderer *renderer, SDL_Rect *camara){
 		}
 
 
-/*	 int  anchoImagen, altoImagen,i;
-			SDL_QueryTexture(obtenerImagen(), NULL, NULL, &anchoImagen, &altoImagen);
 
-	 if ((anchoImagen >= ancho) && (altoImagen >= alto))
-	{
-		while (i!=3)
-		{
-
-				Uint32 ticks = SDL_GetTicks();
-				Uint32 seconds = ticks / 1000;
-				Uint32 sprite = seconds % 9;
-
-				//Recorta la imagen
-				SDL_Rect recorte = {sprite* this->getX(), 0, ancho, alto}; //Toma desde la esquina superior izquierda de la imagen
-				SDL_Rect destino = {obtenerX() - camara->x, obtenerY() - camara->y, ancho, alto};
-
-				SDL_RenderCopy(renderer, obtenerImagen(), &recorte, &destino);
-				return;
-			i--;
-		 }
-	 }
-			return;
-*/
 
 }
 
@@ -181,17 +166,36 @@ void Anillos::setIndexZ(int iZ) {
 		this->indexZ = iZ;
 }
 int Anillos::getCoorx() {
-	return coorx;
+	return x;
 }
 
 void Anillos::setCoorx(int Coorx) {
-	this->coorx = Coorx;
+	this->x = Coorx;
 }
 
 int Anillos::getCoory(){
-	return coory;
+	return y;
 }
 
 void Anillos::setCoory(int Coory) {
-	this->coory = coory;
+	this->y = Coory;
+}
+
+void Anillos::cargarspriteanillo(){
+
+	Anianillo = Animacion(texturaAnillo,ancho,1,ANILLOS);
+	Anianillo.cargarSprites(0,0,9);
+
+	animacionActual = &Anianillo;
+
+}
+
+void Anillos::render(int camX, int camY){
+	SDL_Rect cuadroDeVentana;
+
+	cuadroDeVentana.x=(x-camX);
+	cuadroDeVentana.y=(y-camY);
+	cuadroDeVentana.w=ancho;
+	cuadroDeVentana.h=alto;
+	animacionActual->dibujar(cuadroDeVentana);
 }

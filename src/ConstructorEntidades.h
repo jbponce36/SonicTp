@@ -40,6 +40,10 @@ public:
     Logger* getLog() const;
     void setLog(Logger *log);
 
+	list<Entidad*>getEntidades();
+
+	void setEntidades(list<Entidad*> Entidades);
+
 private:
 	void ordenarSegunIndexZ();
 	void cargarImagenes(SDL_Renderer *renderizador);

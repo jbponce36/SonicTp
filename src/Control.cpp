@@ -49,6 +49,8 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 		//Info: moverPersonaje(...) ya no se usa. El servidor es quien mueve el personaje y me manda mi posicion.
 		//La posicion y animacion se setea en controlDeMensajes(...) al recibir mi propia posicion.
 		//moverPersonaje(tiempoDeJuego, vista, sonic, camara);
+
+
 		actualizarVista(camara, vista, &imagenMostrar, sonic);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
@@ -69,6 +71,19 @@ std::string Control::intToString(int number)
 	ostringstream oss;
 	oss<< number;
 	return oss.str();
+}
+
+void Control::moverAnilla(VistaSDL *vista){
+
+	list<Entidad*>:: iterator pos;
+
+
+   //for(pos = vista->constructorEntidades->getEntidades().begin(); pos!= vista->constructorEntidades->getEntidades().end();pos++){
+
+   //}
+	for(pos = vista->getConstructorEntidades()->getEntidades().begin();pos!= vista->getConstructorEntidades()->getEntidades().end();pos++){
+
+	}
 }
 
 void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic,

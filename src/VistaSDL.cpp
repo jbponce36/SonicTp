@@ -454,3 +454,12 @@ void VistaSDL::mostrarServidorDesconectado()
 int VistaSDL::getAltoEscenario(){
 	return this->altoescenario;
 }
+
+ConstructorEntidades* VistaSDL::getConstructorEntidades()  {
+		return constructorEntidades;
+}
+
+void VistaSDL::setConstructorEntidades(ConstructorEntidades* ConstructorEntidades) {
+
+		this->constructorEntidades = ConstructorEntidades;
+	}
