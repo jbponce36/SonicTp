@@ -73,7 +73,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 				ancho = (*pos).getDim()->getvalor1();
 				int espacio = ancho + 10;
 
-				int cantidadAnillas = (rand() % 5) + 1;
+				int cantidadAnillas = (rand() % 7) + 3;
 
 				for(int i=0;i<cantidadAnillas;i++){
 

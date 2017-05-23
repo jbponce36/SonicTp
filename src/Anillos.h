@@ -14,9 +14,11 @@
 #include "Animacion.h"
 #include "Definiciones.h"
 
+
 class Anillos:public Entidad {
 public:
 	Anillos(int ancho, int alto, unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ, Logger *log);
+
 	virtual ~Anillos();
 
 
@@ -47,15 +49,14 @@ public:
 	void cargarspriteanillo();
 	void cargardatos(SDL_Renderer *render);
 
-	void render(int camX, int camY);
+	void render(/*int camX, int camY*/);
+	void Comenzar();
 
 private:
 	std::string ruta;
 	int ancho;
 	int alto;
 	int indexZ;
-	//int coorx;
-	//int coory;
     int x;
     int y;
 

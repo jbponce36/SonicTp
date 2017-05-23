@@ -38,7 +38,7 @@ class VistaSDL{
 
 private:
 	SDL_Window* ventana;
-	SDL_Renderer* renderizador;
+	//SDL_Renderer* renderizador;
 	SDL_Surface* superficiePantalla;
 	SDL_Surface* superficieACargar;
 	int velocidadScroll;
@@ -53,7 +53,7 @@ private:
     Logger *log;
     bool oculta;
 public:
-  //  ConstructorEntidades *constructorEntidades;
+    SDL_Renderer* renderizador;
     VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion, jescenario *jescenario, Logger *logger, bool oculta);
     void cargarImagen();
     int obtenerAltoVentana();

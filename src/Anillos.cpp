@@ -13,6 +13,7 @@ Anillos::Anillos(int ancho, int alto, unsigned int id, std::string color, std::s
 	getLog()->setModulo("ANILLO");
 }
 
+
 Anillos::~Anillos() {
 	// TODO Auto-generated destructor stub
 }
@@ -33,25 +34,14 @@ void Anillos::cargardatos(SDL_Renderer *render){
  this->cargarspriteanillo();
 }
 
-/*void Anillos::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
-{
-	if (tieneRutaImagen())
-		{
 
-			mostrarImagen(renderer, camara);
-		}
-		else
-		{
-			setearColor(renderer);
 
-			SDL_RenderFillRect(renderer, &destino);
-		}
+void Anillos::Comenzar(){
+	this->Anianillo.comenzar();
 
 }
-*/
-
-
 void Anillos::dibujar(SDL_Renderer *renderer, SDL_Rect *camara){
+
 
 	if (obtenerImagen() == NULL)
 		{
@@ -190,11 +180,11 @@ void Anillos::cargarspriteanillo(){
 
 }
 
-void Anillos::render(int camX, int camY){
+void Anillos::render(/*int camX, int camY*/){
 	SDL_Rect cuadroDeVentana;
 
-	cuadroDeVentana.x=(x-camX);
-	cuadroDeVentana.y=(y-camY);
+	cuadroDeVentana.x=(x/*-camX*/);
+	cuadroDeVentana.y=(y/*-camY*/);
 	cuadroDeVentana.w=ancho;
 	cuadroDeVentana.h=alto;
 	animacionActual->dibujar(cuadroDeVentana);

@@ -13,6 +13,8 @@
 #include "Paquete.h"
 #include "HilolatidoSer.h"
 #include "ConstructorEntidades.h"
+#include "Anillos.h"
+#include "Colicion.h"
 
 #define FPS 25
 #define TICKS_POR_FRAME 1000/FPS
@@ -27,6 +29,7 @@ private:
 
 	std::vector<Personaje*> *sonics; //Tiene todos los sonics
 	int maxJugadores;
+	Anillos *anilla;
 
 public:
 	typedef struct mensajePosicion{
@@ -47,6 +50,8 @@ public:
 	void parsearMensajePosicion(mensajePosicion& msjParseado, std::string mens0aje);
 
 	void moverAnilla(VistaSDL *vista);
+	void ChequearColicionAnillo(VistaSDL *vista,std::vector<Personaje*> *sonics);
+
 
 private:
 	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista,

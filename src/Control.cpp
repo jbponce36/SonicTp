@@ -37,7 +37,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	}
 
 	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana(), &sonicsMapa);
-
+    Colicion *colicion = new Colicion();
 	salir = false;
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
@@ -49,6 +49,21 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 		//Info: moverPersonaje(...) ya no se usa. El servidor es quien mueve el personaje y me manda mi posicion.
 		//La posicion y animacion se setea en controlDeMensajes(...) al recibir mi propia posicion.
 		//moverPersonaje(tiempoDeJuego, vista, sonic, camara);
+       // moverAnilla(vista);
+
+		//CHEQUEAR COLICIONES
+
+
+				/*foreach (sonic){
+					foreach (entidad en vista->constructorEntidades->entidades){
+						//if me fijo si es una anilla
+						//si es una anilla cqueo la colision
+						if (c.ColicionAnillo(entidad casteada como anilla, sonic->colicion.getDer())){
+							printf("colisiono \n");
+						}
+					}
+				}*/
+
 
 
 		actualizarVista(camara, vista, &imagenMostrar, sonic);
@@ -66,6 +81,19 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	this->log->addLogMessage("[CONTROLAR JUEGO CLIENTE] Terminado. \n", 2);
 }
 
+void Control::ChequearColicionAnillo(VistaSDL *vista,std::vector<Personaje*> *sonics){
+
+	list<Entidad*>:: iterator pos;
+
+	std::vector<Personaje*>::iterator poss;
+
+//for(pos = sonics->begin();pos != sonics->end();pos++){
+	for(pos = vista->getConstructorEntidades()->getEntidades().begin();pos!= vista->getConstructorEntidades()->getEntidades().end();pos++){
+
+	}
+ //}
+}
+
 std::string Control::intToString(int number)
 {
 	ostringstream oss;
@@ -77,13 +105,21 @@ void Control::moverAnilla(VistaSDL *vista){
 
 	list<Entidad*>:: iterator pos;
 
-
-   //for(pos = vista->constructorEntidades->getEntidades().begin(); pos!= vista->constructorEntidades->getEntidades().end();pos++){
-
-   //}
 	for(pos = vista->getConstructorEntidades()->getEntidades().begin();pos!= vista->getConstructorEntidades()->getEntidades().end();pos++){
 
+       if((*pos)->getRutaImagen() == "images/Anilla.png"){
+        anilla->cargardatos(vista->renderizador);
+        anilla->render();
+
+        anilla->Comenzar();
+
+       }
+
 	}
+
+
+
+
 }
 
 void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic,
