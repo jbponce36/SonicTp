@@ -33,7 +33,7 @@ void* HiloMenuSer::menuSalir(void *args)
 	while(opcion != 2 || cin.fail() || !cin ){
 		cin.clear();
 		cin.ignore();
-		cout<<"Opcion incorrecta, presione una de las opciones posibles.\n"<<endl;
+		//cout<<"Opcion incorrecta, presione una de las opciones posibles.\n"<<endl;
 		cin >> opcion;
 	}
 
