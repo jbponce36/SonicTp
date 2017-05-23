@@ -65,11 +65,45 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			{
 				validarCuadrado(ancho, alto);
 			}
+
+			if ((*pos).getruta() == "images/Anilla.png"){
+
+
+				coordX = 0;
+				ancho = (*pos).getDim()->getvalor1();
+				int espacio = ancho + 10;
+
+				int cantidadAnillas = (rand() % 5) + 1;
+
+				for(int i=0;i<cantidadAnillas;i++){
+
+					id = (*pos).getid();
+					color = (*pos).getcolor();
+					//ancho = (*pos).getDim()->getvalor1();
+					alto = (*pos).getDim()->getvalor2();
+					coordX = /*i * (*pos).getcoorx() +*/ coordX + (*pos).getcoorx() + (i*5);
+					coordX = coordX + espacio;
+
+					coordY = (*pos).getcoory();
+					rutaImagen = (*pos).getruta();
+					indexZ = (*pos).getindex();
+
+
+				    Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+
+
+					entidades.push_back(anillo);
+			    }
+			         //entidades.push_back(anillo);
+
+			}
+		else{
 			Rectangulo *rectangulo = new Rectangulo(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
 			entidades.push_back(rectangulo);
 			this->log->setModulo("CONSTRUCTOR ENTIDADES");
 			this->log->addLogMessage("[CARGAR ENTIDADES] Rectangulo->"+rectangulo->toString(), 3);
 		}
+	}
 
 		if((*pos).gettipo() == "circulo")
 		{
