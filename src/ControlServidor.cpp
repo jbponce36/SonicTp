@@ -104,6 +104,11 @@ void ControlServidor::administrarTeclasServidor()
 				hilosEnviar->at(idDesconectado - 1)->parametros.continuar = false;
 				try{
 					sonics->at(idDesconectado)->congelar();
+					teclas.at(idDesconectado).teclaAbajo = false;
+					teclas.at(idDesconectado).teclaArriba = false;
+					teclas.at(idDesconectado).teclaDerecha = false;
+					teclas.at(idDesconectado).teclaIzquierda = false;
+					teclas.at(idDesconectado).teclaCorrer = false;
 				}
 				catch(std::out_of_range &e)
 				{
