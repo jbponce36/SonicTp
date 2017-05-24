@@ -16,6 +16,7 @@
 #include "Anillos.h"
 #include "Colicion.h"
 
+
 #define FPS 25
 #define TICKS_POR_FRAME 1000/FPS
 

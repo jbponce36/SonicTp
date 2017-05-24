@@ -45,6 +45,7 @@ int main(int argc, char *argv[]) {
 
 	log->iniciarLog("INICIAR LOGGER");
 
+
 	ConexCliente *cliente = new ConexCliente(log);
 
 	parseadorJsonCli *parseadorCliente = new parseadorJsonCli(log);

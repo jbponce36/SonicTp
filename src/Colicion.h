@@ -15,7 +15,7 @@ class Colicion {
 public:
 	Colicion();
 	virtual ~Colicion();
-	bool intersectaAnilloPersonaje(Anillos anillo,Personaje sonic);
+	bool intersectaAnilloPersonaje(Anillos* anillo,Personaje* sonic);
 
 private:
 	Anillos *anillo;

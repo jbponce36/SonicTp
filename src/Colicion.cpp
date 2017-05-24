@@ -16,10 +16,10 @@ Colicion::~Colicion() {
 	// TODO Auto-generated destructor stub
 }
 
-bool Colicion::intersectaAnilloPersonaje(Anillos anillo,Personaje sonic){
+bool Colicion::intersectaAnilloPersonaje(Anillos* anillo,Personaje* sonic){
 
-	SDL_Rect RectanguloAnillo = anillo.obtenerLimites();
-	SDL_Rect RectanguloPersonaje = sonic.obtenerLimites();
+	SDL_Rect RectanguloAnillo = anillo->obtenerLimites();
+	SDL_Rect RectanguloPersonaje = sonic->obtenerLimites();
 
 	 SDL_bool intersecta = SDL_HasIntersection(&RectanguloAnillo, &RectanguloPersonaje);
 
@@ -29,7 +29,7 @@ bool Colicion::intersectaAnilloPersonaje(Anillos anillo,Personaje sonic){
 
 	 }
 	 else{
-		 cout<<"COLICION"<<endl;
+		 //cout<<"COLICION"<<endl;
 		 return false;
 
 	 }

@@ -85,20 +85,31 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 void Control::ChequearColicionAnillo(VistaSDL *vista,std::vector<Personaje*> *sonics,Colicion *colicion){
 
 	list<Anillos*>:: iterator pos;
+	//list<Entidad*>:: iterator pos;
 	std::vector<Personaje*>::iterator poss;
 
-
-for(poss = sonics->begin();poss != sonics->end();poss++){
-	//for(vista->getConstructorEntidades()->anillos.begin() ; pos!= vista->getConstructorEntidades()->anillos.end();pos++){
-
-		//Anillos *cls = dynamic_cast<Anillos*>(*pos);//C2682
-		//Personaje * cl2 = dynamic_cast<Personaje*>(*poss);
-
-     // colicion->intersectaAnilloPersonaje((*cls), (*cl2));
-	//}
- }
+	//printf("Voy a entrar al primer for \n");
+	for(poss = sonics->begin();poss != sonics->end();poss++){
+		//printf("Voy a entrar al segundo for \n");
+		//printf("Vista %d \n", vista);
+		//printf("Construstor Entidades %d \n", vista->getConstructorEntidades());
+		//printf("Anillos %d \n", vista->getConstructorEntidades()->anillos);
+		//printf("Cantidad Anillos %d \n", vista->getConstructorEntidades()->anillos.size());
+		//printf("El Begin %d \n", vista->getConstructorEntidades()->anillos.begin());
+	    for(pos = vista->getConstructorEntidades()->anillos.begin() ; pos!= vista->getConstructorEntidades()->anillos.end();pos++){
+	    	//printf("Anillo %d", (*pos));
+		   //Anillos *cls = dynamic_cast<Anillos*>(*pos);//C2682
+	    	Anillos *cls = (*pos);
+		   //Personaje * cl2 = dynamic_cast<Personaje*>(*poss);
+	    	Personaje * cl2 = (*poss);
+		   //printf("Anillo %d \n", cls);
+		   //printf("Personaje %d \n", cl2);
+           if (colicion->intersectaAnilloPersonaje(cls, cl2)){
+        	   printf("COLISIONNNNN!!!!");
+           }
+	  }
+    }
 }
-
 std::string Control::intToString(int number)
 {
 	ostringstream oss;

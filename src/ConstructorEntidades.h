@@ -15,7 +15,7 @@
 #include "Logger.h"
 #include <list>
 #include "Anillos.h"
-
+#include <time.h>
 
 #define MAX_ID 100
 #define MAX_ANCHO 4000
@@ -33,6 +33,7 @@ private:
 	Logger *log;
 
 public:
+
 	list<Anillos*> anillos;
 	ConstructorEntidades();
 	ConstructorEntidades(Logger *log);
@@ -48,12 +49,14 @@ public:
 	void setEntidades(list<Entidad*> Entidades);
 
 private:
+
 	void ordenarSegunIndexZ();
 	void cargarImagenes(SDL_Renderer *renderizador);
 	void cargarImagenesAnillas(SDL_Renderer *renderizador);
 	void validarDatosNumericos(int &id, int &coordX, int &coordY, int &indexZ);
 	void validarCuadrado(int &ancho, int &alto);
 	void validar(int &numero, int minimo, int maximo);
+
 
 };
 

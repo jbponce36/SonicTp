@@ -7,6 +7,7 @@
 
 #define MODULO 'PARSEADOR JSON'
 #include "ConstructorEntidades.h"
+#include "debug.h"
 
 namespace std
 {
@@ -44,6 +45,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 
 	this->log->addLogMessage("[CARGA DE ENTIDADES] Iniciado.", 2);
 
+
 	for(pos = jEntidades.begin();pos != jEntidades.end();pos++)
 	{
 		if(((*pos).gettipo() == "rectangulo") || ((*pos).gettipo() == "cuadrado"))
@@ -52,8 +54,12 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			color = (*pos).getcolor();
 			ancho = (*pos).getDim()->getvalor1();
 			alto = (*pos).getDim()->getvalor2();
+
 			coordX = (*pos).getcoorx();
+			//debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada X %d\n", coordX);
 			coordY = (*pos).getcoory();
+			//debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada Y %d\n", coordY);
+
 			rutaImagen = (*pos).getruta();
 			indexZ = (*pos).getindex();
 
@@ -69,21 +75,36 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			if ((*pos).getruta() == "images/Anilla.png"){
 
 
-				coordX = 0;
-				ancho = (*pos).getDim()->getvalor1();
-				int espacio = ancho + 10;
+				//coordX = 0;
+				//ancho = (*pos).getDim()->getvalor1();
+				//int espacio = ancho + 10;
 
-				int cantidadAnillas = (rand() % 7) + 3;
+
+			//
+
+               cout<<"LLEGA"<<endl;
+
+
+			    srand(time(NULL));
+				int cantidadAnillas = (rand() % 4) + 1;
+
+
+			// cout<<"####CANTIDADANILLAS###"<<endl;
+			// cout<<cantidadAnillas<<endl;
+
+			 debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada X %d\n", (*pos).getcoorx());
+			 debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada Y %d\n", (*pos).getcoory());
 
 				for(int i=0;i<cantidadAnillas;i++){
 
+
 					id = (*pos).getid();
 					color = (*pos).getcolor();
-					//ancho = (*pos).getDim()->getvalor1();
+					ancho = (*pos).getDim()->getvalor1();
 					alto = (*pos).getDim()->getvalor2();
-					coordX = /*i * (*pos).getcoorx() +*/ coordX + (*pos).getcoorx() + (i*5);
-					coordX = coordX + espacio;
-
+					//coordX = /*i * (*pos).getcoorx() +*/ coordX + (*pos).getcoorx() + (i*5);
+					//coordX = coordX + espacio;
+					coordX = i* 200 + (*pos).getcoorx() ;
 					coordY = (*pos).getcoory();
 					rutaImagen = (*pos).getruta();
 					indexZ = (*pos).getindex();
@@ -97,7 +118,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 					//entidades.push_back(anillo);
 
 			    }
-			         //entidades.push_back(anillo);
+
 
 			}
 		else{
@@ -171,11 +192,12 @@ void ConstructorEntidades::cargarImagenesAnillas(SDL_Renderer *renderizador)
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
 	this->log->addLogMessage("[CARGAR IMAGENES] Iniciado.",2);
 	list<Anillos*>::iterator pos;
-
+   // cout<<anillos.size()<<endl;
 	for(pos = anillos.begin(); pos != anillos.end(); pos++)
 	{
 	  if ((*pos)->tieneRutaImagen())
 		{
+
 			(*pos)->cargarImagen(renderizador, log);
 				this->log->setModulo("CONSTRUCTOR ENTIDADES");
 				this->log->addLogMessage("[CARGAR IMAGENES] Imagen cargada en ruta: "+(*pos)->getRutaImagen(),3);
