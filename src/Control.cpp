@@ -67,6 +67,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 
 
 		actualizarVista(camara, vista, &imagenMostrar, sonic);
+		this->ChequearColicionAnillo(vista,sonics,colicion);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
 		tiempoFin = SDL_GetTicks();
@@ -81,17 +82,21 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	this->log->addLogMessage("[CONTROLAR JUEGO CLIENTE] Terminado. \n", 2);
 }
 
-void Control::ChequearColicionAnillo(VistaSDL *vista,std::vector<Personaje*> *sonics){
+void Control::ChequearColicionAnillo(VistaSDL *vista,std::vector<Personaje*> *sonics,Colicion *colicion){
 
-	list<Entidad*>:: iterator pos;
-
+	list<Anillos*>:: iterator pos;
 	std::vector<Personaje*>::iterator poss;
 
-//for(pos = sonics->begin();pos != sonics->end();pos++){
-	for(pos = vista->getConstructorEntidades()->getEntidades().begin();pos!= vista->getConstructorEntidades()->getEntidades().end();pos++){
 
-	}
- //}
+for(poss = sonics->begin();poss != sonics->end();poss++){
+	//for(vista->getConstructorEntidades()->anillos.begin() ; pos!= vista->getConstructorEntidades()->anillos.end();pos++){
+
+		//Anillos *cls = dynamic_cast<Anillos*>(*pos);//C2682
+		//Personaje * cl2 = dynamic_cast<Personaje*>(*poss);
+
+     // colicion->intersectaAnilloPersonaje((*cls), (*cl2));
+	//}
+ }
 }
 
 std::string Control::intToString(int number)
@@ -101,26 +106,7 @@ std::string Control::intToString(int number)
 	return oss.str();
 }
 
-void Control::moverAnilla(VistaSDL *vista){
 
-	list<Entidad*>:: iterator pos;
-
-	for(pos = vista->getConstructorEntidades()->getEntidades().begin();pos!= vista->getConstructorEntidades()->getEntidades().end();pos++){
-
-       if((*pos)->getRutaImagen() == "images/Anilla.png"){
-        anilla->cargardatos(vista->renderizador);
-        anilla->render();
-
-        anilla->Comenzar();
-
-       }
-
-	}
-
-
-
-
-}
 
 void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic,
 	VistaSDL *vista, HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir,
@@ -254,6 +240,7 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenM
 		imagenMostrar->h = vista->getAltoEscenario();
 		vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),imagenMostrar);
 		vista->mostrarEntidades(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
+		vista->mostrarAnillas(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
 	}
 
 	//dibujo todos los sonics

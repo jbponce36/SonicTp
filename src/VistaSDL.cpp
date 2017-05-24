@@ -271,6 +271,10 @@ void VistaSDL::mostrarEntidades(SDL_Rect *camara, int indexZ)
 	constructorEntidades->mostrarEntidades(renderizador, camara, indexZ);
 }
 
+void VistaSDL::mostrarAnillas(SDL_Rect *camara, int indexZ)
+{
+  constructorEntidades->mostrarAnillas(renderizador, camara, indexZ);
+}
 Logger *VistaSDL::getLog() const
 {
     return log;

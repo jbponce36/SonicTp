@@ -26,7 +26,7 @@ private:
 	Logger *log;
 	bool salir;
 	Paquete *colaPaquete;
-
+    Colicion *colicion;
 	std::vector<Personaje*> *sonics; //Tiene todos los sonics
 	int maxJugadores;
 	Anillos *anilla;
@@ -49,8 +49,8 @@ public:
 	void parsearMensajeCamara(int &xDest, int &yDest, std::string mensaje);
 	void parsearMensajePosicion(mensajePosicion& msjParseado, std::string mens0aje);
 
-	void moverAnilla(VistaSDL *vista);
-	void ChequearColicionAnillo(VistaSDL *vista,std::vector<Personaje*> *sonics);
+
+	void ChequearColicionAnillo(VistaSDL *vista,std::vector<Personaje*> *sonics,Colicion *colicion);
 
 
 private:

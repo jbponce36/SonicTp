@@ -75,6 +75,7 @@ public:
     void cerrar();
     ~VistaSDL();
     void mostrarEntidades(SDL_Rect *camara, int indexZ);
+    void mostrarAnillas(SDL_Rect *camara, int indexZ);
     Logger *getLog() const;
     void setLog(Logger *log);
     string intToString(int number);

@@ -9,6 +9,7 @@
 #define COLICION_H_
 #include "Anillos.h"
 #include "Personaje.h"
+#include "Entidad.h"
 
 class Colicion {
 public:

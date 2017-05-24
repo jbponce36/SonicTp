@@ -91,8 +91,11 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 
 				    Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
 
+                    this->anillos.push_back(anillo);
+                    this->cargarImagenesAnillas(renderizador);
 
-					entidades.push_back(anillo);
+					//entidades.push_back(anillo);
+
 			    }
 			         //entidades.push_back(anillo);
 
@@ -147,6 +150,7 @@ void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
 	this->log->addLogMessage("[CARGAR IMAGENES] Iniciado.",2);
 	list<Entidad*>::iterator pos;
+
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
 		if ((*pos)->tieneRutaImagen())
@@ -156,10 +160,29 @@ void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 			this->log->addLogMessage("[CARGAR IMAGENES] Imagen cargada en ruta: "+(*pos)->getRutaImagen(),3);
 		}
 	}
-
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
 	this->log->addLogMessage("[CARGAR IMAGENES] Terminado.",2);
 
+
+}
+
+void ConstructorEntidades::cargarImagenesAnillas(SDL_Renderer *renderizador)
+{
+	this->log->setModulo("CONSTRUCTOR ENTIDADES");
+	this->log->addLogMessage("[CARGAR IMAGENES] Iniciado.",2);
+	list<Anillos*>::iterator pos;
+
+	for(pos = anillos.begin(); pos != anillos.end(); pos++)
+	{
+	  if ((*pos)->tieneRutaImagen())
+		{
+			(*pos)->cargarImagen(renderizador, log);
+				this->log->setModulo("CONSTRUCTOR ENTIDADES");
+				this->log->addLogMessage("[CARGAR IMAGENES] Imagen cargada en ruta: "+(*pos)->getRutaImagen(),3);
+			}
+		}
+		this->log->setModulo("CONSTRUCTOR ENTIDADES");
+		this->log->addLogMessage("[CARGAR IMAGENES] Terminado.",2);
 }
 void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ)
 {
@@ -174,6 +197,18 @@ void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect
 	}
 
 	//this->log->addLogMessage("[MOSTRAR IMAGENES] Terminado",2);
+}
+
+void ConstructorEntidades::mostrarAnillas(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ){
+	list<Anillos*>::iterator pos;
+
+	for(pos = anillos.begin();pos != anillos.end(); pos++)
+	{
+		if ((*pos)->indexZes(indexZ))
+			{
+			  (*pos)->dibujar(renderizador, camara);
+			}
+	}
 }
 
 bool compararIndexZ(const Entidad *primera, const Entidad *segunda)

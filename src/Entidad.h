@@ -31,6 +31,7 @@ public:
 	SDL_Texture* obtenerImagen();
 	bool tieneRutaImagen();
 	int cargarImagen(SDL_Renderer *renderer, Logger *log);
+	int cargarImagenAnilla(SDL_Renderer *renderer, Logger *log);
 	bool indexZMenorA(const Entidad *otraEntidad) const;
 	bool indexZes(int otroIndexZ);
     Logger* getLog() const;
