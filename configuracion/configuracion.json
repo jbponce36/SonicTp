@@ -22,9 +22,9 @@
 			"id": 1,
 			"tipo": "rectangulo",
 			"color": "rojo",
-			"dimensiones": {"ancho": 40, "alto": 20},
+			"dimensiones": {"ancho": 64, "alto": 64},
 			"coordenada": {"x": 300, "y": 300},
-			"ruta_imagen": "images/entidad1.png",
+			"ruta_imagen": "images/Anillas.png",
 			"index_z": 99
 		},
 		{

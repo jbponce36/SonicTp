@@ -7,10 +7,12 @@
 
 #include "Anillos.h"
 
-Anillos::Anillos(int ancho, int alto, unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ, Logger *log)
-: Entidad(id, color, rutaImagen, x, y, indexZ, log), ancho(ancho), alto(alto)
+
+Anillos::Anillos(int ancho, int alto, unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ, Logger *log/*,SDL_Renderer *render*/)
+: Entidad(id, color, rutaImagen, x, y, indexZ, log), ancho(ancho), alto(alto), texturaAnillo(NULL)
 {
 	getLog()->setModulo("ANILLO");
+
 }
 
 
@@ -28,22 +30,27 @@ void Anillos::setRuta(std::string Ruta) {
 }
 
 void Anillos::cargardatos(SDL_Renderer *render){
+	if(texturaAnillo == NULL){
+		cout<<"ANILLOS"<<endl;
+		this->texturaAnillo = new Textura();
 
-//	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
- this->texturaAnillo->cargarImagen("Anillas.png","Anillas.png",render,this->getLog());
- this->cargarspriteanillo();
+		cout << "Voy a cargar imagen" << endl;
+		this->texturaAnillo->cargarImagen(getRutaImagen(),getRutaImagen(),render,this->getLog());
+
+		this->cargarspriteanillo();
+	}
 }
 
 
 
 void Anillos::Comenzar(){
-	this->Anianillo.comenzar();
+	this->Anianillo->comenzar();
 
 }
 void Anillos::dibujar(SDL_Renderer *renderer, SDL_Rect *camara){
 
-
-	if (obtenerImagen() == NULL)
+this->Anianillo->comenzar();
+/*	if (obtenerImagen() == NULL)
 		{
 			std::cout << "No se cargo la imagen" << std::endl;
 			return;
@@ -105,7 +112,7 @@ void Anillos::dibujar(SDL_Renderer *renderer, SDL_Rect *camara){
 			return;
 		}
 
-
+*/
 
 
 }
@@ -173,18 +180,22 @@ void Anillos::setCoory(int Coory) {
 
 void Anillos::cargarspriteanillo(){
 
-	Anianillo = Animacion(texturaAnillo,ancho,1,ANILLOS);
-	Anianillo.cargarSprites(0,0,9);
+	Anianillo = new Animacion(texturaAnillo,ancho,1,ANILLOS);
+	Anianillo->cargarSprites(0,0,8);
+	Anianillo->cargarSprites(0,1,8);
+	Anianillo->cargarSprites(0,2,8);
+	Anianillo->cargarSprites(0,3,6);
 
-	animacionActual = &Anianillo;
+	animacionActual = Anianillo;
+	animacionActual->comenzar();
 
 }
 
-void Anillos::render(/*int camX, int camY*/){
+void Anillos::render(int camX, int camY){
 	SDL_Rect cuadroDeVentana;
 
-	cuadroDeVentana.x=(x/*-camX*/);
-	cuadroDeVentana.y=(y/*-camY*/);
+	cuadroDeVentana.x=(x-camX);
+	cuadroDeVentana.y=(y-camY);
 	cuadroDeVentana.w=ancho;
 	cuadroDeVentana.h=alto;
 	animacionActual->dibujar(cuadroDeVentana);

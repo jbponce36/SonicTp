@@ -46,26 +46,6 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 
 		administrarTeclas(&controlador, sonic, vista, hiloEnviar,hiloRecibir, hiloLatido, opcionMenu);
 		controlDeMensajes(sonic, hiloRecibir, vista, camara);
-		//Info: moverPersonaje(...) ya no se usa. El servidor es quien mueve el personaje y me manda mi posicion.
-		//La posicion y animacion se setea en controlDeMensajes(...) al recibir mi propia posicion.
-		//moverPersonaje(tiempoDeJuego, vista, sonic, camara);
-       // moverAnilla(vista);
-
-		//CHEQUEAR COLICIONES
-
-
-				/*foreach (sonic){
-					foreach (entidad en vista->constructorEntidades->entidades){
-						//if me fijo si es una anilla
-						//si es una anilla cqueo la colision
-						if (c.ColicionAnillo(entidad casteada como anilla, sonic->colicion.getDer())){
-							printf("colisiono \n");
-						}
-					}
-				}*/
-
-
-
 		actualizarVista(camara, vista, &imagenMostrar, sonic);
 		this->ChequearColicionAnillo(vista,sonics,colicion);
 
@@ -251,7 +231,7 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenM
 		imagenMostrar->h = vista->getAltoEscenario();
 		vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),imagenMostrar);
 		vista->mostrarEntidades(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
-		vista->mostrarAnillas(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
+		//vista->mostrarAnillas(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
 	}
 
 	//dibujo todos los sonics
@@ -261,8 +241,27 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenM
 		(*pos)->render(camara->getPosicionX(), camara->getPosicionY());
 	}
 
-	//muestro la imagen
+	this->animarAnilla(camara,vista);
+
 	SDL_RenderPresent( vista->obtenerRender());
+
+}
+
+void Control::animarAnilla(Camara *camara,VistaSDL *vista)
+{
+	list<Anillos*>:: iterator pos;
+    //anilla->cargardatos(vista->obtenerRender());
+
+	for(pos = vista->getConstructorEntidades()->anillos.begin();pos != vista->getConstructorEntidades()->anillos.end();pos++)
+	{
+		//anilla->cargardatos(vista->obtenerRender());
+
+		(*pos)->cargardatos(vista->obtenerRender());
+
+		(*pos)->render(camara->getPosicionX(),camara->getPosicionY());
+	}
+
+	//SDL_RenderPresent( vista->obtenerRender());
 }
 
 Control::~Control() {

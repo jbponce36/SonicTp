@@ -15,6 +15,7 @@
 #include "ConstructorEntidades.h"
 #include "Anillos.h"
 #include "Colicion.h"
+#include "debug.h"
 
 
 #define FPS 25
@@ -63,6 +64,7 @@ private:
 
 	void controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista, Camara *camara);
 	void actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic);
+	void animarAnilla(Camara *camara,VistaSDL *vista);
 	std::string intToString(int numero);
 
 };

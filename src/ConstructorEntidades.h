@@ -17,6 +17,8 @@
 #include "Anillos.h"
 #include <time.h>
 
+
+
 #define MAX_ID 100
 #define MAX_ANCHO 4000
 #define MAX_ALTO 500
