@@ -40,7 +40,7 @@ void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
 		sonics[id] = sonic;
 	}
 
-	control = new ControlServidor(0, 0, &sonics, &hilosEnviar, &hilosRecibir, server,log);
+	control = new ControlServidor(0, 0, vista, &sonics, &hilosEnviar, &hilosRecibir, server,log);
 }
 
 void JuegoServidor::iniciarJuegoControlServidor()

@@ -7,11 +7,12 @@
 
 #include "ControlServidor.h"
 
-ControlServidor::ControlServidor(int posicionX, int posicionY, std::map<int, Personaje*> *sonics,
+ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, std::map<int, Personaje*> *sonics,
 	std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
 	ConexServidor *server, Logger *log)
-: posicionInicialX(posicionX), posicionInicialY(posicionY), server(server), log(log),
-  sonics(sonics), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir), teclas()
+: posicionInicialX(posicionX), posicionInicialY(posicionY), vista(vista), server(server), log(log),
+  sonics(sonics), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir), teclas(),
+  constructorEntidades(vista->getConstructorEntidades()), mundo(sonics, vista)
 {
 	teclasPresionadas t = {false, false, false, false, false};
 	posSonic ultimasPosiciones = {0, 300};
@@ -241,6 +242,9 @@ void ControlServidor::actualizarVistaServidor(Camara *camara)
 	std::string mensajeCamara = MENSAJE_CAMARA + camara->obtenerMensajeEstado() + PADDING + PADDING;
 	enviarATodos(mensajeCamara);
 
+	//TODO: Tambien deberia mandarles los anillos recolectados y puntaje de cada uno.
+
+
 }
 
 std::string ControlServidor::intToString(int number)
@@ -280,8 +284,6 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	//Le aviso a todos los jugadores que inicio el juego
 	server->comenzarPartida(*hilosEnviar);
 
-	//POR ACA DEBERIA IR mostrarMenuServer() en un hilo?Analizar que conviene.
-
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !juegoTerminado ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
@@ -289,6 +291,8 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 		administrarTeclasServidor();
 
 		moverPersonajesServidor(tiempoDeJuego, vista, camara);
+
+		chequearColisiones();//////////////////////////////////////////////////Aca se chequean las colisiones
 
 		actualizarVistaServidor(camara);
 
@@ -326,4 +330,9 @@ int ControlServidor::mostrarMenuServer(){
 	cout<<opcion<<"----------"<<endl;
 
 	return opcion;
+}
+
+void ControlServidor::chequearColisiones()
+{
+	mundo.manejarColisiones();
 }
