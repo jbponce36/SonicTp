@@ -18,7 +18,7 @@ std::string ConexCliente::cargarNombreArchivo(){
 	std::string nombre;
 	cout<<"Ingrese el nombre del archivo del cliente"<<endl;
 	cin>>nombre;
-	return nombre;
+	return "configuracion/"+nombre;
 }
 bool ConexCliente::crear(){
 	this->fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -69,12 +69,13 @@ ConexCliente::~ConexCliente()
         server_sock_size = sizeof (server_addr);
         int conectado = connect(this->fd, (struct sockaddr*)(&server_addr), server_sock_size);
         if(conectado < 0){
-        	this->getLog()->addLogMessage("[CONECTAR] Error, no se pudo conectar en el puerto "+intToString(puerto),2);
+        	this->getLog()->addLogMessage("[CONECTAR] Error, no se pudo conectar en el puerto "+intToString(puerto),1);
             return -1;
         }
 
         this->puerto = puerto;
         this->hostname = hostname;
+        this->getLog()->addLogMessage("[CONECTAR] El cliente se conecto al hostname "+ this->hostname+" en el puerto "+intToString(puerto), 3);
         this->getLog()->addLogMessage("[CONECTAR] Terminado",2);
         return conectado;
     }
@@ -90,7 +91,7 @@ int ConexCliente::setsocket(){
 
 int ConexCliente::enviar(char *buf, int size)
 {
-	this->log->setModulo("[CONEX SERVIDOR]");
+	this->log->setModulo("CONEX CLIENTE");
 	this->log->addLogMessage("[ENVIAR] Iniciado",2);
 	int enviado = 0;
 		int envioParcial = 0;
@@ -100,10 +101,7 @@ int ConexCliente::enviar(char *buf, int size)
 			envioParcial = send(this->fd,buf, size, MSG_NOSIGNAL);
 			if(envioParcial == 0){
 			socketValido = false;
-			//this->log->addLogMessage("[ENVIAR] Error, se pudo enviar el mensaje, en el"+toString(),1);
-			cout<<"[CONEX SERVIDOR][ENVIAR] No se pudo enviar"<<endl;
-			this->log->addLogMessage("[ENVIAR] Error, no se pudo enviar",2);
-			//return status;
+
 			}
 			else if (envioParcial < 0){
 
@@ -114,19 +112,21 @@ int ConexCliente::enviar(char *buf, int size)
 
 				enviado += envioParcial;
 			}
-			//this->log->addLogMessage("[ENVIAR] Terminado",2);
-			cout<<"[ENVIAR] Terminado"<<endl;
-			//return status;
-			}
-			if (socketValido == false)
-			{
-				cout<<"[CONEXCLIENTE][ENVIAR] No se pudo enviar"<<endl;
-				return envioParcial;
-			}
-			else {
-				this->log->addLogMessage("[ENVIAR] Terminado.", 2);
-				cout<<"[ENVIAR] Terminado"<<endl;
-				return enviado;
+
+
+		}
+
+		if (socketValido == false)
+		{
+
+			this->log->imprimirMensajeNivelAlto("[ENVIAR] No se pudo enviar el mensaje: ", buf);
+			return envioParcial;
+		}
+		else {
+			this->log->addLogMessage("[ENVIAR] Terminado.", 2);
+			this->log->imprimirMensajeNivelAlto("[ENVIAR] Se envio el mensaje: ", buf);
+
+			return enviado;
 		}
 }
 
@@ -154,7 +154,7 @@ int ConexCliente::enviar(char *buf, int size)
             }
 
             this->log->addLogMessage("[ENVIAR] Terminado.", 2);
-            cout<<"[ENVIAR] Terminado"<<endl;
+
             return status;
         }
 
@@ -169,21 +169,26 @@ int ConexCliente::enviar(char *buf, int size)
     	int bytes = recv(this->fd, buf, size, MSG_NOSIGNAL);
 
     	if(bytes<0){
-    		cout<<"[CONEXCLIENTE] [RECIBIR] Error en recibir"<<endl;
+    		cout<<"[CONEXCLIENTE] [RECIBIR] Error en recibir."<<endl;
     		return bytes;
     	}
 
     	//cout<<"[CONEXCLIENTE] [RECIBIR] Se recibio correctamente"<<endl;
+    	this->log->imprimirMensajeNivelAlto("[RECIBIR] Se recibio el mensaje: ",buf);
     	this->log->addLogMessage("[RECIBIR] Terminado",2);
     	return bytes;
     }
+
     int ConexCliente::cerrar(){
+    	this->log->setModulo("CONEX CLIENTE");
+    	this->log->addLogMessage("[CERRAR] Iniciado.",2);
     	int status = shutdown(this->getFd(), SHUT_RDWR);
     	status = close(this->getFd());
+
+    	this->log->addLogMessage("[CERRAR] El "+toString()+" se cerro.",3);
+    	this->log->addLogMessage("[CERRAR] Terminado.",2);
     	return status;
-    //	int status;
-    //	status = close(this->fd);
-    //	return status;
+
     }
 
     string ConexCliente::intToString(int number)
@@ -194,7 +199,7 @@ int ConexCliente::enviar(char *buf, int size)
     }
 
     string ConexCliente::toString(){
-    	return "Socket: "+intToString(this->getFd())+" hostname: "+hostname+" y puerto: "+intToString(puerto);
+    	return "CLiente con fd: "+intToString(this->getFd())+" hostname: "+hostname+" y puerto: "+intToString(puerto);
     }
 
     int ConexCliente::getFd() const

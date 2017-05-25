@@ -19,6 +19,8 @@ public:
 	void dibujar(SDL_Renderer *renderer, SDL_Rect *camara);
 	void mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara);
     string toString();
+    SDL_Rect obtenerLimites();
+    bool intersecta(Rectangulo &otroRectangulo);
 
 private:
     std::string intToString(int number);

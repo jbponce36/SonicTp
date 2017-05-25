@@ -8,10 +8,10 @@
 #include "JuegoServidor.h"
 
 JuegoServidor::JuegoServidor(ConexServidor *server,
-	std::vector<Hiloenviar*> hiloEnviar, std::vector<Hilorecibir*> hiloRecibir, Logger *log)
+	std::vector<Hiloenviar*> &hiloEnviar, std::vector<Hilorecibir*> &hiloRecibir, Logger *log, bool &juegoTerminado)
 : vista(NULL), control(NULL),server(server), log(log),
   hiloJuego(NULL), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir),
-  cantJugadores(server->getCantclientes()), sonics(), juegoTerminado(false), velocidad(0),
+  cantJugadores(server->getCantclientes()), sonics(), juegoTerminado(juegoTerminado), velocidad(0),
   altoEscenario(0){
 	//Vista, sonic y control se setean desde el thread
 
@@ -87,19 +87,10 @@ void JuegoServidor::terminarHiloJuego()
 	hiloJuego->Join();
 }
 
-void JuegoServidor::agregarJugador(int id)
-{
-	//No usar.
-	//sonics[id] = new Personaje(id, velocidad, vista->obtenerRender(), altoEscenario, log);
-	//control->agregarSonic(id);
-}
-
 void JuegoServidor::enviarATodosLosClientes(std::string mensaje)
 {
 	control->enviarATodos(mensaje);
 }
-
-
 
 int JuegoServidor::obtenerIdLibre()
 {
@@ -127,7 +118,7 @@ void JuegoServidor::reconectar(int sock)
 
 	if((hrecibir->continua()) || (henviar->continua()))
 	{
-		cout << "Los hilos enviar/recibir aun no terminaron." << endl;
+		//cout << "Los hilos enviar/recibir aun no terminaron." << endl;
 		return;
 	}
 
@@ -150,9 +141,9 @@ void JuegoServidor::reconectar(int sock)
 	henviar->iniciarHiloQueue();
 
 	sleep(1);
+
 	char *inicio = "[INICIAR JUEGO]";
 	henviar->enviarDato(inicio);
-	//server->comenzarPartida(henviar);
 
 	sleep(1);
 	//hlatidos->IniciarHilo();

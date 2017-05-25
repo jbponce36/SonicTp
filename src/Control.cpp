@@ -15,16 +15,16 @@ int Control::getPosicionInicialY(){
 	return this->posicionInicialY;
 }
 void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
-		HiloEnviarCliente *hiloEnviar, HiloRecibirCliente *hiloRecibir)
+		HiloEnviarCliente *hiloEnviar, HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, int &opcionMenu)
 {
 	SDL_Rect imagenMostrar;
 
-	this->log->addLogMessage("[CONTROLAR JUEGO] Iniciado.", 2);
+	this->log->addLogMessage("[CONTROLAR JUEGO CLIENTE] Iniciado.", 2);
 	imagenMostrar.x = 0;
 	imagenMostrar.y = 0;
 	imagenMostrar.w = vista->obtenerAnchoVentana();
 
-	Uint32 tiempoDeJuego = 0;
+	//Uint32 tiempoDeJuego = 0;
 	Uint32 tiempoInicio, tiempoFin, delta;
 
 	ControladorTeclas controlador = ControladorTeclas();
@@ -38,14 +38,17 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 
 	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana(), &sonicsMapa);
 
+	salir = false;
+
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !salir ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
-		administrarTeclas(&controlador, sonic, vista, hiloEnviar);
+		administrarTeclas(&controlador, sonic, vista, hiloEnviar,hiloRecibir, hiloLatido, opcionMenu);
 		controlDeMensajes(sonic, hiloRecibir, vista, camara);
-		moverPersonaje(tiempoDeJuego, vista, sonic, camara);
-		/////Corregir posicion????
+		//Info: moverPersonaje(...) ya no se usa. El servidor es quien mueve el personaje y me manda mi posicion.
+		//La posicion y animacion se setea en controlDeMensajes(...) al recibir mi propia posicion.
+		//moverPersonaje(tiempoDeJuego, vista, sonic, camara);
 		actualizarVista(camara, vista, &imagenMostrar, sonic);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
@@ -58,10 +61,19 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	}
 
 	delete camara;
-	this->log->addLogMessage("[CONTROLAR JUEGO] Terminado. \n", 2);
+	this->log->addLogMessage("[CONTROLAR JUEGO CLIENTE] Terminado. \n", 2);
 }
 
-void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista, HiloEnviarCliente *hiloEnviar)
+std::string Control::intToString(int number)
+{
+	ostringstream oss;
+	oss<< number;
+	return oss.str();
+}
+
+void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic,
+	VistaSDL *vista, HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir,
+	HilolatidoSer* hiloLatido, int &opcionMenu)
 {
 	SDL_Event e;
 
@@ -72,29 +84,10 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 		{
 			salir = true;
 		}
-
-		if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
-		{
-			if( e.key.keysym.sym == SDLK_ESCAPE) {
-					//cout << "Tecla escape presionada" << endl;
-					int opcion = vista->mostraMenuInicial(this->log);
-					if (opcion == 2){
-						salir = true;
-					}
-					break;
-					if (opcion == 1){
-						salir = true;
-					}
-					break;
-
-			}
-		}
-
-		controlador->procesarEvento(e, sonic, hiloEnviar); //Setea todas las teclas presionadas o liberadas
+		controlador->procesarEvento(e, sonic, hiloEnviar, hiloRecibir, hiloLatido, vista, opcionMenu); //Setea todas las teclas presionadas o liberadas
 	}
-	controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
 
-
+	//controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
 }
 
 void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista, Camara *camara)
@@ -115,28 +108,29 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 				}
 				catch (out_of_range &e)
 				{
-					cout << "Error: El id que me enviaron no existe. Id: " << msj.id << endl;
+					//cout << "Error: El id que me enviaron no existe. Id: " << msj.id << endl;
 					//Significa que el id que me enviaron no existe.
-					/*Personaje *nuevoSonic = new Personaje(msj.id, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
-					nuevoSonic->posicionarseConAnimacion(msj.posX, msj.posY, msj.animacion, msj.indiceAnimacion);
-					sonics->push_back(nuevoSonic);*/
 				}
 			}
 			else
 			{
-				//Recibi mi propia posicion en el server. La corrijo.
-				sonic->posicionarseEn(msj.posX, msj.posY);
+				//Recibi mi propia posicion en el server. La modifico.
+				sonic->posicionarseConAnimacion(msj.posX, msj.posY, msj.animacion, msj.indiceAnimacion);
 			}
 
 			//cout << msj.id << " " << msj.posX << " " << msj.posY  << " " << msj.animacion << " " << msj.indiceAnimacion << endl;
 		}
-		else if (mensaje == "Volver Al Menu")
-		{
-			vista->mostraMenuInicial(this->log);
-		}
 		else if (mensaje == "Servidor Desconectado")
 		{
-			printf("Aca deberia cerrar el juego. \n");
+			if(salir != true){
+				printf("Servidor desconectado. Cerrando el juego...\n");
+			}
+			this->salir = true;
+			vista->mostrarServidorDesconectado();
+		}
+		else if (mensaje == "Terminar juego")
+		{
+			printf("Cerrando el juego...\n");
 			this->salir = true;
 		}
 		else if (mensaje.substr(0,3) ==  MENSAJE_CAMARA)
@@ -145,17 +139,10 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 			parsearMensajeCamara(nuevoX, nuevoY, mensaje);
 			camara->actualizarXY(nuevoX, nuevoY);
 		}
-		else if (mensaje.compare("Faltalatido"))
-		{
-			this->salir = true;
-
-		}
 		else{
 			//Otros mensajes
-			cout << mensaje << endl;
+			//cout << mensaje << endl;
 		}
-
-
 
 		mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	}
@@ -193,7 +180,7 @@ void Control::parsearMensajePosicion(mensajePosicion& msj, std::string mensaje)
 	msj.indiceAnimacion = atoi(mensaje.substr(14, 1).c_str());
 }
 
-void Control::moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic, Camara *camara)
+/*void Control::moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic, Camara *camara)
 {
 	//para calcular el tiempo q transcurre en cada fotografia
 	tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
@@ -207,14 +194,13 @@ void Control::moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *
 	//El server va a mover la camara.
 	//camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario()); //Mueve la camara segun los sonics
 
-
-}
+}*/
 
 void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic)
 {
 	for(int contador = 0; contador < vista->cantidadCapasCargadas(); contador++)
 	{
-		imagenMostrar->h = vista->obtenerTextura(contador)->getAltoTextura();
+		imagenMostrar->h = vista->getAltoEscenario();
 		vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),imagenMostrar);
 		vista->mostrarEntidades(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
 	}

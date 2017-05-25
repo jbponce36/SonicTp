@@ -15,6 +15,7 @@ using namespace std;
 #include "ConstructorEntidades.h"
 
 
+
 VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario *jescenario, Logger *logger, bool oculta)
 {
 	this->renderizador = NULL;
@@ -73,23 +74,23 @@ void VistaSDL::validacionesVentana()
 	if ( this->anchoVentana > MAX_ANCHO_VENTANA )
 	{
 		this->anchoVentana = MAX_ANCHO_VENTANA;
-		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Ancho:",MAX_ANCHO_VENTANA);
+		this->log->addLogMessage("[VALIDACIONES VENTANA] Ventana Ancho:"+intToString(MAX_ANCHO_VENTANA),3);
 
 	}
 	else if( this->anchoVentana < MIN_ANCHO_VENTANA_PERMITIDO )
 	{
 		this->anchoVentana = ANCHO_VENTANA_POR_DEFECTO;
-		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Ancho:",ANCHO_VENTANA_POR_DEFECTO);
+		this->log->addLogMessage("[VALIDACIONES VENTANA] Ventana Ancho:"+intToString(ANCHO_VENTANA_POR_DEFECTO),3);
 	}
 	if ( this->altoVentana > MAX_ALTO_VENTANA  )
 	{
 		this->altoVentana = MAX_ALTO_VENTANA;
-		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Alto:",MAX_ALTO_VENTANA);
+		this->log->addLogMessage("[VALIDACIONES VENTANA] Ventana Alto:"+intToString( MAX_ALTO_VENTANA),3);
 	}
 	else if( this->altoVentana < MIN_ALTO_VENTANA_PERMITIDO )
 	{
 		this->altoVentana = ALTO_VENTANA_POR_DEFECTO;
-		this->log->imprimirMensajeNivelAlto("[VALIDACIONES VENTANA] Ventana Alto:",ALTO_VENTANA_POR_DEFECTO);
+		this->log->addLogMessage("[VALIDACIONES VENTANA] Ventana Alto:"+intToString( ALTO_VENTANA_POR_DEFECTO),3);
 	}
 	this->log->addLogMessage("[VALIDACIONES VENTANA] Terminado.",2);
 }
@@ -261,6 +262,8 @@ VistaSDL::~VistaSDL()
 	{
 		this->capasFondo[i]->liberarTextura();
 	}
+	this->log->iniciarLog("TERMINAR LOGGER");
+	//~this->log;
 }
 
 void VistaSDL::mostrarEntidades(SDL_Rect *camara, int indexZ)
@@ -277,7 +280,16 @@ void VistaSDL::setLog(Logger *log)
 {
     this->log = log;
 }
+
+std::string VistaSDL::intToString(int number)
+{
+	ostringstream oss;
+	oss<< number;
+	return oss.str();
+}
+
 int VistaSDL::mostraMenuInicial(Logger *logger){
+	this->log->addLogMessage("[MOSTRAR MENU INICIAL] Iniciado.",2);
 	Textura *menuInicial = new Textura();
 	Textura *texturaConectar = new Textura();
 	Textura *texturaDesconectar = new Textura();
@@ -298,8 +310,9 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 			{
 				salir = true;
 				seleccion = 2;
+				this->log->addLogMessage("[MOSTRAR MENU INICIAL] Saliendo del menu.",2);
 			}
-			else if(e.type == SDL_KEYDOWN){
+			else if((e.type == SDL_KEYDOWN) && (e.key.repeat == 0)){
 					switch (e.key.keysym.sym){
 						case SDLK_UP:
 							seleccion--;
@@ -359,10 +372,13 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 
 		SDL_RenderPresent(this->renderizador);
 	}
+
+	this->log->addLogMessage("[MOSTRAR MENU INICIAL] Terminado.",2);
 	return seleccion;
 }
 
 void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado){
+	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Iniciado.",2);
 	Textura *imagenEspera = new Textura();
 
 	imagenEspera->cargarImagen("images/imagenesMenu/esperar.png", "images/entidaddefault.png",this->renderizador, logger);
@@ -395,10 +411,46 @@ void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado){
 				salir = true;
 				//Esto no va a hacer nada ni salir. Por ahora dejemoslo asi.
 				//Sale de este while cuando se conectan todos los jugadores.
+				this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Saliendo del menu.",3);
 			}
 		}
 	}
 
+	delete imagenEspera;
+	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Terminado.\n",2);
+
 }
 
+void VistaSDL::mostrarServidorDesconectado()
+{
+	this->log->addLogMessage("[MOSTRAR SERVIDOR DESCONECTADO] Iniciado.",2);
+	Textura *imagenServDesc = new Textura();
 
+	imagenServDesc->cargarImagen("images/imagenesMenu/servidorDesconectado.png", "images/entidaddefault.png",this->renderizador, log);
+
+	SDL_Rect camara;
+	SDL_Rect imagenMostrar;
+
+	camara.x = 0;
+	camara.y = 0;
+	camara.w = imagenServDesc->obtenerAnchoTextura();
+	camara.h = imagenServDesc->obtenerAltoTextura();
+
+	imagenMostrar.x = anchoVentana - camara.w;
+	imagenMostrar.y = altoVentana - camara.h;
+	imagenMostrar.w = camara.w;
+	imagenMostrar.h = camara.h;
+
+	imagenServDesc->renderizar(&camara,&imagenMostrar);
+	SDL_RenderPresent(this->renderizador);
+
+	sleep(2);
+
+	delete imagenServDesc;
+	this->log->addLogMessage("[MOSTRAR SERVIDOR DESCONECTADO] Terminado.\n",2);
+
+}
+
+int VistaSDL::getAltoEscenario(){
+	return this->altoescenario;
+}

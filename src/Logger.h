@@ -4,7 +4,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "Mensaje.h"
 #include <string>
 
 using namespace std;
@@ -28,7 +27,9 @@ public:
 	int validateLevel();
 	void iniciarLog(std::string mensaje);
 	int addLogMessage(std::string logMessage, int nivel);
-	void imprimirMensajeNivelAlto(std::string logMessage,int valor);
+	static void addMessage(char *filename,std::string message);
+	void imprimirMensajeNivelAlto(std::string logMessage,char *buffer);
+
     char *getArchivo() const;
     void setArchivo(char *archivo);
     std::string getModulo() const;

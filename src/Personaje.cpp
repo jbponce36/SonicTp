@@ -2,7 +2,6 @@
 
 const int POSICION_INICIALX = 0;
 const int POSICION_INICIALY = 0;
-const float REGULADOR_ALTURA_SALTO = 0.04; //Regula la altura del salto (Es como un "promedio" de tiempoDeJuego)
 
 Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log)
 {
@@ -11,24 +10,26 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->texturaCongelado = new Textura();
 	std::string rutaImagen = "images/sonicSprite" + intToString(id) +".png";
 	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
-	this->texturaCongelado->cargarImagen("images/sonicCongelado.png", IMAGEN_POR_DEFECTO, render, log);
+	this->texturaCongelado->cargarImagen("images/sonicgris.png", IMAGEN_POR_DEFECTO, render, log);
 
 	//dimensiones del personaje por defecto
-	this->personajeAncho = 50;
-	this->personajeAlto= 50;
+	this->personajeAncho = 150;
+	this->personajeAlto= 150;
 
 	this->personajeVelocidad = velocidad;
 	this->personajeAceleracion = velocidad/20;
 	//posicion por defecto
-    this->posicionX = POSICION_INICIALX;
-    this->posicionY = 4*altoEscenario / 5 - personajeAlto;
+    this->posicionX = POSICION_INICIALX + id*20 - 20; //Para que no esten en el mismo lugar al empezar
+    if(posicionX < 0)
+    	posicionX = POSICION_INICIALX;
+    this->posicionY = 4*altoEscenario/5 - personajeAlto;
 
     this->velocidadX = 0;
-    this->velocidadY = personajeVelocidad;
+    this->velocidadY = 0;
 
     this->orientacion = DERECHA;
 
-    this->saltando = true;
+    this->saltando = false;
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
@@ -44,24 +45,26 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->texturaCongelado = new Textura();
 	std::string rutaImagen = "images/sonicSprite" + intToString(id) +".png";
 	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
-	this->texturaCongelado->cargarImagen("images/sonicCongelado.png", IMAGEN_POR_DEFECTO, render, log);
+	this->texturaCongelado->cargarImagen("images/sonicgris.png", IMAGEN_POR_DEFECTO, render, log);
 
 	//dimensiones del personaje por defecto
-	this->personajeAncho = 50;
-	this->personajeAlto= 50;
+	this->personajeAncho = 150;
+	this->personajeAlto= 150;
 
 	this->personajeVelocidad = velocidad;
 	this->personajeAceleracion = velocidad/20;
 	//posicion por defecto
-    this->posicionX = POSICION_INICIALX;
-    this->posicionY = 4*altoEscenario / 5 - personajeAlto;
+	this->posicionX = POSICION_INICIALX + id*20 - 20; //Para que no esten en el mismo lugar al empezar
+	if(posicionX < 0)
+		posicionX = POSICION_INICIALX;
+    this->posicionY = 4*altoEscenario/5 - personajeAlto;
 
     this->velocidadX = 0;
-    this->velocidadY = personajeVelocidad;
+    this->velocidadY = 0;
 
     this->orientacion = DERECHA;
 
-    this->saltando = true;
+    this->saltando = false;
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
@@ -69,7 +72,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 
     this->log = log;
 
-    this->cliente = cliente; //Borrar este metodo cuando ande bien el hiloEnviar!
+    this->cliente = cliente;
 }
 
 void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
@@ -77,21 +80,20 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 	int maximoAlto = limites->h;
 	int maximoAncho = limites->w;
 
-	/*---Limite en el suelo. Luego borrarlo!---*/
+	/*Limite en el suelo.*/
 	maximoAlto -= (maximoAlto/5);
-	/*-----------------------------------------*/
 
     //mueve al personaje
-    this->posicionX += this->velocidadX * tiempoDeJuego;
+    this->posicionX += this->velocidadX * REGULADOR_ALTURA_SALTO;
 
     //se fija si se paso los limites de la pantalla
     if( posicionX < limites->x )
     {
-    	velocidadX = 0;
+    	//velocidadX = 0;
         posicionX = limites->x;
     }
     else if (posicionX + this->personajeAncho - limites->x >  maximoAncho){
-    	velocidadX = 0;
+    	//velocidadX = 0;
 		this->posicionX = maximoAncho-this->personajeAncho+limites->x;
 	}
 
@@ -132,27 +134,38 @@ void Personaje::cargarSpriteSonic(){
 	animacionSaltarIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_SALTAR_IZQUIERDA);
 	animacionCongelado = Animacion(texturaCongelado, personajeAncho, 1, ANIMACION_CONGELADO);
 
-	for (int i=0; i<10; i++){
-		animacionQuietoDer.cargarSprites(0, 0, 1);
-	} //Agrega el primer sprite varias veces para que se quede quieto mas tiempo
-	for (int i=0; i<5; i++){
-			animacionQuietoDer.cargarSprites(1, 0, 2);
-	}  //Agrega los sprites moviendo el pie varias veces
+	//for (int i=0; i<10; i++){
+	//	animacionQuietoDer.cargarSprites(0, 0, 1);
+	//} //Agrega el primer sprite varias veces para que se quede quieto mas tiempo
+	//for (int i=0; i<5; i++){
+	//		animacionQuietoDer.cargarSprites(1, 0, 2);
+	//}  //Agrega los sprites moviendo el pie varias veces
 
-	animacionCaminarDer.cargarSprites(0, 3, 8);
-	animacionCorrerDer.cargarSprites(4, 1, 5);
-	animacionSaltarDer.cargarSprites(4, 1, 5);
+	//animacionCaminarDer.cargarSprites(0, 3, 8);
+	//animacionCorrerDer.cargarSprites(4, 1, 5);
+	//animacionSaltarDer.cargarSprites(4, 1, 5);
 
-	for (int i=0; i<10; i++){
-		animacionQuietoIzq.cargarSprites(9, 0, 1);
-	}
-	for (int i=0; i<5; i++){
-		animacionQuietoIzq.cargarSprites(10, 0, 2);
-	}
+	//for (int i=0; i<10; i++){
+	//	animacionQuietoIzq.cargarSprites(9, 0, 1);
+	//}
+	//for (int i=0; i<5; i++){
+	//	animacionQuietoIzq.cargarSprites(10, 0, 2);
+	//}
 
-	animacionCaminarIzq.cargarSprites(9, 3, 8);
-	animacionCorrerIzq.cargarSprites(13, 1, 5);
-	animacionSaltarIzq.cargarSprites(13, 1, 5);
+	//animacionCaminarIzq.cargarSprites(9, 3, 8);
+	//animacionCorrerIzq.cargarSprites(13, 1, 5);
+	//animacionSaltarIzq.cargarSprites(13, 1, 5);
+
+	//desde aca es el codigo del nuevo set de sprites
+	animacionQuietoDer.cargarSprites(0, 0, 1);
+	animacionCaminarDer.cargarSprites(1, 0, 9);
+	animacionCorrerDer.cargarSprites(0, 1, 4);
+	animacionSaltarDer.cargarSprites(0, 2, 9);
+
+	animacionQuietoIzq.cargarSpritesAlReves(9, 3, 1);
+	animacionCaminarIzq.cargarSpritesAlReves(0, 3, 9);
+	animacionCorrerIzq.cargarSpritesAlReves(6, 4, 4);
+	animacionSaltarIzq.cargarSpritesAlReves(1, 5, 9);
 
 	animacionCongelado.cargarSprites(0, 0, 1);
 
@@ -328,19 +341,21 @@ void Personaje::irIzquierda()
 	dejarDeEstarQuieto();
 
 	if (corriendo){
-		this->velocidadX -= 2*personajeAceleracion;
+		/*this->velocidadX -= 2*personajeAceleracion;
 		if(velocidadX < (-2*personajeVelocidad))
 		{
 			velocidadX = -2*personajeVelocidad;
-		}
+		}*/
+		this->velocidadX = -2*personajeVelocidad;
 		animacionActual = &animacionCorrerIzq;
 	}
 	else{
-		this->velocidadX -= personajeAceleracion;
+		/*this->velocidadX -= personajeAceleracion;
 		if(velocidadX < (-personajeVelocidad))
 		{
 			velocidadX = -personajeVelocidad;
-		}
+		}*/
+		this->velocidadX = -personajeVelocidad;
 		animacionActual = &animacionCaminarIzq;
 	}
 
@@ -354,19 +369,21 @@ void Personaje::irDerecha()
 	dejarDeEstarQuieto();
 
 	if (corriendo){
-		this->velocidadX += 2*personajeAceleracion;
+		/*this->velocidadX += 2*personajeAceleracion;
 		if(velocidadX > 2*personajeVelocidad)
 		{
 			velocidadX = 2*personajeVelocidad;
-		}
+		}*/
+		this->velocidadX = 2*personajeVelocidad;
 		animacionActual = &animacionCorrerDer;
 	}
 	else{
-		this->velocidadX += personajeAceleracion;
+		/*this->velocidadX += personajeAceleracion;
 		if(velocidadX > personajeVelocidad)
 		{
 			velocidadX = personajeVelocidad;
-		}
+		}*/
+		this->velocidadX = personajeVelocidad;
 		animacionActual = &animacionCaminarDer;
 	}
 
@@ -377,7 +394,7 @@ void Personaje::irDerecha()
 
 void Personaje::parar()
 {
-	if (velocidadX < 0)
+	/*if (velocidadX < 0)
 	{
 		velocidadX += 2*personajeAceleracion;
 		if (velocidadX >= 0)
@@ -388,7 +405,9 @@ void Personaje::parar()
 		velocidadX -= 2*personajeAceleracion;
 		if (velocidadX <= 0)
 			velocidadX = 0;
-	}
+	}*/
+
+	velocidadX = 0;
 
 	if (saltando)
 		return;
@@ -397,6 +416,7 @@ void Personaje::parar()
 		return;
 
 	velocidadY = 0;
+
 	if (velocidadX == 0){
 		estaQuieto = true;
 
@@ -419,6 +439,12 @@ void Personaje::parar()
 
 void Personaje::congelar()
 {
+	velocidadX = 0;
+	velocidadY = 0;
+	estaQuieto = true;
+	saltando = false;
+	corriendo = false;
+	animacionActual->detener();
 	animacionActual = &animacionCongelado;
 	congelado = true;
 }
@@ -435,7 +461,7 @@ bool Personaje::bloqueaCamara(SDL_Rect *limites)
 	{
 		return false;
 	}
-	return ((posicionX <= limites->x) || (posicionX >= limites->x + limites->w));
+	return ((posicionX <= limites->x) || ((posicionX + personajeAncho) >= (limites->x + limites->w)));
 }
 
 bool Personaje::bloqueaCamaraADerecha(SDL_Rect *limites)
@@ -444,7 +470,7 @@ bool Personaje::bloqueaCamaraADerecha(SDL_Rect *limites)
 	{
 		return false;
 	}
-	return (posicionX + personajeAncho >= limites->x + limites->w);
+	return ((posicionX + personajeAncho) >= (limites->x + limites->w));
 }
 
 bool Personaje::bloqueaCamaraAIzquierda(SDL_Rect *limites)
@@ -490,28 +516,11 @@ void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje
 
 	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
 	strcpy(buffer, mensaje.c_str());
-	cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
+	//cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
 	//hiloEnviar->parametros.buffer = buffer;
-	cout << "Cliente envio: " << buffer << endl;
 
-}
-
-
-void Personaje::enviarPosicionServer(HiloEnviarCliente *hiloEnviar, Posicion *pos)
-{
-	//mensaje = intToString(id) + pos->getCoordenadas() + "x" + intToStringConPadding(posicionX) + "y" + intToStringConPadding(posicionY);
-
-	/*char* msj = new char[mensaje.length() +1];
-	strcpy(msj, mensaje.c_str());
-	cliente->enviar(msj, strlen(msj));
-	cout << "Cliente envio: "<< msj << '\n';
-	delete[] msj;*/
-
-	//char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
-	//strcpy(buffer, mensaje.c_str());
-	cliente->enviarPosicion(pos, sizeof(pos));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
-	//hiloEnviar->parametros.buffer = buffer;
-	cout << "Cliente envio: " << pos->getCoordenadas() << endl;
+	hiloEnviar->enviarDato(buffer);
+	//cout << "Cliente envio: " << buffer << endl;
 
 }
 

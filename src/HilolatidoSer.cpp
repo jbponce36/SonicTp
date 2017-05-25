@@ -11,35 +11,38 @@
 
 namespace std {
 
-HilolatidoSer::HilolatidoSer() {
+HilolatidoSer::HilolatidoSer(Logger *log) : hilo(NULL){
 	// TODO Auto-generated constructor stub
 	this->salir = false;
 	parametros.continuar = true;
+	this->log = log;
+	this->log->setModulo("HILO LATIDO SER");
 }
 
 HilolatidoSer::~HilolatidoSer() {
-	// TODO Auto-generated destructor stub
+	delete hilo;
 }
 void HilolatidoSer::IniciarHilo(){
-	Hilo hilos = Hilo(/*log*/);
-	//hilos = new Hilo();
-	//hiloJuego = new Hilo();
-	hilos.Create((void *)HilolatidoSer::serverEnviarRecibir ,  (void *)&parametros);
+
+	hilo = new Hilo(/*log*/);
+
+	this->log->addLogMessage("[SERVER ENVIAR] Iniciado.",2);
+	hilo->Create((void *)HilolatidoSer::serverEnviarRecibir ,  (void *)&parametros);
+	this->log->addLogMessage("[SERVER ENVIAR] Terminado.",2);
 }
 void HilolatidoSer::terminarHilo(){
-	this->salir = true;
+	this->log->addLogMessage("[JOIN] Iniciado.",2);
+	parametros.continuar = false;
+	//cout << "Voy a terminar el hiloLatidos \n";
+	hilo->Join();
 
-}
-Hilo HilolatidoSer::gethilo(){
-	return this->h;
+	this->log->addLogMessage("[JOIN] Terminado.",2);
+	//cout << "Todo ok hiloLatidos \n";
 }
 
-void HilolatidoSer::setH(Hilo hil){
-	this->h = hil;
-}
 void *HilolatidoSer::serverEnviarRecibir(void *args){
 
-	cout<<" Inicio el hilo de latidos del servidor: "<<endl;
+	//cout<<" Inicio el hilo de latidos del servidor: "<<endl;
 
 	Serparametros *parametros = (Serparametros*) args;
 	char buffer[10] = "ESTOYVIVO";
@@ -57,11 +60,13 @@ void *HilolatidoSer::serverEnviarRecibir(void *args){
             int status = parametros->cliente->enviar(buffer,strlen(buffer));
 
 			if (status>0){
-				cout<<"Cliente envio: "<<buffer<<endl;
+				//cout<<"Cliente envio: "<<buffer<<endl;
 			}
 
 			if(status <= 0){
-				cout<<" Hilo latido envio error"<<endl;
+				//cout<<" Hilo latido envio error"<<endl;
+
+
 				parametros->continuar = false;
 			}
 

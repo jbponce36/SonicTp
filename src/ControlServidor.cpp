@@ -42,7 +42,7 @@ void ControlServidor::administrarTeclasServidor()
 		while (mensaje.compare("Sin elementos") != 0)
 		{
 			//Segun la tecla seteo el vector de teclas
-			cout << "Control recibio: "<< mensaje << endl;
+			//cout << "Control recibio: "<< mensaje << endl;
 
 			//Idea: Quizas:
 			//Si la tecla ya estaba seteada significa que hubo un error y hay que corregir la posicion del sonic
@@ -104,6 +104,11 @@ void ControlServidor::administrarTeclasServidor()
 				hilosEnviar->at(idDesconectado - 1)->parametros.continuar = false;
 				try{
 					sonics->at(idDesconectado)->congelar();
+					teclas.at(idDesconectado).teclaAbajo = false;
+					teclas.at(idDesconectado).teclaArriba = false;
+					teclas.at(idDesconectado).teclaDerecha = false;
+					teclas.at(idDesconectado).teclaIzquierda = false;
+					teclas.at(idDesconectado).teclaCorrer = false;
 				}
 				catch(std::out_of_range &e)
 				{
@@ -206,11 +211,11 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		}
 
 		///------------------------------------------------------------
-		tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
+		//tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
 
-		(*pos).second->mover(camara->devolverCamara(), 0.04); //Se mueve segun los limites de la camara
+		(*pos).second->mover(camara->devolverCamara(), REGULADOR_ALTURA_SALTO); //Se mueve segun los limites de la camara
 
-		tiempoDeJuego = SDL_GetTicks();
+		//tiempoDeJuego = SDL_GetTicks();
 
 		//Mueve la camara segun los sonics
 		camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
@@ -273,14 +278,13 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 			vista->obtenerAltoVentana(),vista->obtenerAnchoVentana(), sonics);
 
 	//Le aviso a todos los jugadores que inicio el juego
-	printf("Empieza la partida \n");
 	server->comenzarPartida(*hilosEnviar);
+
+	//POR ACA DEBERIA IR mostrarMenuServer() en un hilo?Analizar que conviene.
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !juegoTerminado ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
-
-
 
 		administrarTeclasServidor();
 
@@ -302,10 +306,24 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
 }
 
-void ControlServidor::agregarSonic(int id)
-{
-	teclasPresionadas t = {false, false, false, false, false};
-	this->teclas[id] = t;
+int ControlServidor::mostrarMenuServer(){
+	int opcion = 0;
+	cout<<"\n \t Opciones: \n"<<endl;
+	cout<<"\t 1: Conectar."<<endl;
+	cout<<"\t 2: Salir. \n"<<endl;
+	cin>>opcion;
 
+	while (opcion < 1 || opcion > 2 || cin.fail() || !cin){
+		cin.clear(); // Si ingreso un caracter no numerico
+		cin.ignore();
+		cout<<"Opcion incorrecta, presione una de las opciones posibles.\n"<<endl;
+		cin>>opcion;
+	}
+
+	//TODO: Validar cuando se ingresa un string y si  alguno es numero,
+	//tira mensaje de largo de la cadena hasta el numero: ejemplo kih2, tira 3 veces el error de opcion incorrecta!
+
+	cout<<opcion<<"----------"<<endl;
+
+	return opcion;
 }
-

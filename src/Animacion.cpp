@@ -26,12 +26,27 @@ Animacion::~Animacion() {
 
 void Animacion::cargarSprites(int x, int y, int cantidad)
 {
+	//Carga los sprites de izquierda a derecha --->
 	SDL_Rect sprite = {x*dimension, y*dimension, dimension, dimension};
 
 	for (int i=0; i<cantidad; i++)
 	{
 		sprites.push_back(sprite);
 		sprite.x += dimension;
+	}
+
+	spriteActual = sprites.at(0);
+}
+
+void Animacion::cargarSpritesAlReves(int x, int y, int cantidad)
+{
+	//Carga los sprites de derecha a izquierda <---
+	SDL_Rect sprite = {x*dimension+cantidad*dimension-dimension, y*dimension, dimension, dimension};
+
+	for (int i=0; i<cantidad; i++)
+	{
+		sprites.push_back(sprite);
+		sprite.x -= dimension;
 	}
 
 	spriteActual = sprites.at(0);

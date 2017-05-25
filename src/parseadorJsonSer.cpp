@@ -58,7 +58,7 @@ void parseadorJsonSer::parsearArchivo(std::string nombreArchivo){
 	  cout << "Cargando archivo por defecto" << endl;
 	  json = json_load_file("configuracion/servidordefault.json",0,&error);
 	  this->setraiz(json);
-	  this->log->addLogMessage("[PARSEADOR JSON SERVIDOR] Se carga un archivo por defecto: configuracion/default.json .", 1);
+	  this->log->addLogMessage("[PARSEADOR JSON SERVIDOR] Se carga un archivo por defecto: configuracion/servidordefault.json .", 1);
 	  if (!json){
 	    cout << "!!! no existe el archivo por defecto!!!" << endl;
 	    cout << error.text << endl;
@@ -79,14 +79,14 @@ double parseadorJsonSer::leeValorEnteroServer(json_t* padre, const char* nombre,
 
 	if (!elemento){
 		this->log->addLogMessage(msjobj,1);
-		cout<<msjobj<<endl;
+		//cout<<msjobj<<endl;
 		return valorPorDefecto;
 
 	}
 
 	if (!json_is_number(elemento)){
 		this->log->addLogMessage(msjatributo,1);
-		cout<<msjatributo<<endl;
+		//cout<<msjatributo<<endl;
 		return valorPorDefecto;
 	}
 

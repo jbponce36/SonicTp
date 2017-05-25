@@ -46,7 +46,7 @@ void *Hiloenviar::serverEnviar(void *args)
 				result = parametros->server->enviar(parametros->skt,parametros->buffer,strlen(parametros->buffer));
 
 				if (result>0){
-					cout<<"server envio: "<<parametros->buffer<<endl;
+					//cout<<"server envio: "<<parametros->buffer<<endl;
 				}
 
 				if (result==0){
@@ -101,21 +101,17 @@ void* Hiloenviar::serverEnviarQueue(void* args){
 				parametros->pack.eliminarElPrimetoDeLaCola();
 			}
 
-			if (result==0){
+			if (result<=0){
 				printf("El cliente se desconecto. \n");
 				parametros->continuar = false;
-			}
 
-			if (result==-1){
-				printf("El cliente se desconecto. \n");
-				parametros->continuar = false;
 			}
 
 			parametros->bufferQ = "";
 		}
 	}
 
-	printf("Se termino el thread hilo Enviar. \n");
+	//printf("Se termino el thread hilo Enviar. \n");
 }
 
 void Hiloenviar::enviarDato(char* dato){

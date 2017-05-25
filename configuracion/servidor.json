@@ -1,4 +1,4 @@
 {
  "puerto": 8080,
- "clientes": 4
+ "cantclientes": 2
 }

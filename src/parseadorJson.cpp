@@ -190,6 +190,13 @@ bool parseadorJson::validarVentana(json_t* raiz,const char* nomvent,const char* 
    return validarvent;
 }
 
+std::string parseadorJson::intToString(int number)
+{
+	ostringstream oss;
+	oss<< number;
+	return oss.str();
+}
+
 jconfiguracion* parseadorJson::cargarConfiguracion(json_t* raiz){
 
 	 json_t *jsonconfiguracion;
@@ -210,7 +217,7 @@ jconfiguracion* parseadorJson::cargarConfiguracion(json_t* raiz){
     	 configuracion->setvelscroll(15);
      }
 
-     this->log->imprimirMensajeNivelAlto("[CARGAR VELOCIDAD DE SCROLL] Velocidad de scroll: ", configuracion->getvelscroll());
+     this->log->addLogMessage("[CARGAR VELOCIDAD DE SCROLL] Velocidad de scroll: "+intToString(configuracion->getvelscroll()),3);
      this->log->addLogMessage("[CARGAR VELOCIDAD DE SCROLL] Terminado.", 2);
 	 return configuracion;
 }
@@ -434,7 +441,6 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 }
 
 jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
-
 	 json_t *json;
 	 json_error_t error;
 
@@ -479,6 +485,8 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
 
 list<capas> parseadorJson::DevolverCapasPorDefecto(){
 
+
+	this->log->addLogMessage("[DEVOLVER CAPAS POR DEFECTO] Iniciado.",2);
 	list<capas>capasdefault;
 
 	capas *jcapas1 = new capas();
@@ -495,14 +503,19 @@ list<capas> parseadorJson::DevolverCapasPorDefecto(){
 	this->log->addLogMessage("[CARGAS CAPAS] Capa 2-> id:2, index_z: 98, ruta_imagen: images/capa1r.png  ", 3);
 
 	capasdefault.push_back(*jcapas1);
+	this->log->addLogMessage("[DEVOLVER CAPAS POR DEFECTO] Capa 1 cargada.",3);
 	capasdefault.push_back(*jcapas2);
+	this->log->addLogMessage("[DEVOLVER CAPAS POR DEFECTO] Capa 2 cargada.",3);
 
+
+	this->log->addLogMessage("[DEVOLVER CAPAS POR DEFECTO] Terminado.",2);
 	return capasdefault;
 
 }
 
 list<jentidades> parseadorJson::DevolverEntidadesPorDefecto(){
 
+	this->log->addLogMessage("[DEVOLVER ENTIDADES POR DEFECTO] Iniciado.",2);
 	list<jentidades>entidadesdefault;
 
 	jentidades *entidades1 = new jentidades();
@@ -562,6 +575,7 @@ list<jentidades> parseadorJson::DevolverEntidadesPorDefecto(){
     entidadesdefault.push_back(*entidades3);
     this->log->addLogMessage("[CARGAR ENTIDADES] Entidad 1-> id: 3, tipo: circulo, color: amarillo, dimesiones-> radio: 15, (coordenadas-> x:300, y:300)",3);
 
+	this->log->addLogMessage("[DEVOLVER ENTIDADES POR DEFECTO] Terminado.",2);
     return entidadesdefault;
 }
 jescenarioJuego* parseadorJson::getescenario(){
@@ -581,6 +595,8 @@ void parseadorJson::validarDimensionesVentana(jescenarioJuego *escenarioJuego){
 
 int parseadorJson::CargarPuertoServidor(){
 
+	this->log->addLogMessage("[CARGAR PUERTO SERVIDOR] Iniciado.",2);
+
 	json_t* raiz;
 	json_t *jsonservidor;
 	json_t *jsonpuerto;
@@ -596,15 +612,17 @@ int parseadorJson::CargarPuertoServidor(){
 	}
 	else{
 	  puerto = 3316;
+	  this->log->addLogMessage("[CARGAR PUERTO SERVIDOR] No se encontro el atributo puerto, se cargara puerto: 3316 por defecto.",1);
 	}
 
-
+	this->log->addLogMessage("[CARGAR PUERTO SERVIDOR] Terminado.",2);
 	return puerto;
 
 }
 
 int parseadorJson::CargarCantClientes(){
 
+	this->log->addLogMessage("[CARGAR CANT CLIENTES] Iniciado.",2);
 	json_t* raiz;
 	json_t *jsonservidor;
     json_t *jsoncantclientes;
@@ -615,15 +633,16 @@ int parseadorJson::CargarCantClientes(){
 	jsonservidor = json_object_get(raiz, "servidor");
 
 	if(jsonservidor){
-
 	  cantclientes = this->leerValorEntero(jsonservidor,"clientes",2);
 
 	}
 	else{
 		cantclientes = 2;
-		this->log->addLogMessage("[VALIDAR SERVIDOR] ERROR. No se encontro el atributo servidor . Se cargaron los valores del servidor por defecto.", 1);
+		this->log->addLogMessage("[CARGAR CANT CLIENTES] ERROR. No se encontro el atributo clientes. Se cargara una cantidad maxima:2 por default", 1);
 	}
 
+
+	this->log->addLogMessage("[CARGAR CANT CLIENTES] Terminado.",2);
 	return cantclientes;
 }
 

@@ -14,6 +14,7 @@
 
 #define GRAVEDAD 9
 #define IMAGEN_POR_DEFECTO "images/sonicSprite.png"
+#define REGULADOR_ALTURA_SALTO 0.04 //Regula la altura del salto (Es como un "promedio" de tiempoDeJuego)
 
 class Personaje
 {
@@ -57,7 +58,7 @@ class Personaje
 		void animarSalto();
 		void cargarSpriteSonic();
 		void dejarDeEstarQuieto();
-		std::string intToString(int number);
+
 		std::string intToStringConPadding(int number);
 
 		ConexCliente *cliente; //<-------- Borrarlo cuando el enviar del hilo ande bien!
@@ -71,7 +72,7 @@ class Personaje
 		void mover(SDL_Rect *limites, float tiempoDeJuego);
 
 		void render(int camX, int camY);
-
+		std::string intToString(int number);
 		void posicionarseEn(int x, int y);
 		void posicionarseConAnimacion(int x, int y, std::string animacion, int indiceAnimacion);
 		int getPosicionX();
@@ -101,7 +102,6 @@ class Personaje
 		bool estaParado();
 
 		void enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje);
-		void enviarPosicionServer(HiloEnviarCliente *hiloEnviar, Posicion *pos);
 		std::string obtenerMensajeEstado();
 
 };

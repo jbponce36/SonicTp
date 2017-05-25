@@ -37,6 +37,7 @@ private:
 	HiloRecibirCliente *hiloRecibir;
 	HiloEnviarCliente *hiloEnviar;
 	Hilo *hiloJuego;
+	HilolatidoSer *hiloLatido;
 
 	int maxJugadores;
 	std::vector<Personaje*> sonics;
@@ -44,16 +45,22 @@ private:
 	VariableCondicional vcIniciarJuego;
 	bool juegoIniciado;
 
+	int &opcionMenu;
+
 public:
-	JuegoCliente();
 	virtual ~JuegoCliente();
 
-	JuegoCliente(ConexCliente *cliente, Logger *log);
-	void iniciarHilos();
+	JuegoCliente(ConexCliente *cliente, Logger *log, int &opcionMenu);
+	void iniciarHilos(Logger *log);
 	void terminarHilos();
 	void iniciarJuego(); //Crea el parseador e inicia el juego
 	void CargarVistaParaElMenu();
 	int elegirOpcionDeMenu(Logger *log);
+	std::string intToString(int number);
+	Personaje* getSonic();
+	void mostrarServidorDesconectado();
+
+
 	struct Datos{
 		ConexCliente *cliente;
 		Logger *log;

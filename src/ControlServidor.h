@@ -16,6 +16,7 @@
 #include "Hilorecibir.h"
 #include "HilolatidoSer.h"
 #include "Definiciones.h"
+#include "Personaje.h"
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -63,8 +64,8 @@ public:
 	virtual ~ControlServidor();
 
 	void ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado);
-	void agregarSonic(int id);
 	void enviarATodos(std::string mensaje);
+	int mostrarMenuServer();
 
 	typedef struct mensajeRecibido{
 		int id;
@@ -72,6 +73,7 @@ public:
 		int posX;
 		int posY;
 	}mensajeRecibido;
+
 
 
 

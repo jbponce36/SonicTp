@@ -10,6 +10,8 @@
 #include "Definiciones.h"
 #include <vector>
 #include <algorithm>
+#include "Paquete.h"
+#include "HilolatidoSer.h"
 
 #define FPS 25
 #define TICKS_POR_FRAME 1000/FPS
@@ -20,6 +22,7 @@ private:
 	int posicionInicialY;
 	Logger *log;
 	bool salir;
+	Paquete *colaPaquete;
 
 	std::vector<Personaje*> *sonics; //Tiene todos los sonics
 	int maxJugadores;
@@ -37,18 +40,22 @@ public:
 	virtual ~Control();
 	int getPosicionInicialX();
 	int getPosicionInicialY();
-	void ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, HiloEnviarCliente *hiloEnviar, HiloRecibirCliente *hiloRecibir);
+	void ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, HiloEnviarCliente *hiloEnviar,
+		HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, int &opcionMenu);
 	void parsearMensajeCamara(int &xDest, int &yDest, std::string mensaje);
 	void parsearMensajePosicion(mensajePosicion& msjParseado, std::string mensaje);
 
 
-
 private:
-	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista, HiloEnviarCliente *hiloEnviar);
-	void moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic, Camara* camara);
+	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista,
+		HiloEnviarCliente *hiloEnviar,HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, int &opcionMenu);
+
+	//Ya no se usa. El servidor es quien mueve el personaje y me manda mi posicion.
+	//void moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic, Camara* camara);
+
 	void controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista, Camara *camara);
 	void actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic);
-
+	std::string intToString(int numero);
 
 };
 

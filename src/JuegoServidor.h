@@ -30,22 +30,21 @@ private:
 	ConexServidor *server;
 	Logger *log;
 	Hilo *hiloJuego;
-	std::vector<Hiloenviar*> hilosEnviar;
-	std::vector<Hilorecibir*> hilosRecibir;
+	std::vector<Hiloenviar*> &hilosEnviar;
+	std::vector<Hilorecibir*> &hilosRecibir;
 	int cantJugadores;
 	std::map<int, Personaje*> sonics;
-	bool juegoTerminado;
+	bool &juegoTerminado;
 	int velocidad;
 	int altoEscenario;
 
 public:
-	JuegoServidor(ConexServidor *server, std::vector<Hiloenviar*> hiloEnviar,
-			std::vector<Hilorecibir*> hiloRecibir, Logger *log);
+	JuegoServidor(ConexServidor *server, std::vector<Hiloenviar*> &hiloEnviar,
+			std::vector<Hilorecibir*> &hiloRecibir, Logger *log, bool &juegoTerminado);
 	virtual ~JuegoServidor();
 	void iniciarJuego();
 	void iniciarHiloJuego();
 	void terminarHiloJuego();
-	void agregarJugador(int id);
 	void enviarATodosLosClientes(std::string mensaje);
 	int obtenerIdLibre();
 	void reconectar(int socket);

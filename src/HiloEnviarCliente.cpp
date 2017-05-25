@@ -8,25 +8,29 @@
 #include "HiloEnviarCliente.h"
 #include "AdministradorLatidoCliente.h"
 
-HiloEnviarCliente::HiloEnviarCliente() : continuar(true){
+HiloEnviarCliente::HiloEnviarCliente(Logger *log) : hilo(NULL){
 	// TODO Auto-generated constructor stub
 	parametros.buffer = (char*)"";
+	this->log = log;
+	this->log->setModulo("HILO ENVIAR CLIENTE");
 }
 
 HiloEnviarCliente::~HiloEnviarCliente() {
 	// TODO Auto-generated destructor stub
+	delete hilo;
 }
 
 void HiloEnviarCliente::IniciarHilo(/*struct parametrosEnviar *parametros*/){
 
-	Hilo *hilo = new Hilo(/*log*/);
-
+	hilo = new Hilo(/*log*/);
+	this->log->addLogMessage("[CLIENTE ENVIAR] Iniciado.",2);
 	hilo->Create((void *)HiloEnviarCliente::clienteEnviar ,  (void *)&parametros);
+	this->log->addLogMessage("[CLIENTE ENVIAR] Terminado.",2);
 
 }
 void *HiloEnviarCliente::clienteEnviar(void *args){
 	SerParametros *parametros = (SerParametros*) args;
-	vector<HilolatidoSer*> hlser;
+	vector<HilolatidoSer*> hrlser;
 	vector<HilolatidoSer*>::iterator poshlser;
 
 	    bool salir = false;
@@ -47,11 +51,8 @@ void *HiloEnviarCliente::clienteEnviar(void *args){
 					{
 
 						result = parametros->cliente->enviar(parametros->buffer,strlen(parametros->buffer) );
-						cout<<"::::::::::::::::::::::::::"<<result<<endl;
 						if (result>0){
-
-
-							cout<<"server envio: "<<parametros->buffer<<endl;
+							//cout<<"server envio: "<<parametros->buffer<<endl;
 						}
 
 						if (result==0){
@@ -73,47 +74,54 @@ void *HiloEnviarCliente::clienteEnviar(void *args){
 
 void HiloEnviarCliente::Join()
 {
-	continuar = false;
+	this->log->addLogMessage("[JOIN] Iniciado.",2);
+	//cout << "Inicio Join del enviar \n";
+	parametros.continuar = false;
+
 	hilo->Join();
+	//cout << "Join del enviar todo ok. \n";
+	this->log->addLogMessage("[JOIN] Terminado. \n",2);
 }
 
 void HiloEnviarCliente::iniciarHiloQueue(){
 
-	Hilo hilos = Hilo(/*log*/);
-	hilos.Create((void *)HiloEnviarCliente::clienteEnviarQueue ,  (void *)&parametros);
-	//this->setH(hilos);
+	this->log->addLogMessage("[INICIAR HILO QUEUE] Iniciado.",2);
+	hilo = new Hilo(/*log*/);
+
+	hilo->Create((void *)HiloEnviarCliente::clienteEnviarQueue ,  (void *)&parametros);
+	this->log->addLogMessage("[INICIAR HILO QUEUE] Terminado.",2);
 }
 
 void* HiloEnviarCliente::clienteEnviarQueue(void* args){
 
 	SerParametros *parametros = (SerParametros*) args;
-	bool salir = false;
-	while(salir == false){
+	parametros->continuar = true;
+	while(parametros->continuar == true){
 		int result = 1;
-			while (result>0){
-				if(parametros->pack.getColaPaquetes().empty() != true)
-				{
+			//while (result>0){
+			if(parametros->pack.getColaPaquetes().empty() != true)
+			{
 				parametros->bufferQ = parametros->pack.obtenerElementoDelaCola();
 
 				result = parametros->cliente->enviar(parametros->bufferQ,strlen(parametros->bufferQ));
 
 				if (result>0){
-					cout<<"server envio: "<<parametros->bufferQ<<endl;
+					//cout<<"server envio: "<<parametros->bufferQ<<endl;
 					parametros->pack.eliminarElPrimetoDeLaCola();
 				}
 
 				if (result==0){
 					printf("El cliente se desconecto. \n");
-					salir = false;
+					parametros->continuar = false;
 				}
 
 				if (result==-1){
 					printf("El cliente se desconecto. \n");
-					salir = false;
+					parametros->continuar = false;
 				}
 				parametros->bufferQ = "";
-				}
 			}
+			//}
 		}
 }
 

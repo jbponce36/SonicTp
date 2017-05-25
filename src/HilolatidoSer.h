@@ -17,8 +17,10 @@ namespace std {
 class HilolatidoSer {
 private:
 	bool salir;
+	Logger *log;
+
 public:
-	HilolatidoSer();
+	HilolatidoSer(Logger *log);
 	virtual ~HilolatidoSer();
 	void IniciarHilo();
 	void terminarHilo();
@@ -33,12 +35,9 @@ public:
 			bool continuar;
 	};
 	Serparametros parametros;
-	Hilo gethilo();
-
-	void setH(Hilo);
 
 private:
-		Hilo h;
+		Hilo *hilo;
 };
 
 } /* namespace std */
