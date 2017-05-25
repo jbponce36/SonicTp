@@ -34,7 +34,6 @@ void Anillos::cargardatos(SDL_Renderer *render){
 		cout<<"ANILLOS"<<endl;
 		this->texturaAnillo = new Textura();
 
-		cout << "Voy a cargar imagen" << endl;
 		this->texturaAnillo->cargarImagen(getRutaImagen(),getRutaImagen(),render,this->getLog());
 
 		this->cargarspriteanillo();
@@ -194,8 +193,8 @@ void Anillos::cargarspriteanillo(){
 void Anillos::render(int camX, int camY){
 	SDL_Rect cuadroDeVentana;
 
-	cuadroDeVentana.x=(x-camX);
-	cuadroDeVentana.y=(y-camY);
+	cuadroDeVentana.x=(obtenerX()-camX);
+	cuadroDeVentana.y=(obtenerY()-camY);
 	cuadroDeVentana.w=ancho;
 	cuadroDeVentana.h=alto;
 	animacionActual->dibujar(cuadroDeVentana);

@@ -250,18 +250,12 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenM
 void Control::animarAnilla(Camara *camara,VistaSDL *vista)
 {
 	list<Anillos*>:: iterator pos;
-    //anilla->cargardatos(vista->obtenerRender());
 
 	for(pos = vista->getConstructorEntidades()->anillos.begin();pos != vista->getConstructorEntidades()->anillos.end();pos++)
 	{
-		//anilla->cargardatos(vista->obtenerRender());
-
 		(*pos)->cargardatos(vista->obtenerRender());
-
 		(*pos)->render(camara->getPosicionX(),camara->getPosicionY());
 	}
-
-	//SDL_RenderPresent( vista->obtenerRender());
 }
 
 Control::~Control() {
