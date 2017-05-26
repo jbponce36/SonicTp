@@ -48,7 +48,7 @@ void Anillos::Comenzar(){
 }
 void Anillos::dibujar(SDL_Renderer *renderer, SDL_Rect *camara){
 
-this->Anianillo->comenzar();
+//this->Anianillo->comenzar();
 /*	if (obtenerImagen() == NULL)
 		{
 			std::cout << "No se cargo la imagen" << std::endl;

@@ -63,6 +63,11 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					    printf("****** La conexion fue rechaza por el servidor ******* \n");
 					    parametros->continuar = false;
 
+					    if(parametros->vcIniciarJuego != NULL)
+						{
+							parametros->vcIniciarJuego->notificarTodos();
+						}
+
 					}
 
 
@@ -75,7 +80,6 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				         //parametros->colaPaquete.agregar("[INICIAR JUEGO]");
 				         if(parametros->vcIniciarJuego != NULL)
 				         {
-				        	 //cout << "Ya notifique" << endl;
 				        	 parametros->vcIniciarJuego->notificarTodos();
 				         }
 					}
@@ -89,6 +93,10 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					parametros->colaPaquete.agregar("Servidor Desconectado");
 					parametros->continuar = false;
 
+					if(parametros->vcIniciarJuego != NULL)
+					{
+						parametros->vcIniciarJuego->notificarTodos();
+					}
 				}
 				//cargamos los datos de todos los personajes que vienen desde el servidor, estos datos deben actualizar
 				//la vista, etc
@@ -114,7 +122,7 @@ void HiloRecibirCliente::Join()
 std::string HiloRecibirCliente::obtenerElementoDeLaCola()
 {
 	//Obtiene el primer elemento de la cola y lo saca.
-	if(! parametros.colaPaquete.getColaPaquetes().empty())
+	if(!parametros.colaPaquete.estaVacia())
 	{
 		//Posicion *pos = parametros.colaPaquete.obtenerElementoDelaCola();
 		//std::string str = pos->getCoordenadas();
@@ -136,6 +144,18 @@ std::string HiloRecibirCliente::obtenerPosicionDeLaCola()
 		char *cadena = parametros.colaPaquete.obtenerElementoDelaCola();
 		std::string str = std::string(cadena);
 		parametros.colaPaquete.eliminarElPrimetoDeLaCola();
+		return str;
+	}
+	return "Sin elementos";
+}
+
+std::string HiloRecibirCliente::mirarPrimerElementoDeLaCola()
+{
+	//Obtiene el primer elemento de la cola sin sacarlo.
+	if(!parametros.colaPaquete.estaVacia())
+	{
+		char *cadena = parametros.colaPaquete.obtenerElementoDelaCola();
+		std::string str = std::string(cadena);
 		return str;
 	}
 	return "Sin elementos";

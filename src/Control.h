@@ -16,6 +16,7 @@
 #include "Anillos.h"
 #include "Colicion.h"
 #include "debug.h"
+#include "Util.h"
 
 
 #define FPS 25
@@ -27,11 +28,12 @@ private:
 	int posicionInicialY;
 	Logger *log;
 	bool salir;
-	Paquete *colaPaquete;
     Colicion *colicion;
 	std::vector<Personaje*> *sonics; //Tiene todos los sonics
 	int maxJugadores;
 	Anillos *anilla;
+	ConstructorEntidades *constructorEntidades;
+	VistaSDL *vista;
 
 public:
 	typedef struct mensajePosicion{
@@ -42,7 +44,7 @@ public:
 			int indiceAnimacion;
 	}mensajePosicion;
 
-	Control(int posicionX, int posicionY, int maxJugadores, std::vector<Personaje*> *sonics, Logger *log);
+	Control(int posicionX, int posicionY, int maxJugadores, std::vector<Personaje*> *sonics, Logger *log, VistaSDL *vista);
 	virtual ~Control();
 	int getPosicionInicialX();
 	int getPosicionInicialY();
@@ -53,7 +55,8 @@ public:
 
 
 	void ChequearColicionAnillo(VistaSDL *vista,std::vector<Personaje*> *sonics,Colicion *colicion);
-
+	void inicializarEscenario(HiloRecibirCliente *hiloRecibir);
+	void manejarMensajeEntidad(std::string mensaje);
 
 private:
 	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista,

@@ -174,7 +174,7 @@ int JuegoCliente::inicializarJuegoCliente()
 	if(control != NULL){
 		delete control;
 	}
-	control = new Control(0, 0, maxJugadores, &sonics, log);
+	control = new Control(0, 0, maxJugadores, &sonics, log, vista);
 
 	this->log->addLogMessage("[INICIALIZAR JUEGO CLIENTE] Terminado. \n",2);
 	return 0;
@@ -221,7 +221,12 @@ void JuegoCliente::iniciarJuegoControlCliente()
 			}
 
 			vcIniciarJuego.desbloquearMutex();
-			mensaje = hiloRecibir->obtenerElementoDeLaCola(); //Saca el mensaje [INICIAR JUEGO] de la cola
+
+			//Se fija si es el mensaje de inicio de juego y si es asi lo saca de la cola.
+			mensaje = hiloRecibir->mirarPrimerElementoDeLaCola();
+			if(mensaje.compare("[INICIAR JUEGO]") == 0){
+				mensaje = hiloRecibir->obtenerElementoDeLaCola(); //Saca el mensaje [INICIAR JUEGO] de la cola
+			}
 		}
 	}
 	else if(mensaje.compare("[INICIAR JUEGO]") == 0)

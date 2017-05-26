@@ -241,10 +241,6 @@ void ControlServidor::actualizarVistaServidor(Camara *camara)
 
 	std::string mensajeCamara = MENSAJE_CAMARA + camara->obtenerMensajeEstado() + PADDING + PADDING;
 	enviarATodos(mensajeCamara);
-
-	//TODO: Tambien deberia mandarles los anillos recolectados y puntaje de cada uno.
-
-
 }
 
 std::string ControlServidor::intToString(int number)
@@ -283,6 +279,8 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 	//Le aviso a todos los jugadores que inicio el juego
 	server->comenzarPartida(*hilosEnviar);
+
+	mundo.enviarDatosEscenario(hilosEnviar);
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !juegoTerminado ){

@@ -1,11 +1,15 @@
 #include "Control.h"
 #define MODULO 'CONTROL'
 
-Control::Control(int posicionX, int posicionY, int maxJugadores, std::vector<Personaje*> *sonics, Logger *log)
+Control::Control(int posicionX, int posicionY, int maxJugadores, std::vector<Personaje*> *sonics, Logger *log, VistaSDL *vista)
 : posicionInicialX(posicionX), posicionInicialY(posicionY),
-  log(log), salir(false), sonics(sonics), maxJugadores(maxJugadores)
+  log(log), salir(false), sonics(sonics), maxJugadores(maxJugadores), vista(vista), constructorEntidades(vista->getConstructorEntidades())
 {
 	this->log->setModulo("CONTROL");
+}
+
+Control::~Control() {
+	// TODO Auto-generated destructor stub
 }
 
 int Control::getPosicionInicialX(){
@@ -36,9 +40,12 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 		sonicsMapa[(*pos)->getId()] = (*pos);
 	}
 
+	salir = false;
+
 	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana(), &sonicsMapa);
     Colicion *colicion = new Colicion();
-	salir = false;
+
+    inicializarEscenario(hiloRecibir);
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !salir ){
@@ -47,7 +54,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 		administrarTeclas(&controlador, sonic, vista, hiloEnviar,hiloRecibir, hiloLatido, opcionMenu);
 		controlDeMensajes(sonic, hiloRecibir, vista, camara);
 		actualizarVista(camara, vista, &imagenMostrar, sonic);
-		this->ChequearColicionAnillo(vista,sonics,colicion);
+		//this->ChequearColicionAnillo(vista,sonics,colicion);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
 		tiempoFin = SDL_GetTicks();
@@ -161,7 +168,7 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 			printf("Cerrando el juego...\n");
 			this->salir = true;
 		}
-		else if (mensaje.substr(0,3) ==  MENSAJE_CAMARA)
+		else if(mensaje.substr(0,3) ==  MENSAJE_CAMARA)
 		{
 			int nuevoX, nuevoY;
 			parsearMensajeCamara(nuevoX, nuevoY, mensaje);
@@ -258,6 +265,41 @@ void Control::animarAnilla(Camara *camara,VistaSDL *vista)
 	}
 }
 
-Control::~Control() {
-	// TODO Auto-generated destructor stub
+void Control::inicializarEscenario(HiloRecibirCliente *hiloRecibir)
+{
+	this->log->addLogMessage("[INICIALIZAR ESCENARIO CLIENTE] Iniciado.",2);
+	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
+	cout << mensaje << "\n";
+	while (mensaje != FIN_MENSAJE_ESCENARIO)
+	{
+		if(mensaje != "Sin elementos")
+		{
+			cout << mensaje << "\n";
+			if(mensaje.compare("Servidor Desconectado") == 0)
+			{
+				salir = true;
+				return;
+			}
+			else if (mensaje.substr(0,1).compare("E") == 0)
+			{
+				manejarMensajeEntidad(mensaje);
+			}
+		}
+		mensaje = hiloRecibir->obtenerElementoDeLaCola();
+	}
+	this->log->addLogMessage("[INICIALIZAR ESCENARIO CLIENTE] Terminado.",2);
 }
+
+void Control::manejarMensajeEntidad(std::string mensaje)
+{
+	//Ej mensaje: BON---1x--10y--20
+	std::string nombre = mensaje.substr(0,3);
+	int id = Util::stringConPaddingToInt(mensaje.substr(3, MAX_CANT_DIGITOS_POS).c_str());
+	int x = Util::stringConPaddingToInt(mensaje.substr(8, MAX_CANT_DIGITOS_POS).c_str());
+	int y = Util::stringConPaddingToInt(mensaje.substr(13, MAX_CANT_DIGITOS_POS).c_str());
+	cout << "Entidad " << nombre << " con id: "<< id << " en x: " << x << " y: " << y << "\n";
+
+	constructorEntidades->agregarEntidad(nombre, id, x, y);
+
+}
+

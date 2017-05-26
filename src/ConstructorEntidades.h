@@ -16,8 +16,8 @@
 #include <list>
 #include "Anillos.h"
 #include <time.h>
-
-
+#include <map>
+#include "Bonus.h"
 
 #define MAX_ID 100
 #define MAX_ANCHO 4000
@@ -33,6 +33,7 @@ class ConstructorEntidades {
 private:
 	list<Entidad*> entidades;
 	Logger *log;
+	std::map<int, Bonus*> bonus;
 
 public:
 
@@ -49,6 +50,11 @@ public:
 	list<Entidad*>getEntidades();
 
 	void setEntidades(list<Entidad*> Entidades);
+
+	void agregarEntidad(std::string nombre, int id, int x, int y);
+	void agregarBonus(int idBonus, int x, int y);
+	void quitarBonus(int id);
+	bool existeBonus(int id);
 
 private:
 
