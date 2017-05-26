@@ -15,9 +15,10 @@
 #include <vector>
 #include <map>
 #include <string>
+#include "Colicion.h"
 
 class Mundo {
-private:
+public:
 	std::map<int, Personaje*> *sonics;
 	VistaSDL *vista;
 	ConstructorEntidades *constructorEntidades;
