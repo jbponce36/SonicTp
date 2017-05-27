@@ -15,6 +15,16 @@
 			"id": 2,
 			"index_z": 98,
 			"ruta_imagen":"images/capa1rnueva.png"
+			},
+			{
+			"id": 3,
+			"index_z": 99,
+			"ruta_imagen":"images/capa0nivel2.png"
+			},
+			{
+			"id": 4,
+			"index_z": 98,
+			"ruta_imagen":"images/capa1rnueva.png"
 			}
 		],
 		"entidades": [
