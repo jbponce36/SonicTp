@@ -18,7 +18,7 @@ ConstructorEntidades::ConstructorEntidades()
 
 }
 
-ConstructorEntidades::ConstructorEntidades(Logger *log)
+ConstructorEntidades::ConstructorEntidades(Logger *log) : bonus()
 {
 	this->log = log;
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
@@ -115,7 +115,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
                     this->anillos.push_back(anillo);
                   //  this->cargarImagenesAnillas(renderizador);
 
-
+                    entidades.push_back(anillo);
 
 			    }
 
@@ -283,4 +283,53 @@ list<Entidad*> ConstructorEntidades::getEntidades() {
 void ConstructorEntidades::setEntidades(list<Entidad*> Entidades) {
 		this->entidades = Entidades;
 }
+
+
+
+
+//Todas estas para el cliente--------------
+void ConstructorEntidades::agregarEntidad(std::string nombre, int id, int x, int y)
+{
+	if(nombre == BONUS)
+	{
+		agregarBonus(id, x, y);
+	}
+	//.... Mas entidades para agregar
 }
+
+void ConstructorEntidades::quitarEntidad(std::string nombre, int id)
+{
+	if(nombre == BONUS)
+	{
+		quitarBonus(id);
+	}
+	//.... Mas entidades para sacar
+}
+
+void ConstructorEntidades::agregarBonus(int idBonus, int x, int y)
+{
+	Bonus* nuevoBonus = new Bonus(100, 100, idBonus, "Rojo", "images/Bonus.png", x, y, 98, log);
+	this->bonus[idBonus] = nuevoBonus;
+}
+
+void ConstructorEntidades::quitarBonus(int id)
+{
+	std::map<int, Bonus*>::iterator iter = bonus.find(id);
+	if (iter != bonus.end())
+	{
+		bonus.erase(iter);
+	}
+}
+
+bool ConstructorEntidades::existeBonus(int id)
+{
+	std::map<int, Bonus*>::iterator iter = bonus.find(id);
+	if (iter != bonus.end())
+	{
+		return true;
+	}
+	return false;
+}
+
+
+}//Namespace

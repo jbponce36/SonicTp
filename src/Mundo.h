@@ -12,6 +12,7 @@
 #include "VistaSDL.h"
 #include "Bonus.h"
 #include "Hiloenviar.h"
+#include "Util.h"
 #include <vector>
 #include <map>
 #include <string>
@@ -31,6 +32,7 @@ public:
 	Mundo(std::map<int, Personaje*> *sonics, VistaSDL *vista);
 	virtual ~Mundo();
 	void manejarColisiones();
+	void enviarDatosEscenario(std::vector<Hiloenviar*> *hilosEnviar);
 
 private:
 	void enviarATodos(std::vector<Hiloenviar*> *hilosEnviar, std::string mensaje);
