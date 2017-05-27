@@ -71,7 +71,7 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 				hiloEnviar->enviarDato(buffer);
 				adm->pasarDeNivel();
 				adm->cargarNivel(vista,sonic);
-			}
+				break;}
 			case SDLK_q:{
 				opcionMenu = vista->mostraMenuInicial(vista->getLog());
 				switch(opcionMenu)
