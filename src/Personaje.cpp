@@ -33,8 +33,8 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
+    this->puntaje = new Puntaje(id, log, render);
     cargarSpriteSonic();
-
     this->log = log;
 }
 
@@ -68,10 +68,9 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
+    this->puntaje = new Puntaje(id, log, render);
     cargarSpriteSonic();
-
     this->log = log;
-
     this->cliente = cliente;
 }
 
@@ -79,6 +78,7 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 {
 	int maximoAlto = limites->h;
 	int maximoAncho = limites->w;
+	this->puntaje->setPosicionX(limites->x);
 
 	/*Limite en el suelo.*/
 	maximoAlto -= (maximoAlto/5);
@@ -168,6 +168,7 @@ void Personaje::cargarSpriteSonic(){
 	animacionSaltarIzq.cargarSpritesAlReves(1, 5, 9);
 
 	animacionCongelado.cargarSprites(0, 0, 1);
+	puntaje->getAnimacionPuntaje().cargarSprites(0,0,1);
 
 	animacionActual = &animacionQuietoDer;
 
@@ -273,6 +274,7 @@ Personaje::~Personaje(){
 	{
 		delete texturaCongelado;
 	}
+	delete puntaje;
 }
 
 void Personaje::dejarDeEstarQuieto()

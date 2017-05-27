@@ -19,6 +19,7 @@
 #define ANIMACION_SALTAR_IZQUIERDA 	"AsI"
 
 #define ANIMACION_CONGELADO			"Acg"
+#define PUNTAJE						"Ptj"
 
 #define TECLA_ARRIBA_PRESIONADA 	"TuP"
 #define TECLA_ABAJO_PRESIONADA 		"TdP"

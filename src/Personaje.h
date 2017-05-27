@@ -12,6 +12,7 @@
 #include "HiloEnviarCliente.h"
 #include "Definiciones.h"
 #include "Entidad.h"
+#include "Puntaje.h"
 
 #define GRAVEDAD 9
 #define IMAGEN_POR_DEFECTO "images/sonicSprite.png"
@@ -26,6 +27,7 @@ class Personaje
 
 		Textura *texturaSonic;
 		Textura *texturaCongelado;
+		Textura *texturaPuntaje;
 
 		int id;
 		int personajeAncho;
@@ -48,6 +50,7 @@ class Personaje
 		Animacion *animacionActual;
 
 		Orientacion orientacion;
+		Puntaje *puntaje;
 
 		bool saltando;
 		bool corriendo;
