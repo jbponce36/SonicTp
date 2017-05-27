@@ -179,7 +179,6 @@ void ControlServidor::moverSonicsSegunTeclas()
 		if(t.teclaIzquierda){
 			sonic->irIzquierda();
 		}
-
 	}
 }
 
