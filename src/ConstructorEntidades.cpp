@@ -294,6 +294,16 @@ void ConstructorEntidades::agregarEntidad(std::string nombre, int id, int x, int
 	{
 		agregarBonus(id, x, y);
 	}
+	//.... Mas entidades para agregar
+}
+
+void ConstructorEntidades::quitarEntidad(std::string nombre, int id)
+{
+	if(nombre == BONUS)
+	{
+		quitarBonus(id);
+	}
+	//.... Mas entidades para sacar
 }
 
 void ConstructorEntidades::agregarBonus(int idBonus, int x, int y)

@@ -32,8 +32,8 @@ private:
 	std::vector<Personaje*> *sonics; //Tiene todos los sonics
 	int maxJugadores;
 	Anillos *anilla;
-	ConstructorEntidades *constructorEntidades;
 	VistaSDL *vista;
+	ConstructorEntidades *constructorEntidades;
 
 public:
 	typedef struct mensajePosicion{
@@ -56,7 +56,8 @@ public:
 
 	void ChequearColicionAnillo(VistaSDL *vista,std::vector<Personaje*> *sonics,Colicion *colicion);
 	void inicializarEscenario(HiloRecibirCliente *hiloRecibir);
-	void manejarMensajeEntidad(std::string mensaje);
+	void agregarEntidad(std::string mensaje);
+	void quitarEntidad(std::string mensaje);
 
 private:
 	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista,

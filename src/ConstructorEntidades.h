@@ -52,6 +52,7 @@ public:
 	void setEntidades(list<Entidad*> Entidades);
 
 	void agregarEntidad(std::string nombre, int id, int x, int y);
+	void quitarEntidad(std::string nombre, int id);
 	void agregarBonus(int idBonus, int x, int y);
 	void quitarBonus(int id);
 	bool existeBonus(int id);
