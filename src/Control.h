@@ -12,6 +12,7 @@
 #include <algorithm>
 #include "Paquete.h"
 #include "HilolatidoSer.h"
+#include "AdministradorDeNiveles.h"
 
 #define FPS 25
 #define TICKS_POR_FRAME 1000/FPS
@@ -26,6 +27,7 @@ private:
 
 	std::vector<Personaje*> *sonics; //Tiene todos los sonics
 	int maxJugadores;
+	AdministradorDeNiveles admDeNiveles;
 
 public:
 	typedef struct mensajePosicion{

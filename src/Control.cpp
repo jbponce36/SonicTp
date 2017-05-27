@@ -6,6 +6,7 @@ Control::Control(int posicionX, int posicionY, int maxJugadores, std::vector<Per
   log(log), salir(false), sonics(sonics), maxJugadores(maxJugadores)
 {
 	this->log->setModulo("CONTROL");
+	this->admDeNiveles;
 }
 
 int Control::getPosicionInicialX(){
@@ -23,9 +24,12 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	imagenMostrar.x = 0;
 	imagenMostrar.y = 0;
 	imagenMostrar.w = vista->obtenerAnchoVentana();
-
+	imagenMostrar.h = vista->getAltoEscenario();
 	//Uint32 tiempoDeJuego = 0;
 	Uint32 tiempoInicio, tiempoFin, delta;
+
+	admDeNiveles.setNivel(0);
+	this->admDeNiveles.cargarNivel(vista);
 
 	ControladorTeclas controlador = ControladorTeclas();
 
@@ -84,7 +88,7 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 		{
 			salir = true;
 		}
-		controlador->procesarEvento(e, sonic, hiloEnviar, hiloRecibir, hiloLatido, vista, opcionMenu); //Setea todas las teclas presionadas o liberadas
+		controlador->procesarEvento(e, sonic, hiloEnviar, hiloRecibir, hiloLatido, vista, opcionMenu,&admDeNiveles); //Setea todas las teclas presionadas o liberadas
 	}
 
 	//controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
@@ -198,10 +202,13 @@ void Control::parsearMensajePosicion(mensajePosicion& msj, std::string mensaje)
 
 void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic)
 {
+
+
+	this->admDeNiveles.mostrarNivel(camara,vista,imagenMostrar);
+
 	for(int contador = 0; contador < vista->cantidadCapasCargadas(); contador++)
 	{
-		imagenMostrar->h = vista->getAltoEscenario();
-		vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),imagenMostrar);
+		//vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),imagenMostrar);
 		vista->mostrarEntidades(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
 	}
 
