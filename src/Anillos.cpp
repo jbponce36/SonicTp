@@ -111,8 +111,8 @@ void Anillos::dibujar(SDL_Renderer *renderer, SDL_Rect *camara){
 			return;
 		}
 
-*/
 
+*/
 
 }
 
@@ -187,6 +187,8 @@ void Anillos::cargarspriteanillo(){
 
 	animacionActual = Anianillo;
 	animacionActual->comenzar();
+
+
 
 }
 

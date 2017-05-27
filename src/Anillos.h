@@ -54,6 +54,7 @@ public:
 	void render(int camX, int camY);
 	void Comenzar();
 
+
 private:
 	std::string ruta;
 	int ancho;

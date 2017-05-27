@@ -6,6 +6,7 @@
  */
 
 #include "Mundo.h"
+#include "Colicion.h"
 
 Mundo::Mundo(std::map<int, Personaje*> *sonics, VistaSDL *vista)
 : sonics(sonics), vista(vista), constructorEntidades(vista->getConstructorEntidades()), bonus()
@@ -68,12 +69,17 @@ void Mundo::enviarDatosEscenario(std::vector<Hiloenviar*> *hilosEnviar)
 void Mundo::manejarColisiones()
 {
 	std::map<int, Personaje*>::iterator pos;
+	list<Anillos*>:: iterator posanillo;
+
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
 		//Por cada sonic, fijarse si se intersecta con alguna de las cosas...?
 
+         for(posanillo = this->constructorEntidades->anillos.begin(); posanillo!= this->constructorEntidades->anillos.end();posanillo++){
 
 
+
+         }
 
 
 	}

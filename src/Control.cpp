@@ -1,4 +1,5 @@
 #include "Control.h"
+#include "debug.h"
 #define MODULO 'CONTROL'
 
 Control::Control(int posicionX, int posicionY, int maxJugadores, std::vector<Personaje*> *sonics, Logger *log, VistaSDL *vista)
@@ -54,7 +55,6 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 		administrarTeclas(&controlador, sonic, vista, hiloEnviar,hiloRecibir, hiloLatido, opcionMenu);
 		controlDeMensajes(sonic, hiloRecibir, vista, camara);
 		actualizarVista(camara, vista, &imagenMostrar, sonic);
-		//this->ChequearColicionAnillo(vista,sonics,colicion);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
 		tiempoFin = SDL_GetTicks();
@@ -114,6 +114,12 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 
 	while( SDL_PollEvent( &e ) != 0 )
 	{
+
+		if (e.key.keysym.sym ==  SDLK_w){
+			debug(1, "Control::administrarTeclas", "Voy a borrar las anillas", 0);
+			vista->getConstructorEntidades()->anillos.clear();
+		}
+
 		//usuario pide cierre
 		if( e.type == SDL_QUIT )
 		{
@@ -168,12 +174,20 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 			printf("Cerrando el juego...\n");
 			this->salir = true;
 		}
-		else if(mensaje.substr(0,3) ==  MENSAJE_CAMARA)
+	/*	else if (mensaje == "BORRARANILLA")
+		{
+			debug(1,"Control::controlDeMensajes", "Voy a sacar una anilla", 0);
+
+
+		}
+		*/
+		else if (mensaje.substr(0,3) ==  MENSAJE_CAMARA)
 		{
 			int nuevoX, nuevoY;
 			parsearMensajeCamara(nuevoX, nuevoY, mensaje);
 			camara->actualizarXY(nuevoX, nuevoY);
 		}
+
 		else{
 			//Otros mensajes
 			//cout << mensaje << endl;
