@@ -1,10 +1,10 @@
 {
-	"ventana": {"dimensiones": {"ancho": 1800, "alto": 1000}},
+	"ventana": {"dimensiones": {"ancho": 900, "alto": 700}},
 	"configuracion": {"vel_scroll": 350},
         "servidor":{"puerto": 8080,"clientes":4},
         "cliente":{"puerto": 8080,"IP":"127.0.0.1"},
 	"escenario": {
-		"dimensiones": {"ancho": 4000, "alto": 1000},
+		"dimensiones": {"ancho": 4000, "alto": 700},
 		"capas": [
 			{
 			"id": 1,
@@ -13,6 +13,16 @@
 			},
 			{
 			"id": 2,
+			"index_z": 98,
+			"ruta_imagen":"images/capa1rnueva.png"
+			},
+			{
+			"id": 3,
+			"index_z": 99,
+			"ruta_imagen":"images/capa0nivel2.png"
+			},
+			{
+			"id": 4,
 			"index_z": 98,
 			"ruta_imagen":"images/capa1rnueva.png"
 			}
