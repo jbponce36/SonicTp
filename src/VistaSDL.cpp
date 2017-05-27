@@ -178,7 +178,7 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 		this->log->addLogMessage("[CARGAR CAPAS] Textura cargada ->."+tex->toString(),3);
 		i++;
 	}
-	Textura *aux=NULL;
+	/*Textura *aux=NULL;
 	for (int i=1;i<capasFondo.size();i++)
 	{
 		for (int y=0;y< capasFondo.size()-1;y++)
@@ -193,7 +193,7 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 		}
 	}
 	aux=NULL;
-	this->log->setModulo("VISTA SDL");
+	*/this->log->setModulo("VISTA SDL");
 	this->log->addLogMessage("[CARGAR CAPAS] Terminado.",2);
 }
 
