@@ -132,8 +132,9 @@ void JuegoServidor::reconectar(int sock)
 	//Le mando un ID y la cantidad maxima de jugadores
 	ostringstream oss;
 	oss<< MENSAJE_ID << idLibre << server->getCantMaximaClientes();
-	char buffer[5] = "";
+	char buffer[6] = "";
 	string temp = oss.str();
+	temp = temp + SEPARADOR_DE_MENSAJE;
 	strcpy(buffer, temp.c_str());
 	cout << "Server envio ID+maxConexiones: " << buffer << endl;
 
@@ -142,7 +143,7 @@ void JuegoServidor::reconectar(int sock)
 
 	sleep(1);
 
-	char *inicio = "[INICIAR JUEGO]";
+	char *inicio = "[INICIAR JUEGO]$";
 	henviar->enviarDato(inicio);
 
 	sleep(1);

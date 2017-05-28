@@ -23,6 +23,7 @@ void Mundo::enviarATodos(std::vector<Hiloenviar*> *hilosEnviar, std::string mens
 {
 	//Envia el mensaje a todos los hilos enviar para que se lo mande a todos los clientes
 	char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
+	mensaje = mensaje + SEPARADOR_DE_MENSAJE;
 	strcpy(buffer, mensaje.c_str());
 
 	int id = 1;

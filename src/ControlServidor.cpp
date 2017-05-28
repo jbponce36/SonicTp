@@ -255,8 +255,12 @@ void ControlServidor::enviarATodos(std::string mensaje)
 {
 	//Envia el mensaje a todos los hilos enviar para que se lo mande a todos los clientes
 	char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
+	//cout<<"mensaje sin: "<<mensaje.size()<<endl;
+	mensaje = mensaje + SEPARADOR_DE_MENSAJE;
+	//cout<<"mensaje con: "<<mensaje.size()<<endl;
+	//cout<<"server envio: "<<mensaje<<endl;
 	strcpy(buffer, mensaje.c_str());
-
+	//cout<<"mensaje con buff: "<<strlen(buffer)<<endl;
 	int id = 1;
 	std::vector<Hiloenviar*>::iterator pos;
 	for(pos = hilosEnviar->begin();pos != hilosEnviar->end();pos++)
