@@ -309,14 +309,12 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 	//Agrego bonus de Escudo
 	int cantidadBonus = Util::numeroRandom(3);
 	int y = limiteAlto - alto;
-	cout << y << "y ";
 
 	for(int i = 0; i < cantidadBonus; i++)
 	{
 		//Divide el escenario en partes iguales del doble del ancho del bonus para que no se superpongan
 		//Y al sumarle 2*ancho hago que caiga en una de esas divisiones
 		int x = Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
-		cout << x << "x ";
 		Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::ESCUDO);
 		entidades.push_back(nuevoBonus);
 	}
@@ -326,7 +324,6 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 	for(int i = 0; i < cantidadBonus; i++)
 	{
 		int x = Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
-		cout << x << "x ";
 		Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::RING);
 		entidades.push_back(nuevoBonus);
 	}
@@ -336,7 +333,6 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 	for(int i = 0; i < cantidadBonus; i++)
 	{
 		int x = Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
-		cout << x << "x ";
 		Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::INVENCIBILIDAD);
 		entidades.push_back(nuevoBonus);
 	}
