@@ -24,7 +24,7 @@ void AdministradorDeNiveles::cargarNivel(VistaSDL* vista,Personaje* sonic){
 
 	this->capa0 = vista->obtenerTextura(this->nivelActual);
 	this->capa1 = vista->obtenerTextura(this->nivelActual + 1);
-	sonic->posicionarseEn(200,500);
+	//sonic->posicionarseEn(200,500);
 }
 
 void AdministradorDeNiveles::mostrarNivel(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar){

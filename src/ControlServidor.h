@@ -38,6 +38,8 @@ private:
 	Logger *log;
 
 
+	bool pasarNivel;
+
 	std::map<int, Personaje*> *sonics;
 	std::vector<Hiloenviar*> *hilosEnviar;
 	std::vector<Hilorecibir*> *hilosRecibir;
