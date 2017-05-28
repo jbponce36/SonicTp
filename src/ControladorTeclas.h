@@ -16,6 +16,7 @@
 #include "HiloRecibirCliente.h"
 #include "HilolatidoSer.h"
 #include "VistaSDL.h"
+#include "AdministradorDeNiveles.h"
 
 class ControladorTeclas {
 
@@ -30,7 +31,7 @@ public:
 	ControladorTeclas();
 	virtual ~ControladorTeclas();
 	void procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnviarCliente *hiloEnviar,
-		HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido,  VistaSDL *vista,int &opcionMenu);
+		HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido,  VistaSDL *vista,int &opcionMenu,AdministradorDeNiveles* adm);
 	void administrarTeclas(Personaje *sonic);
 
 private:

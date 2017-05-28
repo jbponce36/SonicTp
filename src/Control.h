@@ -12,6 +12,13 @@
 #include <algorithm>
 #include "Paquete.h"
 #include "HilolatidoSer.h"
+#include "ConstructorEntidades.h"
+#include "Anillos.h"
+#include "Colicion.h"
+#include "debug.h"
+#include "Util.h"
+#include "AdministradorDeNiveles.h"
+
 
 #define FPS 25
 #define TICKS_POR_FRAME 1000/FPS
@@ -22,10 +29,13 @@ private:
 	int posicionInicialY;
 	Logger *log;
 	bool salir;
-	Paquete *colaPaquete;
-
+    Colicion *colicion;
 	std::vector<Personaje*> *sonics; //Tiene todos los sonics
 	int maxJugadores;
+	Anillos *anilla;
+	VistaSDL *vista;
+	ConstructorEntidades *constructorEntidades;
+	AdministradorDeNiveles admNiveles;
 
 public:
 	typedef struct mensajePosicion{
@@ -36,15 +46,20 @@ public:
 			int indiceAnimacion;
 	}mensajePosicion;
 
-	Control(int posicionX, int posicionY, int maxJugadores, std::vector<Personaje*> *sonics, Logger *log);
+	Control(int posicionX, int posicionY, int maxJugadores, std::vector<Personaje*> *sonics, Logger *log, VistaSDL *vista);
 	virtual ~Control();
 	int getPosicionInicialX();
 	int getPosicionInicialY();
 	void ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic, HiloEnviarCliente *hiloEnviar,
 		HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, int &opcionMenu);
 	void parsearMensajeCamara(int &xDest, int &yDest, std::string mensaje);
-	void parsearMensajePosicion(mensajePosicion& msjParseado, std::string mensaje);
+	void parsearMensajePosicion(mensajePosicion& msjParseado, std::string mens0aje);
 
+
+	void ChequearColicionAnillo(VistaSDL *vista,std::vector<Personaje*> *sonics,Colicion *colicion);
+	void inicializarEscenario(HiloRecibirCliente *hiloRecibir);
+	void agregarEntidad(std::string mensaje);
+	void quitarEntidad(std::string mensaje);
 
 private:
 	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista,
@@ -55,6 +70,7 @@ private:
 
 	void controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibir, VistaSDL *vista, Camara *camara);
 	void actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic);
+	void animarAnilla(Camara *camara,VistaSDL *vista);
 	std::string intToString(int numero);
 
 };

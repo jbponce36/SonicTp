@@ -21,6 +21,8 @@ public:
     string toString();
     SDL_Rect obtenerLimites();
     bool intersecta(Rectangulo &otroRectangulo);
+    int obtenerAncho();
+    int obtenerAlto();
 
 private:
     std::string intToString(int number);

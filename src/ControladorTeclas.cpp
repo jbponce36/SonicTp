@@ -26,7 +26,7 @@ std::string ControladorTeclas::intToString(int number)
 
 
 void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnviarCliente *hiloEnviar,
-	HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, VistaSDL *vista, int &opcionMenu)
+	HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, VistaSDL *vista, int &opcionMenu,AdministradorDeNiveles* adm)
 {
 	//Al presionar o soltar una tecla se ejecuta una sola vez el codigo correspondiente
 
@@ -62,6 +62,15 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 				mensaje = TECLA_CORRER_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, TECLA_CORRER_PRESIONADA);
 				teclaCorrer = true;
+				break;}
+			case SDLK_n:{
+				//tecla pasar de nivel luego pasara cuando se mate al monstruo de cada nivel o al finalizar el nivel
+				char buffer [40];
+				std::string msjPasarNivel = "PASARNIVEL" ;
+				strcpy(buffer, msjPasarNivel.c_str());
+				hiloEnviar->enviarDato(buffer);
+				adm->pasarDeNivel();
+				adm->cargarNivel(vista,sonic);
 				break;}
 			case SDLK_q:{
 				opcionMenu = vista->mostraMenuInicial(vista->getLog());

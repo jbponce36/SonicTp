@@ -66,4 +66,3 @@ string Posicion::toString(){
 	return "Posicion-> fecha: "+ this->fecha+", coordenadas: "+ this->coordenadas;
 }
 
-

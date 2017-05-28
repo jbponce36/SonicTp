@@ -1,8 +1,8 @@
 {
-	"ventana": {"dimensiones": {"ancho": 1000, "alto": 700}},
-	"configuracion": {"vel_scroll": 200},
-        "servidor":{"puerto": 8080,"clientes":2},
-        "cliente":{"puerto": 3316,"IP":"127.0.0.1"},
+	"ventana": {"dimensiones": {"ancho": 900, "alto": 700}},
+	"configuracion": {"vel_scroll": 350},
+        "servidor":{"puerto": 8080,"clientes":4},
+        "cliente":{"puerto": 8080,"IP":"127.0.0.1"},
 	"escenario": {
 		"dimensiones": {"ancho": 4000, "alto": 700},
 		"capas": [
@@ -15,6 +15,16 @@
 			"id": 2,
 			"index_z": 98,
 			"ruta_imagen":"images/capa1rnueva.png"
+			},
+			{
+			"id": 3,
+			"index_z": 99,
+			"ruta_imagen":"images/capa0nivel2.png"
+			},
+			{
+			"id": 4,
+			"index_z": 98,
+			"ruta_imagen":"images/capa1rnueva.png"
 			}
 		],
 		"entidades": [
@@ -22,22 +32,31 @@
 			"id": 1,
 			"tipo": "rectangulo",
 			"color": "rojo",
-			"dimensiones": {"ancho": 40, "alto": 20},
+			"dimensiones": {"ancho": 64, "alto": 64},
 			"coordenada": {"x": 300, "y": 300},
-			"ruta_imagen": "images/entidad1.png",
-			"index_z": 99
+			"ruta_imagen": "images/Anillas.png",
+			"index_z": 98
 		},
 		{
 			"id": 2,
 			"tipo": "rectangulo",
 			"color": "verde",
-			"dimensiones": {"ancho": 80, "alto": 35},
-			"coordenada": {"x": 200, "y": 100},
-			"ruta_imagen": "images/entidad2.png",
+			"dimensiones": {"ancho": 235, "alto": 177},
+			"coordenada": {"x": 10, "y": 10},
+			"ruta_imagen": "images/puntaje.png",
 			"index_z": 99
 		},
 		{
 			"id": 3,
+			"tipo": "rectangulo",
+			"color": "verde",
+			"dimensiones": {"ancho": 100, "alto": 100},
+			"coordenada": {"x": 0, "y": 0},
+			"ruta_imagen": "images/Bonus.png",
+			"index_z": 98
+		},
+		{
+			"id": 4,
 			"tipo": "circulo",
 			"color": "amarillo",
 			"dimensiones": {"radio": 15},

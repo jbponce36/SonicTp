@@ -37,6 +37,12 @@
 #define MENSAJE_DESCONEXION_CLIENTE	"DES"
 #define MENSAJE_ID					"IDi"
 
+//Mensajes de entidades empiezan con E
+#define ANILLOS                     "EAn"
+#define BONUS						"EBo"
+
+#define FIN_MENSAJE_ESCENARIO		"FIN_CARGA_ESCEN"
+
 #define PADDING 						'-'
 #define MAX_CANT_DIGITOS_POS 			4
 #define LARGO_MENSAJE_POSICION_CLIENTE 	30

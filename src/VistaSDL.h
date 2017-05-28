@@ -38,7 +38,7 @@ class VistaSDL{
 
 private:
 	SDL_Window* ventana;
-	SDL_Renderer* renderizador;
+	//SDL_Renderer* renderizador;
 	SDL_Surface* superficiePantalla;
 	SDL_Surface* superficieACargar;
 	int velocidadScroll;
@@ -53,6 +53,7 @@ private:
     Logger *log;
     bool oculta;
 public:
+    SDL_Renderer* renderizador;
     VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion, jescenario *jescenario, Logger *logger, bool oculta);
     void cargarImagen();
     int obtenerAltoVentana();
@@ -74,10 +75,15 @@ public:
     void cerrar();
     ~VistaSDL();
     void mostrarEntidades(SDL_Rect *camara, int indexZ);
+    void mostrarAnillas(SDL_Rect *camara, int indexZ);
     Logger *getLog() const;
     void setLog(Logger *log);
     string intToString(int number);
     int getAltoEscenario();
+
+	ConstructorEntidades* getConstructorEntidades();
+
+	void setConstructorEntidades(ConstructorEntidades* ConstructorEntidades);
 };
 
 

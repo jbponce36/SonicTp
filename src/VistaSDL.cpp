@@ -34,7 +34,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->validacionesEscenario(jescenario);
 	this->crearVentanaYrenderizador();
 	this->velocidadScroll=jconfiguracion->getvelscroll();
-	this->constructorEntidades = new ConstructorEntidades(logger);
+	this->constructorEntidades = new ConstructorEntidades(anchoescenario, 4*altoescenario/5, logger);
 	constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
 	this->cargarCapas(jescenario);
 
@@ -178,7 +178,7 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 		this->log->addLogMessage("[CARGAR CAPAS] Textura cargada ->."+tex->toString(),3);
 		i++;
 	}
-	Textura *aux=NULL;
+	/*Textura *aux=NULL;
 	for (int i=1;i<capasFondo.size();i++)
 	{
 		for (int y=0;y< capasFondo.size()-1;y++)
@@ -193,7 +193,7 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 		}
 	}
 	aux=NULL;
-	this->log->setModulo("VISTA SDL");
+	*/this->log->setModulo("VISTA SDL");
 	this->log->addLogMessage("[CARGAR CAPAS] Terminado.",2);
 }
 
@@ -271,6 +271,10 @@ void VistaSDL::mostrarEntidades(SDL_Rect *camara, int indexZ)
 	constructorEntidades->mostrarEntidades(renderizador, camara, indexZ);
 }
 
+void VistaSDL::mostrarAnillas(SDL_Rect *camara, int indexZ)
+{
+  constructorEntidades->mostrarAnillas(renderizador, camara, indexZ);
+}
 Logger *VistaSDL::getLog() const
 {
     return log;
@@ -454,3 +458,12 @@ void VistaSDL::mostrarServidorDesconectado()
 int VistaSDL::getAltoEscenario(){
 	return this->altoescenario;
 }
+
+ConstructorEntidades* VistaSDL::getConstructorEntidades()  {
+		return constructorEntidades;
+}
+
+void VistaSDL::setConstructorEntidades(ConstructorEntidades* ConstructorEntidades) {
+
+		this->constructorEntidades = ConstructorEntidades;
+	}

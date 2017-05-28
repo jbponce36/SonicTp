@@ -14,6 +14,11 @@
 #include "Circulo.h"
 #include "Logger.h"
 #include <list>
+#include "Anillos.h"
+#include <time.h>
+#include <map>
+#include "Bonus.h"
+#include "Util.h"
 
 #define MAX_ID 100
 #define MAX_ANCHO 4000
@@ -23,28 +28,50 @@
 #define MAX_INDEXZ 99
 #define MAX_RADIO 500
 
+#define ALTO_ESCENARIO
+
 namespace std{
 
 class ConstructorEntidades {
 private:
+	int generadorId;
+	int limiteAncho;  //Es el ancho de todo el escenario menos el final
+	int limiteAlto; //Es la altura del pasto
 	list<Entidad*> entidades;
 	Logger *log;
+	std::map<int, Bonus*> bonus;
 
 public:
-	ConstructorEntidades();
-	ConstructorEntidades(Logger *log);
+
+	list<Anillos*> anillos;
+
+	ConstructorEntidades(int limiteAncho, int limiteAlto, Logger *log);
+	int generarId();
 	void cargarEntidades(list<jentidades> entidades, SDL_Renderer *renderizador);
 	void mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
+	void mostrarAnillas(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
 	virtual ~ConstructorEntidades();
     Logger* getLog() const;
     void setLog(Logger *log);
 
+	list<Entidad*>getEntidades();
+
+	void setEntidades(list<Entidad*> Entidades);
+
+	void agregarEntidadCliente(std::string nombre, int id, int x, int y);
+	void quitarEntidad(std::string nombre, int id);
+
+	void generarBonus(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ);
+
 private:
+
 	void ordenarSegunIndexZ();
 	void cargarImagenes(SDL_Renderer *renderizador);
+	void cargarImagenesAnillas(SDL_Renderer *renderizador);
 	void validarDatosNumericos(int &id, int &coordX, int &coordY, int &indexZ);
 	void validarCuadrado(int &ancho, int &alto);
 	void validar(int &numero, int minimo, int maximo);
+
 
 };
 

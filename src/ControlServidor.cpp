@@ -6,12 +6,15 @@
  */
 
 #include "ControlServidor.h"
+#include "Colicion.h"
+#include "debug.h"
 
-ControlServidor::ControlServidor(int posicionX, int posicionY, std::map<int, Personaje*> *sonics,
+ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, std::map<int, Personaje*> *sonics,
 	std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
 	ConexServidor *server, Logger *log)
-: posicionInicialX(posicionX), posicionInicialY(posicionY), server(server), log(log),
-  sonics(sonics), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir), teclas()
+: posicionInicialX(posicionX), posicionInicialY(posicionY), vista(vista), server(server), log(log),
+  sonics(sonics), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir), teclas(),
+  /*constructorEntidades(vista->getConstructorEntidades()),*/ mundo(sonics, vista)
 {
 	teclasPresionadas t = {false, false, false, false, false};
 	posSonic ultimasPosiciones = {0, 300};
@@ -176,7 +179,6 @@ void ControlServidor::moverSonicsSegunTeclas()
 		if(t.teclaIzquierda){
 			sonic->irIzquierda();
 		}
-
 	}
 }
 
@@ -240,7 +242,6 @@ void ControlServidor::actualizarVistaServidor(Camara *camara)
 
 	std::string mensajeCamara = MENSAJE_CAMARA + camara->obtenerMensajeEstado() + PADDING + PADDING;
 	enviarATodos(mensajeCamara);
-
 }
 
 std::string ControlServidor::intToString(int number)
@@ -280,15 +281,21 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	//Le aviso a todos los jugadores que inicio el juego
 	server->comenzarPartida(*hilosEnviar);
 
-	//POR ACA DEBERIA IR mostrarMenuServer() en un hilo?Analizar que conviene.
+	mundo.enviarDatosEscenario(hilosEnviar);
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
+	Colicion *colicion = new Colicion();
 	while( !juegoTerminado ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
 		administrarTeclasServidor();
 
 		moverPersonajesServidor(tiempoDeJuego, vista, camara);
+
+		//chequearColisiones();//////////////////////////////////////////////////Aca se chequean las colisiones
+
+		//chequearColisiones();
+		chequearColicion(colicion);
 
 		actualizarVistaServidor(camara);
 
@@ -304,6 +311,35 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	cout<<juegoTerminado<<"::juego terminado"<<endl;
 	delete camara;
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
+}
+void ControlServidor::chequearColicion(Colicion *colicion){
+
+	std::map<int, Personaje*>::iterator pos;
+	list<Anillos*>:: iterator posanillo;
+
+	int numeroAnilla  = 1;
+	for(pos = sonics->begin();pos != sonics->end();pos++)
+	{
+		//this->constructorEntidades->anillos.
+		//Por cada sonic, fijarse si se intersecta con alguna de las cosas...?
+
+		 for(posanillo = this->mundo.constructorEntidades->anillos.begin(); posanillo!= this->mundo.constructorEntidades->anillos.end();posanillo++){
+			 Anillos *cls = (*posanillo);
+
+			 Personaje * cl2 = (*pos).second;
+
+			  if (colicion->intersectaAnilloPersonaje(cls, cl2)){
+				   debug(1,"ControlServidor::chequearColicion","COLISIONNNNN!!!!",1);
+
+				   //this->enviarATodos("BORRAR_ANILLA_" + numeroAnilla);
+			  }
+			  numeroAnilla++;
+
+		 }
+
+
+	}
+
 }
 
 int ControlServidor::mostrarMenuServer(){
@@ -327,3 +363,10 @@ int ControlServidor::mostrarMenuServer(){
 
 	return opcion;
 }
+
+/*void ControlServidor::chequearColisiones(){
+
+	mundo.manejarColisiones();
+
+}
+*/

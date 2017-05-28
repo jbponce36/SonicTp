@@ -171,6 +171,7 @@ void Personaje::cargarSpriteSonic(){
 
 	animacionActual = &animacionQuietoDer;
 
+
 }
 
 void Personaje::render( int camX, int camY){
@@ -533,3 +534,8 @@ std::string Personaje::obtenerMensajeEstado()
 			+ getNombreAnimacion() + getEstadoAnimacion());
 }
 
+SDL_Rect Personaje::obtenerLimites(){
+
+	SDL_Rect limites = { this->posicionX, this->posicionY, this->personajeAncho, this->personajeAlto };
+	return limites;
+}

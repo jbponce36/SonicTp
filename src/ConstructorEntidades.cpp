@@ -7,17 +7,13 @@
 
 #define MODULO 'PARSEADOR JSON'
 #include "ConstructorEntidades.h"
+#include "debug.h"
 
 namespace std
 {
 
-ConstructorEntidades::ConstructorEntidades()
-:log()
-{
-
-}
-
-ConstructorEntidades::ConstructorEntidades(Logger *log)
+ConstructorEntidades::ConstructorEntidades(int limiteAncho, int limiteAlto, Logger *log)
+: generadorId(0), limiteAncho(limiteAncho), limiteAlto(limiteAlto), entidades(), bonus()
 {
 	this->log = log;
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
@@ -32,6 +28,11 @@ ConstructorEntidades::~ConstructorEntidades()
 	entidades.clear();
 }
 
+int ConstructorEntidades::generarId()
+{
+	return ++generadorId;
+}
+
 void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Renderer *renderizador)
 {
 	list<jentidades>::iterator pos;
@@ -44,16 +45,22 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 
 	this->log->addLogMessage("[CARGA DE ENTIDADES] Iniciado.", 2);
 
+
 	for(pos = jEntidades.begin();pos != jEntidades.end();pos++)
 	{
 		if(((*pos).gettipo() == "rectangulo") || ((*pos).gettipo() == "cuadrado"))
 		{
+			//id = (*pos).getid();
 			id = (*pos).getid();
 			color = (*pos).getcolor();
 			ancho = (*pos).getDim()->getvalor1();
 			alto = (*pos).getDim()->getvalor2();
+
 			coordX = (*pos).getcoorx();
+			//debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada X %d\n", coordX);
 			coordY = (*pos).getcoory();
+			//debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada Y %d\n", coordY);
+
 			rutaImagen = (*pos).getruta();
 			indexZ = (*pos).getindex();
 
@@ -65,15 +72,62 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			{
 				validarCuadrado(ancho, alto);
 			}
-			Rectangulo *rectangulo = new Rectangulo(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
-			entidades.push_back(rectangulo);
-			this->log->setModulo("CONSTRUCTOR ENTIDADES");
-			this->log->addLogMessage("[CARGAR ENTIDADES] Rectangulo->"+rectangulo->toString(), 3);
-		}
 
-		if((*pos).gettipo() == "circulo")
+			if ((*pos).getruta() == "images/Anillas.png"){
+				//coordX = 0;
+				//ancho = (*pos).getDim()->getvalor1();
+				//int espacio = ancho + 10;
+
+				cout<<"LLEGA"<<endl;
+
+				srand(time(NULL));
+				int cantidadAnillas = (rand() % 4) + 1;
+
+
+				// cout<<"####CANTIDADANILLAS###"<<endl;
+				// cout<<cantidadAnillas<<endl;
+
+				debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada X %d\n", (*pos).getcoorx());
+				debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada Y %d\n", (*pos).getcoory());
+
+				for(int i=0;i<cantidadAnillas;i++){
+					//id = (*pos).getid();
+					id = generarId();
+					color = (*pos).getcolor();
+					ancho = (*pos).getDim()->getvalor1();
+					alto = (*pos).getDim()->getvalor2();
+					//coordX = /*i * (*pos).getcoorx() +*/ coordX + (*pos).getcoorx() + (i*5);
+					//coordX = coordX + espacio;
+					coordX = i* 200 + (*pos).getcoorx() ;
+					coordY = (*pos).getcoory();
+					rutaImagen = (*pos).getruta();
+					indexZ = (*pos).getindex();
+
+
+					Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log/*,vista->obtenerRender()*/);
+
+					this->anillos.push_back(anillo);
+					//  this->cargarImagenesAnillas(renderizador);
+
+					entidades.push_back(anillo);
+			    }
+			}
+			else if ((*pos).getruta() == "images/Bonus.png")
+			{
+				generarBonus(ancho, alto, color, rutaImagen, indexZ);
+			}
+			else
+			{
+				Rectangulo *rectangulo = new Rectangulo(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+				entidades.push_back(rectangulo);
+				this->log->setModulo("CONSTRUCTOR ENTIDADES");
+				this->log->addLogMessage("[CARGAR ENTIDADES] Rectangulo->"+rectangulo->toString(), 3);
+			}
+		}
+		else if((*pos).gettipo() == "circulo")
 		{
-			id = (*pos).getid();
+			//id = (*pos).getid();
+			id = generarId();
 			color = (*pos).getcolor();
 			radio = (*pos).getDim()->getvalor1();
 			coordX = (*pos).getcoorx();
@@ -113,6 +167,7 @@ void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
 	this->log->addLogMessage("[CARGAR IMAGENES] Iniciado.",2);
 	list<Entidad*>::iterator pos;
+
 	for(pos = entidades.begin(); pos != entidades.end(); pos++)
 	{
 		if ((*pos)->tieneRutaImagen())
@@ -122,10 +177,30 @@ void ConstructorEntidades::cargarImagenes(SDL_Renderer *renderizador)
 			this->log->addLogMessage("[CARGAR IMAGENES] Imagen cargada en ruta: "+(*pos)->getRutaImagen(),3);
 		}
 	}
-
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
 	this->log->addLogMessage("[CARGAR IMAGENES] Terminado.",2);
 
+
+}
+
+void ConstructorEntidades::cargarImagenesAnillas(SDL_Renderer *renderizador)
+{
+	this->log->setModulo("CONSTRUCTOR ENTIDADES");
+	this->log->addLogMessage("[CARGAR IMAGENES] Iniciado.",2);
+	list<Anillos*>::iterator pos;
+   // cout<<anillos.size()<<endl;
+	for(pos = anillos.begin(); pos != anillos.end(); pos++)
+	{
+	  if ((*pos)->tieneRutaImagen())
+		{
+
+			(*pos)->cargarImagen(renderizador, log);
+				this->log->setModulo("CONSTRUCTOR ENTIDADES");
+				this->log->addLogMessage("[CARGAR IMAGENES] Imagen cargada en ruta: "+(*pos)->getRutaImagen(),3);
+			}
+		}
+		this->log->setModulo("CONSTRUCTOR ENTIDADES");
+		this->log->addLogMessage("[CARGAR IMAGENES] Terminado.",2);
 }
 void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ)
 {
@@ -140,6 +215,18 @@ void ConstructorEntidades::mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect
 	}
 
 	//this->log->addLogMessage("[MOSTRAR IMAGENES] Terminado",2);
+}
+
+void ConstructorEntidades::mostrarAnillas(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ){
+	list<Anillos*>::iterator pos;
+
+	for(pos = anillos.begin();pos != anillos.end(); pos++)
+	{
+		if ((*pos)->indexZes(indexZ))
+			{
+			  (*pos)->dibujar(renderizador, camara);
+			}
+	}
 }
 
 bool compararIndexZ(const Entidad *primera, const Entidad *segunda)
@@ -185,4 +272,71 @@ void ConstructorEntidades::validarCuadrado(int &ancho, int &alto)
 	}
 }
 
+list<Entidad*> ConstructorEntidades::getEntidades() {
+		return entidades;
 }
+
+void ConstructorEntidades::setEntidades(list<Entidad*> Entidades) {
+		this->entidades = Entidades;
+}
+
+void ConstructorEntidades::agregarEntidadCliente(std::string nombre, int id, int x, int y)
+{
+	//Ver esto...
+	return;
+}
+
+void ConstructorEntidades::quitarEntidad(std::string nombre, int id)
+{
+	//El cliente la quita al recibir un mensaje del servidor
+	std::list<Entidad*>::iterator iter;
+	for(iter = entidades.begin(); iter != entidades.end(); iter++)
+	{
+		if ((*iter)->getId() == id)
+		{
+			delete (*iter);
+			entidades.erase(iter);
+			return;
+		}
+	}
+}
+
+void ConstructorEntidades::generarBonus(int ancho, int alto,
+		std::string color, std::string rutaImagen, int indexZ)
+{
+	//Genera bonus en posiciones y cantidades aleatorias
+	srand(time(NULL));
+	//Agrego bonus de Escudo
+	int cantidadBonus = Util::numeroRandom(3);
+	int y = limiteAlto - alto;
+
+	for(int i = 0; i < cantidadBonus; i++)
+	{
+		//Divide el escenario en partes iguales del doble del ancho del bonus para que no se superpongan
+		//Y al sumarle 2*ancho hago que caiga en una de esas divisiones
+		int x = Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+		Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::ESCUDO);
+		entidades.push_back(nuevoBonus);
+	}
+
+	//Agrego bonus de Anillos
+	cantidadBonus = Util::numeroRandom(3);
+	for(int i = 0; i < cantidadBonus; i++)
+	{
+		int x = Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+		Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::RING);
+		entidades.push_back(nuevoBonus);
+	}
+
+	//Agrego bonus de Anillos
+	cantidadBonus = Util::numeroRandom(3);
+	for(int i = 0; i < cantidadBonus; i++)
+	{
+		int x = Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+		Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::INVENCIBILIDAD);
+		entidades.push_back(nuevoBonus);
+	}
+
+}
+
+}//Namespace
