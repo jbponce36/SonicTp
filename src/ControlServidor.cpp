@@ -18,7 +18,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 {
 	teclasPresionadas t = {false, false, false, false, false};
 	posSonic ultimasPosiciones = {0, 300};
-
+	this->pasarNivel = false;
 	std::map<int, Personaje*>::iterator pos;
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
@@ -116,6 +116,32 @@ void ControlServidor::administrarTeclasServidor()
 				catch(std::out_of_range &e)
 				{
 					cout << "El cliente ya se habia desconectado." << endl;
+				}
+			}
+			else if(mensaje.compare("PASARNIVEL") == 0)
+			{
+				this->pasarNivel = true;
+				//aca va el mensaje para que pase de nivel el servidor debe reestablecer todos los valores
+				//a la forma en q estaban cuando cada nivel comienza, al inicio del nivel
+				//Envia el mensaje a todos los hilos enviar para que se lo mande a todos los clientes
+
+				char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
+				std::string msjPasarNivel = "PASARNIVEL" ;
+				//cout<<"mensaje sin: "<<mensaje.size()<<endl;
+				msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
+				//cout<<"mensaje con: "<<mensaje.size()<<endl;
+				//cout<<"server envio: "<<mensaje<<endl;
+				strcpy(buffer, msjPasarNivel.c_str());
+				//cout<<"mensaje con buff: "<<strlen(buffer)<<endl;
+				int id = 1;
+				std::vector<Hiloenviar*>::iterator pos;
+				for(pos = hilosEnviar->begin();pos != hilosEnviar->end();pos++)
+				{
+					if(!sonics->at(id)->estaCongelado())
+					{
+						(*pos)->enviarDato(buffer);
+					}
+					id++;
 				}
 			}
 			else
