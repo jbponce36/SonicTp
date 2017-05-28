@@ -129,5 +129,14 @@ bool Rectangulo::intersecta(Rectangulo &otroRectangulo)
 	}
 }
 
+int Rectangulo::obtenerAncho()
+{
+	return ancho;
 }
 
+int Rectangulo::obtenerAlto()
+{
+	return alto;
+}
+
+}

@@ -18,6 +18,7 @@
 #include <time.h>
 #include <map>
 #include "Bonus.h"
+#include "Util.h"
 
 #define MAX_ID 100
 #define MAX_ANCHO 4000
@@ -27,10 +28,15 @@
 #define MAX_INDEXZ 99
 #define MAX_RADIO 500
 
+#define ALTO_ESCENARIO
+
 namespace std{
 
 class ConstructorEntidades {
 private:
+	int generadorId;
+	int limiteAncho;  //Es el ancho de todo el escenario menos el final
+	int limiteAlto; //Es la altura del pasto
 	list<Entidad*> entidades;
 	Logger *log;
 	std::map<int, Bonus*> bonus;
@@ -38,8 +44,9 @@ private:
 public:
 
 	list<Anillos*> anillos;
-	ConstructorEntidades();
-	ConstructorEntidades(Logger *log);
+
+	ConstructorEntidades(int limiteAncho, int limiteAlto, Logger *log);
+	int generarId();
 	void cargarEntidades(list<jentidades> entidades, SDL_Renderer *renderizador);
 	void mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
 	void mostrarAnillas(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
@@ -51,11 +58,10 @@ public:
 
 	void setEntidades(list<Entidad*> Entidades);
 
-	void agregarEntidad(std::string nombre, int id, int x, int y);
+	void agregarEntidadCliente(std::string nombre, int id, int x, int y);
 	void quitarEntidad(std::string nombre, int id);
-	void agregarBonus(int idBonus, int x, int y);
-	void quitarBonus(int id);
-	bool existeBonus(int id);
+
+	void generarBonus(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ);
 
 private:
 

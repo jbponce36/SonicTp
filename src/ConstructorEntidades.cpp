@@ -12,13 +12,8 @@
 namespace std
 {
 
-ConstructorEntidades::ConstructorEntidades()
-:log()
-{
-
-}
-
-ConstructorEntidades::ConstructorEntidades(Logger *log) : bonus()
+ConstructorEntidades::ConstructorEntidades(int limiteAncho, int limiteAlto, Logger *log)
+: generadorId(0), limiteAncho(limiteAncho), limiteAlto(limiteAlto), entidades(), bonus()
 {
 	this->log = log;
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
@@ -31,6 +26,11 @@ ConstructorEntidades::~ConstructorEntidades()
 		delete (*pos);
 	}
 	entidades.clear();
+}
+
+int ConstructorEntidades::generarId()
+{
+	return ++generadorId;
 }
 
 void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Renderer *renderizador)
@@ -50,6 +50,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 	{
 		if(((*pos).gettipo() == "rectangulo") || ((*pos).gettipo() == "cuadrado"))
 		{
+			//id = (*pos).getid();
 			id = (*pos).getid();
 			color = (*pos).getcolor();
 			ancho = (*pos).getDim()->getvalor1();
@@ -73,32 +74,25 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			}
 
 			if ((*pos).getruta() == "images/Anillas.png"){
-
-
 				//coordX = 0;
 				//ancho = (*pos).getDim()->getvalor1();
 				//int espacio = ancho + 10;
 
+				cout<<"LLEGA"<<endl;
 
-			//
-
-               cout<<"LLEGA"<<endl;
-
-
-			    srand(time(NULL));
+				srand(time(NULL));
 				int cantidadAnillas = (rand() % 4) + 1;
 
 
-			// cout<<"####CANTIDADANILLAS###"<<endl;
-			// cout<<cantidadAnillas<<endl;
+				// cout<<"####CANTIDADANILLAS###"<<endl;
+				// cout<<cantidadAnillas<<endl;
 
-			 debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada X %d\n", (*pos).getcoorx());
-			 debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada Y %d\n", (*pos).getcoory());
+				debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada X %d\n", (*pos).getcoorx());
+				debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada Y %d\n", (*pos).getcoory());
 
 				for(int i=0;i<cantidadAnillas;i++){
-
-
-					id = (*pos).getid();
+					//id = (*pos).getid();
+					id = generarId();
 					color = (*pos).getcolor();
 					ancho = (*pos).getDim()->getvalor1();
 					alto = (*pos).getDim()->getvalor2();
@@ -110,28 +104,30 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 					indexZ = (*pos).getindex();
 
 
-				    Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log/*,vista->obtenerRender()*/);
+					Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log/*,vista->obtenerRender()*/);
 
-                    this->anillos.push_back(anillo);
-                  //  this->cargarImagenesAnillas(renderizador);
+					this->anillos.push_back(anillo);
+					//  this->cargarImagenesAnillas(renderizador);
 
-                    entidades.push_back(anillo);
-
+					entidades.push_back(anillo);
 			    }
-
-
 			}
-		else{
-			Rectangulo *rectangulo = new Rectangulo(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
-			entidades.push_back(rectangulo);
-			this->log->setModulo("CONSTRUCTOR ENTIDADES");
-			this->log->addLogMessage("[CARGAR ENTIDADES] Rectangulo->"+rectangulo->toString(), 3);
+			else if ((*pos).getruta() == "images/Bonus.png")
+			{
+				generarBonus(ancho, alto, color, rutaImagen, indexZ);
+			}
+			else
+			{
+				Rectangulo *rectangulo = new Rectangulo(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+				entidades.push_back(rectangulo);
+				this->log->setModulo("CONSTRUCTOR ENTIDADES");
+				this->log->addLogMessage("[CARGAR ENTIDADES] Rectangulo->"+rectangulo->toString(), 3);
+			}
 		}
-	}
-
-		if((*pos).gettipo() == "circulo")
+		else if((*pos).gettipo() == "circulo")
 		{
-			id = (*pos).getid();
+			//id = (*pos).getid();
+			id = generarId();
 			color = (*pos).getcolor();
 			radio = (*pos).getDim()->getvalor1();
 			coordX = (*pos).getcoorx();
@@ -284,52 +280,67 @@ void ConstructorEntidades::setEntidades(list<Entidad*> Entidades) {
 		this->entidades = Entidades;
 }
 
-
-
-
-//Todas estas para el cliente--------------
-void ConstructorEntidades::agregarEntidad(std::string nombre, int id, int x, int y)
+void ConstructorEntidades::agregarEntidadCliente(std::string nombre, int id, int x, int y)
 {
-	if(nombre == BONUS)
-	{
-		agregarBonus(id, x, y);
-	}
-	//.... Mas entidades para agregar
+	//Ver esto...
+	return;
 }
 
 void ConstructorEntidades::quitarEntidad(std::string nombre, int id)
 {
-	if(nombre == BONUS)
+	//El cliente la quita al recibir un mensaje del servidor
+	std::list<Entidad*>::iterator iter;
+	for(iter = entidades.begin(); iter != entidades.end(); iter++)
 	{
-		quitarBonus(id);
-	}
-	//.... Mas entidades para sacar
-}
-
-void ConstructorEntidades::agregarBonus(int idBonus, int x, int y)
-{
-	Bonus* nuevoBonus = new Bonus(100, 100, idBonus, "Rojo", "images/Bonus.png", x, y, 98, log);
-	this->bonus[idBonus] = nuevoBonus;
-}
-
-void ConstructorEntidades::quitarBonus(int id)
-{
-	std::map<int, Bonus*>::iterator iter = bonus.find(id);
-	if (iter != bonus.end())
-	{
-		bonus.erase(iter);
+		if ((*iter)->getId() == id)
+		{
+			delete (*iter);
+			entidades.erase(iter);
+			return;
+		}
 	}
 }
 
-bool ConstructorEntidades::existeBonus(int id)
+void ConstructorEntidades::generarBonus(int ancho, int alto,
+		std::string color, std::string rutaImagen, int indexZ)
 {
-	std::map<int, Bonus*>::iterator iter = bonus.find(id);
-	if (iter != bonus.end())
-	{
-		return true;
-	}
-	return false;
-}
+	//Genera bonus en posiciones y cantidades aleatorias
+	srand(time(NULL));
+	//Agrego bonus de Escudo
+	int cantidadBonus = Util::numeroRandom(3);
+	int y = limiteAlto - alto;
+	cout << y << "y ";
 
+	for(int i = 0; i < cantidadBonus; i++)
+	{
+		//Divide el escenario en partes iguales del doble del ancho del bonus para que no se superpongan
+		//Y al sumarle 2*ancho hago que caiga en una de esas divisiones
+		int x = Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+		cout << x << "x ";
+		Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::ESCUDO);
+		entidades.push_back(nuevoBonus);
+	}
+
+	//Agrego bonus de Anillos
+	cantidadBonus = Util::numeroRandom(3);
+	for(int i = 0; i < cantidadBonus; i++)
+	{
+		int x = Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+		cout << x << "x ";
+		Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::RING);
+		entidades.push_back(nuevoBonus);
+	}
+
+	//Agrego bonus de Anillos
+	cantidadBonus = Util::numeroRandom(3);
+	for(int i = 0; i < cantidadBonus; i++)
+	{
+		int x = Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+		cout << x << "x ";
+		Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::INVENCIBILIDAD);
+		entidades.push_back(nuevoBonus);
+	}
+
+}
 
 }//Namespace

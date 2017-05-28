@@ -21,6 +21,7 @@ public:
 	static std::string intToString(int numero);
 	static std::string intToStringConPadding(int numero);
 	static int stringConPaddingToInt(std::string mensaje);
+	static int numeroRandom(int hasta);
 };
 
 #endif /* UTIL_H_ */

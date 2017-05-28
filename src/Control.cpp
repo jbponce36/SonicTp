@@ -320,7 +320,7 @@ void Control::agregarEntidad(std::string mensaje)
 	int y = Util::stringConPaddingToInt(mensaje.substr(13, MAX_CANT_DIGITOS_POS).c_str());
 	cout << "Agregar Entidad " << nombre << " con id: "<< id << " en x: " << x << " y: " << y << "\n";
 
-	constructorEntidades->agregarEntidad(nombre, id, x, y);
+	constructorEntidades->agregarEntidadCliente(nombre, id, x, y);
 
 }
 

@@ -34,7 +34,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->validacionesEscenario(jescenario);
 	this->crearVentanaYrenderizador();
 	this->velocidadScroll=jconfiguracion->getvelscroll();
-	this->constructorEntidades = new ConstructorEntidades(logger);
+	this->constructorEntidades = new ConstructorEntidades(anchoescenario, 4*altoescenario/5, logger);
 	constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
 	this->cargarCapas(jescenario);
 

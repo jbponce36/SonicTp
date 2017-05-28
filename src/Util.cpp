@@ -34,3 +34,10 @@ int Util::stringConPaddingToInt(std::string mensaje)
 	return atoi(mensaje.c_str());
 
 }
+
+int Util::numeroRandom(int hasta)
+{
+	//Genera un numero random de 1 hasta 'hasta'
+	//Precondiciones: Inicializar semilla una vez antes de llamarlo
+	return (rand() % hasta) + 1;
+}

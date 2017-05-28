@@ -25,7 +25,7 @@
 			"dimensiones": {"ancho": 64, "alto": 64},
 			"coordenada": {"x": 300, "y": 300},
 			"ruta_imagen": "images/Anillas.png",
-			"index_z": 99
+			"index_z": 98
 		},
 		{
 			"id": 2,
@@ -38,6 +38,15 @@
 		},
 		{
 			"id": 3,
+			"tipo": "rectangulo",
+			"color": "verde",
+			"dimensiones": {"ancho": 100, "alto": 100},
+			"coordenada": {"x": 0, "y": 0},
+			"ruta_imagen": "images/Bonus.png",
+			"index_z": 98
+		},
+		{
+			"id": 4,
 			"tipo": "circulo",
 			"color": "amarillo",
 			"dimensiones": {"radio": 15},
