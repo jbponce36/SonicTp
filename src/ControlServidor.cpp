@@ -257,7 +257,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 				if(this-> pasarNivel = true)
 				{
 					Personaje* sonic = (*pos).second;
-					sonic->posicionarseConAnimacion(0,300,ANIMACION_QUIETO_DERECHA,1);
+					sonic->posicionarseConAnimacion(0,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
 				}
 				this->pasarNivel = false;
 				}

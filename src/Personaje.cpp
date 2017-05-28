@@ -239,6 +239,7 @@ int Personaje::getPosicionX()
 	return this->posicionX;
 }
 int Personaje::getPosicionY()
+
 {
 	return this->posicionY;
 }
