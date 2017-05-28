@@ -212,7 +212,20 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		//Mueve la camara segun los sonics
 		camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
 
-
+		//aca posiciona a los sonics en el inicio del mapa
+		if(this->pasarNivel)
+		{
+			for(pos = sonics->begin();pos != sonics->end();pos++)
+			{
+				if(this-> pasarNivel = true)
+				{
+					Personaje* sonic = (*pos).second;
+					sonic->posicionarseConAnimacion(0,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
+				}
+				this->pasarNivel = false;
+				}
+			this->pasarNivel =false;
+		}
 		/*Para pruebas: Para ver lo que pasa en el juego del servidor. No descomentar.*/
 		//(*pos).second->render(camara->getPosicionX(), camara->getPosicionY());
 		//SDL_RenderPresent( vista->obtenerRender());
