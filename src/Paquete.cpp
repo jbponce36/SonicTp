@@ -21,14 +21,11 @@ Paquete::~Paquete(){
 void Paquete::agregar(char *buffer){
 
 	pthread_mutex_lock(&mutex);
-	cout<<"mensaje sin: "<<strlen(buffer)<<endl;
 	char *buf = new char[LARGO_MENSAJE_POSICION_SERVIDOR];
-	cout<<"mensaje con---: "<<strlen(buf)<<endl;
 	for(int i=0;i<LARGO_MENSAJE_POSICION_SERVIDOR;i++){
 		buf[i] = buffer[i];
 	}
 	this->colaPaquetes.push(buf);
-	cout<<"mensaje con: "<<strlen(buf)<<endl;
 	pthread_mutex_unlock(&mutex);
 }
 void Paquete::colaInicializar(){
@@ -42,11 +39,11 @@ void Paquete::agregarAlaColaSoloUnProceso(int tamanioBuffRecibido,char *bufferRe
 			if(strlen(this->buffAuxiliar) != 0){
 				this->buffAuxiliar[this->ContadorBuffAuxiliar]='\0';
 				this->agregar(this->buffAuxiliar);
-				cout<<"auxbyff llenio agregar"<<endl;
+				/*cout<<"auxbyff llenio agregar"<<endl;
 				cout<<this->buffAuxiliar<<endl;
-				cout<<strlen(this->buffAuxiliar)<<endl;
+				cout<<strlen(this->buffAuxiliar)<<endl;*/
 			}else{
-				cout<<"auxbuffer vacio descartar"<<endl;
+				//cout<<"auxbuffer vacio descartar"<<endl;
 			}
 			this->ContadorBuffAuxiliar = 0;
 			this->buffAuxiliar[0] = '\0';

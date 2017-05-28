@@ -53,7 +53,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 				if (result>0){
 
-					cout<<"Cliente recibio: "<<buffer<<endl;
+					//cout<<"Cliente recibio: "<<buffer<<endl;
 					//alc->setCadena("");
 					alc->actualizarTiempoLatido();
 					parametros->colaPaquete.agregarAlaColaSoloUnProceso(result,buffer);
