@@ -61,8 +61,6 @@ private:
 
 	std::map<int, teclasPresionadas> teclas; //Cada elemento le corresponde a un sonic
 
-	//ConstructorEntidades *constructorEntidades;
-
 	Mundo mundo; //Contiene todos los elementos del mundo y los sonics. Asi queda todo mas separado.
 
 public:
@@ -84,13 +82,12 @@ public:
 
 
 	void chequearColicion(Colicion *colicion);
-   // void  chequearColisiones();
+	void  chequearColisiones();
 
 
 private:
 	void administrarTeclasServidor();
 	ControlServidor::mensajeRecibido parsearMensajePosicion(std::string mensaje);
-	void moverSonicsSegunTeclas();
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor(Camara *camara);
 

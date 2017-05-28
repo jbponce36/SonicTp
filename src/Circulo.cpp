@@ -169,4 +169,15 @@ string Circulo::toString(){
 		", y: "+intToString(getY())+", index_z: "+ intToString(getIndexZ())+", ruta_imagen: "+ getRutaImagen();
 }
 
+SDL_Rect Circulo::obtenerLimites()
+{
+	SDL_Rect limites = { obtenerX() - radio, obtenerY() - radio, 2*radio, 2*radio};
+	return limites;
+}
+
+void Circulo::interactuar(Personaje *sonic, Mundo* mundo)
+{
+	return; //Si la entidad es solo un Circulo, no hace nada
+}
+
 }

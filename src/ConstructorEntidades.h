@@ -37,13 +37,13 @@ private:
 	int generadorId;
 	int limiteAncho;  //Es el ancho de todo el escenario menos el final
 	int limiteAlto; //Es la altura del pasto
-	list<Entidad*> entidades;
+
 	Logger *log;
-	std::map<int, Bonus*> bonus;
 
 public:
 
 	list<Anillos*> anillos;
+	list<Entidad*> entidades;
 
 	ConstructorEntidades(int limiteAncho, int limiteAlto, Logger *log);
 	int generarId();
@@ -53,10 +53,6 @@ public:
 	virtual ~ConstructorEntidades();
     Logger* getLog() const;
     void setLog(Logger *log);
-
-	list<Entidad*>getEntidades();
-
-	void setEntidades(list<Entidad*> Entidades);
 
 	void agregarEntidadCliente(std::string nombre, int id, int x, int y);
 	void quitarEntidad(std::string nombre, int id);

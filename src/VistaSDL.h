@@ -5,10 +5,12 @@
  *      Author: cristian
  */
 
+#ifndef VISTASDL_H_
+#define VISTASDL_H_
+
 #include <iostream>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
-using namespace std;
 #include <string>
 #include "Textura.h"
 #include "jventana.h"
@@ -20,8 +22,7 @@ using namespace std;
 #include <list>
 #include <vector>
 #include <unistd.h>
-#ifndef VISTASDL_H_
-#define VISTASDL_H_
+
 #define ANCHO_VENTANA_POR_DEFECTO 640
 #define ALTO_VENTANA_POR_DEFECTO 500
 #define MIN_ANCHO_VENTANA_PERMITIDO 400
@@ -33,12 +34,11 @@ using namespace std;
 #define MAX_ANCHO_VENTANA 1900
 #define MAX_ALTO_VENTANA 1000
 
-
 class VistaSDL{
 
 private:
 	SDL_Window* ventana;
-	//SDL_Renderer* renderizador;
+	SDL_Renderer* renderizador;
 	SDL_Surface* superficiePantalla;
 	SDL_Surface* superficieACargar;
 	int velocidadScroll;
@@ -53,7 +53,6 @@ private:
     Logger *log;
     bool oculta;
 public:
-    SDL_Renderer* renderizador;
     VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion, jescenario *jescenario, Logger *logger, bool oculta);
     void cargarImagen();
     int obtenerAltoVentana();

@@ -13,8 +13,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 	std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
 	ConexServidor *server, Logger *log)
 : posicionInicialX(posicionX), posicionInicialY(posicionY), vista(vista), server(server), log(log),
-  sonics(sonics), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir), teclas(),
-  /*constructorEntidades(vista->getConstructorEntidades()),*/ mundo(sonics, vista)
+  sonics(sonics), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir), teclas(), mundo(sonics, vista)
 {
 	teclasPresionadas t = {false, false, false, false, false};
 	posSonic ultimasPosiciones = {0, 300};
@@ -173,41 +172,6 @@ ControlServidor::mensajeRecibido ControlServidor::parsearMensajePosicion(std::st
 	return msj;
 }
 
-void ControlServidor::moverSonicsSegunTeclas()
-{
-	//Mueve todos los sonics segun las teclas presionadas o liberadas
-	std::map<int, Personaje*>::iterator pos;
-	for(pos = sonics->begin();pos != sonics->end();pos++)
-	{
-		cout << "Error en teclas?" << endl;
-		teclasPresionadas t = teclas.at((*pos).first);
-		cout << "No error en teclas" << endl;
-		Personaje* sonic = (*pos).second;
-
-		if((!t.teclaArriba) && (!t.teclaAbajo) && (!t.teclaDerecha) && (!t.teclaIzquierda)){
-			sonic->parar();
-		}
-
-		sonic->correr(t.teclaCorrer);
-
-		if(t.teclaArriba){
-			sonic->irArriba();
-		}
-
-		if(t.teclaAbajo){
-			sonic->irAbajo();
-		}
-
-		if(t.teclaDerecha){
-			sonic->irDerecha();
-		}
-
-		if(t.teclaIzquierda){
-			sonic->irIzquierda();
-		}
-	}
-}
-
 void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara)
 {
 	std::map<int, Personaje*>::iterator pos;
@@ -322,10 +286,9 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 		moverPersonajesServidor(tiempoDeJuego, vista, camara);
 
-		//chequearColisiones();//////////////////////////////////////////////////Aca se chequean las colisiones
+		chequearColisiones();///Aca se chequean las colisiones menos con los anillos supongo
 
-		//chequearColisiones();
-		chequearColicion(colicion);
+		chequearColicion(colicion); //Con los anillos
 
 		actualizarVistaServidor(camara);
 
@@ -353,7 +316,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 		//this->constructorEntidades->anillos.
 		//Por cada sonic, fijarse si se intersecta con alguna de las cosas...?
 
-		 for(posanillo = this->mundo.constructorEntidades->anillos.begin(); posanillo!= this->mundo.constructorEntidades->anillos.end();posanillo++){
+		 for(posanillo = vista->getConstructorEntidades()->anillos.begin(); posanillo!= vista->getConstructorEntidades()->anillos.end();posanillo++){
 			 Anillos *cls = (*posanillo);
 
 			 Personaje * cl2 = (*pos).second;
@@ -394,9 +357,9 @@ int ControlServidor::mostrarMenuServer(){
 	return opcion;
 }
 
-/*void ControlServidor::chequearColisiones(){
+void ControlServidor::chequearColisiones(){
 
 	mundo.manejarColisiones();
 
 }
-*/
+

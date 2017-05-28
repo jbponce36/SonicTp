@@ -20,6 +20,8 @@ public:
 	void dibujar(SDL_Renderer *renderer, SDL_Rect *camara);
 	string toString();
     int getRadio() const;
+    SDL_Rect obtenerLimites();
+    void interactuar(Personaje *sonic, Mundo* mundo);
 
 private:
     void crearImagen(SDL_Renderer *renderer);

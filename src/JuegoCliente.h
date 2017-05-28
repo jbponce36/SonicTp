@@ -23,7 +23,7 @@
 #include "HilolatidoSer.h"
 
 
-#define CONEXION_RECHAZADA 1
+#define ERR_CONEXION_RECHAZADA 1
 
 class JuegoCliente {
 

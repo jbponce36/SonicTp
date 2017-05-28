@@ -13,7 +13,7 @@ namespace std
 {
 
 ConstructorEntidades::ConstructorEntidades(int limiteAncho, int limiteAlto, Logger *log)
-: generadorId(0), limiteAncho(limiteAncho), limiteAlto(limiteAlto), entidades(), bonus()
+: generadorId(0), limiteAncho(limiteAncho), limiteAlto(limiteAlto), entidades()
 {
 	this->log = log;
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
@@ -270,14 +270,6 @@ void ConstructorEntidades::validarCuadrado(int &ancho, int &alto)
 	{
 		alto = ancho;
 	}
-}
-
-list<Entidad*> ConstructorEntidades::getEntidades() {
-		return entidades;
-}
-
-void ConstructorEntidades::setEntidades(list<Entidad*> Entidades) {
-		this->entidades = Entidades;
 }
 
 void ConstructorEntidades::agregarEntidadCliente(std::string nombre, int id, int x, int y)

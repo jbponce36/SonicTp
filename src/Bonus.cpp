@@ -33,3 +33,8 @@ void Bonus::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
 	SDL_RenderCopy(renderer, obtenerImagen(), &recorte, &destino);
 
 }
+
+void Bonus::interactuar(Personaje *sonic, Mundo* mundo)
+{
+	cout << "Sonic "<< sonic->getId() << " toco un Bonus! \n";
+}

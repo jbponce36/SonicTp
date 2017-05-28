@@ -9,7 +9,7 @@
 #include "Colicion.h"
 
 Mundo::Mundo(std::map<int, Personaje*> *sonics, VistaSDL *vista)
-: sonics(sonics), vista(vista), constructorEntidades(vista->getConstructorEntidades()), bonus()
+: sonics(sonics), vista(vista), constructorEntidades(vista->getConstructorEntidades())
 {
 
 }
@@ -70,19 +70,22 @@ void Mundo::enviarDatosEscenario(std::vector<Hiloenviar*> *hilosEnviar)
 void Mundo::manejarColisiones()
 {
 	std::map<int, Personaje*>::iterator pos;
-	list<Anillos*>:: iterator posanillo;
 
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
 		//Por cada sonic, fijarse si se intersecta con alguna de las cosas...?
+		Personaje *sonic = (*pos).second;
 
-         for(posanillo = this->constructorEntidades->anillos.begin(); posanillo!= this->constructorEntidades->anillos.end();posanillo++){
-
-
-
-         }
-
-
+		list<Entidad*>::iterator ent;
+		for(ent = constructorEntidades->entidades.begin(); ent != constructorEntidades->entidades.end(); ent++)
+		{
+			if((*ent)->intersecta(sonic))
+			{
+				//Depende de que entidad sea, cada una interactua de forma diferente
+				//Y le puede preguntar cosas al Sonic y afectar el mundo
+				(*ent)->interactuar(sonic, this);
+			}
+		}
 	}
 }
 

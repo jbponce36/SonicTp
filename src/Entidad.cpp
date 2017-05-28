@@ -124,7 +124,7 @@ void Entidad::setLog(Logger *log)
     this->log->setModulo("ENTIDAD");
 }
 
-unsigned int Entidad::getId() const
+unsigned int Entidad::getId()
 {
     return id;
 }
@@ -134,7 +134,7 @@ int Entidad::getIndexZ() const
     return indexZ;
 }
 
-std::string Entidad::getRutaImagen() const
+std::string Entidad::getRutaImagen()
 {
     return rutaImagen;
 }
@@ -182,5 +182,42 @@ string Entidad::toString(){
 	return "id: " + intToString(id)
 			+ ", coordenadas-> x:"+intToString(x)+
 	", y: "+intToString(y)+", index_z: "+ intToString(indexZ)+", ruta_imagen: "+ rutaImagen;
+}
+
+bool Entidad::intersecta(Entidad &otraEntidad)
+{
+	SDL_Rect estaEntidad = obtenerLimites();
+	SDL_Rect laOtraEntidad = otraEntidad.obtenerLimites();
+
+	SDL_bool intersecta = SDL_HasIntersection(&estaEntidad, &laOtraEntidad);
+
+	if (intersecta == SDL_TRUE){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+bool Entidad::intersecta(Personaje *sonic)
+{
+	SDL_Rect estaEntidad = this->obtenerLimites();
+	SDL_Rect elPersonaje = sonic->obtenerLimites();
+
+	SDL_bool intersecta = SDL_HasIntersection(&estaEntidad, &elPersonaje);
+
+	if (intersecta == SDL_TRUE){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+void Entidad::interactuar(Personaje *sonic, Mundo* mundo)
+{
+	//Si es solo una Entidad, no hace nada.
+	//Para usarlo sobreescribirlo en las clases heredadas de Entidad
+	return;
 }
 

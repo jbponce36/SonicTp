@@ -20,9 +20,10 @@ public:
 	void mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara);
     string toString();
     SDL_Rect obtenerLimites();
-    bool intersecta(Rectangulo &otroRectangulo);
+    //bool intersecta(Rectangulo &otroRectangulo);
     int obtenerAncho();
     int obtenerAlto();
+    void interactuar(Personaje *sonic, Mundo* mundo);
 
 private:
     std::string intToString(int number);

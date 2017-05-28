@@ -114,7 +114,7 @@ SDL_Rect Rectangulo::obtenerLimites()
 	return limites;
 }
 
-bool Rectangulo::intersecta(Rectangulo &otroRectangulo)
+/*bool Rectangulo::intersecta(Rectangulo &otroRectangulo)
 {
 	SDL_Rect esteRectangulo = obtenerLimites();
 	SDL_Rect elOtroRectangulo = otroRectangulo.obtenerLimites();
@@ -127,7 +127,7 @@ bool Rectangulo::intersecta(Rectangulo &otroRectangulo)
 	else{
 		return false;
 	}
-}
+}*/
 
 int Rectangulo::obtenerAncho()
 {
@@ -137,6 +137,11 @@ int Rectangulo::obtenerAncho()
 int Rectangulo::obtenerAlto()
 {
 	return alto;
+}
+
+void Rectangulo::interactuar(Personaje *sonic, Mundo* mundo)
+{
+	return; //Si la entidad es solo un Rectangulo, no hace nada
 }
 
 }
