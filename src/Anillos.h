@@ -56,6 +56,10 @@ public:
 
 	std::string getNombre();
 
+	std::string obtenerMensajeEstado();
+	std::string intToStringConPadding(int number);
+	std::string obtenerMsjAnillaBorrada(int numero);
+
 private:
 	std::string ruta;
 	int ancho;

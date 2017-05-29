@@ -205,3 +205,38 @@ void Anillos::render(int camX, int camY){
 std::string Anillos::getNombre(){
 	return ANILLOS;
 }
+std::string Anillos::intToStringConPadding(int number)
+{
+  ostringstream oss;
+  oss<< number;
+  std::string numero = oss.str();
+  while(numero.length() < MAX_CANT_DIGITOS_POS){
+	  numero = PADDING + numero;
+  }
+  return numero;
+}
+
+std::string Anillos::obtenerMensajeEstado(){
+
+	std::string a = "Anill";
+	//std::string a = "Aid";
+	std::string numx = "x";
+	std::string numy = "y";
+
+
+	return(a + numx + intToStringConPadding(x) + numy + intToStringConPadding(y));
+
+}
+
+std::string Anillos::obtenerMsjAnillaBorrada(int numero){
+
+		std::string a = "borar";
+		std::string numx = "x";
+		std::string numy = "y";
+		return(a + numx + intToStringConPadding(x) + numy +  intToStringConPadding(numero));
+
+
+
+}
+
+

@@ -52,6 +52,7 @@ private:
     ConstructorEntidades *constructorEntidades;
     Logger *log;
     bool oculta;
+
 public:
     VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion, jescenario *jescenario, Logger *logger, bool oculta);
     void cargarImagen();
@@ -74,6 +75,7 @@ public:
     void cerrar();
     ~VistaSDL();
     void mostrarEntidades(SDL_Rect *camara, int indexZ);
+    void mostrarPiedras(SDL_Rect *camara, int indexZ);
     void mostrarAnillas(SDL_Rect *camara, int indexZ);
     Logger *getLog() const;
     void setLog(Logger *log);

@@ -33,6 +33,15 @@ int ConstructorEntidades::generarId()
 	return ++generadorId;
 }
 
+SDL_Renderer* ConstructorEntidades::getRenderizador(){
+		return renderizador;
+}
+
+void ConstructorEntidades::setRenderizador(SDL_Renderer* Renderizador) {
+   this->renderizador = Renderizador;
+}
+
+
 void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Renderer *renderizador)
 {
 	list<jentidades>::iterator pos;
@@ -87,7 +96,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 				// cout<<"####CANTIDADANILLAS###"<<endl;
 				// cout<<cantidadAnillas<<endl;
 
-				debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada X %d\n", (*pos).getcoorx());
+				debug(1, "ConstructorEntidades::cargarEntidadesssssssssssssssssssssssssssssssssssss", "Cordenada X %d\n", (*pos).getcoorx());
 				debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada Y %d\n", (*pos).getcoory());
 
 				for(int i=0;i<cantidadAnillas;i++){
@@ -104,13 +113,14 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 					indexZ = (*pos).getindex();
 
 
-					Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log/*,vista->obtenerRender()*/);
+					//Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log/*,vista->obtenerRender()*/);
 
-					this->anillos.push_back(anillo);
+					//this->anillos.push_back(anillo);
 					//  this->cargarImagenesAnillas(renderizador);
 
-					entidades.push_back(anillo);
+					//entidades.push_back(anillo);
 			    }
+
 			}
 			else if ((*pos).getruta() == "images/Bonus.png")
 			{
@@ -150,6 +160,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
 	this->log->addLogMessage("[CARGA DE ENTIDADES] Terminado.\n", 2);
+	this->setRenderizador(renderizador);
 }
 
 void ConstructorEntidades::cargarEntidadesCliente(list<jentidades> jEntidades, SDL_Renderer *renderizador)
@@ -189,13 +200,14 @@ void ConstructorEntidades::cargarEntidadesCliente(list<jentidades> jEntidades, S
 				validarCuadrado(ancho, alto);
 			}
 
-			if ((*pos).getruta() == "images/Anillas.png")
-			{
+			//if ((*pos).getruta() == "images/Anillas.png")
+			//{
 				//Lo agrega al generadorEntidades para luego poder sacarle la informacion para crearlos
-				Anillos* unAnillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log/*,vista->obtenerRender()*/);
-				generadorEntidades[ANILLOS] = unAnillo;
-				this->log->addLogMessage("[CARGAR ENTIDADES] Anillo", 3);
-			}
+				//Anillos* unAnillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log/*,vista->obtenerRender()*/);
+		//		generadorEntidades[ANILLOS] = unAnillo;
+			//	this->log->addLogMessage("[CARGAR ENTIDADES] Anillo", 3);
+			//}
+
 			else if ((*pos).getruta() == "images/Bonus.png")
 			{
 				//Los agrega al generadorEntidades para luego poder sacarle la informacion para crearlos
@@ -249,6 +261,7 @@ void ConstructorEntidades::cargarEntidadesCliente(list<jentidades> jEntidades, S
 
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
 	this->log->addLogMessage("[CARGA DE ENTIDADES] Terminado.\n", 2);
+	this->setRenderizador(renderizador);
 }
 
 void ConstructorEntidades::inicializarImagenes(SDL_Renderer *renderizador)
@@ -477,4 +490,42 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 
 }
 
+void ConstructorEntidades::cargarImagenesPiedra(SDL_Renderer *renderizador){
+
+
+	this->log->setModulo("CONSTRUCTOR ENTIDADES");
+	//cout<<"LLEGA1"<<endl;
+		//this->log->addLogMessage("[CARGAR IMAGENES] Iniciado.",2);
+		list<Piedra*>::iterator pos;
+
+		for(pos = piedra.begin(); pos != piedra.end(); pos++)
+
+		  {
+
+			if ((*pos)->tieneRutaImagen())
+			{
+
+				(*pos)->cargarImagen(renderizador, log);
+				//this->log->setModulo("CONSTRUCTOR ENTIDADES");
+				//this->log->addLogMessage("[CARGAR IMAGENES] Imagen cargada en ruta: "+(*pos)->getRutaImagen(),3);
+			}
+
+		}
+	//	this->log->setModulo("CONSTRUCTOR ENTIDADES");
+	//	this->log->addLogMessage("[CARGAR IMAGENES] Terminado.",2);
+
+  //}
+}
+
+void ConstructorEntidades::mostrarPiedras(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ){
+	list<Piedra*>::iterator pos;
+
+		for(pos = piedra.begin();pos != piedra.end(); pos++)
+		{
+			//if ((*pos)->indexZes(indexZ))
+				//{
+				  (*pos)->dibujar(renderizador, camara);
+				//}
+		}
+}
 }//Namespace
