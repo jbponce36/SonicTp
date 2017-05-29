@@ -1,5 +1,5 @@
-#ifndef RECTANGULO
-#define RECTANGULO
+#ifndef RECTANGULO_H_
+#define RECTANGULO_H_
 
 #include "Entidad.h"
 #include "Logger.h"
@@ -24,6 +24,7 @@ public:
     int obtenerAncho();
     int obtenerAlto();
     void interactuar(Personaje *sonic, Mundo* mundo);
+    virtual std::string getNombre();
 
 private:
     std::string intToString(int number);

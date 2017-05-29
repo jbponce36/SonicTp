@@ -152,6 +152,111 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 	this->log->addLogMessage("[CARGA DE ENTIDADES] Terminado.\n", 2);
 }
 
+void ConstructorEntidades::cargarEntidadesCliente(list<jentidades> jEntidades, SDL_Renderer *renderizador)
+{
+	//Carga una entidad de cada una en un mapa para luego poder construir lo que le manda el servidor a partir de esas
+	list<jentidades>::iterator pos;
+	int id;
+	std::string color;
+	int ancho, alto;
+	int coordX, coordY, indexZ;
+	std::string rutaImagen;
+	int radio;
+
+	this->log->setModulo("CONSTRUCTOR ENTIDADES");
+	this->log->addLogMessage("[CARGA DE ENTIDADES] Iniciado.", 2);
+
+
+	for(pos = jEntidades.begin();pos != jEntidades.end();pos++)
+	{
+		if(((*pos).gettipo() == "rectangulo") || ((*pos).gettipo() == "cuadrado"))
+		{
+			id = (*pos).getid();
+			color = (*pos).getcolor();
+			ancho = (*pos).getDim()->getvalor1();
+			alto = (*pos).getDim()->getvalor2();
+			coordX = (*pos).getcoorx();
+			coordY = (*pos).getcoory();
+			rutaImagen = (*pos).getruta();
+			indexZ = (*pos).getindex();
+
+			validarDatosNumericos(id, coordX, coordY, indexZ);
+			validar(ancho, 0, MAX_ANCHO);
+			validar(alto, 0, MAX_ALTO);
+
+			if ((*pos).gettipo() == "cuadrado")
+			{
+				validarCuadrado(ancho, alto);
+			}
+
+			if ((*pos).getruta() == "images/Anillas.png")
+			{
+				//Lo agrega al generadorEntidades para luego poder sacarle la informacion para crearlos
+				Anillos* unAnillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log/*,vista->obtenerRender()*/);
+				generadorEntidades[ANILLOS] = unAnillo;
+				this->log->addLogMessage("[CARGAR ENTIDADES] Anillo", 3);
+			}
+			else if ((*pos).getruta() == "images/Bonus.png")
+			{
+				//Los agrega al generadorEntidades para luego poder sacarle la informacion para crearlos
+				Bonus* unBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, coordX, coordY, indexZ, log, Bonus::ESCUDO);
+				generadorEntidades[BONUS_ESCUDO] = unBonus;
+				this->log->addLogMessage("[CARGAR ENTIDADES] Bonus Escudo", 3);
+
+				unBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, coordX, coordY, indexZ, log, Bonus::RING);
+				generadorEntidades[BONUS_RING] = unBonus;
+				this->log->addLogMessage("[CARGAR ENTIDADES] Bonus Anillos", 3);
+
+				unBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, coordX, coordY, indexZ, log, Bonus::INVENCIBILIDAD);
+				generadorEntidades[BONUS_INVENCIBILIDAD] = unBonus;
+				this->log->addLogMessage("[CARGAR ENTIDADES] Bonus Invencibilidad", 3);
+			}
+			else
+			{
+				//No lo agrega al generadorEntidades
+				//Pero lo pone en la lista de entidades asi la dibuja y no depende del servidor
+				Rectangulo *rectangulo = new Rectangulo(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+				entidades.push_back(rectangulo);
+				this->log->setModulo("CONSTRUCTOR ENTIDADES");
+				this->log->addLogMessage("[CARGAR ENTIDADES] Rectangulo->"+rectangulo->toString(), 3);
+			}
+			//Agregar mas rectangulos...
+			//Agregar entidades que dependen del servidor al generadorEntidades (uno solo)
+			//O agregar entidades que no dependan a la lista de entidades
+		}
+		else if((*pos).gettipo() == "circulo")
+		{
+			id = (*pos).getid();
+			color = (*pos).getcolor();
+			radio = (*pos).getDim()->getvalor1();
+			coordX = (*pos).getcoorx();
+			coordY = (*pos).getcoory();
+			rutaImagen = (*pos).getruta();
+			indexZ = (*pos).getindex();
+
+			validarDatosNumericos(id, coordX, coordY, indexZ);
+			validar(radio, 0, MAX_RADIO);
+
+			Circulo *circulo = new Circulo(radio, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+			entidades.push_back(circulo);
+			this->log->setModulo("CONSTRUCTOR ENTIDADES");
+			this->log->addLogMessage("[CARGAR ENTIDADES] Circulo->"+circulo->toString(), 3);
+		}
+	}
+
+	cargarImagenes(renderizador);
+	ordenarSegunIndexZ();
+
+	this->log->setModulo("CONSTRUCTOR ENTIDADES");
+	this->log->addLogMessage("[CARGA DE ENTIDADES] Terminado.\n", 2);
+}
+
+void ConstructorEntidades::inicializarImagenes(SDL_Renderer *renderizador)
+{
+	cargarImagenes(renderizador);
+	ordenarSegunIndexZ();
+}
+
 Logger *ConstructorEntidades::getLog() const
 {
 	return log;
@@ -274,7 +379,48 @@ void ConstructorEntidades::validarCuadrado(int &ancho, int &alto)
 
 void ConstructorEntidades::agregarEntidadCliente(std::string nombre, int id, int x, int y)
 {
-	//Ver esto...
+	if (nombre.compare(BONUS_RING) == 0)
+	{
+		Bonus* creadorBonus = (Bonus*)generadorEntidades.at(BONUS_RING); //Saca un bonus pasa sacarle la informacion
+
+		Bonus* unBonus = new Bonus(creadorBonus->obtenerAncho(), creadorBonus->obtenerAlto(),
+			id, creadorBonus->getNombreColor(), creadorBonus->getRutaImagen(),
+			x, y, creadorBonus->getIndexZ(), log, Bonus::RING);
+
+		entidades.push_back(unBonus);
+	}
+	else if (nombre.compare(BONUS_ESCUDO) == 0)
+	{
+		Bonus* creadorBonus = (Bonus*)generadorEntidades.at(BONUS_ESCUDO); //Saca un bonus pasa sacarle la informacion
+
+		Bonus* unBonus = new Bonus(creadorBonus->obtenerAncho(), creadorBonus->obtenerAlto(),
+			id, creadorBonus->getNombreColor(), creadorBonus->getRutaImagen(),
+			x, y, creadorBonus->getIndexZ(), log, Bonus::ESCUDO);
+
+		entidades.push_back(unBonus);
+	}
+	else if (nombre.compare(BONUS_INVENCIBILIDAD) == 0)
+	{
+		Bonus* creadorBonus = (Bonus*)generadorEntidades.at(BONUS_INVENCIBILIDAD); //Saca un bonus pasa sacarle la informacion
+
+		Bonus* unBonus = new Bonus(creadorBonus->obtenerAncho(), creadorBonus->obtenerAlto(),
+			id, creadorBonus->getNombreColor(), creadorBonus->getRutaImagen(),
+			x, y, creadorBonus->getIndexZ(), log, Bonus::INVENCIBILIDAD);
+
+		entidades.push_back(unBonus);
+	}
+	else if (nombre.compare(ANILLOS) == 0)
+	{
+		Anillos* creadorAnillo = (Anillos*)generadorEntidades.at(ANILLOS); //Saca un anillo pasa sacarle la informacion
+
+		Anillos* unAnillo = new Anillos(creadorAnillo->getAncho(), creadorAnillo->getAlto(),
+			id, creadorAnillo->getNombreColor(), creadorAnillo->getRutaImagen(),
+			x, y, creadorAnillo->getIndexZ(), log);
+
+		entidades.push_back(unAnillo);
+		anillos.push_back(unAnillo);
+	}
+	//Agregar mas cosas que reciba del servidor...
 	return;
 }
 

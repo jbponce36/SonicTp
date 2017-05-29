@@ -201,3 +201,7 @@ void Anillos::render(int camX, int camY){
 	cuadroDeVentana.h=alto;
 	animacionActual->dibujar(cuadroDeVentana);
 }
+
+std::string Anillos::getNombre(){
+	return ANILLOS;
+}

@@ -54,6 +54,7 @@ public:
 	void render(int camX, int camY);
 	void Comenzar();
 
+	std::string getNombre();
 
 private:
 	std::string ruta;

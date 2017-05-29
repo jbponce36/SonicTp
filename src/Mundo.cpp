@@ -33,6 +33,7 @@ void Mundo::enviarATodos(std::vector<Hiloenviar*> *hilosEnviar, std::string mens
 		if(!sonics->at(id)->estaCongelado())
 		{
 			(*pos)->enviarDato(buffer);
+			cout << "Envie: " << mensaje << "\n";
 		}
 		id++;
 	}
@@ -48,20 +49,14 @@ void Mundo::enviarDatosEscenario(std::vector<Hiloenviar*> *hilosEnviar)
 	//Le envia a todos los clientes las posiciones de los objetos al principio de la partida
 	std::string mensaje;
 
-	/*std::vector<Bonus*>::iterator pos;
-	for(pos = bonus->begin();pos != bonus->end();pos++){
-		mensaje = BONUS + Util::intToStringConPadding((*pos)->getId())
+	std::list<Entidad*>::iterator pos;
+	for(pos = constructorEntidades->entidades.begin();pos != constructorEntidades->entidades.end();pos++){
+		mensaje = (*pos)->getNombre() + Util::intToStringConPadding((*pos)->getId(), 3)
 			+ "x" + Util::intToStringConPadding((*pos)->obtenerX())
 			+ "y" + Util::intToStringConPadding((*pos)->obtenerY());
 		enviarATodos(hilosEnviar, mensaje);
-	}*/ //Ej: BON---1x--10y--20   Este mensaje lo recibe el cliente y dibuja el bonus donde corresponda.
+	} //Ej: EA--1x--10y--20   Este mensaje lo recibe el cliente y dibuja el bonus donde corresponda.
 
-
-	//... Otros for...
-
-
-
-	///
 	mensaje = FIN_MENSAJE_ESCENARIO;
 	enviarATodos(hilosEnviar, mensaje);
 

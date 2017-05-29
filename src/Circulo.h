@@ -1,5 +1,5 @@
-#ifndef CIRCULO
-#define CIRCULO
+#ifndef CIRCULO_H_
+#define CIRCULO_H_
 
 #include "Entidad.h"
 #include "Logger.h"
@@ -22,6 +22,7 @@ public:
     int getRadio() const;
     SDL_Rect obtenerLimites();
     void interactuar(Personaje *sonic, Mundo* mundo);
+    std::string getNombre();
 
 private:
     void crearImagen(SDL_Renderer *renderer);

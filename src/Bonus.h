@@ -27,6 +27,8 @@ public:
 	virtual ~Bonus();
 	void dibujar(SDL_Renderer *renderer, SDL_Rect *camara);
 	void interactuar(Personaje *sonic, Mundo* mundo);
+	std::string getNombre();
+
 };
 
 #endif /* BONUS_H_ */

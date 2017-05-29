@@ -144,4 +144,9 @@ void Rectangulo::interactuar(Personaje *sonic, Mundo* mundo)
 	return; //Si la entidad es solo un Rectangulo, no hace nada
 }
 
+std::string Rectangulo::getNombre()
+{
+	return RECTANGULO;
+}
+
 }

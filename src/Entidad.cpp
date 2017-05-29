@@ -7,7 +7,7 @@ Entidad::Entidad() : id(), rutaImagen(""), x(), y(), indexZ(), imagen(NULL), log
 }
 
 Entidad::Entidad(unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ, Logger *log)
-: id(id), rutaImagen(rutaImagen), x(x), y(y), indexZ(indexZ), imagen(NULL)
+: id(id), nombreColor(color), rutaImagen(rutaImagen), x(x), y(y), indexZ(indexZ), imagen(NULL)
 {
 	SDL_Color colorSDL = convertirColor(color);
 	this->color=colorSDL;
@@ -219,5 +219,10 @@ void Entidad::interactuar(Personaje *sonic, Mundo* mundo)
 	//Si es solo una Entidad, no hace nada.
 	//Para usarlo sobreescribirlo en las clases heredadas de Entidad
 	return;
+}
+
+std::string Entidad::getNombreColor()
+{
+	return nombreColor;
 }
 

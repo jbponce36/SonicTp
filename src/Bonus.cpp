@@ -38,3 +38,15 @@ void Bonus::interactuar(Personaje *sonic, Mundo* mundo)
 {
 	return;
 }
+
+std::string Bonus::getNombre()
+{
+	switch(tipo)
+	{
+		case RING: return BONUS_RING;
+		case ESCUDO: return BONUS_ESCUDO;
+		case INVENCIBILIDAD: return BONUS_INVENCIBILIDAD;
+		default: return BONUS;
+	}
+}
+

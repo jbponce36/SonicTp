@@ -38,8 +38,13 @@
 #define MENSAJE_ID					"IDi"
 
 //Mensajes de entidades empiezan con E
-#define ANILLOS                     "EAn"
-#define BONUS						"EBo"
+#define ANILLOS                     "EA"
+#define BONUS						"EB"
+#define BONUS_RING					"E0"
+#define BONUS_ESCUDO				"E1"
+#define BONUS_INVENCIBILIDAD		"E2"
+#define RECTANGULO					"ER"
+#define CIRCULO						"EC"
 
 #define FIN_MENSAJE_ESCENARIO		"FIN_CARGA_ESCEN"
 

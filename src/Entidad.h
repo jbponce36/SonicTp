@@ -18,6 +18,7 @@ class Entidad {
 private:
 	unsigned int id;
 	SDL_Color color;
+	std::string nombreColor;
 	std::string rutaImagen;
 	int x;
 	int y;
@@ -30,6 +31,7 @@ public:
 	Entidad(unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ, Logger *log);
 	virtual void dibujar(SDL_Renderer *renderer, SDL_Rect *camara) = 0;
 	virtual SDL_Rect obtenerLimites() = 0;
+	virtual std::string getNombre() = 0;
 	virtual void interactuar(Personaje *sonic, Mundo* mundo);
 	std::string obtenerMensajeEstado();
 	bool intersecta(Entidad &otraEntidad);
@@ -52,6 +54,7 @@ public:
     std::string getRutaImagen();
     int getX() const;
     int getY() const;
+    std::string getNombreColor();
 
 
 private:

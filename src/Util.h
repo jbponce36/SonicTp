@@ -20,6 +20,7 @@ class Util {
 public:
 	static std::string intToString(int numero);
 	static std::string intToStringConPadding(int numero);
+	static std::string intToStringConPadding(int numero, int largo);
 	static int stringConPaddingToInt(std::string mensaje);
 	static int numeroRandom(int hasta);
 };

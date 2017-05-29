@@ -48,7 +48,6 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	salir = false;
 
 	Camara *camara = new Camara(this->posicionInicialX,this->posicionInicialY,vista->obtenerAltoVentana(),vista->obtenerAnchoVentana(), &sonicsMapa);
-    Colicion *colicion = new Colicion();
 
     inicializarEscenario(hiloRecibir);
 
@@ -318,16 +317,18 @@ void Control::inicializarEscenario(HiloRecibirCliente *hiloRecibir)
 		}
 		mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	}
+
+	constructorEntidades->inicializarImagenes(vista->obtenerRender());
 	this->log->addLogMessage("[INICIALIZAR ESCENARIO CLIENTE] Terminado.",2);
 }
 
 void Control::agregarEntidad(std::string mensaje)
 {
-	//Ej mensaje: EBo---1x--10y--20
-	std::string nombre = mensaje.substr(0,3);
-	int id = Util::stringConPaddingToInt(mensaje.substr(3, MAX_CANT_DIGITOS_POS).c_str());
-	int x = Util::stringConPaddingToInt(mensaje.substr(8, MAX_CANT_DIGITOS_POS).c_str());
-	int y = Util::stringConPaddingToInt(mensaje.substr(13, MAX_CANT_DIGITOS_POS).c_str());
+	//Ej mensaje: EB--1x--10y--20
+	std::string nombre = mensaje.substr(0,2);
+	int id = Util::stringConPaddingToInt(mensaje.substr(2, MAX_CANT_DIGITOS_POS-1).c_str());
+	int x = Util::stringConPaddingToInt(mensaje.substr(6, MAX_CANT_DIGITOS_POS).c_str());
+	int y = Util::stringConPaddingToInt(mensaje.substr(11, MAX_CANT_DIGITOS_POS).c_str());
 	cout << "Agregar Entidad " << nombre << " con id: "<< id << " en x: " << x << " y: " << y << "\n";
 
 	constructorEntidades->agregarEntidadCliente(nombre, id, x, y);
@@ -336,9 +337,9 @@ void Control::agregarEntidad(std::string mensaje)
 
 void Control::quitarEntidad(std::string mensaje)
 {
-	//Ej mensaje: EBo---1x--10y--20
-	std::string nombre = mensaje.substr(0,3);
-	int id = Util::stringConPaddingToInt(mensaje.substr(3, MAX_CANT_DIGITOS_POS).c_str());
+	//Ej mensaje: EB--1x--10y--20
+	std::string nombre = mensaje.substr(0,2);
+	int id = Util::stringConPaddingToInt(mensaje.substr(2, MAX_CANT_DIGITOS_POS-1).c_str());
 	cout << "Quitar Entidad " << nombre << " con id: "<< id << "\n";
 
 	constructorEntidades->quitarEntidad(nombre, id);

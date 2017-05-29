@@ -40,6 +40,8 @@ private:
 
 	Logger *log;
 
+	map<std::string, Entidad*> generadorEntidades;
+
 public:
 
 	list<Anillos*> anillos;
@@ -48,6 +50,8 @@ public:
 	ConstructorEntidades(int limiteAncho, int limiteAlto, Logger *log);
 	int generarId();
 	void cargarEntidades(list<jentidades> entidades, SDL_Renderer *renderizador);
+	void cargarEntidadesCliente(list<jentidades> jEntidades, SDL_Renderer *renderizador);
+	void inicializarImagenes(SDL_Renderer *renderizador);
 	void mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
 	void mostrarAnillas(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
 	virtual ~ConstructorEntidades();
