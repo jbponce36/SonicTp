@@ -82,7 +82,8 @@ public:
 
 
 	void chequearColicion(Colicion *colicion);
-	void  chequearColisiones();
+	void chequearColisiones();
+	void enviarDatosEscenario(Hiloenviar *hiloEnviar);
 
 
 private:

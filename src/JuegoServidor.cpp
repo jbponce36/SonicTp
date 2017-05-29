@@ -149,5 +149,7 @@ void JuegoServidor::reconectar(int sock)
 	sleep(1);
 	//hlatidos->IniciarHilo();
 
+	control->enviarDatosEscenario(henviar);
+
 	sonics.at(idLibre)->descongelar();
 }

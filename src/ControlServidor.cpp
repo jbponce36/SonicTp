@@ -376,3 +376,10 @@ void ControlServidor::chequearColisiones(){
 
 }
 
+void ControlServidor::enviarDatosEscenario(Hiloenviar *hiloEnviar)
+{
+	std::vector<Hiloenviar*> vec; //Un vector con un solo hilo
+	vec.push_back(hiloEnviar);
+	mundo.enviarDatosEscenario(&vec);
+}
+

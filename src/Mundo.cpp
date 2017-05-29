@@ -33,7 +33,7 @@ void Mundo::enviarATodos(std::vector<Hiloenviar*> *hilosEnviar, std::string mens
 		if(!sonics->at(id)->estaCongelado())
 		{
 			(*pos)->enviarDato(buffer);
-			cout << "Envie: " << mensaje << "\n";
+			//cout << "Envie: " << mensaje << "\n";
 		}
 		id++;
 	}
@@ -51,7 +51,7 @@ void Mundo::enviarDatosEscenario(std::vector<Hiloenviar*> *hilosEnviar)
 
 	std::list<Entidad*>::iterator pos;
 	for(pos = constructorEntidades->entidades.begin();pos != constructorEntidades->entidades.end();pos++){
-		mensaje = (*pos)->getNombre() + Util::intToStringConPadding((*pos)->getId(), 3)
+		mensaje = (*pos)->getNombre() + Util::intToStringConPadding((*pos)->getId(), MAX_CANT_DIGITOS_POS - 1)
 			+ "x" + Util::intToStringConPadding((*pos)->obtenerX())
 			+ "y" + Util::intToStringConPadding((*pos)->obtenerY());
 		enviarATodos(hilosEnviar, mensaje);

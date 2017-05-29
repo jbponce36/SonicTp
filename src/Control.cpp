@@ -304,7 +304,7 @@ void Control::inicializarEscenario(HiloRecibirCliente *hiloRecibir)
 	{
 		if(mensaje != "Sin elementos")
 		{
-			cout << mensaje << "\n";
+			//cout << mensaje << "\n";
 			if(mensaje.compare("Servidor Desconectado") == 0)
 			{
 				salir = true;
