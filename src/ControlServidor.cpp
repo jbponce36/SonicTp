@@ -291,6 +291,8 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	mundo.enviarDatosEscenario(hilosEnviar);
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
+	this->CreoAnillas();
+	this->CreoPiedras();
 	Colicion *colicion = new Colicion();
 	while( !juegoTerminado ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
@@ -318,32 +320,114 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	delete camara;
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
 }
+
+void ControlServidor::CreoAnillas(){
+  srand(time(NULL));
+  //int cantidadAnillas =(rand() % 4) + 1;
+	 int cantidadAnillas = 4;
+	for(int i=0;i<cantidadAnillas;i++){
+
+	  int	id = i;
+	  std::string color = "rojo";
+	  int ancho = 64;
+	  int alto = 64;
+
+	  int coordX = i* 200 + 300 ;
+	  int coordY = 300;
+	  std::string rutaImagen = "images/Anillas.png";
+	  int indexZ = 99;
+
+
+	   Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+
+	   anillo->setAlto(alto);
+	   anillo->setAncho(ancho);
+	   anillo->setCoorx(coordX);
+	   anillo->setCoory(coordY);
+	  // anillo->setId(id);
+
+	   this->anillos.push_back(anillo);
+
+	}
+
+	//Vendria a ser el metodo ActualizarVistaServidor......
+	  list<Anillos*>:: iterator posanillo;
+	   for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
+		   std::string mensaje = (*posanillo)->obtenerMensajeEstado();
+		   debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+		   enviarATodos(mensaje);
+	  }
+}
+
+void ControlServidor::CreoPiedras(){
+	//srand(time(NULL));
+	 // int cantidadPiedras = (rand() % 4) + 1;
+	  int cantidadPiedras = 1;
+		for(int i=0;i<cantidadPiedras;i++){
+		  int	id = i;
+		  std::string color = "rojo";
+		  int ancho = 300;
+		  int alto = 150;
+
+		  int coordX = i* 500 + 150 ;
+		  int coordY = 650;
+
+		  std::string rutaImagen = "images/Piedra.png";
+		  int indexZ = 99;
+
+		  Piedra* p = new Piedra(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+		  p->setAlto(alto);
+		  p->setAncho(ancho);
+		  p->setCoorx(coordX);
+		  p->setCoory(coordY);
+	      p->setRuta("images/Piedra.png");
+
+		  this->piedra.push_back(p);
+
+		}
+
+		list<Piedra*>::iterator pos;
+	    for(pos = this->piedra.begin();pos!=this->piedra.end();pos++){
+	    	std::string mensaje = (*pos)->obtenerMensajeEstado();
+	    	debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+	    	enviarATodos(mensaje);
+	    }
+}
 void ControlServidor::chequearColicion(Colicion *colicion){
 
 	std::map<int, Personaje*>::iterator pos;
 	list<Anillos*>:: iterator posanillo;
 
-	int numeroAnilla  = 1;
+
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
 		//this->constructorEntidades->anillos.
 		//Por cada sonic, fijarse si se intersecta con alguna de las cosas...?
+		int numeroAnilla  = 0;
+		int posAnillaColisionada = 0;
+		Anillos* colisionada = NULL;
 
-		 for(posanillo = vista->getConstructorEntidades()->anillos.begin(); posanillo!= vista->getConstructorEntidades()->anillos.end();posanillo++){
+		 for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
 			 Anillos *cls = (*posanillo);
 
 			 Personaje * cl2 = (*pos).second;
 
 			  if (colicion->intersectaAnilloPersonaje(cls, cl2)){
-				   debug(1,"ControlServidor::chequearColicion","COLISIONNNNN!!!!",1);
-
-				   //this->enviarATodos("BORRAR_ANILLA_" + numeroAnilla);
+				   debug(1,"ControlServidor::chequearColicion","Colision con anilla %d",numeroAnilla);
+				   this->enviarATodos("BORRAR_ANILLA_" + this->intToString(numeroAnilla));
+				   colisionada = (*posanillo);
 			  }
 			  numeroAnilla++;
 
 		 }
 
+		if (colisionada != NULL){
+			this->anillos.remove(colisionada);
+		}
 
+
+
+		//piedras
 	}
 
 }

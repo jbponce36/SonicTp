@@ -19,6 +19,7 @@
 #include <map>
 #include "Bonus.h"
 #include "Util.h"
+#include "Piedra.h"
 
 #define MAX_ID 100
 #define MAX_ANCHO 4000
@@ -39,13 +40,20 @@ private:
 	int limiteAlto; //Es la altura del pasto
 
 	Logger *log;
-
+	SDL_Renderer *renderizador;
 	map<std::string, Entidad*> generadorEntidades;
 
 public:
 
 	list<Anillos*> anillos;
 	list<Entidad*> entidades;
+	list<Piedra*> piedra;
+
+	void setEntidades(list<Entidad*> Entidades);
+
+	void cargarImagenesPiedra(SDL_Renderer *renderizador);
+	SDL_Renderer* getRenderizador();
+	void setRenderizador(SDL_Renderer* Renderizador);
 
 	ConstructorEntidades(int limiteAncho, int limiteAlto, Logger *log);
 	int generarId();
@@ -54,6 +62,7 @@ public:
 	void inicializarImagenes(SDL_Renderer *renderizador);
 	void mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
 	void mostrarAnillas(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
+	void mostrarPiedras(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
 	virtual ~ConstructorEntidades();
     Logger* getLog() const;
     void setLog(Logger *log);

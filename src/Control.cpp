@@ -177,13 +177,72 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 			printf("Cerrando el juego...\n");
 			this->salir = true;
 		}
-	/*	else if (mensaje == "BORRARANILLA")
+		else if (mensaje.substr(0,14) == "BORRAR_ANILLA_")
 		{
-			debug(1,"Control::controlDeMensajes", "Voy a sacar una anilla", 0);
+			int numeroAnilla = atoi(mensaje.substr(14,1).c_str());
+
+			debug(1,"Control::controlDeMensajes", "Voy a borrar la anilla %d", numeroAnilla);
+
+			int posAnillaActual = 0;
+
+			list<Anillos*>:: iterator pos;
+			Anillos* actual = NULL;
+			for(pos = vista->getConstructorEntidades()->anillos.begin();pos != vista->getConstructorEntidades()->anillos.end();pos++)
+			{
+				if (numeroAnilla == posAnillaActual){
+					actual = (*pos);
+				}
+				posAnillaActual++;
+			}
+
+			vista->getConstructorEntidades()->anillos.remove(actual);
+		}
+		else if (mensaje.substr(0,5)== "Anill")
+
+		  {
+				std::string posX = mensaje.substr(7, 3);
+				std::string posY = mensaje.substr(12, 3);
+
+				debug(1,"Control::controlDeMensajes", "Mensaje anillas" , 0);
+				debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
+					//debug(1,"Control::controlDeMensajes", (char*) posX.c_str() , 0);
+					//debug(1,"Control::controlDeMensajes", (char*) posY.c_str() , 0);
+
+				int iposX = atoi(posX.c_str());
+				int iposY = atoi(posY.c_str());
+
+
+			    Anillos* anillo = new Anillos(64, 64, 1, "rojo", "images/Anillas.png", iposX, iposY, 99, this->log);
+
+		       vista->getConstructorEntidades()->anillos.push_back(anillo);
 
 
 		}
-		*/
+
+		else if(mensaje.substr(0,5)== "Piedr"){
+
+		   debug(1,"MENSAJE PIEDRA", (char*) mensaje.c_str() , 0);
+
+
+			std::string pos_pX = mensaje.substr(7, 3);
+			std::string pos_pY = mensaje.substr(12, 3);
+
+			int iposX = atoi(pos_pX.c_str());
+			int iposY = atoi(pos_pY.c_str());
+
+			std::string rutaImagen = "images/Piedra.png";
+
+
+			Piedra* p = new Piedra(300, 150, 1, "rojo",rutaImagen,iposX,iposY,99, this->log);
+
+		          //  vista->getConstructorEntidades()->getEntidades().push_back(p);
+		    vista->getConstructorEntidades()->piedra.push_back(p);
+		    vista->getConstructorEntidades()->cargarImagenesPiedra(vista->getConstructorEntidades()->getRenderizador());
+
+
+
+
+	  }
 		//aca recibe el mensaje para pasar de nivel
 		else if(mensaje.compare("PASARNIVEL") == 0)
 		{
@@ -266,6 +325,7 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenM
 	{
 		//vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),imagenMostrar);
 		vista->mostrarEntidades(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
+		vista->mostrarPiedras(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
 		//vista->mostrarAnillas(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
 	}
 

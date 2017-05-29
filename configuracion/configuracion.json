@@ -1,10 +1,10 @@
 {
-	"ventana": {"dimensiones": {"ancho": 900, "alto": 700}},
+	"ventana": {"dimensiones": {"ancho": 1800, "alto": 1000}},
 	"configuracion": {"vel_scroll": 350},
         "servidor":{"puerto": 8080,"clientes":4},
         "cliente":{"puerto": 8080,"IP":"127.0.0.1"},
 	"escenario": {
-		"dimensiones": {"ancho": 4000, "alto": 700},
+		"dimensiones": {"ancho": 4000, "alto": 1000},
 		"capas": [
 			{
 			"id": 1,
@@ -30,11 +30,11 @@
 		"entidades": [
 		{
 			"id": 1,
-			"tipo": "rectangulo",
+			"tipo": "cuadrado",
 			"color": "rojo",
 			"dimensiones": {"ancho": 64, "alto": 64},
-			"coordenada": {"x": 300, "y": 300},
-			"ruta_imagen": "images/Anillas.png",
+			"coordenada": {"x": 1500, "y": 300},
+			"ruta_imagen": "images/entidad3.png",
 			"index_z": 98
 		},
 		{
