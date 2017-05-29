@@ -22,9 +22,12 @@ Puntaje::Puntaje(int idJugador, Logger *log, SDL_Renderer* render){
 	this->cantAnillos = 0;
 	this->ancho = ANCHO;
 	this->alto = ALTO;
+	this->posicionX = 10;
+	this->posicionY = 10;
 	this->texturaPuntaje = new Textura();
 	this->texturaPuntaje->cargarImagen(IMAGEN_PUNTAJE,IMAGEN_PUNTAJE , render, log);
-	animacionPuntaje = Animacion(texturaPuntaje, ancho, 1, PUNTAJE);
+	animacionPuntaje = Animacion(texturaPuntaje, ancho, 1, ANIMACION_PUNTAJE);
+
 }
 
 int Puntaje::getCantAnillos() const {
@@ -106,6 +109,14 @@ void Puntaje::setAncho(int ancho) {
 
 Textura* Puntaje::getTexturaPuntaje(){
 	return texturaPuntaje;
+}
+
+int Puntaje::getPosicionY() const {
+	return posicionY;
+}
+
+void Puntaje::setPosicionY(int posicionY) {
+	this->posicionY = posicionY;
 }
 
 void Puntaje::setTexturaPuntaje(Textura* texturaPuntaje) {

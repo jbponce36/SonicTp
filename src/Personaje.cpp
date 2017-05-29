@@ -124,6 +124,10 @@ void Personaje::cargarSpriteSonic(){
 		return;
 	}
 
+	if(puntaje->getTexturaPuntaje() == NULL){
+		cout<<"textura puntaje no cargada"<<endl;
+	}
+
 	animacionQuietoDer = Animacion(texturaSonic, personajeAncho, 7, ANIMACION_QUIETO_DERECHA);
 	animacionCaminarDer = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CAMINAR_DERECHA);
 	animacionCorrerDer = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CORRER_DERECHA);
@@ -133,6 +137,7 @@ void Personaje::cargarSpriteSonic(){
 	animacionCorrerIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CORRER_IZQUIERDA);
 	animacionSaltarIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_SALTAR_IZQUIERDA);
 	animacionCongelado = Animacion(texturaCongelado, personajeAncho, 1, ANIMACION_CONGELADO);
+	puntaje->setAnimacionPuntaje(Animacion(puntaje->getTexturaPuntaje(), puntaje->getAlto(), 1, ANIMACION_PUNTAJE));
 
 	//for (int i=0; i<10; i++){
 	//	animacionQuietoDer.cargarSprites(0, 0, 1);
@@ -168,7 +173,9 @@ void Personaje::cargarSpriteSonic(){
 	animacionSaltarIzq.cargarSpritesAlReves(1, 5, 9);
 
 	animacionCongelado.cargarSprites(0, 0, 1);
+	cout<<"cargar textura puntaje"<<endl;
 	puntaje->getAnimacionPuntaje().cargarSprites(0,0,1);
+	cout<<"termino cargar textura puntaje"<<endl;
 
 	animacionActual = &animacionQuietoDer;
 
@@ -195,6 +202,7 @@ void Personaje::posicionarseEn(int x, int y)
 void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, int indiceAnimacion)
 {
 	posicionarseEn(x, y);
+	this->puntaje->setPosicionX(x);
 
 	std::string animacionAnterior = animacionActual->obtenerNombre();
 	if(animacionAnterior.compare(animacion) == 0)
@@ -525,6 +533,14 @@ void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje
 	hiloEnviar->enviarDato(buffer);
 	//cout << "Cliente envio: " << buffer << endl;
 
+}
+
+Puntaje* Personaje::getPuntaje() {
+	return puntaje;
+}
+
+void Personaje::setPuntaje(Puntaje* puntaje) {
+	this->puntaje = puntaje;
 }
 
 std::string Personaje::obtenerMensajeEstado()

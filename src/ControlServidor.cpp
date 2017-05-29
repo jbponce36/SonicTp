@@ -295,7 +295,6 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 		//chequearColisiones();//////////////////////////////////////////////////Aca se chequean las colisiones
 
-		//chequearColisiones();
 		chequearColicion(colicion);
 
 		actualizarVistaServidor(camara);

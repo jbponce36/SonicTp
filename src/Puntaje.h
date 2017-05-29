@@ -31,6 +31,7 @@ private:
 	int alto;
 	Logger *log;
 	int posicionX;
+	int posicionY;
 	Animacion animacionPuntaje;
 	Textura *texturaPuntaje;
 
@@ -58,6 +59,8 @@ public:
 	void setAncho(int ancho);
 	Textura* getTexturaPuntaje();
 	void setTexturaPuntaje(Textura* texturaPuntaje);
+	int getPosicionY() const;
+	void setPosicionY(int posicionY);
 };
 
 } /* namespace std */

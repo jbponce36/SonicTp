@@ -17,6 +17,7 @@
 #include <map>
 #include <string>
 #include "Colicion.h"
+#include "Definiciones.h"
 
 class Mundo {
 public:

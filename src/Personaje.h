@@ -109,7 +109,8 @@ class Personaje
 
 		void enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje);
 		std::string obtenerMensajeEstado();
-
+		Puntaje* getPuntaje();
+		void setPuntaje(Puntaje* puntaje);
 };
 
 #endif
