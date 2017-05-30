@@ -142,8 +142,9 @@ int main(int argc, char *argv[]) {
 				henviar->parametros.skt = skt;
 
 				//Le mando un ID a cada cliente a medida que se conectan y la cantidad maxima de jugadores
-				char buffer[5] = "";
+				char buffer[6] = "";
 				string temp = oss.str();
+				temp = temp + SEPARADOR_DE_MENSAJE;
 				strcpy(buffer, temp.c_str());
 				cout << "Server envio ID+maxConexiones: " << buffer << endl;
 				id++;

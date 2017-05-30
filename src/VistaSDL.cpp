@@ -34,8 +34,18 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->validacionesEscenario(jescenario);
 	this->crearVentanaYrenderizador();
 	this->velocidadScroll=jconfiguracion->getvelscroll();
-	this->constructorEntidades = new ConstructorEntidades(logger);
-	constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
+
+	this->constructorEntidades = new ConstructorEntidades(anchoescenario, 4*altoescenario/5, logger);
+	if(oculta)
+	{
+		//Solo el servidor carga las entidades
+		constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
+	}
+	else
+	{
+		constructorEntidades->cargarEntidadesCliente(jescenario->getentidades(), renderizador);
+	}
+
 	this->cargarCapas(jescenario);
 
 
@@ -178,7 +188,7 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 		this->log->addLogMessage("[CARGAR CAPAS] Textura cargada ->."+tex->toString(),3);
 		i++;
 	}
-	Textura *aux=NULL;
+	/*Textura *aux=NULL;
 	for (int i=1;i<capasFondo.size();i++)
 	{
 		for (int y=0;y< capasFondo.size()-1;y++)
@@ -193,7 +203,7 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 		}
 	}
 	aux=NULL;
-	this->log->setModulo("VISTA SDL");
+	*/this->log->setModulo("VISTA SDL");
 	this->log->addLogMessage("[CARGAR CAPAS] Terminado.",2);
 }
 
@@ -467,3 +477,7 @@ void VistaSDL::setConstructorEntidades(ConstructorEntidades* ConstructorEntidade
 
 		this->constructorEntidades = ConstructorEntidades;
 	}
+void VistaSDL::mostrarPiedras(SDL_Rect *camara, int indexZ){
+	constructorEntidades->mostrarPiedras(renderizador, camara, indexZ);
+
+}

@@ -38,7 +38,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 	parametros->cliente->getLog()->addLogMessage("",2);
 	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaPaquete);
     alc->setSkt(parametros->cliente->getFd());
-
+    parametros->colaPaquete.colaInicializar();
 	char buffer[100];
 	//parametros->alc->actualizarTiempoLatido();
 	while(parametros->continuar){
@@ -53,13 +53,13 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 
 				if (result>0){
 
-					//cout<<"Cliente recibio: "<<buffer<< "en el "<< parametros->cliente->toString()<<endl;
+					//cout<<"Cliente recibio: "<<buffer<<endl;
 					//alc->setCadena("");
 					alc->actualizarTiempoLatido();
-
+					parametros->colaPaquete.agregarAlaColaSoloUnProceso(result,buffer);
 					//parametros->alc->actualizarTiempoLatido();
 
-					if (strcmp(buffer, "Conex rechazada") == 0){
+					if (strcmp(parametros->colaPaquete.obtenerElementoDelaCola(),CONEXION_RECHAZADA)==0 ){
 					    printf("****** La conexion fue rechaza por el servidor ******* \n");
 					    parametros->continuar = false;
 
@@ -71,7 +71,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					}
 
 
-					if (strcmp(buffer, "[INICIAR JUEGO]") == 0){
+					if (strcmp(parametros->colaPaquete.obtenerElementoDelaCola(),INICIO_JUEGO)==0){
 				         printf("****** VOY A INICIAR EL JUEGO ******* \n");
 				         //alc->setCadena("INICIAR JUEGO");
 				         //alc->actualizarTiempoLatido();
@@ -84,7 +84,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				         }
 					}
 
-					parametros->colaPaquete.agregar(buffer);
+					//parametros->colaPaquete.agregar(buffer);
 				}
 
 				if (result<=0){

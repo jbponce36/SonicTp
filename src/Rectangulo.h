@@ -1,5 +1,5 @@
-#ifndef RECTANGULO
-#define RECTANGULO
+#ifndef RECTANGULO_H_
+#define RECTANGULO_H_
 
 #include "Entidad.h"
 #include "Logger.h"
@@ -20,7 +20,11 @@ public:
 	void mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara);
     string toString();
     SDL_Rect obtenerLimites();
-    bool intersecta(Rectangulo &otroRectangulo);
+    //bool intersecta(Rectangulo &otroRectangulo);
+    int obtenerAncho();
+    int obtenerAlto();
+    void interactuar(Personaje *sonic, Mundo* mundo);
+    virtual std::string getNombre();
 
 private:
     std::string intToString(int number);

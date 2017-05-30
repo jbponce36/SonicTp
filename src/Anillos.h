@@ -54,6 +54,11 @@ public:
 	void render(int camX, int camY);
 	void Comenzar();
 
+	std::string getNombre();
+
+	std::string obtenerMensajeEstado();
+	std::string intToStringConPadding(int number);
+	std::string obtenerMsjAnillaBorrada(int numero);
 
 private:
 	std::string ruta;

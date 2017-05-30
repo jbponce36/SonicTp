@@ -39,13 +39,22 @@
 #define MENSAJE_ID					"IDi"
 
 //Mensajes de entidades empiezan con E
-#define ANILLOS                     "EAn"
-#define BONUS						"EBo"
+#define ANILLOS                     "EA"
+#define PIEDRA                      "PI"
+#define BONUS						"EB"
+#define BONUS_RING					"E0"
+#define BONUS_ESCUDO				"E1"
+#define BONUS_INVENCIBILIDAD		"E2"
+#define RECTANGULO					"ER"
+#define CIRCULO						"EC"
 
 #define FIN_MENSAJE_ESCENARIO		"FIN_CARGA_ESCEN"
 
 #define PADDING 						'-'
 #define MAX_CANT_DIGITOS_POS 			4
 #define LARGO_MENSAJE_POSICION_CLIENTE 	30
-#define LARGO_MENSAJE_POSICION_SERVIDOR 15
+#define LARGO_MENSAJE_POSICION_SERVIDOR 17
+#define INICIO_JUEGO 				"[INICIAR JUEGO]"
+#define CONEXION_RECHAZADA 			"Conex rechazada"
+#define SEPARADOR_DE_MENSAJE		"$"
 #endif

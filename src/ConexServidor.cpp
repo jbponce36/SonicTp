@@ -130,7 +130,7 @@ int ConexServidor::aceptarcliente()
 		if (this->cantclientes == this->cantMaximaClientes)   {
 
 			printf("Se ha superado la cantidad maxima de conexiones  \n");
-			const char* mensaje = "Conex rechazada";
+			const char* mensaje = "Conex rechazada$";
 			this->log->addLogMessage("[ACEPTAR] Error, conexion rechazada. No se pudo aceptar un nuevo cliente en el puerto "+
 			    			intToString(puerto)+"ya estan conectados la maxima cantidad de clientes posible :"+intToString(this->cantMaximaClientes),1);
 			send(fdCliente, mensaje, strlen(mensaje), MSG_DONTWAIT);
@@ -261,6 +261,8 @@ int ConexServidor::enviar(int socket, char *buf, int size){
 	int enviado = 0;
 	int envioParcial = 0;
 	bool socketValido = true;
+	//cout<<buf<<endl;
+	//cout<<"tamanio: "<<size<<endl;
 	while(enviado < size && socketValido)
 	{
 		pthread_mutex_lock(&mutex);
@@ -340,7 +342,7 @@ void ConexServidor::comenzarPartida(std::vector<Hiloenviar*> &hrEnviar)
 	pthread_mutex_lock(&mutex);
 	this->partidaComenzada = true;
 	printf("Se comienza la partida \n");
-    char* mensaje = "[INICIAR JUEGO]";
+    char* mensaje = "[INICIAR JUEGO]$";
 
 	std::vector<Hiloenviar*>::iterator pos;
 		for(pos = hrEnviar.begin();pos != hrEnviar.end();pos++)

@@ -19,17 +19,41 @@ Paquete::~Paquete(){
 }
 
 void Paquete::agregar(char *buffer){
-	pthread_mutex_lock(&mutex);
 
-	char *buf = new char[40];
-	for(int i=0;i<40;i++){
+	pthread_mutex_lock(&mutex);
+	char *buf = new char[LARGO_MENSAJE_POSICION_SERVIDOR];
+	for(int i=0;i<LARGO_MENSAJE_POSICION_SERVIDOR;i++){
 		buf[i] = buffer[i];
 	}
 	this->colaPaquetes.push(buf);
-
 	pthread_mutex_unlock(&mutex);
 }
-
+void Paquete::colaInicializar(){
+	this->ContadorBuffAuxiliar = 0;
+	this->buffAuxiliar[0] = '\0';
+}
+void Paquete::agregarAlaColaSoloUnProceso(int tamanioBuffRecibido,char *bufferRecibido){
+	int cont = 0;
+	while(cont<tamanioBuffRecibido){
+		if(bufferRecibido[cont] == '$'){
+			if(strlen(this->buffAuxiliar) != 0){
+				this->buffAuxiliar[this->ContadorBuffAuxiliar]='\0';
+				this->agregar(this->buffAuxiliar);
+				/*cout<<"auxbyff llenio agregar"<<endl;
+				cout<<this->buffAuxiliar<<endl;
+				cout<<strlen(this->buffAuxiliar)<<endl;*/
+			}else{
+				//cout<<"auxbuffer vacio descartar"<<endl;
+			}
+			this->ContadorBuffAuxiliar = 0;
+			this->buffAuxiliar[0] = '\0';
+		}else{
+			this->buffAuxiliar[this->ContadorBuffAuxiliar] = bufferRecibido[cont];
+			(this->ContadorBuffAuxiliar) ++;
+		}
+		cont++;
+	}
+}
 /*void Paquete::agregarPosicion(Posicion *pos){
 	this->colaPaquetes.push(pos);
 }*/

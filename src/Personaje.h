@@ -11,12 +11,14 @@
 #include "ConexCliente.h"
 #include "HiloEnviarCliente.h"
 #include "Definiciones.h"
-#include "Entidad.h"
 #include "Puntaje.h"
+
 
 #define GRAVEDAD 9
 #define IMAGEN_POR_DEFECTO "images/sonicSprite.png"
 #define REGULADOR_ALTURA_SALTO 0.05 //Regula la altura del salto (Es como un "promedio" de tiempoDeJuego)
+
+class Entidad;
 
 class Personaje
 {

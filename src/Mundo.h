@@ -8,10 +8,10 @@
 #ifndef MUNDO_H_
 #define MUNDO_H_
 
+#include "ConstructorEntidades.h"
 #include "Personaje.h"
-#include "VistaSDL.h"
-#include "Bonus.h"
 #include "Hiloenviar.h"
+#include "VistaSDL.h"
 #include "Util.h"
 #include <vector>
 #include <map>
@@ -20,14 +20,11 @@
 #include "Definiciones.h"
 
 class Mundo {
-public:
+private:
 	std::map<int, Personaje*> *sonics;
 	VistaSDL *vista;
 	ConstructorEntidades *constructorEntidades;
-
-	std::vector<Bonus*> *bonus;
-	/* Agregar mas vectores/mapas de lo que necesiten*/
-
+	//Todas las entidades estan en la lista 'entidades' dentro de 'constructorEntidades'!
 
 public:
 	Mundo(std::map<int, Personaje*> *sonics, VistaSDL *vista);

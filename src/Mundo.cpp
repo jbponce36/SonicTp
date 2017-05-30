@@ -9,7 +9,7 @@
 #include "Colicion.h"
 
 Mundo::Mundo(std::map<int, Personaje*> *sonics, VistaSDL *vista)
-: sonics(sonics), vista(vista), constructorEntidades(vista->getConstructorEntidades()), bonus()
+: sonics(sonics), vista(vista), constructorEntidades(vista->getConstructorEntidades())
 {
 
 }
@@ -23,6 +23,7 @@ void Mundo::enviarATodos(std::vector<Hiloenviar*> *hilosEnviar, std::string mens
 {
 	//Envia el mensaje a todos los hilos enviar para que se lo mande a todos los clientes
 	char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
+	mensaje = mensaje + SEPARADOR_DE_MENSAJE;
 	strcpy(buffer, mensaje.c_str());
 
 	int id = 1;
@@ -32,6 +33,7 @@ void Mundo::enviarATodos(std::vector<Hiloenviar*> *hilosEnviar, std::string mens
 		if(!sonics->at(id)->estaCongelado())
 		{
 			(*pos)->enviarDato(buffer);
+			cout << "Envie: " << mensaje << "\n";
 		}
 		id++;
 	}
@@ -47,20 +49,14 @@ void Mundo::enviarDatosEscenario(std::vector<Hiloenviar*> *hilosEnviar)
 	//Le envia a todos los clientes las posiciones de los objetos al principio de la partida
 	std::string mensaje;
 
-	/*std::vector<Bonus*>::iterator pos;
-	for(pos = bonus->begin();pos != bonus->end();pos++){
-		mensaje = BONUS + Util::intToStringConPadding((*pos)->getId())
+	std::list<Entidad*>::iterator pos;
+	for(pos = constructorEntidades->entidades.begin();pos != constructorEntidades->entidades.end();pos++){
+		mensaje = (*pos)->getNombre() + Util::intToStringConPadding((*pos)->getId(), 3)
 			+ "x" + Util::intToStringConPadding((*pos)->obtenerX())
 			+ "y" + Util::intToStringConPadding((*pos)->obtenerY());
 		enviarATodos(hilosEnviar, mensaje);
-	}*/ //Ej: BON---1x--10y--20   Este mensaje lo recibe el cliente y dibuja el bonus donde corresponda.
+	} //Ej: EA--1x--10y--20   Este mensaje lo recibe el cliente y dibuja el bonus donde corresponda.
 
-
-	//... Otros for...
-
-
-
-	///
 	mensaje = FIN_MENSAJE_ESCENARIO;
 	enviarATodos(hilosEnviar, mensaje);
 
@@ -69,19 +65,22 @@ void Mundo::enviarDatosEscenario(std::vector<Hiloenviar*> *hilosEnviar)
 void Mundo::manejarColisiones()
 {
 	std::map<int, Personaje*>::iterator pos;
-	list<Anillos*>:: iterator posanillo;
 
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
 		//Por cada sonic, fijarse si se intersecta con alguna de las cosas...?
+		Personaje *sonic = (*pos).second;
 
-         for(posanillo = this->constructorEntidades->anillos.begin(); posanillo!= this->constructorEntidades->anillos.end();posanillo++){
-
-
-
-         }
-
-
+		list<Entidad*>::iterator ent;
+		for(ent = constructorEntidades->entidades.begin(); ent != constructorEntidades->entidades.end(); ent++)
+		{
+			if((*ent)->intersecta(sonic))
+			{
+				//Depende de que entidad sea, cada una interactua de forma diferente
+				//Y le puede preguntar cosas al Sonic y afectar el mundo
+				(*ent)->interactuar(sonic, this);
+			}
+		}
 	}
 }
 

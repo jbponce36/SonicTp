@@ -24,6 +24,8 @@
 #include "time.h"
 #include "Mundo.h"
 #include "Colicion.h"
+#include "Anillos.h"
+#include "Piedra.h"
 
 #define FPS_SERVER 25
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
@@ -37,6 +39,8 @@ private:
 	ConexServidor *server;
 	Logger *log;
 
+
+	bool pasarNivel;
 
 	std::map<int, Personaje*> *sonics;
 	std::vector<Hiloenviar*> *hilosEnviar;
@@ -59,11 +63,13 @@ private:
 
 	std::map<int, teclasPresionadas> teclas; //Cada elemento le corresponde a un sonic
 
-	//ConstructorEntidades *constructorEntidades;
-
 	Mundo mundo; //Contiene todos los elementos del mundo y los sonics. Asi queda todo mas separado.
 
 public:
+	list<Anillos*> anillos;
+	list<Piedra*>  piedra;
+	void CreoAnillas();
+	void CreoPiedras();
 	ControlServidor(int altura, int anchura, VistaSDL *vista, std::map<int, Personaje*> *sonics,
 		std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
 		ConexServidor *server, Logger *log);
@@ -82,13 +88,12 @@ public:
 
 
 	void chequearColicion(Colicion *colicion);
-   // void  chequearColisiones();
+	void  chequearColisiones();
 
 
 private:
 	void administrarTeclasServidor();
 	ControlServidor::mensajeRecibido parsearMensajePosicion(std::string mensaje);
-	void moverSonicsSegunTeclas();
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor(Camara *camara);
 

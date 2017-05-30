@@ -17,7 +17,8 @@
 #include "Colicion.h"
 #include "debug.h"
 #include "Util.h"
-
+#include "AdministradorDeNiveles.h"
+#include "Piedra.h"
 
 #define FPS 25
 #define TICKS_POR_FRAME 1000/FPS
@@ -34,6 +35,7 @@ private:
 	Anillos *anilla;
 	VistaSDL *vista;
 	ConstructorEntidades *constructorEntidades;
+	AdministradorDeNiveles admNiveles;
 
 public:
 	typedef struct mensajePosicion{

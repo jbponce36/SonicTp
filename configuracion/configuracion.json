@@ -15,17 +15,27 @@
 			"id": 2,
 			"index_z": 98,
 			"ruta_imagen":"images/capa1rnueva.png"
+			},
+			{
+			"id": 3,
+			"index_z": 99,
+			"ruta_imagen":"images/capa0nivel2.png"
+			},
+			{
+			"id": 4,
+			"index_z": 98,
+			"ruta_imagen":"images/capa1rnueva.png"
 			}
 		],
 		"entidades": [
 		{
 			"id": 1,
-			"tipo": "rectangulo",
+			"tipo": "cuadrado",
 			"color": "rojo",
 			"dimensiones": {"ancho": 64, "alto": 64},
-			"coordenada": {"x": 300, "y": 300},
-			"ruta_imagen": "images/Anillas.png",
-			"index_z": 99
+			"coordenada": {"x": 1500, "y": 300},
+			"ruta_imagen": "images/entidad3.png",
+			"index_z": 98
 		},
 		{
 			"id": 2,
@@ -38,6 +48,15 @@
 		},
 		{
 			"id": 3,
+			"tipo": "rectangulo",
+			"color": "verde",
+			"dimensiones": {"ancho": 100, "alto": 100},
+			"coordenada": {"x": 0, "y": 0},
+			"ruta_imagen": "images/Bonus.png",
+			"index_z": 98
+		},
+		{
+			"id": 4,
 			"tipo": "circulo",
 			"color": "amarillo",
 			"dimensiones": {"radio": 15},

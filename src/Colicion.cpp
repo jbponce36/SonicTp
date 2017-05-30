@@ -24,7 +24,6 @@ bool Colicion::intersectaAnilloPersonaje(Anillos* anillo,Personaje* sonic){
 	 SDL_bool intersecta = SDL_HasIntersection(&RectanguloAnillo, &RectanguloPersonaje);
 
 	 if (intersecta == SDL_TRUE){
-		 cout<<"COLICION"<<endl;
 		 return true;
 
 	 }

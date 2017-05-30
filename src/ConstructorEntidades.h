@@ -18,6 +18,8 @@
 #include <time.h>
 #include <map>
 #include "Bonus.h"
+#include "Util.h"
+#include "Piedra.h"
 
 #define MAX_ID 100
 #define MAX_ANCHO 4000
@@ -27,35 +29,48 @@
 #define MAX_INDEXZ 99
 #define MAX_RADIO 500
 
+#define ALTO_ESCENARIO
+
 namespace std{
 
 class ConstructorEntidades {
 private:
-	list<Entidad*> entidades;
+	int generadorId;
+	int limiteAncho;  //Es el ancho de todo el escenario menos el final
+	int limiteAlto; //Es la altura del pasto
+
 	Logger *log;
-	std::map<int, Bonus*> bonus;
+	SDL_Renderer *renderizador;
+	map<std::string, Entidad*> generadorEntidades;
 
 public:
 
 	list<Anillos*> anillos;
-	ConstructorEntidades();
-	ConstructorEntidades(Logger *log);
+	list<Entidad*> entidades;
+	list<Piedra*> piedra;
+
+	void setEntidades(list<Entidad*> Entidades);
+
+	void cargarImagenesPiedra(SDL_Renderer *renderizador);
+	SDL_Renderer* getRenderizador();
+	void setRenderizador(SDL_Renderer* Renderizador);
+
+	ConstructorEntidades(int limiteAncho, int limiteAlto, Logger *log);
+	int generarId();
 	void cargarEntidades(list<jentidades> entidades, SDL_Renderer *renderizador);
+	void cargarEntidadesCliente(list<jentidades> jEntidades, SDL_Renderer *renderizador);
+	void inicializarImagenes(SDL_Renderer *renderizador);
 	void mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
 	void mostrarAnillas(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
+	void mostrarPiedras(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
 	virtual ~ConstructorEntidades();
     Logger* getLog() const;
     void setLog(Logger *log);
 
-	list<Entidad*>getEntidades();
-
-	void setEntidades(list<Entidad*> Entidades);
-
-	void agregarEntidad(std::string nombre, int id, int x, int y);
+	void agregarEntidadCliente(std::string nombre, int id, int x, int y);
 	void quitarEntidad(std::string nombre, int id);
-	void agregarBonus(int idBonus, int x, int y);
-	void quitarBonus(int id);
-	bool existeBonus(int id);
+
+	void generarBonus(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ);
 
 private:
 
