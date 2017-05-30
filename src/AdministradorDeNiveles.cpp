@@ -31,6 +31,11 @@ void AdministradorDeNiveles::mostrarNivel(Camara *camara, VistaSDL *vista, SDL_R
 
 	capa0->renderizar(camara->devolverCamara(),imagenMostrar);
 	capa1->renderizar(camara->devolverCamara(),imagenMostrar);
+	//quiero probar a renderizar texto aca
+	cout<<"LLEGO ACA ANTESde en entrar a DIBUJAR TEXTO"<<endl;
+	vista->dibujarTexto();
+
+
 }
 
 void AdministradorDeNiveles::setNivel(int nivel){

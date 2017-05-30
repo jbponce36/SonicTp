@@ -8,6 +8,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
 #include "Logger.h"
+#include <SDL2/SDL_ttf.h>
 using namespace std;
 #include <string>
 
@@ -25,6 +26,10 @@ private:
 	std::string ruta;
 	int id;
 	string intToString(int number);
+	TTF_Font* fuente;
+	SDL_Color White;
+	SDL_Texture* textoSup;
+	SDL_Surface* textoCargado;
 
 public:
 	Textura();
@@ -44,6 +49,8 @@ public:
 	std::string getRuta();
 	int getIndex_z();
 	string toString();
+	void cargarTexto();
+	void renderizarTexto(SDL_Rect Mes, SDL_Rect Message_rect);
 	~Textura();
 };
 

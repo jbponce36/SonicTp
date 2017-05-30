@@ -20,6 +20,10 @@ using namespace std;
 #include <list>
 #include <vector>
 #include <unistd.h>
+#include <SDL2/SDL_ttf.h>
+//#include <SDL_ttf.h>
+#include <stdio.h>
+#include <cmath>
 #ifndef VISTASDL_H_
 #define VISTASDL_H_
 #define ANCHO_VENTANA_POR_DEFECTO 640
@@ -52,6 +56,8 @@ private:
     ConstructorEntidades *constructorEntidades;
     Logger *log;
     bool oculta;
+    TTF_Font* fuente;
+    SDL_Color White;
 public:
     SDL_Renderer* renderizador;
     VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion, jescenario *jescenario, Logger *logger, bool oculta);
@@ -80,6 +86,7 @@ public:
     void setLog(Logger *log);
     string intToString(int number);
     int getAltoEscenario();
+    void dibujarTexto();
 
 	ConstructorEntidades* getConstructorEntidades();
 

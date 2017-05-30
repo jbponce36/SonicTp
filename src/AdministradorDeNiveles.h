@@ -10,6 +10,7 @@
 #include "VistaSDL.h"
 #include "Camara.h"
 #include "Personaje.h"
+#include <SDL2/SDL_ttf.h>
 
 class AdministradorDeNiveles {
 

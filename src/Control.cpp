@@ -263,6 +263,7 @@ void Control::parsearMensajePosicion(mensajePosicion& msj, std::string mensaje)
 void Control::actualizarVista(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar, Personaje *sonic)
 {
 	admNiveles.mostrarNivel(camara,vista,imagenMostrar);
+
 	for(int contador = 0; contador < vista->cantidadCapasCargadas(); contador++)
 	{
 		//vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),imagenMostrar);

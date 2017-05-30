@@ -37,7 +37,9 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->constructorEntidades = new ConstructorEntidades(anchoescenario, 4*altoescenario/5, logger);
 	constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
 	this->cargarCapas(jescenario);
-
+	cout<<"LLEGO ACA ANTES DIBUJAR TEXTO constructor vistasdl"<<endl;
+	this->fuente = TTF_OpenFont("images/arial.ttf", 100); //this opens a font style and sets a size
+	this->White = {255, 255, 255,0};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 
 }
 
@@ -152,7 +154,13 @@ void VistaSDL::crearVentanaYrenderizador()
 						this->log->addLogMessage("[CREAR VENTANA Y RENDERIZADOR] Ventana creada exitosamente",3);
 					}
 				}
-			}
+				 //Initialize SDL_ttf
+					if( TTF_Init() == -1 )
+					{
+						printf( "SDL_ttf no se pudo inicializar! SDL_ttf Error: %s\n", TTF_GetError() );
+						//success = false;
+					}
+			 }
 		}
 	this->log->addLogMessage("[CREAR VENTANA Y RENDERIZADOR] Terminado. \n",2);
 }
@@ -252,6 +260,9 @@ void VistaSDL::cerrar()
 	//cerrar SDL subsistemas
 	IMG_Quit();
 	SDL_Quit();
+	//Quit SDL subsystems
+//	TTF_CloseFont( gFont );
+	TTF_Quit();
 	this->log->addLogMessage("[CERRAR] Terminado.",2);
 }
 
@@ -467,3 +478,38 @@ void VistaSDL::setConstructorEntidades(ConstructorEntidades* ConstructorEntidade
 
 		this->constructorEntidades = ConstructorEntidades;
 	}
+void VistaSDL::dibujarTexto(){
+
+
+
+
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO11"<<endl;
+	//cout<<&fuente<<endl;
+	//cout<<&White<<endl;
+	SDL_Surface* textoCargado = TTF_RenderUTF8_Solid(this->fuente,"HOLA HOLA",White);
+	//SDL_Surface* textoCargado = TTF_RenderText_Solid(fuente, "PUNTAJES SONICS", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO22"<<endl;
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(this->renderizador, textoCargado); //now you can convert it into a texture
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO33"<<endl;
+	SDL_Rect Message_rect; //create a rect
+	//SDL_SetRenderDrawColor(this->renderizador, 0, 0, 0, 0);
+	//SDL_RenderClear(this->renderizador);
+	Message_rect.x = 0;  //controls the rect's x coordinate
+	Message_rect.y = 500; // controls the rect's y coordinte
+	Message_rect.w = 500; // controls the width of the rect
+	Message_rect.h = 500; // controls the height of the rect
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO44"<<endl;
+	SDL_Rect Mes; //create a rect
+	Mes.x = 500;  //controls the rect's x coordinate
+	Mes.y = 500; // controls the rect's y coordinte
+	Mes.w = 500; // controls the width of the rect
+	Mes.h = 500; // controls the height of the rect
+
+	//Mind you that (0,0) is on the top left of the window/screen, think a rect as the text's box, that way it would be very simple to understance
+
+	//Now since it's a texture, you have to put RenderCopy in your game loop area, the area where the whole code executes
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO55"<<endl;
+	SDL_RenderCopy(this->renderizador, Message, NULL, &Message_rect); //you put the renderer's name first, the Message, the crop size(you can ignore this if you don't want to dabble with cropping), and the rect which is the size and coordinate of your texture
+	//cout<<"LLEGO ACA despues DIBUJAR PUNTOS"<<endl;
+	//Don't forget too free your surface and texture
+}
