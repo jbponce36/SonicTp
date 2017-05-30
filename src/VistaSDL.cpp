@@ -38,7 +38,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
 	this->cargarCapas(jescenario);
 	cout<<"LLEGO ACA ANTES DIBUJAR TEXTO constructor vistasdl"<<endl;
-	this->fuente = TTF_OpenFont("images/arial.ttf", 25); //this opens a font style and sets a size
+	this->fuente = TTF_OpenFont("images/font_puntajes.ttf", 25); //this opens a font style and sets a size
 	this->White = {255, 255, 255,0};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 
 }
@@ -482,12 +482,12 @@ void VistaSDL::dibujarTexto(){
 
 
 
-
+	TTF_SetFontStyle(fuente, TTF_STYLE_BOLD); //esto hace la letra en negrita
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO11"<<endl;
 	//cout<<&fuente<<endl;
 	//cout<<&White<<endl;
-	SDL_Surface* textoCargado = TTF_RenderUTF8_Solid(this->fuente,"HOLA HOLA",White);
-	//SDL_Surface* textoCargado = TTF_RenderText_Solid(fuente, "PUNTAJES SONICS", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+	SDL_Surface* textoCargado = TTF_RenderUTF8_Blended(this->fuente,"PUNTAJES",White);
+	//SDL_Surface* textoCargado = TTF_RenderText_Blended(fuente, "PUNTAJES SONICS", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO22"<<endl;
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(this->renderizador, textoCargado); //now you can convert it into a texture
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO33"<<endl;
@@ -496,20 +496,20 @@ void VistaSDL::dibujarTexto(){
 	//SDL_RenderClear(this->renderizador);
 	Message_rect.x = 0;  //controls the rect's x coordinate
 	Message_rect.y = 0; // controls the rect's y coordinte
-	Message_rect.w = 250; // controls the width of the rect
+	Message_rect.w = 500; // controls the width of the rect
 	Message_rect.h = 250; // controls the height of the rect
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO44"<<endl;
 	SDL_Rect Mes; //create a rect
 	Mes.x = 0;  //controls the rect's x coordinate
 	Mes.y = 0; // controls the rect's y coordinte
 	Mes.w = 500; // controls the width of the rect
-	Mes.h = 500; // controls the height of the rect
+	Mes.h = 250; // controls the height of the rect
 
 	//Mind you that (0,0) is on the top left of the window/screen, think a rect as the text's box, that way it would be very simple to understance
 
 	//Now since it's a texture, you have to put RenderCopy in your game loop area, the area where the whole code executes
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO55"<<endl;
-	SDL_RenderCopy(this->renderizador, Message, NULL, &Message_rect); //you put the renderer's name first, the Message, the crop size(you can ignore this if you don't want to dabble with cropping), and the rect which is the size and coordinate of your texture
+	SDL_RenderCopy(this->renderizador, Message, &Mes, &Message_rect); //you put the renderer's name first, the Message, the crop size(you can ignore this if you don't want to dabble with cropping), and the rect which is the size and coordinate of your texture
 	//cout<<"LLEGO ACA despues DIBUJAR PUNTOS"<<endl;
 	//Don't forget too free your surface and texture
 }
