@@ -38,7 +38,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
 	this->cargarCapas(jescenario);
 	cout<<"LLEGO ACA ANTES DIBUJAR TEXTO constructor vistasdl"<<endl;
-	this->fuente = TTF_OpenFont("images/arial.ttf", 100); //this opens a font style and sets a size
+	this->fuente = TTF_OpenFont("images/arial.ttf", 25); //this opens a font style and sets a size
 	this->White = {255, 255, 255,0};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 
 }
@@ -495,13 +495,13 @@ void VistaSDL::dibujarTexto(){
 	//SDL_SetRenderDrawColor(this->renderizador, 0, 0, 0, 0);
 	//SDL_RenderClear(this->renderizador);
 	Message_rect.x = 0;  //controls the rect's x coordinate
-	Message_rect.y = 500; // controls the rect's y coordinte
-	Message_rect.w = 500; // controls the width of the rect
-	Message_rect.h = 500; // controls the height of the rect
+	Message_rect.y = 0; // controls the rect's y coordinte
+	Message_rect.w = 250; // controls the width of the rect
+	Message_rect.h = 250; // controls the height of the rect
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO44"<<endl;
 	SDL_Rect Mes; //create a rect
-	Mes.x = 500;  //controls the rect's x coordinate
-	Mes.y = 500; // controls the rect's y coordinte
+	Mes.x = 0;  //controls the rect's x coordinate
+	Mes.y = 0; // controls the rect's y coordinte
 	Mes.w = 500; // controls the width of the rect
 	Mes.h = 500; // controls the height of the rect
 
