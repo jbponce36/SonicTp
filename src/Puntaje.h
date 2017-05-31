@@ -49,18 +49,10 @@ public:
 	void setTiempo(int tiempo);
 	int getVidas() const;
 	void setVidas(int vida);
-	int getPosicionX() const;
-	void setPosicionX(int posicionX);
 	Animacion getAnimacionPuntaje();
 	void setAnimacionPuntaje(Animacion animacionPuntaje);
-	int getAlto() const;
-	void setAlto(int alto);
-	int getAncho() const;
-	void setAncho(int ancho);
 	Textura* getTexturaPuntaje();
 	void setTexturaPuntaje(Textura* texturaPuntaje);
-	int getPosicionY() const;
-	void setPosicionY(int posicionY);
 };
 
 } /* namespace std */

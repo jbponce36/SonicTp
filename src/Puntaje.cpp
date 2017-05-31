@@ -7,19 +7,32 @@
 
 #include "Puntaje.h"
 
-namespace std {
+using namespace std;
 
 Puntaje::Puntaje() {
+	this->idJugador = 0;
+	this->vidas = 3;
+	this->log = new Logger();
+	this->tiempo = 0;
+	this->cantAnillos = 0;
+	this->puntos = 0;
+	this->tiempo = 0;
+	this->ancho = ANCHO;
+	this->alto = ALTO;
+	this->posicionX = 10;
+	this->posicionY = 10;
+	this->texturaPuntaje = new Textura();
 
-	// TODO Auto-generated constructor stub
 }
 
 Puntaje::Puntaje(int idJugador, Logger *log, SDL_Renderer* render){
 	this->idJugador = idJugador;
+	this->puntos = 0;
 	this->vidas = 3;
 	this->log = log;
 	this->tiempo = 0;
 	this->cantAnillos = 0;
+	this->tiempo = 0;
 	this->ancho = ANCHO;
 	this->alto = ALTO;
 	this->posicionX = 10;
@@ -71,16 +84,8 @@ void Puntaje::setVidas(int vida) {
 }
 
 Puntaje::~Puntaje() {
-	// TODO Auto-generated destructor stub
 }
 
-int Puntaje::getPosicionX() const {
-	return posicionX;
-}
-
-void Puntaje::setPosicionX(int posicionX) {
-	this->posicionX = posicionX;
-}
 
 Animacion Puntaje::getAnimacionPuntaje() {
 	return animacionPuntaje;
@@ -91,38 +96,16 @@ void Puntaje::setAnimacionPuntaje(Animacion animacionPuntaje) {
 }
 
 
-int Puntaje::getAlto() const {
-	return alto;
-}
-
-void Puntaje::setAlto(int alto) {
-	this->alto = alto;
-}
-
-int Puntaje::getAncho() const {
-	return ancho;
-}
-
-void Puntaje::setAncho(int ancho) {
-	this->ancho = ancho;
-}
-
 Textura* Puntaje::getTexturaPuntaje(){
 	return texturaPuntaje;
 }
 
-int Puntaje::getPosicionY() const {
-	return posicionY;
-}
 
-void Puntaje::setPosicionY(int posicionY) {
-	this->posicionY = posicionY;
-}
 
 void Puntaje::setTexturaPuntaje(Textura* texturaPuntaje) {
 	this->texturaPuntaje = texturaPuntaje;
 }
 
 
-} /* namespace std */
+ /* namespace std */
 

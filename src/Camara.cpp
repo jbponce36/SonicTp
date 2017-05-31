@@ -68,16 +68,16 @@ void Camara::actualizar(int maximoAncho, int maximoAlto)
 			if (posicionMin > (*sonic).second->getPosicionX()){
 				posicionMin = (*sonic).second->getPosicionX();
 				velocidadDelMin = (*sonic).second->getVelocidadX();
-				(*sonic).second->getPuntaje()->setPosicionX( (*sonic).second->getPosicionX());
+				//(*sonic).second->getPuntaje()->setPosicionX( (*sonic).second->getPosicionX());
 			}
 		}
 		if ((*sonic).second->bloqueaCamaraADerecha(camaraImagen)){
 			bloqueadaADerecha = true;
-			(*sonic).second->getPuntaje()->setPosicionX( (*sonic).second->getPosicionX());
+			//(*sonic).second->getPuntaje()->setPosicionX( (*sonic).second->getPosicionX());
 		}
 		if ((*sonic).second->bloqueaCamaraAIzquierda(camaraImagen)){
 			bloqueadaAIzquierda = true;
-			(*sonic).second->getPuntaje()->setPosicionX( (*sonic).second->getPosicionX());
+			//(*sonic).second->getPuntaje()->setPosicionX( (*sonic).second->getPosicionX());
 		}
 		anchoSonic = (*sonic).second->getAncho();
 	}
