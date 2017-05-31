@@ -1,4 +1,5 @@
 #include "Personaje.h"
+#include "Puntaje.h"
 
 const int POSICION_INICIALX = 0;
 const int POSICION_INICIALY = 0;

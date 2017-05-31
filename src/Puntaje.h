@@ -8,19 +8,17 @@
 #ifndef PUNTAJE_H_
 #define PUNTAJE_H_
 
-#include "Logger.h"
-#include "Definiciones.h"
 #include "Textura.h"
 #include "Animacion.h"
+#include "Rectangulo.h"
 
 #define IMAGEN_PUNTAJE "images/puntaje.png"
 #define IMAGEN_NUMEROS "images/numeros.png"
 #define ANCHO 235
 #define ALTO  177
 
-namespace std {
 
-class Puntaje {
+class Puntaje  : public Rectangulo  {
 private:
 	int puntos;
 	int tiempo;
@@ -56,6 +54,6 @@ public:
 	void setTexturaPuntaje(Textura* texturaPuntaje);
 };
 
-} /* namespace std */
+ /* namespace std */
 
 #endif /* PUNTAJE_H_ */
