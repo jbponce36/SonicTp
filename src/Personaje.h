@@ -32,7 +32,7 @@ class Personaje
 		int personajeVelocidad;
 		int personajeAceleracion;
 		int posicionX, posicionY;
-		int velocidadX, velocidadY;
+	//	int velocidadX, velocidadY;
 
 		Animacion animacionQuietoDer;
 		Animacion animacionCaminarDer;
@@ -52,6 +52,8 @@ class Personaje
 		bool corriendo;
 		bool estaQuieto;
 		bool congelado;
+		bool puedeIrDerecha;
+		bool puedeIrIzquierda;
 
 		Logger *log;
 
@@ -65,6 +67,7 @@ class Personaje
 		ConexCliente *cliente; //<-------- Borrarlo cuando el enviar del hilo ande bien!
 
     public:
+		int velocidadX, velocidadY;
 
 		Personaje(int id, int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log);
 		Personaje(int id, int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log, ConexCliente *cliente);
@@ -93,6 +96,10 @@ class Personaje
 		void irIzquierda();
 		void irDerecha();
 		void parar();
+
+		void pararPorColision();
+		void reanudarLuegoDeColision();
+
 		void congelar();
 		void descongelar();
 

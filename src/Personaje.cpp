@@ -1,4 +1,5 @@
 #include "Personaje.h"
+#include "debug.h"
 
 const int POSICION_INICIALX = 0;
 const int POSICION_INICIALY = 0;
@@ -36,6 +37,9 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     cargarSpriteSonic();
 
     this->log = log;
+
+    this->puedeIrDerecha = true;
+    this->puedeIrIzquierda = true;
 }
 
 Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log, ConexCliente *cliente)
@@ -73,6 +77,9 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->log = log;
 
     this->cliente = cliente;
+
+    this->puedeIrDerecha = true;
+    this->puedeIrIzquierda = true;
 }
 
 void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
@@ -99,6 +106,7 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 
     //Si esta saltando lo afecta la gravedad
     if (saltando){
+
     	this->velocidadY += GRAVEDAD;
     }
 
@@ -210,7 +218,6 @@ void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, in
 		animacionActual = &animacionCaminarDer;
 	}
 	else if(animacion.compare(ANIMACION_CORRER_DERECHA) == 0){
-		animacionActual = &animacionCorrerDer;
 	}
 	else if(animacion.compare(ANIMACION_SALTAR_DERECHA) == 0){
 		animacionActual = &animacionSaltarDer;
@@ -340,59 +347,130 @@ void Personaje::irAbajo()
 
 void Personaje::irIzquierda()
 {
-	dejarDeEstarQuieto();
+	if (this->puedeIrIzquierda)
+	{
+		dejarDeEstarQuieto();
 
-	if (corriendo){
-		/*this->velocidadX -= 2*personajeAceleracion;
-		if(velocidadX < (-2*personajeVelocidad))
-		{
-			velocidadX = -2*personajeVelocidad;
-		}*/
-		this->velocidadX = -2*personajeVelocidad;
-		animacionActual = &animacionCorrerIzq;
-	}
-	else{
-		/*this->velocidadX -= personajeAceleracion;
-		if(velocidadX < (-personajeVelocidad))
-		{
-			velocidadX = -personajeVelocidad;
-		}*/
-		this->velocidadX = -personajeVelocidad;
-		animacionActual = &animacionCaminarIzq;
-	}
+		if (corriendo){
+			/*this->velocidadX -= 2*personajeAceleracion;
+			if(velocidadX < (-2*personajeVelocidad))
+			{
+				velocidadX = -2*personajeVelocidad;
+			}*/
+			this->velocidadX = -2*personajeVelocidad;
+			animacionActual = &animacionCorrerIzq;
+		}
+		else{
+			/*this->velocidadX -= personajeAceleracion;
+			if(velocidadX < (-personajeVelocidad))
+			{
+				velocidadX = -personajeVelocidad;
+			}*/
+			this->velocidadX = -personajeVelocidad;
+			animacionActual = &animacionCaminarIzq;
+		}
 
-	orientacion = IZQUIERDA;
-	animarSalto();
-	animacionActual->comenzar();
+		orientacion = IZQUIERDA;
+		animarSalto();
+		animacionActual->comenzar();
+	}
 }
 
 void Personaje::irDerecha()
 {
-	dejarDeEstarQuieto();
+	if (this->puedeIrDerecha){
 
-	if (corriendo){
-		/*this->velocidadX += 2*personajeAceleracion;
-		if(velocidadX > 2*personajeVelocidad)
-		{
-			velocidadX = 2*personajeVelocidad;
-		}*/
-		this->velocidadX = 2*personajeVelocidad;
-		animacionActual = &animacionCorrerDer;
-	}
-	else{
-		/*this->velocidadX += personajeAceleracion;
-		if(velocidadX > personajeVelocidad)
-		{
-			velocidadX = personajeVelocidad;
-		}*/
-		this->velocidadX = personajeVelocidad;
-		animacionActual = &animacionCaminarDer;
-	}
+		dejarDeEstarQuieto();
 
-	orientacion = DERECHA;
-	animarSalto();
-	animacionActual->comenzar();
+		if (corriendo){
+			/*this->velocidadX += 2*personajeAceleracion;
+			if(velocidadX > 2*personajeVelocidad)
+			{
+				velocidadX = 2*personajeVelocidad;
+			}*/
+			this->velocidadX = 2*personajeVelocidad;
+			animacionActual = &animacionCorrerDer;
+		}
+		else{
+			/*this->velocidadX += personajeAceleracion;
+			if(velocidadX > personajeVelocidad)
+			{
+				velocidadX = personajeVelocidad;
+			}*/
+			this->velocidadX = personajeVelocidad;
+			animacionActual = &animacionCaminarDer;
+		}
+
+		orientacion = DERECHA;
+		animarSalto();
+		animacionActual->comenzar();
+	}
 }
+
+void Personaje::reanudarLuegoDeColision()
+{
+	this->puedeIrDerecha = true;
+	this->puedeIrIzquierda = true;
+}
+
+void Personaje::pararPorColision()
+{
+	debug(0,"Personaje::pararPorColision","Se detiene el sonic", 0);
+	/*if (velocidadX < 0)
+	{
+		velocidadX += 2*personajeAceleracion;
+		if (velocidadX >= 0)
+			velocidadX = 0;
+	}
+	else if(velocidadX > 0)
+	{
+		velocidadX -= 2*personajeAceleracion;
+		if (velocidadX <= 0)
+			velocidadX = 0;
+	}*/
+
+	velocidadX = 0;
+
+
+
+	if (saltando)
+		return;
+
+	if (estaQuieto)
+		return;
+
+	velocidadY = 0;
+
+	if (velocidadX == 0){
+
+		estaQuieto = true;
+		saltando = false;
+		corriendo = false;
+
+		animacionActual->detener();
+	}
+
+
+	if (!this->saltando)
+	{
+		switch (orientacion)
+		{
+			case IZQUIERDA:
+				this->puedeIrIzquierda = false;
+				animacionActual = &animacionQuietoIzq;
+				break;
+			case DERECHA:
+				this->puedeIrDerecha = false;
+				animacionActual = &animacionQuietoDer;
+
+				break;
+		}
+	}
+			animacionActual->comenzar();
+
+
+}
+
 
 void Personaje::parar()
 {
@@ -411,32 +489,33 @@ void Personaje::parar()
 
 	velocidadX = 0;
 
-	if (saltando)
-		return;
+		if (saltando)
+			return;
 
-	if (estaQuieto)
-		return;
+		if (estaQuieto)
+			return;
 
-	velocidadY = 0;
+		velocidadY = 0;
 
-	if (velocidadX == 0){
-		estaQuieto = true;
+		if (velocidadX == 0){
+			estaQuieto = true;
 
-		saltando = false;
-		corriendo = false;
-		animacionActual->detener();
+			saltando = false;
+			corriendo = false;
+			animacionActual->detener();
 
-		switch (orientacion)
-		{
-			case IZQUIERDA:
-				animacionActual = &animacionQuietoIzq;
-				break;
-			case DERECHA:
-				animacionActual = &animacionQuietoDer;
-				break;
+			switch (orientacion)
+			{
+				case IZQUIERDA:
+					animacionActual = &animacionQuietoIzq;
+					break;
+				case DERECHA:
+					animacionActual = &animacionQuietoDer;
+					break;
+			}
+			animacionActual->comenzar();
 		}
-		animacionActual->comenzar();
-	}
+
 }
 
 void Personaje::congelar()
