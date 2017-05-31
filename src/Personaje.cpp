@@ -33,7 +33,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
-    this->puntaje = new Puntaje(id, log, render);
+    this->puntaje = new Puntaje(id, render /*,log*/);
     cargarSpriteSonic();
     this->log = log;
 }
@@ -68,7 +68,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
-    this->puntaje = new Puntaje(id, log, render);
+    this->puntaje = new Puntaje(id, render /*,log*/);
     cargarSpriteSonic();
     this->log = log;
     this->cliente = cliente;

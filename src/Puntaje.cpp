@@ -12,34 +12,36 @@ using namespace std;
 Puntaje::Puntaje() {
 	this->idJugador = 0;
 	this->vidas = 3;
-	this->log = new Logger();
+	/*this->log = new Logger();
+	this->ancho = ANCHO;
+	this->alto = ALTO;
+	this->posicionX = 10;
+	this->posicionY = 10;*/
 	this->tiempo = 0;
 	this->cantAnillos = 0;
 	this->puntos = 0;
 	this->tiempo = 0;
-	this->ancho = ANCHO;
-	this->alto = ALTO;
-	this->posicionX = 10;
-	this->posicionY = 10;
+
 	this->texturaPuntaje = new Textura();
 
 }
 
-Puntaje::Puntaje(int idJugador, Logger *log, SDL_Renderer* render){
+Puntaje::Puntaje(int idJugador,  SDL_Renderer* render /*,Logger *log*/){
 	this->idJugador = idJugador;
 	this->puntos = 0;
 	this->vidas = 3;
-	this->log = log;
+	//this->log = log;
 	this->tiempo = 0;
 	this->cantAnillos = 0;
 	this->tiempo = 0;
-	this->ancho = ANCHO;
+	/*this->ancho = ANCHO;
 	this->alto = ALTO;
 	this->posicionX = 10;
-	this->posicionY = 10;
+	this->posicionY = 10;*/
 	this->texturaPuntaje = new Textura();
-	this->texturaPuntaje->cargarImagen(IMAGEN_PUNTAJE,IMAGEN_PUNTAJE , render, log);
-	animacionPuntaje = Animacion(texturaPuntaje, ancho, 1, ANIMACION_PUNTAJE);
+
+	//this->texturaPuntaje->cargarImagen(IMAGEN_PUNTAJE,IMAGEN_PUNTAJE , render, log);
+	animacionPuntaje = Animacion(texturaPuntaje, ANCHO, 1, ANIMACION_PUNTAJE);
 
 }
 

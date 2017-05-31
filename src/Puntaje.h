@@ -27,17 +27,18 @@ private:
 	int cantAnillos;
 	int vidas;
 	int idJugador;
+	/*
 	int ancho;
 	int alto;
 	Logger *log;
 	int posicionX;
-	int posicionY;
+	int posicionY;*/
 	Animacion animacionPuntaje;
 	Textura *texturaPuntaje;
 
 public:
 	Puntaje();
-	Puntaje(int idJugador, Logger *log, SDL_Renderer* render);
+	Puntaje(int idJugador, SDL_Renderer* render/* ,Logger *log*/);
 	virtual ~Puntaje();
 	int getCantAnillos() const;
 	void setCantAnillos(int cantAnillos);
