@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 
+class Puntaje;
 class Camara {
 	SDL_Rect *camaraImagen;
 	int margen;

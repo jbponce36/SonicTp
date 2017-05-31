@@ -25,6 +25,10 @@ public:
     int obtenerAlto();
     void interactuar(Personaje *sonic, Mundo* mundo);
     virtual std::string getNombre();
+	int getAlto() const;
+	void setAlto(int alto);
+	int getAncho() const;
+	void setAncho(int ancho);
 
 private:
     std::string intToString(int number);

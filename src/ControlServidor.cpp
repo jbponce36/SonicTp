@@ -330,9 +330,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 		moverPersonajesServidor(tiempoDeJuego, vista, camara);
 
 		chequearColisiones();///Aca se chequean las colisiones menos con los anillos supongo
-
 		chequearColicion(colicion); //Con los anillos
-
 		actualizarVistaServidor(camara);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
