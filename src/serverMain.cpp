@@ -68,7 +68,7 @@ int mostrarMenuServer(){
 
 int main(int argc, char *argv[]) {
 
-	char *archivoLog=(char*)"configuracion/logServidor.txt";
+	char *archivoLog=(char*)"log/logServidor.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv), "SERVER");
 	log->iniciarLog("INICIAR LOGGER");
 
