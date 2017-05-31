@@ -135,7 +135,7 @@ void Puntaje::mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara)
 	{
 		//Recorta la imagen
 		SDL_Rect recorte = {0, 0, getAncho(), getAlto()}; //Toma desde la esquina superior izquierda de la imagen
-		SDL_Rect destino = {obtenerX() - camara->x, obtenerY() - camara->y, getAncho(), getAlto()};
+		SDL_Rect destino = {obtenerX(), obtenerY() - camara->y, getAncho(), getAlto()};
 		SDL_RenderCopy(renderer, obtenerImagen(), &recorte, &destino);
 		return;
 	}
@@ -176,7 +176,7 @@ void Puntaje::mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara)
 		{
 			//Muestra la parte izquierda de la imagen
 			SDL_Rect recorte = {0, 0, getAncho(), altoImagen};
-			SDL_Rect destino = {obtenerX() - camara->x, obtenerY() - camara->y, getAncho(), altoImagen};
+			SDL_Rect destino = {obtenerX(), obtenerY() - camara->y, getAncho(), altoImagen};
 			SDL_RenderCopy(renderer, obtenerImagen(), &recorte, &destino);
 		}
 
