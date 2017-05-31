@@ -34,7 +34,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
-    this->puntaje = new Puntaje(id, render /*,log*/);
+    this->puntaje = new Puntaje(id, render,log);
     cargarSpriteSonic();
     this->log = log;
 }
@@ -69,7 +69,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
-    this->puntaje = new Puntaje(id, render /*,log*/);
+    this->puntaje = new Puntaje(id, render ,log);
     cargarSpriteSonic();
     this->log = log;
     this->cliente = cliente;
@@ -138,7 +138,7 @@ void Personaje::cargarSpriteSonic(){
 	animacionCorrerIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CORRER_IZQUIERDA);
 	animacionSaltarIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_SALTAR_IZQUIERDA);
 	animacionCongelado = Animacion(texturaCongelado, personajeAncho, 1, ANIMACION_CONGELADO);
-	//puntaje->setAnimacionPuntaje(Animacion(puntaje->getTexturaPuntaje(), puntaje->getAlto(), 1, ANIMACION_PUNTAJE));
+	puntaje->setAnimacionPuntaje(Animacion(puntaje->getTexturaPuntaje(), puntaje->getAlto(), 1, ANIMACION_PUNTAJE));
 
 	//for (int i=0; i<10; i++){
 	//	animacionQuietoDer.cargarSprites(0, 0, 1);
@@ -203,7 +203,7 @@ void Personaje::posicionarseEn(int x, int y)
 void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, int indiceAnimacion)
 {
 	posicionarseEn(x, y);
-	//this->puntaje->setPosicionX(x);
+	this->puntaje->setX(x);
 
 	std::string animacionAnterior = animacionActual->obtenerNombre();
 	if(animacionAnterior.compare(animacion) == 0)

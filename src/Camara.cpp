@@ -1,4 +1,5 @@
 #include "Camara.h"
+#include "Puntaje.h"
 
 Camara::Camara(int posicionx, int posiciony, int alto, int ancho, std::map<int, Personaje*> *sonics)
 : sonics(sonics){
@@ -68,16 +69,16 @@ void Camara::actualizar(int maximoAncho, int maximoAlto)
 			if (posicionMin > (*sonic).second->getPosicionX()){
 				posicionMin = (*sonic).second->getPosicionX();
 				velocidadDelMin = (*sonic).second->getVelocidadX();
-				//(*sonic).second->getPuntaje()->setPosicionX( (*sonic).second->getPosicionX());
+				(*sonic).second->getPuntaje()->setX( (*sonic).second->getPosicionX());
 			}
 		}
 		if ((*sonic).second->bloqueaCamaraADerecha(camaraImagen)){
 			bloqueadaADerecha = true;
-			//(*sonic).second->getPuntaje()->setPosicionX( (*sonic).second->getPosicionX());
+			(*sonic).second->getPuntaje()->setX( (*sonic).second->getPosicionX());
 		}
 		if ((*sonic).second->bloqueaCamaraAIzquierda(camaraImagen)){
 			bloqueadaAIzquierda = true;
-			//(*sonic).second->getPuntaje()->setPosicionX( (*sonic).second->getPosicionX());
+			(*sonic).second->getPuntaje()->setX( (*sonic).second->getPosicionX());
 		}
 		anchoSonic = (*sonic).second->getAncho();
 	}

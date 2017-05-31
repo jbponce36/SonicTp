@@ -55,7 +55,8 @@ public:
     int getX() const;
     int getY() const;
     std::string getNombreColor();
-
+	void setX(int x);
+	void setY(int y);
 
 private:
 	SDL_Color convertirColor(std::string color);

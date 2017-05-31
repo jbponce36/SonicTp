@@ -25,18 +25,12 @@ private:
 	int cantAnillos;
 	int vidas;
 	int idJugador;
-	/*
-	int ancho;
-	int alto;
-	Logger *log;
-	int posicionX;
-	int posicionY;*/
 	Animacion animacionPuntaje;
 	Textura *texturaPuntaje;
 
 public:
 	Puntaje();
-	Puntaje(int idJugador, SDL_Renderer* render/* ,Logger *log*/);
+	Puntaje(int idJugador, SDL_Renderer* render ,Logger *log);
 	virtual ~Puntaje();
 	int getCantAnillos() const;
 	void setCantAnillos(int cantAnillos);
@@ -52,6 +46,8 @@ public:
 	void setAnimacionPuntaje(Animacion animacionPuntaje);
 	Textura* getTexturaPuntaje();
 	void setTexturaPuntaje(Textura* texturaPuntaje);
+	void dibujar(SDL_Renderer *renderer, SDL_Rect *camara);
+	void mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara);
 };
 
  /* namespace std */
