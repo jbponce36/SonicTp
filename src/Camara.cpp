@@ -1,4 +1,5 @@
 #include "Camara.h"
+#include "Puntaje.h"
 
 Camara::Camara(int posicionx, int posiciony, int alto, int ancho, std::map<int, Personaje*> *sonics)
 : sonics(sonics){
@@ -18,6 +19,8 @@ void Camara::actualizar(Personaje *sonic, int maximoAncho, int maximoAlto){
 //this->camaraImagen->x = ( sonic->getPosicionX() + sonic->getAncho() / 2 ) - camaraImagen->w / 2;
 
 	int posicionXSonic = sonic->getPosicionX();
+	int posicionPuntaje = camaraImagen->x;
+
 	if(posicionXSonic > (camaraImagen->x + camaraImagen->w - margen))
 	{
 		this->camaraImagen->x += posicionXSonic - (camaraImagen->x + camaraImagen->w) + margen;
@@ -53,7 +56,7 @@ void Camara::actualizar(int maximoAncho, int maximoAlto)
 	 Si hay un Sonic atras, se queda quieta e impide avanzar al otro Sonic.
 	 Idem para el otro lado.*/
 
-	int posicionMax = 0, velocidadDelMax = 0, posicionMin = maximoAncho, velocidadDelMin = 0;
+	int posicionMax = 0, velocidadDelMax = 0, posicionMin = maximoAncho, velocidadDelMin = 0, posicionPuntaje =0;
 	bool bloqueadaADerecha = false, bloqueadaAIzquierda = false;
 	int anchoSonic;
 	std::map<int, Personaje*>::iterator sonic;
@@ -66,13 +69,16 @@ void Camara::actualizar(int maximoAncho, int maximoAlto)
 			if (posicionMin > (*sonic).second->getPosicionX()){
 				posicionMin = (*sonic).second->getPosicionX();
 				velocidadDelMin = (*sonic).second->getVelocidadX();
+				(*sonic).second->getPuntaje()->setX( (*sonic).second->getPosicionX());
 			}
 		}
 		if ((*sonic).second->bloqueaCamaraADerecha(camaraImagen)){
 			bloqueadaADerecha = true;
+			(*sonic).second->getPuntaje()->setX( (*sonic).second->getPosicionX());
 		}
 		if ((*sonic).second->bloqueaCamaraAIzquierda(camaraImagen)){
 			bloqueadaAIzquierda = true;
+			(*sonic).second->getPuntaje()->setX( (*sonic).second->getPosicionX());
 		}
 		anchoSonic = (*sonic).second->getAncho();
 	}
@@ -133,6 +139,7 @@ void Camara::actualizar(int maximoAncho, int maximoAlto)
 	if( this->camaraImagen->x > maximoAncho - this->camaraImagen->w )
 	{
 		this->camaraImagen->x = maximoAncho - this->camaraImagen->w;
+		posicionPuntaje = this->camaraImagen->x;
 	}
 	else if( this->camaraImagen->x < 0 )
 	{

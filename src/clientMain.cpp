@@ -40,11 +40,10 @@ char* getJson(int argc, char *argv[]){
 int main(int argc, char *argv[]) {
 
 	//char *clientConfig = getJson(argc, argv);
-	char *archivoLog=(char*)"configuracion/logCliente.txt";
+	char *archivoLog=(char*)"log/logCliente.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "CLIENTE");
 
 	log->iniciarLog("INICIAR LOGGER");
-
 
 	ConexCliente *cliente = new ConexCliente(log);
 

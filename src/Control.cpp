@@ -119,8 +119,9 @@ void Control::administrarTeclas(ControladorTeclas *controlador, Personaje *sonic
 	{
 
 		if (e.key.keysym.sym ==  SDLK_w){
-			debug(1, "Control::administrarTeclas", "Voy a borrar las anillas", 0);
-			vista->getConstructorEntidades()->anillos.clear();
+
+			//debug(1, "Control::administrarTeclas", "Voy a borrar las anillas", 0);
+			//vista->getConstructorEntidades()->anillos.clear();
 		}
 
 		//usuario pide cierre
@@ -216,6 +217,23 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 
 		       vista->getConstructorEntidades()->anillos.push_back(anillo);
 
+
+		}
+
+		else if(mensaje.substr(0,1) == "p"){
+
+			debug(1,"Control::controlDeMensajes", "Mensaje piedras parar movimiento sonic" , 0);
+			debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
+
+			std::string animacion = mensaje.substr(1,3);
+
+
+          //  sonic->animacionQuietoDer.detener();
+
+		//	cout<<animacion<<endl;
+       //   sonic->parar();
+			//std::string animacionAnterior = sonic->animacionActual->obtenerNombre();
+			//cout<<animacionAnterior<<endl;
 
 		}
 

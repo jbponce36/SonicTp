@@ -1,4 +1,7 @@
 #include "Personaje.h"
+#include "debug.h"
+#include "Puntaje.h"
+
 
 const int POSICION_INICIALX = 0;
 const int POSICION_INICIALY = 0;
@@ -33,9 +36,12 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
+    this->puntaje = new Puntaje(id, render,log);
     cargarSpriteSonic();
-
     this->log = log;
+
+    this->puedeIrDerecha = true;
+    this->puedeIrIzquierda = true;
 }
 
 Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log, ConexCliente *cliente)
@@ -68,17 +74,20 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
+    this->puntaje = new Puntaje(id, render ,log);
     cargarSpriteSonic();
-
     this->log = log;
-
     this->cliente = cliente;
+
+    this->puedeIrDerecha = true;
+    this->puedeIrIzquierda = true;
 }
 
 void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 {
 	int maximoAlto = limites->h;
 	int maximoAncho = limites->w;
+	//this->puntaje->setPosicionX(limites->x);
 
 	/*Limite en el suelo.*/
 	maximoAlto -= (maximoAlto/5);
@@ -99,6 +108,7 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 
     //Si esta saltando lo afecta la gravedad
     if (saltando){
+
     	this->velocidadY += GRAVEDAD;
     }
 
@@ -124,6 +134,10 @@ void Personaje::cargarSpriteSonic(){
 		return;
 	}
 
+	if(puntaje->getTexturaPuntaje() == NULL){
+		cout<<"textura puntaje no cargada"<<endl;
+	}
+
 	animacionQuietoDer = Animacion(texturaSonic, personajeAncho, 7, ANIMACION_QUIETO_DERECHA);
 	animacionCaminarDer = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CAMINAR_DERECHA);
 	animacionCorrerDer = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CORRER_DERECHA);
@@ -133,6 +147,7 @@ void Personaje::cargarSpriteSonic(){
 	animacionCorrerIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CORRER_IZQUIERDA);
 	animacionSaltarIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_SALTAR_IZQUIERDA);
 	animacionCongelado = Animacion(texturaCongelado, personajeAncho, 1, ANIMACION_CONGELADO);
+	puntaje->setAnimacionPuntaje(Animacion(puntaje->getTexturaPuntaje(), puntaje->getAlto(), 1, ANIMACION_PUNTAJE));
 
 	//for (int i=0; i<10; i++){
 	//	animacionQuietoDer.cargarSprites(0, 0, 1);
@@ -168,6 +183,9 @@ void Personaje::cargarSpriteSonic(){
 	animacionSaltarIzq.cargarSpritesAlReves(1, 5, 9);
 
 	animacionCongelado.cargarSprites(0, 0, 1);
+	cout<<"cargar textura puntaje"<<endl;
+	puntaje->getAnimacionPuntaje().cargarSprites(0,0,1);
+	cout<<"termino cargar textura puntaje"<<endl;
 
 	animacionActual = &animacionQuietoDer;
 
@@ -194,6 +212,7 @@ void Personaje::posicionarseEn(int x, int y)
 void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, int indiceAnimacion)
 {
 	posicionarseEn(x, y);
+	this->puntaje->setX(x);
 
 	std::string animacionAnterior = animacionActual->obtenerNombre();
 	if(animacionAnterior.compare(animacion) == 0)
@@ -210,7 +229,6 @@ void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, in
 		animacionActual = &animacionCaminarDer;
 	}
 	else if(animacion.compare(ANIMACION_CORRER_DERECHA) == 0){
-		animacionActual = &animacionCorrerDer;
 	}
 	else if(animacion.compare(ANIMACION_SALTAR_DERECHA) == 0){
 		animacionActual = &animacionSaltarDer;
@@ -274,6 +292,7 @@ Personaje::~Personaje(){
 	{
 		delete texturaCongelado;
 	}
+	delete puntaje;
 }
 
 void Personaje::dejarDeEstarQuieto()
@@ -340,59 +359,130 @@ void Personaje::irAbajo()
 
 void Personaje::irIzquierda()
 {
-	dejarDeEstarQuieto();
+	if (this->puedeIrIzquierda)
+	{
+		dejarDeEstarQuieto();
 
-	if (corriendo){
-		/*this->velocidadX -= 2*personajeAceleracion;
-		if(velocidadX < (-2*personajeVelocidad))
-		{
-			velocidadX = -2*personajeVelocidad;
-		}*/
-		this->velocidadX = -2*personajeVelocidad;
-		animacionActual = &animacionCorrerIzq;
-	}
-	else{
-		/*this->velocidadX -= personajeAceleracion;
-		if(velocidadX < (-personajeVelocidad))
-		{
-			velocidadX = -personajeVelocidad;
-		}*/
-		this->velocidadX = -personajeVelocidad;
-		animacionActual = &animacionCaminarIzq;
-	}
+		if (corriendo){
+			/*this->velocidadX -= 2*personajeAceleracion;
+			if(velocidadX < (-2*personajeVelocidad))
+			{
+				velocidadX = -2*personajeVelocidad;
+			}*/
+			this->velocidadX = -2*personajeVelocidad;
+			animacionActual = &animacionCorrerIzq;
+		}
+		else{
+			/*this->velocidadX -= personajeAceleracion;
+			if(velocidadX < (-personajeVelocidad))
+			{
+				velocidadX = -personajeVelocidad;
+			}*/
+			this->velocidadX = -personajeVelocidad;
+			animacionActual = &animacionCaminarIzq;
+		}
 
-	orientacion = IZQUIERDA;
-	animarSalto();
-	animacionActual->comenzar();
+		orientacion = IZQUIERDA;
+		animarSalto();
+		animacionActual->comenzar();
+	}
 }
 
 void Personaje::irDerecha()
 {
-	dejarDeEstarQuieto();
+	if (this->puedeIrDerecha){
 
-	if (corriendo){
-		/*this->velocidadX += 2*personajeAceleracion;
-		if(velocidadX > 2*personajeVelocidad)
-		{
-			velocidadX = 2*personajeVelocidad;
-		}*/
-		this->velocidadX = 2*personajeVelocidad;
-		animacionActual = &animacionCorrerDer;
-	}
-	else{
-		/*this->velocidadX += personajeAceleracion;
-		if(velocidadX > personajeVelocidad)
-		{
-			velocidadX = personajeVelocidad;
-		}*/
-		this->velocidadX = personajeVelocidad;
-		animacionActual = &animacionCaminarDer;
-	}
+		dejarDeEstarQuieto();
 
-	orientacion = DERECHA;
-	animarSalto();
-	animacionActual->comenzar();
+		if (corriendo){
+			/*this->velocidadX += 2*personajeAceleracion;
+			if(velocidadX > 2*personajeVelocidad)
+			{
+				velocidadX = 2*personajeVelocidad;
+			}*/
+			this->velocidadX = 2*personajeVelocidad;
+			animacionActual = &animacionCorrerDer;
+		}
+		else{
+			/*this->velocidadX += personajeAceleracion;
+			if(velocidadX > personajeVelocidad)
+			{
+				velocidadX = personajeVelocidad;
+			}*/
+			this->velocidadX = personajeVelocidad;
+			animacionActual = &animacionCaminarDer;
+		}
+
+		orientacion = DERECHA;
+		animarSalto();
+		animacionActual->comenzar();
+	}
 }
+
+void Personaje::reanudarLuegoDeColision()
+{
+	this->puedeIrDerecha = true;
+	this->puedeIrIzquierda = true;
+}
+
+void Personaje::pararPorColision()
+{
+	debug(0,"Personaje::pararPorColision","Se detiene el sonic", 0);
+	/*if (velocidadX < 0)
+	{
+		velocidadX += 2*personajeAceleracion;
+		if (velocidadX >= 0)
+			velocidadX = 0;
+	}
+	else if(velocidadX > 0)
+	{
+		velocidadX -= 2*personajeAceleracion;
+		if (velocidadX <= 0)
+			velocidadX = 0;
+	}*/
+
+	velocidadX = 0;
+
+
+
+	if (saltando)
+		return;
+
+	if (estaQuieto)
+		return;
+
+	velocidadY = 0;
+
+	if (velocidadX == 0){
+
+		estaQuieto = true;
+		saltando = false;
+		corriendo = false;
+
+		animacionActual->detener();
+	}
+
+
+	if (!this->saltando)
+	{
+		switch (orientacion)
+		{
+			case IZQUIERDA:
+				this->puedeIrIzquierda = false;
+				animacionActual = &animacionQuietoIzq;
+				break;
+			case DERECHA:
+				this->puedeIrDerecha = false;
+				animacionActual = &animacionQuietoDer;
+
+				break;
+		}
+	}
+			animacionActual->comenzar();
+
+
+}
+
 
 void Personaje::parar()
 {
@@ -411,32 +501,33 @@ void Personaje::parar()
 
 	velocidadX = 0;
 
-	if (saltando)
-		return;
+		if (saltando)
+			return;
 
-	if (estaQuieto)
-		return;
+		if (estaQuieto)
+			return;
 
-	velocidadY = 0;
+		velocidadY = 0;
 
-	if (velocidadX == 0){
-		estaQuieto = true;
+		if (velocidadX == 0){
+			estaQuieto = true;
 
-		saltando = false;
-		corriendo = false;
-		animacionActual->detener();
+			saltando = false;
+			corriendo = false;
+			animacionActual->detener();
 
-		switch (orientacion)
-		{
-			case IZQUIERDA:
-				animacionActual = &animacionQuietoIzq;
-				break;
-			case DERECHA:
-				animacionActual = &animacionQuietoDer;
-				break;
+			switch (orientacion)
+			{
+				case IZQUIERDA:
+					animacionActual = &animacionQuietoIzq;
+					break;
+				case DERECHA:
+					animacionActual = &animacionQuietoDer;
+					break;
+			}
+			animacionActual->comenzar();
 		}
-		animacionActual->comenzar();
-	}
+
 }
 
 void Personaje::congelar()
@@ -524,6 +615,14 @@ void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje
 	hiloEnviar->enviarDato(buffer);
 	//cout << "Cliente envio: " << buffer << endl;
 
+}
+
+Puntaje* Personaje::getPuntaje() {
+	return puntaje;
+}
+
+void Personaje::setPuntaje(Puntaje* puntaje) {
+	this->puntaje = puntaje;
 }
 
 std::string Personaje::obtenerMensajeEstado()

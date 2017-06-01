@@ -481,3 +481,5 @@ void VistaSDL::mostrarPiedras(SDL_Rect *camara, int indexZ){
 	constructorEntidades->mostrarPiedras(renderizador, camara, indexZ);
 
 }
+
+

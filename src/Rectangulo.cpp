@@ -150,3 +150,19 @@ std::string Rectangulo::getNombre()
 }
 
 }
+
+int Rectangulo::getAlto() const {
+	return alto;
+}
+
+void Rectangulo::setAlto(int alto) {
+	this->alto = alto;
+}
+
+int Rectangulo::getAncho() const {
+	return ancho;
+}
+
+void Rectangulo::setAncho(int ancho) {
+	this->ancho = ancho;
+}

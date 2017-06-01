@@ -146,6 +146,7 @@ int JuegoCliente::inicializarJuegoCliente()
 {
 	this->log->addLogMessage("[INICIALIZAR JUEGO CLIENTE] Iniciado.",2);
 	//Espera hasta recibir el primer mensaje que debe ser el id.
+
 	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	while (mensaje.substr(0, 3) != MENSAJE_ID){
 		mensaje = hiloRecibir->obtenerElementoDeLaCola();

@@ -18,6 +18,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 	teclasPresionadas t = {false, false, false, false, false};
 	posSonic ultimasPosiciones = {0, 300};
 	this->pasarNivel = false;
+	this->colpiedra = false;
 	std::map<int, Personaje*>::iterator pos;
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
@@ -61,7 +62,13 @@ void ControlServidor::administrarTeclasServidor()
 					teclas.at(indice).teclaAbajo = true;
 				}
 				else if(msj.tecla.compare(TECLA_DERECHA_PRESIONADA) == 0){
-					teclas.at(indice).teclaDerecha = true;
+					//if(this->colpiedra == false){
+					 teclas.at(indice).teclaDerecha = true;
+					//}
+					//else{
+						//teclas.at(indice).teclaDerecha = false;
+
+					//}
 				}
 				else if(msj.tecla.compare(TECLA_IZQUIERDA_PRESIONADA) == 0){
 					teclas.at(indice).teclaIzquierda = true;
@@ -184,6 +191,9 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 			sonic->parar();
 		}
 
+	//if(this->colpiedra == false){
+
+
 		sonic->correr(t.teclaCorrer);
 
 		if(t.teclaArriba){
@@ -195,13 +205,24 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		}
 
 		if(t.teclaDerecha){
+
 			sonic->irDerecha();
 		}
 
 		if(t.teclaIzquierda){
 			sonic->irIzquierda();
 		}
+	//}
+	/*else{
+		t.teclaIzquierda = false;
+		t.teclaDerecha = false;
+		t.teclaCorrer = true;
+		t.teclaArriba = true;
 
+	//	(*pos).second->parar();
+	}
+	*/
+	this->colpiedra == false;
 		///------------------------------------------------------------
 		//tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
 
@@ -226,11 +247,17 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 				}
 			this->pasarNivel =false;
 		}
+
+
+
 		/*Para pruebas: Para ver lo que pasa en el juego del servidor. No descomentar.*/
 		//(*pos).second->render(camara->getPosicionX(), camara->getPosicionY());
 		//SDL_RenderPresent( vista->obtenerRender());
 		/*Hasta aca. No descomentar*/
 	}
+
+
+
 }
 
 void ControlServidor::actualizarVistaServidor(Camara *camara)
@@ -294,6 +321,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	this->CreoAnillas();
 	this->CreoPiedras();
 	Colicion *colicion = new Colicion();
+
 	while( !juegoTerminado ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
@@ -302,9 +330,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 		moverPersonajesServidor(tiempoDeJuego, vista, camara);
 
 		chequearColisiones();///Aca se chequean las colisiones menos con los anillos supongo
-
 		chequearColicion(colicion); //Con los anillos
-
 		actualizarVistaServidor(camara);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
@@ -324,7 +350,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 void ControlServidor::CreoAnillas(){
   srand(time(NULL));
   //int cantidadAnillas =(rand() % 4) + 1;
-	 int cantidadAnillas = 4;
+	 int cantidadAnillas = 1;
 	for(int i=0;i<cantidadAnillas;i++){
 
 	  int	id = i;
@@ -366,10 +392,9 @@ void ControlServidor::CreoPiedras(){
 		for(int i=0;i<cantidadPiedras;i++){
 		  int	id = i;
 		  std::string color = "rojo";
-		  int ancho = 300;
+		  int ancho = 150;
 		  int alto = 150;
-
-		  int coordX = i* 500 + 150 ;
+		  int coordX = i* 500 + 400 ;
 		  int coordY = 650;
 
 		  std::string rutaImagen = "images/Piedra.png";
@@ -397,7 +422,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 
 	std::map<int, Personaje*>::iterator pos;
 	list<Anillos*>:: iterator posanillo;
-
+    list<Piedra*>:: iterator pospiedra;
 
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
@@ -425,9 +450,34 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 			this->anillos.remove(colisionada);
 		}
 
+        //PIEDRA
+
+		bool huboColision = false;
+		for(pospiedra = this->piedra.begin();pospiedra!= this->piedra.end();pospiedra++){
+
+			Piedra *pdra = (*pospiedra);
+			Personaje * cl = (*pos).second;
+
+			if(colicion->intersectaPiedraPersonaje(pdra,cl)){
+				//cout<<"NOMBRE ANIMACION"<<endl;
+				// cout<<cl->getNombreAnimacion()<<endl;
+              this->colpiedra = true;
+
+				cl->pararPorColision();
+				huboColision = true;
+				 this->enviarATodos("p" + cl->getNombreAnimacion());
 
 
-		//piedras
+			}
+		}
+
+		if (!huboColision){
+			Personaje * cl3 = (*pos).second;
+			cl3->reanudarLuegoDeColision();
+			//El tipo se deberia poder seguir moviendo
+		}
+
+
 	}
 
 }

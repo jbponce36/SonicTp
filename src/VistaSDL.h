@@ -85,6 +85,7 @@ public:
 	ConstructorEntidades* getConstructorEntidades();
 
 	void setConstructorEntidades(ConstructorEntidades* ConstructorEntidades);
+
 };
 
 

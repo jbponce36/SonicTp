@@ -12,9 +12,13 @@
 #include "HiloEnviarCliente.h"
 #include "Definiciones.h"
 
+
 #define GRAVEDAD 9
 #define IMAGEN_POR_DEFECTO "images/sonicSprite.png"
 #define REGULADOR_ALTURA_SALTO 0.05 //Regula la altura del salto (Es como un "promedio" de tiempoDeJuego)
+
+class Entidad;
+class Puntaje;
 
 class Personaje
 {
@@ -25,6 +29,7 @@ class Personaje
 
 		Textura *texturaSonic;
 		Textura *texturaCongelado;
+		Textura *texturaPuntaje;
 
 		int id;
 		int personajeAncho;
@@ -32,7 +37,7 @@ class Personaje
 		int personajeVelocidad;
 		int personajeAceleracion;
 		int posicionX, posicionY;
-		int velocidadX, velocidadY;
+	//	int velocidadX, velocidadY;
 
 		Animacion animacionQuietoDer;
 		Animacion animacionCaminarDer;
@@ -47,11 +52,14 @@ class Personaje
 		Animacion *animacionActual;
 
 		Orientacion orientacion;
+		Puntaje *puntaje;
 
 		bool saltando;
 		bool corriendo;
 		bool estaQuieto;
 		bool congelado;
+		bool puedeIrDerecha;
+		bool puedeIrIzquierda;
 
 		Logger *log;
 
@@ -65,6 +73,7 @@ class Personaje
 		ConexCliente *cliente; //<-------- Borrarlo cuando el enviar del hilo ande bien!
 
     public:
+		int velocidadX, velocidadY;
 
 		Personaje(int id, int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log);
 		Personaje(int id, int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log, ConexCliente *cliente);
@@ -93,6 +102,10 @@ class Personaje
 		void irIzquierda();
 		void irDerecha();
 		void parar();
+
+		void pararPorColision();
+		void reanudarLuegoDeColision();
+
 		void congelar();
 		void descongelar();
 
@@ -105,7 +118,8 @@ class Personaje
 
 		void enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje);
 		std::string obtenerMensajeEstado();
-
+		Puntaje* getPuntaje();
+		void setPuntaje(Puntaje* puntaje);
 };
 
 #endif

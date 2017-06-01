@@ -41,6 +41,7 @@ private:
 
 
 	bool pasarNivel;
+	bool colpiedra;
 
 	std::map<int, Personaje*> *sonics;
 	std::vector<Hiloenviar*> *hilosEnviar;
