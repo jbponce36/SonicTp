@@ -18,15 +18,19 @@ void AdministradorDeNiveles::pasarDeNivel(){
 
 	if( this->nivelActual <= 5 )
 	{
+		//cout<<"paso de nivel"<<nivelActual<<endl;
 		this->nivelActual += 2;
 	}
 }
 
 void AdministradorDeNiveles::cargarNivel(VistaSDL* vista,Personaje* sonic){
+	if( this->nivelActual <= 5 )
+	{
 
-	this->capa0 = vista->obtenerTextura(this->nivelActual);
-	this->capa1 = vista->obtenerTextura(this->nivelActual + 1);
-	//sonic->posicionarseEn(200,500);
+		this->capa0 = vista->obtenerTextura(this->nivelActual);
+		this->capa1 = vista->obtenerTextura(this->nivelActual + 1);
+		//sonic->posicionarseEn(200,500);
+	}
 }
 
 void AdministradorDeNiveles::mostrarNivel(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar){
