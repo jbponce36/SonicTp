@@ -264,8 +264,11 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 		//aca recibe el mensaje para pasar de nivel
 		else if(mensaje.compare("PASARNIVEL") == 0)
 		{
-			this->admNiveles.pasarDeNivel();
-			this->admNiveles.cargarNivel(vista, sonic);
+			if(!admNiveles.EsUltimoNivel())
+			{
+				this->admNiveles.pasarDeNivel();
+				this->admNiveles.cargarNivel(vista, sonic);
+			}
 		}
 		else if (mensaje.substr(0,3) ==  MENSAJE_CAMARA)
 		{

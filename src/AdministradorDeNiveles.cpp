@@ -17,7 +17,9 @@ AdministradorDeNiveles::AdministradorDeNiveles(){
 void AdministradorDeNiveles::pasarDeNivel(){
 
 	if( this->nivelActual <= 5 )
+	{
 		this->nivelActual += 2;
+	}
 }
 
 void AdministradorDeNiveles::cargarNivel(VistaSDL* vista,Personaje* sonic){
@@ -41,6 +43,11 @@ void AdministradorDeNiveles::setNivel(int nivel){
 int AdministradorDeNiveles::getNivel(){
 
 	return this->nivelActual;
+}
+
+bool AdministradorDeNiveles::EsUltimoNivel(){
+
+	return (this->nivelActual == 5);
 }
 
 AdministradorDeNiveles::~AdministradorDeNiveles(){

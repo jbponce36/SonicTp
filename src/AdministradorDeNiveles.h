@@ -20,6 +20,7 @@ class AdministradorDeNiveles {
 		void mostrarNivel(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrarS);
 		void setNivel(int);
 		int getNivel();
+		bool EsUltimoNivel();
 		~AdministradorDeNiveles();
 
 	private:
