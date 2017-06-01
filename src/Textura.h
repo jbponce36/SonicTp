@@ -10,6 +10,7 @@
 #include "Logger.h"
 using namespace std;
 #include <string>
+#include <SDL2/SDL_ttf.h>
 
 #ifndef TEXTURA_H_
 #define TEXTURA_H_
@@ -25,6 +26,8 @@ private:
 	std::string ruta;
 	int id;
 	string intToString(int number);
+	TTF_Font* fuente;
+	SDL_Color color;
 
 public:
 	Textura();
