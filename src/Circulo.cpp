@@ -175,7 +175,7 @@ SDL_Rect Circulo::obtenerLimites()
 	return limites;
 }
 
-void Circulo::interactuar(Personaje *sonic, Mundo* mundo)
+void Circulo::interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar)
 {
 	return; //Si la entidad es solo un Circulo, no hace nada
 }

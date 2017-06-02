@@ -168,7 +168,7 @@ int JuegoCliente::inicializarJuegoCliente()
 		delete sonic;
 	}
 
-	sonic = new Personaje(id, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log, cliente);
+	sonic = new Personaje(id, vista->obtenerVelocidadDeScroll(),vista->obtenerRender(),vista->obtenerAltoEscenario(), log);
 	this->log->addLogMessage("[INICIALIZAR JUEGO CLIENTE] Se crea personaje con id: "+sonic->intToString(sonic->getId()) ,3);
 
 	inicializarOtrosSonics(id);

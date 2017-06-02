@@ -23,7 +23,7 @@ public:
     //bool intersecta(Rectangulo &otroRectangulo);
     int obtenerAncho();
     int obtenerAlto();
-    void interactuar(Personaje *sonic, Mundo* mundo);
+    void interactuar(Personaje *sonic, Mundo* mundo, bool &eliminada);
     virtual std::string getNombre();
 	int getAlto() const;
 	void setAlto(int alto);

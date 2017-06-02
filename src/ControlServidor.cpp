@@ -13,7 +13,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 	std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
 	ConexServidor *server, Logger *log)
 : posicionInicialX(posicionX), posicionInicialY(posicionY), vista(vista), server(server), log(log),
-  sonics(sonics), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir), teclas(), mundo(sonics, vista)
+  sonics(sonics), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir), teclas(), mundo(sonics, vista, hiloEnviar)
 {
 	teclasPresionadas t = {false, false, false, false, false};
 	posSonic ultimasPosiciones = {0, 300};
@@ -395,7 +395,8 @@ void ControlServidor::CreoPiedras(){
 		  int ancho = 150;
 		  int alto = 150;
 		  int coordX = i* 500 + 400 ;
-		  int coordY = 650;
+		  //Si lo pasas a constructorEntidades ponerle: int coordY = limiteAlto - alto;
+		  int coordY = 4*vista->getAltoEscenario()/5 - alto;
 
 		  std::string rutaImagen = "images/Piedra.png";
 		  int indexZ = 99;

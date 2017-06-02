@@ -17,7 +17,6 @@
 #define IMAGEN_POR_DEFECTO "images/sonicSprite.png"
 #define REGULADOR_ALTURA_SALTO 0.05 //Regula la altura del salto (Es como un "promedio" de tiempoDeJuego)
 
-class Entidad;
 class Puntaje;
 
 class Personaje
@@ -30,6 +29,8 @@ class Personaje
 		Textura *texturaSonic;
 		Textura *texturaCongelado;
 		Textura *texturaPuntaje;
+		Textura *texturaEscudo;
+		Textura *texturaInvencible;
 
 		int id;
 		int personajeAncho;
@@ -37,7 +38,7 @@ class Personaje
 		int personajeVelocidad;
 		int personajeAceleracion;
 		int posicionX, posicionY;
-	//	int velocidadX, velocidadY;
+		int velocidadX, velocidadY;
 
 		Animacion animacionQuietoDer;
 		Animacion animacionCaminarDer;
@@ -51,6 +52,11 @@ class Personaje
 
 		Animacion *animacionActual;
 
+		Animacion animacionEscudo;
+		Animacion animacionInvencible;
+
+		Animacion *animacionBonus; //Se suponerpone
+
 		Orientacion orientacion;
 		Puntaje *puntaje;
 
@@ -60,6 +66,7 @@ class Personaje
 		bool congelado;
 		bool puedeIrDerecha;
 		bool puedeIrIzquierda;
+		bool tieneEscudo;
 
 		Logger *log;
 
@@ -69,14 +76,9 @@ class Personaje
 
 		std::string intToStringConPadding(int number);
 
-
-		ConexCliente *cliente; //<-------- Borrarlo cuando el enviar del hilo ande bien!
-
     public:
-		int velocidadX, velocidadY;
 
 		Personaje(int id, int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log);
-		Personaje(int id, int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log, ConexCliente *cliente);
 		virtual ~Personaje();
 
 		void mover(SDL_Rect *limites, float tiempoDeJuego);
@@ -114,12 +116,18 @@ class Personaje
 		bool bloqueaCamaraAIzquierda(SDL_Rect *limites);
 		bool estaCongelado();
 		bool estaParado();
+		bool estaAtacando();
+
 		SDL_Rect obtenerLimites();
 
 		void enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje);
 		std::string obtenerMensajeEstado();
 		Puntaje* getPuntaje();
 		void setPuntaje(Puntaje* puntaje);
+
+		void aumentarCantidadAnillos(int cantidad);
+		void ponerseEscudo();
+		void quitarseEscudo();
 };
 
 #endif

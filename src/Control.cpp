@@ -273,9 +273,9 @@ void Control::controlDeMensajes(Personaje* sonic, HiloRecibirCliente *hiloRecibi
 			parsearMensajeCamara(nuevoX, nuevoY, mensaje);
 			camara->actualizarXY(nuevoX, nuevoY);
 		}
-		else if(mensaje.substr(0,1).compare("E")) //Recibo un mensaje para quitar una entidad
+		else if(mensaje.substr(0,1).compare("E") == 0) //Recibo un mensaje para quitar una entidad
 		{
-			//Ej mensaje: EBo---1x--10y-200 significa quitar el Bonus con id 1.
+			//Ej mensaje: EB---1x--10y-200 significa quitar el Bonus con id 1.
 			quitarEntidad(mensaje);
 		}
 		else
@@ -415,7 +415,7 @@ void Control::agregarEntidad(std::string mensaje)
 
 void Control::quitarEntidad(std::string mensaje)
 {
-	//Ej mensaje: EB--1x--10y--20
+	//Ej mensaje: EB--1---------
 	std::string nombre = mensaje.substr(0,2);
 	int id = Util::stringConPaddingToInt(mensaje.substr(2, MAX_CANT_DIGITOS_POS-1).c_str());
 	cout << "Quitar Entidad " << nombre << " con id: "<< id << "\n";

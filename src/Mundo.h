@@ -25,15 +25,19 @@ private:
 	VistaSDL *vista;
 	ConstructorEntidades *constructorEntidades;
 	//Todas las entidades estan en la lista 'entidades' dentro de 'constructorEntidades'!
+	std::vector<Hiloenviar*> *hilosEnviar;
 
 public:
-	Mundo(std::map<int, Personaje*> *sonics, VistaSDL *vista);
+	Mundo(std::map<int, Personaje*> *sonics, VistaSDL *vista, std::vector<Hiloenviar*> *hilosEnviar);
 	virtual ~Mundo();
 	void manejarColisiones();
 	void enviarDatosEscenario(std::vector<Hiloenviar*> *hilosEnviar);
+	void enviarDatosEscenario(Hiloenviar *unHilo);
+	void eliminarEntidad(std::string nombre, int id);
+	void enviarATodos(std::string mensaje);
 
 private:
-	void enviarATodos(std::vector<Hiloenviar*> *hilosEnviar, std::string mensaje);
+	void enviarAUno(std::string mensaje, Hiloenviar *unHilo);
 };
 
 #endif /* MUNDO_H_ */

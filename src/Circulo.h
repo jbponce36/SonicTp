@@ -21,7 +21,7 @@ public:
 	string toString();
     int getRadio() const;
     SDL_Rect obtenerLimites();
-    void interactuar(Personaje *sonic, Mundo* mundo);
+    void interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar);
     std::string getNombre();
 
 private:

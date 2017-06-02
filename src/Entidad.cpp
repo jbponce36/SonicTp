@@ -214,10 +214,12 @@ bool Entidad::intersecta(Personaje *sonic)
 	}
 }
 
-void Entidad::interactuar(Personaje *sonic, Mundo* mundo)
+void Entidad::interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar)
 {
 	//Si es solo una Entidad, no hace nada.
 	//Para usarlo sobreescribirlo en las clases heredadas de Entidad
+
+	//Agregar en el .cpp de la clase heredada: #include "Mundo.h"
 	return;
 }
 

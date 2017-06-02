@@ -32,7 +32,7 @@ public:
 	virtual void dibujar(SDL_Renderer *renderer, SDL_Rect *camara) = 0;
 	virtual SDL_Rect obtenerLimites() = 0;
 	virtual std::string getNombre() = 0;
-	virtual void interactuar(Personaje *sonic, Mundo* mundo);
+	virtual void interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar);
 	std::string obtenerMensajeEstado();
 	bool intersecta(Entidad &otraEntidad);
 	bool intersecta(Personaje *sonic);
