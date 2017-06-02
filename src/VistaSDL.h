@@ -49,6 +49,7 @@ private:
 	int imgFlags;
 	vector <Textura*> texturas;
 	vector <Textura*> capasFondo;
+	vector <Textura*> enemigosTextura;
     ConstructorEntidades *constructorEntidades;
     Logger *log;
     bool oculta;
@@ -58,6 +59,10 @@ public:
     void cargarImagen();
     int obtenerAltoVentana();
     void cargarCapas(jescenario *escenario);
+
+    void cargarEnemigosTextura();
+    Textura *obtenerTexturaDeEnemigoNumero(int num);
+
     int obtenerAnchoVentana();
     void validacionesEscenario(jescenario *jescenario);
     void crearVentanaYrenderizador();

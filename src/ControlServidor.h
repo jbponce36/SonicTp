@@ -26,6 +26,9 @@
 #include "Colicion.h"
 #include "Anillos.h"
 #include "Piedra.h"
+#include "Cangrejo.h"
+#include "Pescado.h"
+#include "Mosca.h"
 
 #define FPS_SERVER 25
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
@@ -66,6 +69,8 @@ private:
 
 	Mundo mundo; //Contiene todos los elementos del mundo y los sonics. Asi queda todo mas separado.
 
+	vector<Enemigo*> enemigos;
+
 public:
 	list<Anillos*> anillos;
 	list<Piedra*>  piedra;
@@ -91,6 +96,10 @@ public:
 	void chequearColicion(Colicion *colicion);
 	void chequearColisiones();
 	void enviarDatosEscenario(Hiloenviar *hiloEnviar);
+
+	void CreacionEnemigos();
+	void enviarDatosEnemigosIniciales();
+	void actualizarPosicionesEnemigos();
 
 
 private:

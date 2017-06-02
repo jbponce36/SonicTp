@@ -61,4 +61,5 @@
 #define INICIO_JUEGO 				"[INICIAR JUEGO]"
 #define CONEXION_RECHAZADA 			"Conex rechazada"
 #define SEPARADOR_DE_MENSAJE		"$"
+#define FIN_MENSAJES_ENEMIGOS		"FIN_CARGA_ENEMI"
 #endif

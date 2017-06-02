@@ -34,6 +34,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->validacionesEscenario(jescenario);
 	this->crearVentanaYrenderizador();
 	this->velocidadScroll=jconfiguracion->getvelscroll();
+	this->cargarEnemigosTextura();
 
 	this->constructorEntidades = new ConstructorEntidades(anchoescenario, 4*altoescenario/5, logger);
 	if(oculta)
@@ -206,6 +207,29 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 	*/this->log->setModulo("VISTA SDL");
 	this->log->addLogMessage("[CARGAR CAPAS] Terminado.",2);
 }
+void VistaSDL::cargarEnemigosTextura(){
+	this->log->setModulo("VISTA SDL");
+	this->log->addLogMessage("[CARGAR TEXTURA ENEMIGOS] Iniciado.",2);
+
+	Textura *enemigoCangrejo = new Textura();
+	enemigoCangrejo->cargarImagen("images/enemigos/DonCangrejo.png", "no hay", this->renderizador,log);
+	this->enemigosTextura.push_back(enemigoCangrejo);
+
+	Textura *enemigoPescado = new Textura();
+	enemigoPescado->cargarImagen("images/enemigos/Pescado.png", "no hay", this->renderizador,log);
+	this->enemigosTextura.push_back(enemigoPescado);
+
+	Textura *enemigoMosca = new Textura();
+	enemigoMosca->cargarImagen("images/enemigos/Mosca.png", "no hay", this->renderizador,log);
+	this->enemigosTextura.push_back(enemigoMosca);
+
+	this->log->setModulo("VISTA SDL");
+	this->log->addLogMessage("[CARGAR TEXTURA ENEMIGOS] Terminado.",2);
+}
+Textura *VistaSDL::obtenerTexturaDeEnemigoNumero(int num){
+	return this->enemigosTextura[num];
+}
+
 
 SDL_Renderer* VistaSDL::obtenerRender()
 {
