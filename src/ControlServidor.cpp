@@ -233,8 +233,12 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		//Mueve la camara segun los sonics
 		camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
 
+		if((*pos).second->getPosicionX() >= 3750)
+		{
+			this->pasarNivel =true;
+		}
 		//aca posiciona a los sonics en el inicio del mapa
-		if(this->pasarNivel)
+		/*if(this->pasarNivel)
 		{
 			for(pos = sonics->begin();pos != sonics->end();pos++)
 			{
@@ -247,7 +251,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 				}
 			this->pasarNivel =false;
 		}
-
+	*/
 
 
 		/*Para pruebas: Para ver lo que pasa en el juego del servidor. No descomentar.*/
@@ -255,9 +259,40 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		//SDL_RenderPresent( vista->obtenerRender());
 		/*Hasta aca. No descomentar*/
 	}
+	//esto es para pasar de nivel
+	if( this->pasarNivel == true )
+	{
+		for(pos = sonics->begin();pos != sonics->end();pos++)
+		{
+			//aca debemos resetear todos los valores para comenzar el nuevo nivel
+			//if(this-> pasarNivel = true)
 
+			Personaje* sonic = (*pos).second;
+			sonic->posicionarseConAnimacion(0,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
 
-
+			//this->pasarNivel = false;
+		}
+		camara->actualizarXY(0,0);
+		this->pasarNivel =false;
+		char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
+			std::string msjPasarNivel = "PASARNIVEL" ;
+			//cout<<"mensaje sin: "<<mensaje.size()<<endl;
+			msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
+			//cout<<"mensaje con: "<<mensaje.size()<<endl;
+			//cout<<"server envio: "<<mensaje<<endl;
+			strcpy(buffer, msjPasarNivel.c_str());
+			//cout<<"mensaje con buff: "<<strlen(buffer)<<endl;
+			int id = 1;
+			std::vector<Hiloenviar*>::iterator pos;
+			for(pos = hilosEnviar->begin();pos != hilosEnviar->end();pos++)
+			{
+				if(!sonics->at(id)->estaCongelado())
+				{
+					(*pos)->enviarDato(buffer);
+				}
+				id++;
+			}
+	}
 }
 
 void ControlServidor::actualizarVistaServidor(Camara *camara)

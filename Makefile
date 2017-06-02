@@ -5,8 +5,8 @@ CC = g++
 
 COMPILER_FLAGS = -w -g -O0 -Wall
  
-LINKER_FLAGS_CLIENT = -std=c++11 -lpthread -lSDL2 -lSDL2_image -ljansson
-LINKER_FLAGS_SERVER = -std=c++11 -lpthread -lSDL2 -lSDL2_image -ljansson
+LINKER_FLAGS_CLIENT = -std=c++11 -lpthread -lSDL2 -lSDL2_image -lSDL2_ttf -ljansson
+LINKER_FLAGS_SERVER = -std=c++11 -lpthread -lSDL2 -lSDL2_image -lSDL2_ttf -ljansson
 
 OBJCLI_NAME = cliente
 OBJSERV_NAME = servidor
