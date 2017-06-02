@@ -52,7 +52,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 			&sonicsMapa);
 
 	inicializarEscenario(hiloRecibir);
-
+	inicializarEnemigos(hiloRecibir);
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while (!salir) {
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
@@ -257,6 +257,9 @@ void Control::controlDeMensajes(Personaje* sonic,
 			int nuevoX, nuevoY;
 			parsearMensajeCamara(nuevoX, nuevoY, mensaje);
 			camara->actualizarXY(nuevoX, nuevoY);
+		}else if (mensaje.substr(0,1) ==  "/"){
+					//cout<<"mesaje enemigo: "<<mensaje<<endl;
+					this->parsearMensajeEnemigo(mensaje);
 		}
 		else if(mensaje.substr(0,1).compare("E") == 0) //Recibo un mensaje para quitar una entidad
 		{
@@ -339,6 +342,12 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 
 	this->animarAnilla(camara, vista);
 
+	for(int i=0; i < this->enemigos.size();i++){
+		if(enemigos[i]->getVivo()){
+			this->enemigos[i]->renderizar(camara->getPosicionX(),camara->getPosicionY());
+		}
+	}
+
 	SDL_RenderPresent(vista->obtenerRender());
 
 }
@@ -378,6 +387,44 @@ void Control::inicializarEscenario(HiloRecibirCliente *hiloRecibir) {
 
 	constructorEntidades->inicializarImagenes(vista->obtenerRender());
 	this->log->addLogMessage("[INICIALIZAR ESCENARIO CLIENTE] Terminado.", 2);
+}
+void Control::inicializarEnemigos(HiloRecibirCliente *hiloRecibir){
+	//Al iniciar el juego en el servidor, este le envia las posiciones de todos los enemigos
+	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
+	cout <<"afuera del while" <<endl;
+	while (mensaje != FIN_MENSAJES_ENEMIGOS)
+	{
+		if(mensaje != "Sin elementos")
+		{
+			cout <<"mensaje de inicializacion: " <<mensaje << "\n";
+			if(mensaje.compare("Servidor Desconectado") == 0)
+			{
+				salir = true;
+				return;
+			}
+			else if (mensaje.substr(1,1) ==  "c") //Los mensajes sobre entidades tienen el prefijo E
+			{
+				Cangrejo *enemigoCangrejo = new Cangrejo(mensaje,"c",vista);
+				//cout<<"posicion x: "<<enemigo->getPosicionesX()<<endl;
+				//cout<<"posicion y: "<<enemigo->getPosicionesY()<<endl;
+				this->enemigos.push_back(enemigoCangrejo);
+			}
+			else if (mensaje.substr(1,1) ==  "p"){
+				Pescado *enemigoPescado = new Pescado(mensaje,"p",vista);
+				this->enemigos.push_back(enemigoPescado);
+			}else if (mensaje.substr(1,1) ==  "m"){
+				Mosca *enemigoPescado = new Mosca(mensaje,"m",vista);
+				this->enemigos.push_back(enemigoPescado);
+			}
+		}
+		mensaje = hiloRecibir->obtenerElementoDeLaCola();
+	}
+}
+void Control::parsearMensajeEnemigo(std::string mensaje){
+	//Ej mensaje: /-1-100-200-2v
+	std::string Id = mensaje.substr(1,2);
+	int id = Util::stringConPaddingToInt(mensaje.substr(1, 2).c_str());
+	this->enemigos[id]->parsearMensaje(mensaje.substr(3, 11).c_str());
 }
 
 void Control::agregarEntidad(std::string mensaje) {

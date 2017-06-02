@@ -19,6 +19,9 @@
 #include "Util.h"
 #include "AdministradorDeNiveles.h"
 #include "Piedra.h"
+#include "Cangrejo.h"
+#include "Pescado.h"
+#include "Mosca.h"
 
 #define FPS 25
 #define TICKS_POR_FRAME 1000/FPS
@@ -36,6 +39,8 @@ private:
 	VistaSDL *vista;
 	ConstructorEntidades *constructorEntidades;
 	AdministradorDeNiveles admNiveles;
+
+	vector <Enemigo*> enemigos;
 
 public:
 	typedef struct mensajePosicion{
@@ -58,6 +63,10 @@ public:
 
 	void ChequearColicionAnillo(VistaSDL *vista,std::vector<Personaje*> *sonics,Colicion *colicion);
 	void inicializarEscenario(HiloRecibirCliente *hiloRecibir);
+
+	void inicializarEnemigos(HiloRecibirCliente *hiloRecibir);
+	void parsearMensajeEnemigo(std::string mensaje);
+
 	void agregarEntidad(std::string mensaje);
 	void quitarEntidad(std::string mensaje);
 

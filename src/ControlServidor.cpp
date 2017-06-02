@@ -304,7 +304,19 @@ void ControlServidor::actualizarVistaServidor(Camara *camara)
 		std::string mensaje = (*pos).second->obtenerMensajeEstado();
 		enviarATodos(mensaje);
 	}
-
+	//envio las posiciones de los enemigos
+	for(int i=0; i <this->enemigos.size(); i++){
+		if(enemigos[i]->getSeguirEnviandoMensajes()){
+		// mensaje 14 tipo /-1-100-200-1v
+			std::string mensajeEnemigo = "/";
+			mensajeEnemigo = mensajeEnemigo + this->enemigos[i]->intToStringConPadding2(i);
+			mensajeEnemigo = mensajeEnemigo + this->enemigos[i]->obteneMensajeEstado();
+			enviarATodos(mensajeEnemigo);
+			if(enemigos[i]->getVivo() == false){
+				enemigos[i]->setSeguirEnviandoMensajes(false);
+			}
+		}
+	}
 	std::string mensajeCamara = MENSAJE_CAMARA + camara->obtenerMensajeEstado() + PADDING + PADDING;
 	enviarATodos(mensajeCamara);
 }
@@ -352,11 +364,15 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 	mundo.enviarDatosEscenario(hilosEnviar);
 
-	/*----LOOP PRINCIPAL DEL JUEGO----*/
+	this->CreacionEnemigos();
+	this->enviarDatosEnemigosIniciales();
+	this->enviarATodos(FIN_MENSAJES_ENEMIGOS);
+
 	this->CreoAnillas();
 	this->CreoPiedras();
 	Colicion *colicion = new Colicion();
 
+	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while( !juegoTerminado ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
@@ -366,6 +382,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 		chequearColisiones();///Aca se chequean las colisiones menos con los anillos supongo
 		chequearColicion(colicion); //Con los anillos
+		this->actualizarPosicionesEnemigos();
 		actualizarVistaServidor(camara);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
@@ -467,7 +484,22 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 		int numeroAnilla  = 0;
 		int posAnillaColisionada = 0;
 		Anillos* colisionada = NULL;
+		for(int i = 0; i<enemigos.size(); i++){
+			SDL_bool colision;
+			SDL_Rect enemigoRec = enemigos[i]->obtenerDimensiones();
+			SDL_Rect sonicRect = (*pos).second->obtenerLimites();
+			colision = SDL_HasIntersection(&sonicRect,&enemigoRec);
+			if(colision == SDL_TRUE){
+				// aca falta me logica de q hace el sonic cuado
+				//closiona con el enemigo(le quita vida al sonic,
+				//mata al enemigo, es protegico por el bonus, etc)
 
+				//descomenta la linea de abajo si queres matar al bicho
+				//enemigo->setVivo(false);
+				cout<<"colision con enemigo"<<endl;
+			}
+
+		}
 		 for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
 			 Anillos *cls = (*posanillo);
 
@@ -539,7 +571,39 @@ int ControlServidor::mostrarMenuServer(){
 
 	return opcion;
 }
-
+void ControlServidor::CreacionEnemigos(){
+	Cangrejo *enemigo1 = new Cangrejo(500,470,100,200);
+	this->enemigos.push_back(enemigo1);
+	Pescado *enemigo2 = new Pescado(900,470,200,100);
+	this->enemigos.push_back(enemigo2);
+	Mosca *enemigo3 = new Mosca(700,300,200,100);
+	this->enemigos.push_back(enemigo3);
+}
+void ControlServidor::enviarDatosEnemigosIniciales(){
+	//envio la posicion y el tipo De enemigo
+	for(int i=0;i<this->enemigos.size();i++){
+		if(this->enemigos[i]->getTipoEnemigo()=="c"){
+			std::string mensajeCangrejo = "/";
+			mensajeCangrejo = mensajeCangrejo + enemigos[i]->obteneMensajeEstadoInicial();
+			this->enviarATodos(mensajeCangrejo);
+		}else if(this->enemigos[i]->getTipoEnemigo()=="p"){
+			std::string mensajePescado = "/";
+			mensajePescado = mensajePescado + enemigos[i]->obteneMensajeEstadoInicial();
+			this->enviarATodos(mensajePescado);
+		}else if(this->enemigos[i]->getTipoEnemigo()=="m"){
+			std::string mensajePescado = "/";
+			mensajePescado = mensajePescado + enemigos[i]->obteneMensajeEstadoInicial();
+			this->enviarATodos(mensajePescado);
+		}
+	}
+}
+void ControlServidor::actualizarPosicionesEnemigos(){
+	for(int i=0;i<this->enemigos.size();i++){
+		if(enemigos[i]->getVivo()){
+			enemigos[i]->actualizarPosicion();
+		}
+	}
+}
 void ControlServidor::chequearColisiones(){
 
 	mundo.manejarColisiones();
@@ -552,4 +616,3 @@ void ControlServidor::enviarDatosEscenario(Hiloenviar *hiloEnviar)
 	vec.push_back(hiloEnviar);
 	mundo.enviarDatosEscenario(&vec);
 }
-
