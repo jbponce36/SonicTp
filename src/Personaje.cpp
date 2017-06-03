@@ -241,15 +241,16 @@ void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, in
 			animacionBonus->detener();
 
 		if(animacion.compare(ANIMACION_ESCUDO) == 0){
-			animacionBonus = &animacionEscudo;
+			ponerseEscudo();
 			animacionBonus->comenzar();
 		}
 		else if(animacion.compare(ANIMACION_INVENCIBLE) == 0){
-			animacionBonus = &animacionInvencible;
+			serInvencible();
 			animacionBonus->comenzar();
 		}
 		else if(animacion.compare(ANIMACION_SIN_BONUS) == 0){
-			animacionBonus = NULL;
+			quitarseEscudo();
+			dejarDeSerInvencible();
 		}
 	}
 
@@ -657,6 +658,7 @@ SDL_Rect Personaje::obtenerLimites(){
 	return limites;
 }
 
+/*----------Para bonus. Los usa el servidor----------*/
 void Personaje::aumentarCantidadAnillos(int cantidad)
 {
 	puntaje->setCantAnillos(puntaje->getCantAnillos()+cantidad);
@@ -665,6 +667,7 @@ void Personaje::aumentarCantidadAnillos(int cantidad)
 void Personaje::ponerseEscudo()
 {
 	tieneEscudo = true; //Al ser atacado preguntar por este bool
+	esInvencible = false;
 	animacionBonus = &animacionEscudo;
 }
 
@@ -673,3 +676,39 @@ void Personaje::quitarseEscudo()
 	tieneEscudo = false;
 	animacionBonus = NULL;
 }
+
+void Personaje::serInvencible()
+{
+	time(&tiempoInicioInvencible);
+	esInvencible = true;
+	tieneEscudo = false;
+	animacionBonus = &animacionInvencible;
+}
+
+void Personaje::dejarDeSerInvencible()
+{
+	esInvencible = false;
+	animacionBonus = NULL;
+}
+
+bool Personaje::sigueSiendoInvencible()
+{
+	time_t tiempoFin;
+	time(&tiempoFin);
+	double tiempoTranscurrido;
+
+	tiempoTranscurrido = difftime(tiempoFin, tiempoInicioInvencible);
+	tiempoTranscurrido = fabs(tiempoTranscurrido);
+
+	if (tiempoTranscurrido < DURACION_INVENCIBILIDAD)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Personaje::agarroBonusInvencible()
+{
+	return esInvencible;
+}
+

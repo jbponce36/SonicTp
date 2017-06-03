@@ -212,22 +212,23 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		if(t.teclaIzquierda){
 			sonic->irIzquierda();
 		}
-	//}
-	/*else{
-		t.teclaIzquierda = false;
-		t.teclaDerecha = false;
-		t.teclaCorrer = true;
-		t.teclaArriba = true;
+		//}
+		/*else{
+			t.teclaIzquierda = false;
+			t.teclaDerecha = false;
+			t.teclaCorrer = true;
+			t.teclaArriba = true;
 
-	//	(*pos).second->parar();
-	}
-	*/
-	this->colpiedra == false;
+		//	(*pos).second->parar();
+		}
+		*/
+		this->colpiedra == false;
 		///------------------------------------------------------------
 		//tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
 
 		(*pos).second->mover(camara->devolverCamara(), REGULADOR_ALTURA_SALTO); //Se mueve segun los limites de la camara
 
+		verificarDuracionBonus((*pos).second);
 		//tiempoDeJuego = SDL_GetTicks();
 
 		//Mueve la camara segun los sonics
@@ -382,7 +383,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 		chequearColisiones();///Aca se chequean las colisiones menos con los anillos supongo
 		chequearColicion(colicion); //Con los anillos
-		this->actualizarPosicionesEnemigos();
+		actualizarPosicionesEnemigos();
 		actualizarVistaServidor(camara);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
@@ -615,4 +616,21 @@ void ControlServidor::enviarDatosEscenario(Hiloenviar *hiloEnviar)
 	std::vector<Hiloenviar*> vec; //Un vector con un solo hilo
 	vec.push_back(hiloEnviar);
 	mundo.enviarDatosEscenario(&vec);
+}
+
+void ControlServidor::verificarDuracionBonus(Personaje *sonic)
+{
+	if(sonic->agarroBonusInvencible())
+	{
+		if (!sonic->sigueSiendoInvencible())
+		{
+			//Se acabo la duracion del bonus
+			sonic->dejarDeSerInvencible();
+			std::string mensaje = Util::intToString(sonic->getId())
+				+ "x" + Util::intToStringConPadding(sonic->getPosicionX())
+				+ "y" + Util::intToStringConPadding(sonic->getPosicionY())
+				+ ANIMACION_SIN_BONUS + PADDING;
+			mundo.enviarATodos(mensaje);
+		}
+	}
 }

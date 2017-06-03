@@ -78,7 +78,7 @@ void Bonus::interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar)
 			break;
 		}
 		case INVENCIBILIDAD: {
-
+			sonic->serInvencible();
 			std::string mensaje = Util::intToString(sonic->getId())
 				+ "x" + Util::intToStringConPadding(sonic->getPosicionX())
 				+ "y" + Util::intToStringConPadding(sonic->getPosicionY())

@@ -107,7 +107,7 @@ private:
 	ControlServidor::mensajeRecibido parsearMensajePosicion(std::string mensaje);
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor(Camara *camara);
-
+	void verificarDuracionBonus(Personaje* sonic);
 	std::string intToString(int number);
 
 };
