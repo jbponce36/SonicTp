@@ -49,6 +49,9 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 
 	this->cargarCapas(jescenario);
 
+	this->fuente = TTF_OpenFont("images/arial.ttf", 20);
+	this->White = {255, 255, 255,0};
+
 
 }
 
@@ -164,6 +167,10 @@ void VistaSDL::crearVentanaYrenderizador()
 					}
 				}
 			}
+			if( TTF_Init() == -1 )
+				{
+					printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+				}
 		}
 	this->log->addLogMessage("[CREAR VENTANA Y RENDERIZADOR] Terminado. \n",2);
 }
@@ -297,7 +304,11 @@ VistaSDL::~VistaSDL()
 		this->capasFondo[i]->liberarTextura();
 	}
 	this->log->iniciarLog("TERMINAR LOGGER");
+	TTF_CloseFont(fuente);
 	//~this->log;
+	TTF_Quit();
+	IMG_Quit();
+	SDL_Quit();
 }
 
 void VistaSDL::mostrarEntidades(SDL_Rect *camara, int indexZ)
@@ -504,4 +515,42 @@ void VistaSDL::mostrarPiedras(SDL_Rect *camara, int indexZ){
 
 }
 
+void VistaSDL::dibujarTexto(){
 
+
+	//TTF_SetFontStyle(fuente, TTF_STYLE_BOLD); //esto hace la letra en negrita
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO11"<<endl;
+	//cout<<&fuente<<endl;
+	//cout<<&White<<endl;
+	this->superficieTexto = TTF_RenderUTF8_Blended(this->fuente,"Puntaje:",White);
+	//SDL_Surface* textoCargado = TTF_RenderText_Blended(fuente, "PUNTAJES SONICS", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO22"<<endl;
+	this->texturaTexto = SDL_CreateTextureFromSurface(this->renderizador, superficieTexto);
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO33"<<endl;
+	SDL_Rect Message_rect;
+	//SDL_SetRenderDrawColor(this->renderizador, 0, 0, 0, 0);
+	//SDL_RenderClear(this->renderizador);
+	int text_ancho = superficieTexto->w;
+	int text_alto = superficieTexto->h;
+	Message_rect.x = 0;
+	Message_rect.y = 0;
+	Message_rect.w = text_ancho;
+	Message_rect.h = text_alto;
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO44"<<endl;
+	SDL_Rect Mes;
+	Mes.x = 0;
+	Mes.y = 0;
+	Mes.w = 500;
+	Mes.h = 250;
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO55"<<endl;
+	cout<<SDL_RenderCopy(this->renderizador, texturaTexto, NULL, &Message_rect)<<endl;
+	SDL_FreeSurface(superficieTexto);
+	//VER Q LA TEXTURA FUE LIBERADA SI SE QUIERE ACCEDER A ELLA SE DEBE LIBARARLA DESPUES SINO TIRA
+	//VIOLACION DE SEGMENTO
+	if( texturaTexto != NULL )
+		{
+			SDL_DestroyTexture( texturaTexto );
+		}
+	//cout<<"LLEGO ACA despues DIBUJAR PUNTOS"<<endl;
+
+}
