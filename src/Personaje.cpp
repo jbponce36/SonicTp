@@ -51,6 +51,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 
     this->puedeIrDerecha = true;
     this->puedeIrIzquierda = true;
+    this->colisionando = false;
 }
 
 void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
@@ -430,65 +431,103 @@ void Personaje::irDerecha()
 
 void Personaje::reanudarLuegoDeColision()
 {
-	this->puedeIrDerecha = true;
-	this->puedeIrIzquierda = true;
+	if (this->colisionando)
+		{
+			debug(0,"Personaje::reanudarLuegoDeColision","Se reanuda el sonic luego de colision", 0);
+			this->puedeIrDerecha = true;
+			this->puedeIrIzquierda = true;
+			//this->velocidadY += GRAVEDAD;
+			this->saltando = true;
+		}
+		this->colisionando = false;
 }
 
-void Personaje::pararPorColision()
+void Personaje::pararPorColision(SDL_Rect rectangulo)
 {
-	debug(0,"Personaje::pararPorColision","Se detiene el sonic", 0);
-	/*if (velocidadX < 0)
-	{
-		velocidadX += 2*personajeAceleracion;
-		if (velocidadX >= 0)
-			velocidadX = 0;
-	}
-	else if(velocidadX > 0)
-	{
-		velocidadX -= 2*personajeAceleracion;
-		if (velocidadX <= 0)
-			velocidadX = 0;
-	}*/
+	 if (!this->colisionando)
+	   {
+		   debug(0,"Personaje::pararPorColision","Se detiene el sonic velocidad Y:%d", this->velocidadY);
+        //pongo esto aca para que no se caiga
+		  velocidadX = 0;
 
-	velocidadX = 0;
+		 if (estaQuieto)
+			return;
 
 
+				velocidadY = 0;
+				if (velocidadX == 0){
 
-	if (saltando)
-		return;
+					estaQuieto = true;
+					saltando = false;
+					corriendo = false;
 
-	if (estaQuieto)
-		return;
+					animacionActual->detener();
+				}
 
-	velocidadY = 0;
+				   animacionActual->comenzar();
 
-	if (velocidadX == 0){
-
-		estaQuieto = true;
-		saltando = false;
-		corriendo = false;
-
-		animacionActual->detener();
-	}
+				  // this->colisionando = true;
 
 
-	if (!this->saltando)
-	{
-		switch (orientacion)
-		{
-			case IZQUIERDA:
-				this->puedeIrIzquierda = false;
-				animacionActual = &animacionQuietoIzq;
-				break;
-			case DERECHA:
-				this->puedeIrDerecha = false;
-				animacionActual = &animacionQuietoDer;
+					//jamas entra aca......
+				if (((this->obtenerLimites().y + this->obtenerLimites().h)  > rectangulo.y) && (this->velocidadY>0))
 
-				break;
-		}
-	}
-			animacionActual->comenzar();
+				{
 
+							debug(0,"Personaje::pararPorColision","El sonic colisiono por arriba Pos Y: %d", this->obtenerLimites().y);
+							debug(0,"Personaje::pararPorColision","El sonic colisiono por arriba Altura Sonic: %d", this->obtenerLimites().h);
+							debug(0,"Personaje::pararPorColision","El sonic colisiono por arriba Rectangulo Y: %d", rectangulo.y);
+
+							//this->velocidadAnteriorY = this->velocidadY;
+							switch (orientacion)
+							{
+								case IZQUIERDA:
+									animacionActual = &animacionQuietoIzq;
+									break;
+								case DERECHA:
+									animacionActual = &animacionQuietoDer;
+									break;
+							}
+
+							//esto seria...para que no quede pata afuera..para adentro....
+							this->posicionY = 530;
+
+							if ((this->obtenerLimites().x +this->obtenerLimites().w ) < (rectangulo.x + 55))
+							{
+								this->posicionX = this->posicionX + 55;
+							}
+							else if ((this->obtenerLimites().x) > ((rectangulo.x + rectangulo.w) - 55))
+							{
+								this->posicionX = this->posicionX - 55;
+							}
+
+							//this->estadoSaltandoDespuesColision = true;
+
+
+				}
+				else if (this->obtenerLimites().x+this->obtenerLimites().w > rectangulo.x)
+				//if ((this->obtenerLimites().x+this->obtenerLimites().w ) > (rectangulo.x + this->obtenerLimites().x))
+				{
+
+					switch (orientacion)
+					{
+						case IZQUIERDA:
+							this->puedeIrIzquierda = false;
+							animacionActual = &animacionQuietoIzq;
+							break;
+						case DERECHA:
+							this->puedeIrDerecha = false;
+							animacionActual = &animacionQuietoDer;
+
+							break;
+					}
+
+					this->colisionando = true;
+
+				}
+
+
+		    }
 
 }
 

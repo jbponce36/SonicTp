@@ -216,6 +216,25 @@ std::string Anillos::intToStringConPadding(int number)
   return numero;
 }
 
+std::string Anillos::intToStringConPaddingID(int number){
+
+	ostringstream oss;
+	  oss<< number;
+	  std::string numero = oss.str();
+	  while(numero.length() < 2){
+		  numero = PADDING + numero;
+	  }
+	  return numero;
+}
+
+int Anillos::getId() {
+		return id;
+	}
+
+void Anillos::setId(int Id) {
+		this->id = Id;
+	}
+
 std::string Anillos::obtenerMensajeEstado(){
 
 	std::string a = "Anill";
@@ -226,6 +245,16 @@ std::string Anillos::obtenerMensajeEstado(){
 
 	return(a + numx + intToStringConPadding(x) + numy + intToStringConPadding(y));
 
+
+
+/*	std::string a = "Aid";
+		//std::string a = "Aid";
+		std::string numx = "x";
+		std::string numy = "y";
+
+
+		return(a + this->intToStringConPaddingID(id) + numx + intToStringConPadding(x) + numy + intToStringConPadding(y));
+		*/
 }
 
 std::string Anillos::obtenerMsjAnillaBorrada(int numero){

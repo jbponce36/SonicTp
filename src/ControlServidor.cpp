@@ -402,8 +402,8 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 void ControlServidor::CreoAnillas(){
   srand(time(NULL));
-  int cantidadAnillas =(rand() % 10) + 1;
-
+ // int cantidadAnillas =(rand() % 10) + 1;
+int cantidadAnillas = 10;
   //el alto del escenario es de 800 en el grande, lo saco de vista
   // el ancho del escenario es de 4000, lo saco tambien de vista.
 
@@ -431,7 +431,8 @@ void ControlServidor::CreoAnillas(){
 
 
 	  //cualquier randon del ancho total del escenario
-	  int coordX = Util::numeroRandom(AnchoEscenario);
+
+	  int coordX = Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho);
 
 	  //la coordenada y la voy a dejar en 300 ya que es una buena altura....
 	  int coordY =  300;
@@ -445,13 +446,12 @@ void ControlServidor::CreoAnillas(){
 	  anillo->setAncho(ancho);
 	  anillo->setCoorx(coordX);
 	  anillo->setCoory(coordY);
+	  anillo->setId(id);
 
 
 	  this->anillos.push_back(anillo);
 
  }
-
-
 
 	//Vendria a ser el metodo ActualizarVistaServidor......
 	list<Anillos*>:: iterator posanillo;
@@ -475,7 +475,7 @@ void ControlServidor::CreoPiedras(){
 		  //Si lo pasas a constructorEntidades ponerle: int coordY = limiteAlto - alto;
 		  int coordY = 4*vista->getAltoEscenario()/5 - alto;
 
-		  std::string rutaImagen = "images/Piedra.png";
+		  std::string rutaImagen = "images/piedra2.png";
 		  int indexZ = 99;
 
 		  Piedra* p = new Piedra(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
@@ -483,7 +483,7 @@ void ControlServidor::CreoPiedras(){
 		  p->setAncho(ancho);
 		  p->setCoorx(coordX);
 		  p->setCoory(coordY);
-	      p->setRuta("images/Piedra.png");
+	      p->setRuta("images/piedra2.png");
 
 		  this->piedra.push_back(p);
 
@@ -533,6 +533,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 			  if (colicion->intersectaAnilloPersonaje(cls, cl2)){
 				   debug(1,"ControlServidor::chequearColicion","Colision con anilla %d",numeroAnilla);
 				   this->enviarATodos("BORRAR_ANILLA_" + this->intToString(numeroAnilla));
+				 //  this->enviarATodos("BORRAR_ANILLA_" + cls->getId());
 				   colisionada = (*posanillo);
 			  }
 			  numeroAnilla++;
@@ -556,7 +557,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				// cout<<cl->getNombreAnimacion()<<endl;
               this->colpiedra = true;
 
-				cl->pararPorColision();
+              cl->pararPorColision(pdra->obtenerLimites());
 				huboColision = true;
 				 this->enviarATodos("p" + cl->getNombreAnimacion());
 

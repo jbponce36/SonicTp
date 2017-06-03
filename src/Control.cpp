@@ -169,6 +169,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 			printf("Cerrando el juego...\n");
 			this->salir = true;
 		} else if (mensaje.substr(0, 14) == "BORRAR_ANILLA_") {
+
 			int numeroAnilla = atoi(mensaje.substr(14, 1).c_str());
 
 			debug(1, "Control::controlDeMensajes", "Voy a borrar la anilla %d",
@@ -188,6 +189,26 @@ void Control::controlDeMensajes(Personaje* sonic,
 			}
 
 			vista->getConstructorEntidades()->anillos.remove(actual);
+
+		/*	int numeroAnilla = atoi(mensaje.substr(14, 1).c_str());
+			cout<<"numero anilla"<<endl;
+			cout<<numeroAnilla<<endl;
+			Anillos* actual = NULL;
+
+
+			list<Anillos*>:: iterator pos;
+			for(pos = vista->getConstructorEntidades()->anillos.begin(); pos != vista->getConstructorEntidades()->anillos.end(); pos++)
+			{
+
+				if((*pos)->getId() == numeroAnilla)
+				{
+					delete (*pos);
+					vista->getConstructorEntidades()->anillos.erase(pos);
+				}
+
+			}
+       */
+
 		} else if (mensaje.substr(0, 5) == "Anill")
 
 		{
@@ -211,6 +232,37 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 
 		}
+
+
+		/*else if (mensaje.substr(0, 3) == "Aid")
+
+				{
+					debug(1,"Control::controlDeMensajes", "Mensaje anillas" , 0);
+					debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
+
+					//ID
+					std::string id = mensaje.substr(3, 2);
+					id.erase(std::remove(id.begin(), id.end(), PADDING), id.end());
+					int intid = atoi(id.c_str());
+
+					//posx
+
+					std::string posX = mensaje.substr(6, 4);
+					posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
+
+					std::string posY = mensaje.substr(12, 3);
+
+					int iposX = atoi(posX.c_str());
+					int iposY = atoi(posY.c_str());
+
+
+					Anillos* anillo = new Anillos(64, 64, intid, "rojo", "images/Anillas.png", iposX, iposY, 99, this->log);
+
+					vista->getConstructorEntidades()->anillos.push_back(anillo);
+
+
+				}
+				*/
 
 		else if (mensaje.substr(0, 1) == "p") {
 
@@ -239,10 +291,9 @@ void Control::controlDeMensajes(Personaje* sonic,
 			int iposX = atoi(pos_pX.c_str());
 			int iposY = atoi(pos_pY.c_str());
 
-			std::string rutaImagen = "images/Piedra.png";
+			std::string rutaImagen = "images/piedra2.png";
 
-			Piedra* p = new Piedra(300, 150, 1, "rojo", rutaImagen, iposX,
-					iposY, 99, this->log);
+			Piedra* p = new Piedra(180,140, 1, "rojo",rutaImagen,iposX,iposY,99, this->log);
 
 			//  vista->getConstructorEntidades()->getEntidades().push_back(p);
 			vista->getConstructorEntidades()->piedra.push_back(p);

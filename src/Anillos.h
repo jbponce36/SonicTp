@@ -58,7 +58,12 @@ public:
 
 	std::string obtenerMensajeEstado();
 	std::string intToStringConPadding(int number);
+	std::string intToStringConPaddingID(int number);
 	std::string obtenerMsjAnillaBorrada(int numero);
+
+	int getId();
+
+	void setId(int Id);
 
 private:
 	std::string ruta;
@@ -67,6 +72,7 @@ private:
 	int indexZ;
     int x;
     int y;
+    int id;
 
 	Textura *texturaAnillo;
 

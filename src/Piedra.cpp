@@ -159,8 +159,8 @@ std::string Piedra::obtenerMensajeEstado(){
 
 SDL_Rect Piedra::obtenerLimites()
 {
-	SDL_Rect limites = { obtenerX()+90, obtenerY(), ancho, alto };
-
+	//SDL_Rect limites = { obtenerX()+90, obtenerY(), ancho, alto };
+	SDL_Rect limites = { obtenerX()+70, obtenerY()+10, ancho-125, alto-10 };
 	return limites;
 }
 
