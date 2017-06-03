@@ -328,14 +328,14 @@ std::string VistaSDL::intToString(int number)
 
 int VistaSDL::mostraMenuInicial(Logger *logger){
 	this->log->addLogMessage("[MOSTRAR MENU INICIAL] Iniciado.",2);
-	Textura *menuInicial = new Textura();
-	Textura *texturaConectar = new Textura();
-	Textura *texturaDesconectar = new Textura();
-	Textura *texturaSalir = new Textura();
-	menuInicial->cargarImagen("images/imagenesMenu/sonicMenu.jpg", "images/entidaddefault.png",this->renderizador, logger);
-	texturaConectar->cargarImagen("images/imagenesMenu/conectar.png", "images/entidaddefault.png", this->renderizador, logger);
-	texturaDesconectar->cargarImagen("images/imagenesMenu/desconectar.png", "images/entidaddefault.png", this->renderizador, logger);
-	texturaSalir->cargarImagen("images/imagenesMenu/salir.png", "images/entidaddefault.png", this->renderizador, logger);
+	Textura menuInicial = Textura();
+	Textura texturaConectar = Textura();
+	Textura texturaDesconectar = Textura();
+	Textura texturaSalir = Textura();
+	menuInicial.cargarImagen("images/imagenesMenu/sonicMenu.jpg", "images/entidaddefault.png",this->renderizador, logger);
+	texturaConectar.cargarImagen("images/imagenesMenu/conectar.png", "images/entidaddefault.png", this->renderizador, logger);
+	texturaDesconectar.cargarImagen("images/imagenesMenu/desconectar.png", "images/entidaddefault.png", this->renderizador, logger);
+	texturaSalir.cargarImagen("images/imagenesMenu/salir.png", "images/entidaddefault.png", this->renderizador, logger);
 	bool salir = false;
 	SDL_Event e;
 	int seleccion = 0;
@@ -382,8 +382,8 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 
 		camara.x = 0;
 		camara.y = 0;
-		camara.w = menuInicial->obtenerAnchoTextura();
-		camara.h = menuInicial->obtenerAltoTextura();
+		camara.w = menuInicial.obtenerAnchoTextura();
+		camara.h = menuInicial.obtenerAltoTextura();
 
 		imagenMostrar.x = 0;
 		imagenMostrar.y = 0;
@@ -391,20 +391,20 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 		//imagenMostrar.h = menuInicial->obtenerAltoTextura();
 		imagenMostrar.w = anchoVentana;
 		imagenMostrar.h = altoVentana;
-		menuInicial->renderizar(&camara,&imagenMostrar);
-		camara.w = texturaConectar->obtenerAnchoTextura();
-		camara.h = texturaConectar->obtenerAltoTextura();
+		menuInicial.renderizar(&camara,&imagenMostrar);
+		camara.w = texturaConectar.obtenerAnchoTextura();
+		camara.h = texturaConectar.obtenerAltoTextura();
 		switch (seleccion){
 			case 0:
-			texturaConectar->renderizar(&imagenMostrar,&camara);
+			texturaConectar.renderizar(&imagenMostrar,&camara);
 			break;
 
 			case 1:
-			texturaDesconectar->renderizar(&imagenMostrar,&camara);
+			texturaDesconectar.renderizar(&imagenMostrar,&camara);
 			break;
 
 			case 2:
-			texturaSalir->renderizar(&imagenMostrar,&camara);
+			texturaSalir.renderizar(&imagenMostrar,&camara);
 			break;
 		}
 
@@ -417,24 +417,24 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 
 void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado){
 	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Iniciado.",2);
-	Textura *imagenEspera = new Textura();
+	Textura imagenEspera = Textura();
 
-	imagenEspera->cargarImagen("images/imagenesMenu/esperar.png", "images/entidaddefault.png",this->renderizador, logger);
+	imagenEspera.cargarImagen("images/imagenesMenu/esperar.png", "images/entidaddefault.png",this->renderizador, logger);
 
 	SDL_Rect camara;
 	SDL_Rect imagenMostrar;
 
 	camara.x = 0;
 	camara.y = 0;
-	camara.w = imagenEspera->obtenerAnchoTextura();
-	camara.h = imagenEspera->obtenerAltoTextura();
+	camara.w = imagenEspera.obtenerAnchoTextura();
+	camara.h = imagenEspera.obtenerAltoTextura();
 
 	imagenMostrar.x = anchoVentana - camara.w;
 	imagenMostrar.y = altoVentana - camara.h;
 	imagenMostrar.w = camara.w;
 	imagenMostrar.h = camara.h;
 
-	imagenEspera->renderizar(&camara,&imagenMostrar);
+	imagenEspera.renderizar(&camara,&imagenMostrar);
 	SDL_RenderPresent(this->renderizador);
 
 	bool salir = false;
@@ -454,7 +454,6 @@ void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado){
 		}
 	}
 
-	delete imagenEspera;
 	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Terminado.\n",2);
 
 }
@@ -462,29 +461,28 @@ void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado){
 void VistaSDL::mostrarServidorDesconectado()
 {
 	this->log->addLogMessage("[MOSTRAR SERVIDOR DESCONECTADO] Iniciado.",2);
-	Textura *imagenServDesc = new Textura();
+	Textura imagenServDesc = Textura();
 
-	imagenServDesc->cargarImagen("images/imagenesMenu/servidorDesconectado.png", "images/entidaddefault.png",this->renderizador, log);
+	imagenServDesc.cargarImagen("images/imagenesMenu/servidorDesconectado.png", "images/entidaddefault.png",this->renderizador, log);
 
 	SDL_Rect camara;
 	SDL_Rect imagenMostrar;
 
 	camara.x = 0;
 	camara.y = 0;
-	camara.w = imagenServDesc->obtenerAnchoTextura();
-	camara.h = imagenServDesc->obtenerAltoTextura();
+	camara.w = imagenServDesc.obtenerAnchoTextura();
+	camara.h = imagenServDesc.obtenerAltoTextura();
 
 	imagenMostrar.x = anchoVentana - camara.w;
 	imagenMostrar.y = altoVentana - camara.h;
 	imagenMostrar.w = camara.w;
 	imagenMostrar.h = camara.h;
 
-	imagenServDesc->renderizar(&camara,&imagenMostrar);
+	imagenServDesc.renderizar(&camara,&imagenMostrar);
 	SDL_RenderPresent(this->renderizador);
 
 	sleep(2);
 
-	delete imagenServDesc;
 	this->log->addLogMessage("[MOSTRAR SERVIDOR DESCONECTADO] Terminado.\n",2);
 
 }

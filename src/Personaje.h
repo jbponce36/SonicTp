@@ -11,6 +11,7 @@
 #include "ConexCliente.h"
 #include "HiloEnviarCliente.h"
 #include "Definiciones.h"
+#include <time.h>
 
 
 #define GRAVEDAD 9
@@ -67,6 +68,10 @@ class Personaje
 		bool puedeIrDerecha;
 		bool puedeIrIzquierda;
 		bool tieneEscudo;
+		bool esInvencible; //Bonus. Mata a los enemigos que toque.
+		bool esInmortal; //No pierde la ultima vida pero pierde vidas y anillos.
+
+		time_t tiempoInicioInvencible;
 
 		Logger *log;
 
@@ -128,6 +133,10 @@ class Personaje
 		void aumentarCantidadAnillos(int cantidad);
 		void ponerseEscudo();
 		void quitarseEscudo();
+		void serInvencible();
+		void dejarDeSerInvencible();
+		bool sigueSiendoInvencible();
+		bool agarroBonusInvencible();
 };
 
 #endif
