@@ -191,21 +191,24 @@ void Control::controlDeMensajes(Personaje* sonic,
 		} else if (mensaje.substr(0, 5) == "Anill")
 
 		{
-			std::string posX = mensaje.substr(7, 3);
+			debug(1,"Control::controlDeMensajes", "Mensaje anillas" , 0);
+			debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
+
+
+			std::string posX = mensaje.substr(6, 4);
 			std::string posY = mensaje.substr(12, 3);
 
-			debug(1, "Control::controlDeMensajes", "Mensaje anillas", 0);
-			debug(1, "Control::controlDeMensajes", (char*) mensaje.c_str(), 0);
-			//debug(1,"Control::controlDeMensajes", (char*) posX.c_str() , 0);
-			//debug(1,"Control::controlDeMensajes", (char*) posY.c_str() , 0);
-
+			posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
 			int iposX = atoi(posX.c_str());
 			int iposY = atoi(posY.c_str());
 
-			Anillos* anillo = new Anillos(64, 64, 1, "rojo",
-					"images/Anillas.png", iposX, iposY, 99, this->log);
+			debug(1,"POSX", (char*) posX.c_str() , 0);
+			debug(1,"POSY", (char*) posY.c_str() , 0);
+
+			Anillos* anillo = new Anillos(64, 64, 1, "rojo", "images/Anillas.png", iposX, iposY, 99, this->log);
 
 			vista->getConstructorEntidades()->anillos.push_back(anillo);
+
 
 		}
 

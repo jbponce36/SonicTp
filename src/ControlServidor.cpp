@@ -401,40 +401,64 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 void ControlServidor::CreoAnillas(){
   srand(time(NULL));
-  //int cantidadAnillas =(rand() % 4) + 1;
-	 int cantidadAnillas = 1;
-	for(int i=0;i<cantidadAnillas;i++){
+  int cantidadAnillas =(rand() % 10) + 1;
+
+  //el alto del escenario es de 800 en el grande, lo saco de vista
+  // el ancho del escenario es de 4000, lo saco tambien de vista.
+
+  int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
+  int AnchoEscenario = vista->obtenerAnchoEscenario();
+
+  /* cout<<"ALTOESCENARIO"<<endl;
+
+	int numero = 4*(vista->obtenerAltoEscenario())/5;
+	cout<<numero<<endl;
+
+	cout<<"OBTENER ANCHO"<<endl;
+	cout<<vista->obtenerAnchoEscenario()<<endl;
+	*/
+
+
+	//cout<<AltoEscenario<<endl;
+	//cout<<AnchoEscenario<<endl;
+   for(int i=0;i<cantidadAnillas;i++){
 
 	  int	id = i;
 	  std::string color = "rojo";
 	  int ancho = 64;
 	  int alto = 64;
 
-	  int coordX = i* 200 + 300 ;
-	  int coordY = 300;
+
+	  //cualquier randon del ancho total del escenario
+	  int coordX = Util::numeroRandom(AnchoEscenario);
+
+	  //la coordenada y la voy a dejar en 300 ya que es una buena altura....
+	  int coordY =  300;
 	  std::string rutaImagen = "images/Anillas.png";
 	  int indexZ = 99;
 
 
-	   Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+	  Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
 
-	   anillo->setAlto(alto);
-	   anillo->setAncho(ancho);
-	   anillo->setCoorx(coordX);
-	   anillo->setCoory(coordY);
-	  // anillo->setId(id);
+	  anillo->setAlto(alto);
+	  anillo->setAncho(ancho);
+	  anillo->setCoorx(coordX);
+	  anillo->setCoory(coordY);
 
-	   this->anillos.push_back(anillo);
 
-	}
+	  this->anillos.push_back(anillo);
+
+ }
+
+
 
 	//Vendria a ser el metodo ActualizarVistaServidor......
-	  list<Anillos*>:: iterator posanillo;
-	   for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
-		   std::string mensaje = (*posanillo)->obtenerMensajeEstado();
-		   debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
-		   enviarATodos(mensaje);
-	  }
+	list<Anillos*>:: iterator posanillo;
+		for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
+			   std::string mensaje = (*posanillo)->obtenerMensajeEstado();
+			   debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+			   enviarATodos(mensaje);
+	}
 }
 
 void ControlServidor::CreoPiedras(){
