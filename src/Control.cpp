@@ -327,7 +327,17 @@ void Control::parsearMensajePosicion(mensajePosicion& msj,
 void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 		SDL_Rect *imagenMostrar, Personaje *sonic) {
 	admNiveles.mostrarNivel(camara, vista, imagenMostrar);
-	vista->dibujarTexto();
+
+	TTF_Font* fuente = TTF_OpenFont("images/NotoSansCJK-Black.ttc", 40);
+	SDL_Color textColor = { 0, 0, 0, 0xFF };
+	textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;
+	const char* puntaje = "PUNTAJE: ";
+	const char* tiempo = "TIEMPO: ";
+	const char* cantAnillas = "ANILLAS:";
+	vista->dibujarTexto(fuente, puntaje,10,5, textColor);
+	vista->dibujarTexto(fuente, tiempo,10,45, textColor);
+	vista->dibujarTexto(fuente, cantAnillas,10,85, textColor);
+
 	for (int contador = 0; contador < vista->cantidadCapasCargadas();
 			contador++) {
 		//vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),imagenMostrar);

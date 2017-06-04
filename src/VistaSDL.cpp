@@ -515,7 +515,7 @@ void VistaSDL::mostrarPiedras(SDL_Rect *camara, int indexZ){
 
 }
 
-void VistaSDL::dibujarTexto(){
+void VistaSDL::dibujarTexto(TTF_Font *font, const char *texto, int posX, int posY, SDL_Color color){
 
 
 	//TTF_SetFontStyle(fuente, TTF_STYLE_BOLD); //esto hace la letra en negrita
@@ -524,7 +524,7 @@ void VistaSDL::dibujarTexto(){
 	//cout<<&White<<endl;
 	SDL_Color textColor = { 0, 0, 0, 0xFF };
 	textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;
-	this->superficieTexto = TTF_RenderUTF8_Blended(this->fuente,"PUNTAJE:",textColor);
+	this->superficieTexto = TTF_RenderUTF8_Blended(font, texto,textColor);
 	//SDL_Surface* textoCargado = TTF_RenderText_Blended(fuente, "PUNTAJES SONICS", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO22"<<endl;
 	this->texturaTexto = SDL_CreateTextureFromSurface(this->renderizador, superficieTexto);
@@ -534,8 +534,8 @@ void VistaSDL::dibujarTexto(){
 	//SDL_RenderClear(this->renderizador);
 	int text_ancho = superficieTexto->w;
 	int text_alto = superficieTexto->h;
-	Message_rect.x = 10;
-	Message_rect.y = 10;
+	Message_rect.x = posX;
+	Message_rect.y = posY;
 	Message_rect.w = text_ancho;
 	Message_rect.h = text_alto;
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO44"<<endl;
