@@ -12,7 +12,7 @@
 #include "HiloEnviarCliente.h"
 #include "Definiciones.h"
 #include <time.h>
-
+#include "Puntos.h"
 
 #define GRAVEDAD 9
 #define IMAGEN_POR_DEFECTO "images/sonicSprite.png"
@@ -60,6 +60,7 @@ class Personaje
 
 		Orientacion orientacion;
 		Puntaje *puntaje;
+		Puntos *puntos;
 
 		bool saltando;
 		bool corriendo;

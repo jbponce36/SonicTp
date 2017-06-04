@@ -48,7 +48,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 
     cargarSpriteSonic();
     this->log = log;
-
+    this->puntos = new Puntos(this->id);
     this->puedeIrDerecha = true;
     this->puedeIrIzquierda = true;
 }
@@ -300,6 +300,7 @@ Personaje::~Personaje(){
 		delete texturaInvencible;
 	}
 	delete puntaje;
+	delete puntos;
 }
 
 void Personaje::dejarDeEstarQuieto()
