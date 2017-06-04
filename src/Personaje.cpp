@@ -642,6 +642,14 @@ void Personaje::setPuntaje(Puntaje* puntaje) {
 	this->puntaje = puntaje;
 }
 
+Puntos* Personaje::getPuntos() {
+	return puntos;
+}
+
+void Personaje::setPuntos(Puntos* puntaje) {
+	this->puntos = puntaje;
+}
+
 std::string Personaje::obtenerMensajeEstado()
 {
 	//Tamano es 15. Ej: 1x-300y--20AcD1

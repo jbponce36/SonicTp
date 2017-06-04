@@ -534,6 +534,8 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				   debug(1,"ControlServidor::chequearColicion","Colision con anilla %d",numeroAnilla);
 				   this->enviarATodos("BORRAR_ANILLA_" + this->intToString(numeroAnilla));
 				   colisionada = (*posanillo);
+				   cl2->getPuntos()->sumarXanillos(1);
+				   cout<<"MOSTRAR MENSAJE ANILLOS :  "<<cl2->getPuntos()->obtenerMensajeEstadoAnillos(cl2->getId());
 			  }
 			  numeroAnilla++;
 
