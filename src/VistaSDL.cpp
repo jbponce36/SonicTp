@@ -49,7 +49,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 
 	this->cargarCapas(jescenario);
 
-	this->fuente = TTF_OpenFont("images/arial.ttf", 20);
+	this->fuente = TTF_OpenFont("images/NotoSansCJK-Black.ttc", 44);
 	this->White = {255, 255, 255,0};
 
 
@@ -522,7 +522,9 @@ void VistaSDL::dibujarTexto(){
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO11"<<endl;
 	//cout<<&fuente<<endl;
 	//cout<<&White<<endl;
-	this->superficieTexto = TTF_RenderUTF8_Blended(this->fuente,"Puntaje:",White);
+	SDL_Color textColor = { 0, 0, 0, 0xFF };
+	textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;
+	this->superficieTexto = TTF_RenderUTF8_Blended(this->fuente,"PUNTAJE:",textColor);
 	//SDL_Surface* textoCargado = TTF_RenderText_Blended(fuente, "PUNTAJES SONICS", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO22"<<endl;
 	this->texturaTexto = SDL_CreateTextureFromSurface(this->renderizador, superficieTexto);
@@ -532,8 +534,8 @@ void VistaSDL::dibujarTexto(){
 	//SDL_RenderClear(this->renderizador);
 	int text_ancho = superficieTexto->w;
 	int text_alto = superficieTexto->h;
-	Message_rect.x = 0;
-	Message_rect.y = 0;
+	Message_rect.x = 10;
+	Message_rect.y = 10;
 	Message_rect.w = text_ancho;
 	Message_rect.h = text_alto;
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO44"<<endl;
