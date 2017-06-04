@@ -268,7 +268,14 @@ void Control::controlDeMensajes(Personaje* sonic,
 		{
 			//Ej mensaje: EB---1x--10y-200 significa quitar el Bonus con id 1.
 			quitarEntidad(mensaje);
-		} else {
+		}
+		else if(mensaje.substr(0,3).compare("rin") == 0){
+			cout<<"MENSAJE ANILLO:  "<< mensaje<<endl;
+			int id = atoi(mensaje.substr(3,1).c_str());
+			int anillos = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
+			cout<<"anillos:  "<<anillos<<"id:   "<<id<<endl;
+		}
+		else {
 			//Otros mensajes
 			//cout << mensaje << endl;
 		}

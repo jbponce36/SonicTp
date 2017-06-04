@@ -534,8 +534,10 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				   debug(1,"ControlServidor::chequearColicion","Colision con anilla %d",numeroAnilla);
 				   this->enviarATodos("BORRAR_ANILLA_" + this->intToString(numeroAnilla));
 				   colisionada = (*posanillo);
+				   //aca se le suma un anillo al sonic q lo agarro y se le envia a todos los sonics el mensaje
+
 				   cl2->getPuntos()->sumarXanillos(1);
-				   cout<<"MOSTRAR MENSAJE ANILLOS :  "<<cl2->getPuntos()->obtenerMensajeEstadoAnillos(cl2->getId());
+				   enviarATodos(cl2->getPuntos()->obtenerMensajeEstadoAnillos(cl2->getId()));
 			  }
 			  numeroAnilla++;
 
@@ -660,3 +662,5 @@ void ControlServidor::verificarDuracionBonus(Personaje *sonic)
 		}
 	}
 }
+
+
