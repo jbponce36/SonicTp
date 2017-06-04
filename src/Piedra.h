@@ -40,6 +40,8 @@ public:
 	SDL_Rect obtenerLimites();
 	std::string getNombre();
 
+	virtual void interactuar(Personaje *sonic);
+
 private:
 	int ancho;
 	int alto;

@@ -235,3 +235,25 @@ void Entidad::setX(int x) {
 void Entidad::setY(int y) {
 	this->y = y;
 }
+
+
+bool Entidad::colisionaArriba(Personaje *sonic)
+{
+	int pixeles = 30;
+	SDL_Rect limiteSuperiorEntidad = this->obtenerLimites();
+	limiteSuperiorEntidad.h = pixeles;
+
+	SDL_Rect limiteInferiorSonic = sonic->obtenerLimites();
+	limiteInferiorSonic.y = limiteInferiorSonic.y + sonic->getAlto() - pixeles;
+	limiteInferiorSonic.h = pixeles;
+
+	SDL_bool intersecta = SDL_HasIntersection(&limiteSuperiorEntidad, &limiteInferiorSonic);
+
+	if (intersecta == SDL_TRUE){
+		return true;
+	}
+	else{
+		return false;
+	}
+
+}

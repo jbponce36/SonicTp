@@ -54,3 +54,12 @@ int Util::numeroRandom(int hasta)
 	//Precondiciones: Inicializar semilla una vez antes de llamarlo
 	return (rand() % hasta) + 1;
 }
+
+void Util::dibujarRecuadro(SDL_Rect *entidad, SDL_Renderer *renderizador, SDL_Rect *camara)
+{
+	SDL_SetRenderDrawColor(renderizador, 0, 0, 0, 255);
+	SDL_Rect destino = *entidad;
+	destino.x = destino.x - camara->x;
+	destino.y = destino.y - camara->y;
+	SDL_RenderDrawRect(renderizador, &destino);
+}

@@ -62,13 +62,7 @@ void ControlServidor::administrarTeclasServidor()
 					teclas.at(indice).teclaAbajo = true;
 				}
 				else if(msj.tecla.compare(TECLA_DERECHA_PRESIONADA) == 0){
-					//if(this->colpiedra == false){
 					 teclas.at(indice).teclaDerecha = true;
-					//}
-					//else{
-						//teclas.at(indice).teclaDerecha = false;
-
-					//}
 				}
 				else if(msj.tecla.compare(TECLA_IZQUIERDA_PRESIONADA) == 0){
 					teclas.at(indice).teclaIzquierda = true;
@@ -191,9 +185,6 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 			sonic->parar();
 		}
 
-	//if(this->colpiedra == false){
-
-
 		sonic->correr(t.teclaCorrer);
 
 		if(t.teclaArriba){
@@ -212,17 +203,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		if(t.teclaIzquierda){
 			sonic->irIzquierda();
 		}
-		//}
-		/*else{
-			t.teclaIzquierda = false;
-			t.teclaDerecha = false;
-			t.teclaCorrer = true;
-			t.teclaArriba = true;
 
-		//	(*pos).second->parar();
-		}
-		*/
-		this->colpiedra == false;
 		///------------------------------------------------------------
 		//tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
 
@@ -469,8 +450,8 @@ void ControlServidor::CreoPiedras(){
 		for(int i=0;i<cantidadPiedras;i++){
 		  int	id = i;
 		  std::string color = "rojo";
-		  int ancho = 150;
-		  int alto = 150;
+		  int ancho = 180;
+		  int alto = 140;
 		  int coordX = i* 500 + 400 ;
 		  //Si lo pasas a constructorEntidades ponerle: int coordY = limiteAlto - alto;
 		  int coordY = 4*vista->getAltoEscenario()/5 - alto;
@@ -521,7 +502,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 
 				//descomenta la linea de abajo si queres matar al bicho
 				//enemigo->setVivo(false);
-				cout<<"colision con enemigo"<<endl;
+				//cout<<"colision con enemigo"<<endl;
 			}
 
 		}
@@ -545,29 +526,21 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 		}
 
         //PIEDRA
-
 		bool huboColision = false;
+		Personaje *sonic = (*pos).second;
+
 		for(pospiedra = this->piedra.begin();pospiedra!= this->piedra.end();pospiedra++){
 
 			Piedra *pdra = (*pospiedra);
-			Personaje * cl = (*pos).second;
 
-			if(colicion->intersectaPiedraPersonaje(pdra,cl)){
-				//cout<<"NOMBRE ANIMACION"<<endl;
-				// cout<<cl->getNombreAnimacion()<<endl;
-              this->colpiedra = true;
-
-              cl->pararPorColision(pdra->obtenerLimites());
+			if(colicion->intersectaPiedraPersonaje(pdra,sonic)){
+				pdra->interactuar(sonic); //Se fija si esta encima de la piedra
 				huboColision = true;
-				 this->enviarATodos("p" + cl->getNombreAnimacion());
-
-
 			}
 		}
 
 		if (!huboColision){
-			Personaje * cl3 = (*pos).second;
-			cl3->reanudarLuegoDeColision();
+			sonic->reanudarLuegoDeColision();
 			//El tipo se deberia poder seguir moviendo
 		}
 

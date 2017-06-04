@@ -117,13 +117,6 @@ void Control::administrarTeclas(ControladorTeclas *controlador,
 	SDL_Event e;
 
 	while (SDL_PollEvent(&e) != 0) {
-
-		if (e.key.keysym.sym == SDLK_w) {
-
-			//debug(1, "Control::administrarTeclas", "Voy a borrar las anillas", 0);
-			//vista->getConstructorEntidades()->anillos.clear();
-		}
-
 		//usuario pide cierre
 		if (e.type == SDL_QUIT) {
 			salir = true;
@@ -209,9 +202,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 			}
        */
 
-		} else if (mensaje.substr(0, 5) == "Anill")
-
-		{
+		} else if (mensaje.substr(0, 5) == "Anill"){
 			debug(1,"Control::controlDeMensajes", "Mensaje anillas" , 0);
 			debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
 
@@ -229,8 +220,6 @@ void Control::controlDeMensajes(Personaje* sonic,
 			Anillos* anillo = new Anillos(64, 64, 1, "rojo", "images/Anillas.png", iposX, iposY, 99, this->log);
 
 			vista->getConstructorEntidades()->anillos.push_back(anillo);
-
-
 		}
 
 
@@ -264,7 +253,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 				}
 				*/
 
-		else if (mensaje.substr(0, 1) == "p") {
+		else if (mensaje.substr(0, 1) == "p"){
 
 			debug(1, "Control::controlDeMensajes",
 					"Mensaje piedras parar movimiento sonic", 0);
@@ -278,9 +267,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 			//   sonic->parar();
 			//std::string animacionAnterior = sonic->animacionActual->obtenerNombre();
 			//cout<<animacionAnterior<<endl;
-
 		}
-
 		else if (mensaje.substr(0, 5) == "Piedr") {
 
 			debug(1, "MENSAJE PIEDRA", (char*) mensaje.c_str(), 0);
@@ -392,6 +379,10 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 	std::vector<Personaje*>::iterator pos;
 	for (pos = sonics->begin(); pos != sonics->end(); pos++) {
 		(*pos)->render(camara->getPosicionX(), camara->getPosicionY());
+
+		//Dibujar cuadrado sonic
+		SDL_Rect limites = (*pos)->obtenerLimites();
+		Util::dibujarRecuadro(&limites, vista->obtenerRender(), camara->devolverCamara());
 	}
 
 	this->animarAnilla(camara, vista);
