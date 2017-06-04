@@ -168,12 +168,32 @@ void Control::controlDeMensajes(Personaje* sonic,
 		} else if (mensaje == "Terminar juego") {
 			printf("Cerrando el juego...\n");
 			this->salir = true;
-		} else if (mensaje.substr(0, 14) == "BORRAR_ANILLA_") {
 
-			int numeroAnilla = atoi(mensaje.substr(14, 1).c_str());
+		} else if (mensaje.substr(0, 13) == "BORRAR_ANILLA") {
+
+
+
+			int numeroAnilla = atoi(mensaje.substr(14, 2).c_str());
+
 
 			debug(1, "Control::controlDeMensajes", "Voy a borrar la anilla %d",
 					numeroAnilla);
+
+
+
+          /* 	list<Anillos*>::iterator pos;
+
+          for(pos= vista->getConstructorEntidades()->anillos.begin();pos!=vista->getConstructorEntidades()->anillos.end();pos++){
+
+             if((*pos)->getId()== numeroAnilla){
+
+            	 delete (*pos);
+            	 vista->getConstructorEntidades()->anillos.erase(pos);
+
+            	 //return;
+             }
+          }
+         */
 
 			int posAnillaActual = 0;
 
@@ -190,26 +210,9 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 			vista->getConstructorEntidades()->anillos.remove(actual);
 
-		/*	int numeroAnilla = atoi(mensaje.substr(14, 1).c_str());
-			cout<<"numero anilla"<<endl;
-			cout<<numeroAnilla<<endl;
-			Anillos* actual = NULL;
 
 
-			list<Anillos*>:: iterator pos;
-			for(pos = vista->getConstructorEntidades()->anillos.begin(); pos != vista->getConstructorEntidades()->anillos.end(); pos++)
-			{
-
-				if((*pos)->getId() == numeroAnilla)
-				{
-					delete (*pos);
-					vista->getConstructorEntidades()->anillos.erase(pos);
-				}
-
-			}
-       */
-
-		} else if (mensaje.substr(0, 5) == "Anill")
+		} /*else if (mensaje.substr(0, 5) == "Anill")
 
 		{
 			debug(1,"Control::controlDeMensajes", "Mensaje anillas" , 0);
@@ -233,8 +236,8 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 		}
 
-
-		/*else if (mensaje.substr(0, 3) == "Aid")
+*/
+		else if (mensaje.substr(0, 3) == "Aid")
 
 				{
 					debug(1,"Control::controlDeMensajes", "Mensaje anillas" , 0);
@@ -243,8 +246,10 @@ void Control::controlDeMensajes(Personaje* sonic,
 					//ID
 					std::string id = mensaje.substr(3, 2);
 					id.erase(std::remove(id.begin(), id.end(), PADDING), id.end());
-					int intid = atoi(id.c_str());
 
+					int intid = atoi(id.c_str());
+					cout<<"********ID************"<<endl;
+					cout<<intid<<endl;
 					//posx
 
 					std::string posX = mensaje.substr(6, 4);
@@ -256,13 +261,17 @@ void Control::controlDeMensajes(Personaje* sonic,
 					int iposY = atoi(posY.c_str());
 
 
+
+
 					Anillos* anillo = new Anillos(64, 64, intid, "rojo", "images/Anillas.png", iposX, iposY, 99, this->log);
+
+
 
 					vista->getConstructorEntidades()->anillos.push_back(anillo);
 
 
 				}
-				*/
+
 
 		else if (mensaje.substr(0, 1) == "p") {
 

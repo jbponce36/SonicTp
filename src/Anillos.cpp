@@ -237,35 +237,41 @@ void Anillos::setId(int Id) {
 
 std::string Anillos::obtenerMensajeEstado(){
 
-	std::string a = "Anill";
+	/*std::string a = "Anill";
 	//std::string a = "Aid";
 	std::string numx = "x";
 	std::string numy = "y";
 
 
 	return(a + numx + intToStringConPadding(x) + numy + intToStringConPadding(y));
+*/
 
 
-
-/*	std::string a = "Aid";
+	std::string a = "Aid";
 		//std::string a = "Aid";
 		std::string numx = "x";
 		std::string numy = "y";
 
 
 		return(a + this->intToStringConPaddingID(id) + numx + intToStringConPadding(x) + numy + intToStringConPadding(y));
-		*/
+
 }
 
 std::string Anillos::obtenerMsjAnillaBorrada(int numero){
 
-		std::string a = "borar";
-		std::string numx = "x";
-		std::string numy = "y";
-		return(a + numx + intToStringConPadding(x) + numy +  intToStringConPadding(numero));
+		std::string a = "BORRAR_ANILLA";
+		//std::string numx = "x";
+		//std::string numy = "y";
+		return(a +  intToStringConPaddingID(numero));
 
 
 
 }
 
+int Anillos::getIdb(){
+		return idb;
+	}
 
+void Anillos::setIdb(int Idb) {
+		this->idb = Idb;
+	}

@@ -403,25 +403,13 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 void ControlServidor::CreoAnillas(){
   srand(time(NULL));
  // int cantidadAnillas =(rand() % 10) + 1;
-int cantidadAnillas = 10;
+int cantidadAnillas = 11;
   //el alto del escenario es de 800 en el grande, lo saco de vista
   // el ancho del escenario es de 4000, lo saco tambien de vista.
 
   int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
   int AnchoEscenario = vista->obtenerAnchoEscenario();
 
-  /* cout<<"ALTOESCENARIO"<<endl;
-
-	int numero = 4*(vista->obtenerAltoEscenario())/5;
-	cout<<numero<<endl;
-
-	cout<<"OBTENER ANCHO"<<endl;
-	cout<<vista->obtenerAnchoEscenario()<<endl;
-	*/
-
-
-	//cout<<AltoEscenario<<endl;
-	//cout<<AnchoEscenario<<endl;
    for(int i=0;i<cantidadAnillas;i++){
 
 	  int	id = i;
@@ -521,7 +509,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 
 				//descomenta la linea de abajo si queres matar al bicho
 				//enemigo->setVivo(false);
-				cout<<"colision con enemigo"<<endl;
+				//cout<<"colision con enemigo"<<endl;
 			}
 
 		}
@@ -531,9 +519,17 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 			 Personaje * cl2 = (*pos).second;
 
 			  if (colicion->intersectaAnilloPersonaje(cls, cl2)){
-				   debug(1,"ControlServidor::chequearColicion","Colision con anilla %d",numeroAnilla);
-				   this->enviarATodos("BORRAR_ANILLA_" + this->intToString(numeroAnilla));
-				 //  this->enviarATodos("BORRAR_ANILLA_" + cls->getId());
+
+				   debug(1,"ControlServidor::chequearColicion","Colision con anilla NUMEROANILLA %d",numeroAnilla);
+				   std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(numeroAnilla);
+
+
+				  // debug(1,"ControlServidor::chequearColicion","Colision con anilla GETID %d",cls->getId());
+				   //   std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(cls->getId());
+
+
+
+				   this->enviarATodos(mensaje);
 				   colisionada = (*posanillo);
 			  }
 			  numeroAnilla++;
@@ -542,6 +538,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 
 		if (colisionada != NULL){
 			this->anillos.remove(colisionada);
+
 		}
 
         //PIEDRA

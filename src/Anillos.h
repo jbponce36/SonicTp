@@ -65,6 +65,10 @@ public:
 
 	void setId(int Id);
 
+	int getIdb();
+
+	void setIdb(int Idb);
+
 private:
 	std::string ruta;
 	int ancho;
@@ -73,6 +77,7 @@ private:
     int x;
     int y;
     int id;
+    int idb;
 
 	Textura *texturaAnillo;
 
