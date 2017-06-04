@@ -79,7 +79,6 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 {
 	int maximoAlto = limites->h;
 	int maximoAncho = limites->w;
-	//this->puntaje->setPosicionX(limites->x);
 
 	/*Limite en el suelo.*/
 	maximoAlto -= (maximoAlto/5);
@@ -203,7 +202,6 @@ void Personaje::posicionarseEn(int x, int y)
 void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, int indiceAnimacion)
 {
 	posicionarseEn(x, y);
-	this->puntaje->setX(x);
 
 	std::string animacionAnterior = animacionActual->obtenerNombre();
 	if(animacionAnterior.compare(animacion) == 0)
