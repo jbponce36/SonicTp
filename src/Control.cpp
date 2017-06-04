@@ -331,6 +331,7 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 	TTF_Font* fuente = TTF_OpenFont("images/NotoSansCJK-Black.ttc", 40);
 	SDL_Color textColor = { 0, 0, 0, 0xFF };
 	textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;
+	//Aca usar la clase  Util::intToString (sonic->getPuntaje()->getPuntos()) para concatenar los string con los valores reales del puntaje
 	const char* puntaje = "PUNTAJE: 0";
 	const char* tiempo = "TIEMPO: 0";
 	const char* cantAnillas = "ANILLAS: 0";
