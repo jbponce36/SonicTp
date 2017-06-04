@@ -26,6 +26,9 @@
 #include "Colicion.h"
 #include "Anillos.h"
 #include "Piedra.h"
+#include "Cangrejo.h"
+#include "Pescado.h"
+#include "Mosca.h"
 
 #define FPS_SERVER 25
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
@@ -41,6 +44,7 @@ private:
 
 
 	bool pasarNivel;
+	bool colpiedra;
 
 	std::map<int, Personaje*> *sonics;
 	std::vector<Hiloenviar*> *hilosEnviar;
@@ -65,6 +69,8 @@ private:
 
 	Mundo mundo; //Contiene todos los elementos del mundo y los sonics. Asi queda todo mas separado.
 
+	vector<Enemigo*> enemigos;
+
 public:
 	list<Anillos*> anillos;
 	list<Piedra*>  piedra;
@@ -88,7 +94,12 @@ public:
 
 
 	void chequearColicion(Colicion *colicion);
-	void  chequearColisiones();
+	void chequearColisiones();
+	void enviarDatosEscenario(Hiloenviar *hiloEnviar);
+
+	void CreacionEnemigos();
+	void enviarDatosEnemigosIniciales();
+	void actualizarPosicionesEnemigos();
 
 
 private:
@@ -96,7 +107,7 @@ private:
 	ControlServidor::mensajeRecibido parsearMensajePosicion(std::string mensaje);
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor(Camara *camara);
-
+	void verificarDuracionBonus(Personaje* sonic);
 	std::string intToString(int number);
 
 };

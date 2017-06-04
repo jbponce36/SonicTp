@@ -11,6 +11,7 @@
 #include "Entidad.h"
 #include "Definiciones.h"
 
+
 class Piedra: public Entidad {
 public:
 	Piedra(int ancho, int alto, unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ, Logger *log);

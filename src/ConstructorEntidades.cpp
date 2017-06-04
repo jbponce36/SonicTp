@@ -450,6 +450,8 @@ void ConstructorEntidades::quitarEntidad(std::string nombre, int id)
 			return;
 		}
 	}
+
+	//TODO: Si es un anillo fijarse de sacarlo de la lista de anillos!!!!
 }
 
 void ConstructorEntidades::generarBonus(int ancho, int alto,
@@ -479,7 +481,7 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 		entidades.push_back(nuevoBonus);
 	}
 
-	//Agrego bonus de Anillos
+	//Agrego bonus de Invencibilidad
 	cantidadBonus = Util::numeroRandom(3);
 	for(int i = 0; i < cantidadBonus; i++)
 	{

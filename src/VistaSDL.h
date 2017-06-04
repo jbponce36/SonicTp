@@ -22,6 +22,7 @@
 #include <list>
 #include <vector>
 #include <unistd.h>
+#include <SDL2/SDL_ttf.h>
 
 #define ANCHO_VENTANA_POR_DEFECTO 640
 #define ALTO_VENTANA_POR_DEFECTO 500
@@ -49,15 +50,24 @@ private:
 	int imgFlags;
 	vector <Textura*> texturas;
 	vector <Textura*> capasFondo;
+	vector <Textura*> enemigosTextura;
     ConstructorEntidades *constructorEntidades;
     Logger *log;
     bool oculta;
+    TTF_Font* fuente;
+    SDL_Color White;
+    SDL_Surface* superficieTexto;
+    SDL_Texture* texturaTexto;
 
 public:
     VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion, jescenario *jescenario, Logger *logger, bool oculta);
     void cargarImagen();
     int obtenerAltoVentana();
     void cargarCapas(jescenario *escenario);
+
+    void cargarEnemigosTextura();
+    Textura *obtenerTexturaDeEnemigoNumero(int num);
+
     int obtenerAnchoVentana();
     void validacionesEscenario(jescenario *jescenario);
     void crearVentanaYrenderizador();
@@ -81,10 +91,11 @@ public:
     void setLog(Logger *log);
     string intToString(int number);
     int getAltoEscenario();
-
+    void dibujarTexto();
 	ConstructorEntidades* getConstructorEntidades();
 
 	void setConstructorEntidades(ConstructorEntidades* ConstructorEntidades);
+
 };
 
 

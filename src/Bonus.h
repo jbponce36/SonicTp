@@ -10,6 +10,8 @@
 
 #include "Rectangulo.h"
 
+#define CANTIDAD_ANILLOS 10
+
 class Bonus : public Rectangulo {
 public:
 	enum Tipo{
@@ -26,7 +28,7 @@ public:
 		int x, int y, unsigned int indexZ, Logger *log, Bonus::Tipo tipo);
 	virtual ~Bonus();
 	void dibujar(SDL_Renderer *renderer, SDL_Rect *camara);
-	void interactuar(Personaje *sonic, Mundo* mundo);
+	void interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar);
 	std::string getNombre();
 
 };

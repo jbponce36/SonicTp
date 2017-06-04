@@ -139,7 +139,7 @@ int Rectangulo::obtenerAlto()
 	return alto;
 }
 
-void Rectangulo::interactuar(Personaje *sonic, Mundo* mundo)
+void Rectangulo::interactuar(Personaje *sonic, Mundo* mundo, bool &eliminada)
 {
 	return; //Si la entidad es solo un Rectangulo, no hace nada
 }

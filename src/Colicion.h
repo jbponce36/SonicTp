@@ -10,12 +10,14 @@
 #include "Anillos.h"
 #include "Personaje.h"
 #include "Entidad.h"
+#include "Piedra.h"
 
 class Colicion {
 public:
 	Colicion();
 	virtual ~Colicion();
 	bool intersectaAnilloPersonaje(Anillos* anillo,Personaje* sonic);
+	bool intersectaPiedraPersonaje(Piedra* piedra, Personaje* sonic);
 
 private:
 	Anillos *anillo;

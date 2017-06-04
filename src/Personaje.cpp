@@ -1,5 +1,7 @@
 #include "Personaje.h"
+#include "debug.h"
 #include "Puntaje.h"
+
 
 const int POSICION_INICIALX = 0;
 const int POSICION_INICIALY = 0;
@@ -7,11 +9,17 @@ const int POSICION_INICIALY = 0;
 Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log)
 {
 	this->id = id;
+
 	this->texturaSonic = new Textura();
 	this->texturaCongelado = new Textura();
+	this->texturaEscudo = new Textura();
+	this->texturaInvencible = new Textura();
+
 	std::string rutaImagen = "images/sonicSprite" + intToString(id) +".png";
 	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
 	this->texturaCongelado->cargarImagen("images/sonicgris.png", IMAGEN_POR_DEFECTO, render, log);
+	this->texturaEscudo->cargarImagen("images/BonusEscudo.png", "images/BonusEscudo.png", render, log);
+	this->texturaInvencible->cargarImagen("images/BonusInvencibilidad.png", "images/BonusInvencibilidad.png", render, log);
 
 	//dimensiones del personaje por defecto
 	this->personajeAncho = 150;
@@ -34,45 +42,15 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->corriendo = false;
     this->estaQuieto = true;
     this->congelado = false;
+    this->tieneEscudo = false;
+
     this->puntaje = new Puntaje(id, render,log);
+
     cargarSpriteSonic();
     this->log = log;
-}
 
-Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenario, Logger *log, ConexCliente *cliente)
-{
-	this->id = id;
-	this->texturaSonic = new Textura();
-	this->texturaCongelado = new Textura();
-	std::string rutaImagen = "images/sonicSprite" + intToString(id) +".png";
-	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
-	this->texturaCongelado->cargarImagen("images/sonicgris.png", IMAGEN_POR_DEFECTO, render, log);
-
-	//dimensiones del personaje por defecto
-	this->personajeAncho = 150;
-	this->personajeAlto= 150;
-
-	this->personajeVelocidad = velocidad;
-	this->personajeAceleracion = velocidad/20;
-	//posicion por defecto
-	this->posicionX = POSICION_INICIALX + id*20 - 20; //Para que no esten en el mismo lugar al empezar
-	if(posicionX < 0)
-		posicionX = POSICION_INICIALX;
-    this->posicionY = 4*altoEscenario/5 - personajeAlto;
-
-    this->velocidadX = 0;
-    this->velocidadY = 0;
-
-    this->orientacion = DERECHA;
-
-    this->saltando = false;
-    this->corriendo = false;
-    this->estaQuieto = true;
-    this->congelado = false;
-    this->puntaje = new Puntaje(id, render ,log);
-    cargarSpriteSonic();
-    this->log = log;
-    this->cliente = cliente;
+    this->puedeIrDerecha = true;
+    this->puedeIrIzquierda = true;
 }
 
 void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
@@ -99,6 +77,7 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 
     //Si esta saltando lo afecta la gravedad
     if (saltando){
+
     	this->velocidadY += GRAVEDAD;
     }
 
@@ -137,6 +116,8 @@ void Personaje::cargarSpriteSonic(){
 	animacionCorrerIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CORRER_IZQUIERDA);
 	animacionSaltarIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_SALTAR_IZQUIERDA);
 	animacionCongelado = Animacion(texturaCongelado, personajeAncho, 1, ANIMACION_CONGELADO);
+	animacionEscudo = Animacion(texturaEscudo, personajeAncho + 50, 2, ANIMACION_ESCUDO);
+	animacionInvencible = Animacion(texturaInvencible, personajeAncho + 50, 2, ANIMACION_INVENCIBLE);
 	puntaje->setAnimacionPuntaje(Animacion(puntaje->getTexturaPuntaje(), puntaje->getAlto(), 1, ANIMACION_PUNTAJE));
 
 	//for (int i=0; i<10; i++){
@@ -173,11 +154,16 @@ void Personaje::cargarSpriteSonic(){
 	animacionSaltarIzq.cargarSpritesAlReves(1, 5, 9);
 
 	animacionCongelado.cargarSprites(0, 0, 1);
-	cout<<"cargar textura puntaje"<<endl;
+
+	animacionEscudo.cargarSprites(0, 0, 4);
+
+	animacionInvencible.cargarSprites(0, 0, 4);
+	animacionInvencible.cargarSprites(0, 1, 4);
+
 	puntaje->getAnimacionPuntaje().cargarSprites(0,0,1);
-	cout<<"termino cargar textura puntaje"<<endl;
 
 	animacionActual = &animacionQuietoDer;
+	animacionBonus = NULL;
 
 
 }
@@ -191,6 +177,15 @@ void Personaje::render( int camX, int camY){
 	cuadroDeVentana.w=this->personajeAncho;
 	cuadroDeVentana.h=this->personajeAlto;
 	animacionActual->dibujar(cuadroDeVentana);
+
+	if (animacionBonus != NULL)
+	{
+		cuadroDeVentana.x=(this->posicionX-camX-25);
+		cuadroDeVentana.y=(this->posicionY-camY-25);
+		cuadroDeVentana.w=this->personajeAncho+50;
+		cuadroDeVentana.h=this->personajeAlto+50;
+		animacionBonus->dibujar(cuadroDeVentana);
+	}
 }
 
 void Personaje::posicionarseEn(int x, int y)
@@ -218,7 +213,6 @@ void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, in
 		animacionActual = &animacionCaminarDer;
 	}
 	else if(animacion.compare(ANIMACION_CORRER_DERECHA) == 0){
-		animacionActual = &animacionCorrerDer;
 	}
 	else if(animacion.compare(ANIMACION_SALTAR_DERECHA) == 0){
 		animacionActual = &animacionSaltarDer;
@@ -237,6 +231,25 @@ void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, in
 	}
 	else if(animacion.compare(ANIMACION_CONGELADO) == 0){
 		animacionActual = &animacionCongelado;
+	}
+	else
+	{
+		//Es una animacion de bonus
+		if(animacionBonus != NULL)
+			animacionBonus->detener();
+
+		if(animacion.compare(ANIMACION_ESCUDO) == 0){
+			ponerseEscudo();
+			animacionBonus->comenzar();
+		}
+		else if(animacion.compare(ANIMACION_INVENCIBLE) == 0){
+			serInvencible();
+			animacionBonus->comenzar();
+		}
+		else if(animacion.compare(ANIMACION_SIN_BONUS) == 0){
+			quitarseEscudo();
+			dejarDeSerInvencible();
+		}
 	}
 
 	animacionActual->comenzar();
@@ -274,13 +287,17 @@ std::string Personaje::getEstadoAnimacion()
 }
 
 Personaje::~Personaje(){
-	if (texturaSonic != NULL)
-	{
+	if (texturaSonic != NULL){
 		delete texturaSonic;
 	}
-	if (texturaCongelado != NULL)
-	{
+	if (texturaCongelado != NULL){
 		delete texturaCongelado;
+	}
+	if(texturaEscudo != NULL){
+		delete texturaEscudo;
+	}
+	if(texturaInvencible != NULL){
+		delete texturaInvencible;
 	}
 	delete puntaje;
 }
@@ -349,59 +366,130 @@ void Personaje::irAbajo()
 
 void Personaje::irIzquierda()
 {
-	dejarDeEstarQuieto();
+	if (this->puedeIrIzquierda)
+	{
+		dejarDeEstarQuieto();
 
-	if (corriendo){
-		/*this->velocidadX -= 2*personajeAceleracion;
-		if(velocidadX < (-2*personajeVelocidad))
-		{
-			velocidadX = -2*personajeVelocidad;
-		}*/
-		this->velocidadX = -2*personajeVelocidad;
-		animacionActual = &animacionCorrerIzq;
-	}
-	else{
-		/*this->velocidadX -= personajeAceleracion;
-		if(velocidadX < (-personajeVelocidad))
-		{
-			velocidadX = -personajeVelocidad;
-		}*/
-		this->velocidadX = -personajeVelocidad;
-		animacionActual = &animacionCaminarIzq;
-	}
+		if (corriendo){
+			/*this->velocidadX -= 2*personajeAceleracion;
+			if(velocidadX < (-2*personajeVelocidad))
+			{
+				velocidadX = -2*personajeVelocidad;
+			}*/
+			this->velocidadX = -2*personajeVelocidad;
+			animacionActual = &animacionCorrerIzq;
+		}
+		else{
+			/*this->velocidadX -= personajeAceleracion;
+			if(velocidadX < (-personajeVelocidad))
+			{
+				velocidadX = -personajeVelocidad;
+			}*/
+			this->velocidadX = -personajeVelocidad;
+			animacionActual = &animacionCaminarIzq;
+		}
 
-	orientacion = IZQUIERDA;
-	animarSalto();
-	animacionActual->comenzar();
+		orientacion = IZQUIERDA;
+		animarSalto();
+		animacionActual->comenzar();
+	}
 }
 
 void Personaje::irDerecha()
 {
-	dejarDeEstarQuieto();
+	if (this->puedeIrDerecha){
 
-	if (corriendo){
-		/*this->velocidadX += 2*personajeAceleracion;
-		if(velocidadX > 2*personajeVelocidad)
-		{
-			velocidadX = 2*personajeVelocidad;
-		}*/
-		this->velocidadX = 2*personajeVelocidad;
-		animacionActual = &animacionCorrerDer;
-	}
-	else{
-		/*this->velocidadX += personajeAceleracion;
-		if(velocidadX > personajeVelocidad)
-		{
-			velocidadX = personajeVelocidad;
-		}*/
-		this->velocidadX = personajeVelocidad;
-		animacionActual = &animacionCaminarDer;
-	}
+		dejarDeEstarQuieto();
 
-	orientacion = DERECHA;
-	animarSalto();
-	animacionActual->comenzar();
+		if (corriendo){
+			/*this->velocidadX += 2*personajeAceleracion;
+			if(velocidadX > 2*personajeVelocidad)
+			{
+				velocidadX = 2*personajeVelocidad;
+			}*/
+			this->velocidadX = 2*personajeVelocidad;
+			animacionActual = &animacionCorrerDer;
+		}
+		else{
+			/*this->velocidadX += personajeAceleracion;
+			if(velocidadX > personajeVelocidad)
+			{
+				velocidadX = personajeVelocidad;
+			}*/
+			this->velocidadX = personajeVelocidad;
+			animacionActual = &animacionCaminarDer;
+		}
+
+		orientacion = DERECHA;
+		animarSalto();
+		animacionActual->comenzar();
+	}
 }
+
+void Personaje::reanudarLuegoDeColision()
+{
+	this->puedeIrDerecha = true;
+	this->puedeIrIzquierda = true;
+}
+
+void Personaje::pararPorColision()
+{
+	debug(0,"Personaje::pararPorColision","Se detiene el sonic", 0);
+	/*if (velocidadX < 0)
+	{
+		velocidadX += 2*personajeAceleracion;
+		if (velocidadX >= 0)
+			velocidadX = 0;
+	}
+	else if(velocidadX > 0)
+	{
+		velocidadX -= 2*personajeAceleracion;
+		if (velocidadX <= 0)
+			velocidadX = 0;
+	}*/
+
+	velocidadX = 0;
+
+
+
+	if (saltando)
+		return;
+
+	if (estaQuieto)
+		return;
+
+	velocidadY = 0;
+
+	if (velocidadX == 0){
+
+		estaQuieto = true;
+		saltando = false;
+		corriendo = false;
+
+		animacionActual->detener();
+	}
+
+
+	if (!this->saltando)
+	{
+		switch (orientacion)
+		{
+			case IZQUIERDA:
+				this->puedeIrIzquierda = false;
+				animacionActual = &animacionQuietoIzq;
+				break;
+			case DERECHA:
+				this->puedeIrDerecha = false;
+				animacionActual = &animacionQuietoDer;
+
+				break;
+		}
+	}
+			animacionActual->comenzar();
+
+
+}
+
 
 void Personaje::parar()
 {
@@ -446,6 +534,7 @@ void Personaje::parar()
 		}
 		animacionActual->comenzar();
 	}
+
 }
 
 void Personaje::congelar()
@@ -503,6 +592,16 @@ bool Personaje::estaParado()
 	return ((velocidadX == 0) && (velocidadY == 0));
 }
 
+bool Personaje::estaAtacando()
+{
+	//Agregar cuando este haciendo el SpinAttack
+	if (saltando)
+	{
+		return true;
+	}
+	return false;
+}
+
 std::string Personaje::intToStringConPadding(int number)
 {
   ostringstream oss;
@@ -527,7 +626,6 @@ void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje
 
 	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
 	strcpy(buffer, mensaje.c_str());
-	//cliente->enviar(buffer, strlen(buffer));//<----- Deberia llamar al HiloEnviarCliente de alguna forma
 	//hiloEnviar->parametros.buffer = buffer;
 
 	hiloEnviar->enviarDato(buffer);
@@ -557,3 +655,58 @@ SDL_Rect Personaje::obtenerLimites(){
 	SDL_Rect limites = { this->posicionX, this->posicionY, this->personajeAncho, this->personajeAlto };
 	return limites;
 }
+
+/*----------Para bonus. Los usa el servidor----------*/
+void Personaje::aumentarCantidadAnillos(int cantidad)
+{
+	puntaje->setCantAnillos(puntaje->getCantAnillos()+cantidad);
+}
+
+void Personaje::ponerseEscudo()
+{
+	tieneEscudo = true; //Al ser atacado preguntar por este bool
+	esInvencible = false;
+	animacionBonus = &animacionEscudo;
+}
+
+void Personaje::quitarseEscudo()
+{
+	tieneEscudo = false;
+	animacionBonus = NULL;
+}
+
+void Personaje::serInvencible()
+{
+	time(&tiempoInicioInvencible);
+	esInvencible = true;
+	tieneEscudo = false;
+	animacionBonus = &animacionInvencible;
+}
+
+void Personaje::dejarDeSerInvencible()
+{
+	esInvencible = false;
+	animacionBonus = NULL;
+}
+
+bool Personaje::sigueSiendoInvencible()
+{
+	time_t tiempoFin;
+	time(&tiempoFin);
+	double tiempoTranscurrido;
+
+	tiempoTranscurrido = difftime(tiempoFin, tiempoInicioInvencible);
+	tiempoTranscurrido = fabs(tiempoTranscurrido);
+
+	if (tiempoTranscurrido < DURACION_INVENCIBILIDAD)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Personaje::agarroBonusInvencible()
+{
+	return esInvencible;
+}
+

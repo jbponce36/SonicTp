@@ -10,9 +10,11 @@
 
 void debug(int nivel, char* funcion, char* mensaje, int valor)
 {
-	printf(funcion);
-	printf(" --- ");
-	printf(mensaje, valor);
-	printf("\n");
+	if (nivel<3){
+		printf(funcion);
+		printf(" --- ");
+		printf(mensaje, valor);
+		printf("\n");
+	}
 }
 
