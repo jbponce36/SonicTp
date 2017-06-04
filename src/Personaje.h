@@ -71,6 +71,7 @@ class Personaje
 		bool esInvencible; //Bonus. Mata a los enemigos que toque.
 		bool esInmortal; //No pierde la ultima vida pero pierde vidas y anillos.
         bool colisionando;
+        bool resbalando;
 		time_t tiempoInicioInvencible;
 
 		Logger *log;
@@ -104,6 +105,7 @@ class Personaje
 		void saltar();
 		void dejarDeSaltar();
 		void correr(bool estaCorriendo);
+		void resbalar(Orientacion haciaDonde);
 		void irArriba();
 		void irAbajo();
 		void irIzquierda();
@@ -112,6 +114,7 @@ class Personaje
 
 		void pararPorColision(SDL_Rect rectangulo);
 		void reanudarLuegoDeColision();
+		void detener();
 
 		void congelar();
 		void descongelar();
@@ -122,6 +125,7 @@ class Personaje
 		bool estaCongelado();
 		bool estaParado();
 		bool estaAtacando();
+		bool estaMirandoIzquierda();
 
 		SDL_Rect obtenerLimites();
 

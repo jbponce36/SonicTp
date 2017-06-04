@@ -117,13 +117,6 @@ void Control::administrarTeclas(ControladorTeclas *controlador,
 	SDL_Event e;
 
 	while (SDL_PollEvent(&e) != 0) {
-
-		if (e.key.keysym.sym == SDLK_w) {
-
-			//debug(1, "Control::administrarTeclas", "Voy a borrar las anillas", 0);
-			//vista->getConstructorEntidades()->anillos.clear();
-		}
-
 		//usuario pide cierre
 		if (e.type == SDL_QUIT) {
 			salir = true;
@@ -401,6 +394,10 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 	std::vector<Personaje*>::iterator pos;
 	for (pos = sonics->begin(); pos != sonics->end(); pos++) {
 		(*pos)->render(camara->getPosicionX(), camara->getPosicionY());
+
+		//Dibujar cuadrado sonic
+		SDL_Rect limites = (*pos)->obtenerLimites();
+		Util::dibujarRecuadro(&limites, vista->obtenerRender(), camara->devolverCamara());
 	}
 
 	this->animarAnilla(camara, vista);

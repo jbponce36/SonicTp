@@ -527,6 +527,8 @@ void ConstructorEntidades::mostrarPiedras(SDL_Renderer* renderizador, SDL_Rect *
 			//if ((*pos)->indexZes(indexZ))
 				//{
 				  (*pos)->dibujar(renderizador, camara);
+				  SDL_Rect limites = (*pos)->obtenerLimites();
+				  Util::dibujarRecuadro(&limites, renderizador, camara);
 				//}
 		}
 }

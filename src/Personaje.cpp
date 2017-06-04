@@ -52,6 +52,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->puedeIrDerecha = true;
     this->puedeIrIzquierda = true;
     this->colisionando = false;
+    this->resbalando = false;
 }
 
 void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
@@ -79,7 +80,6 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 
     //Si esta saltando lo afecta la gravedad
     if (saltando){
-
     	this->velocidadY += GRAVEDAD;
     }
 
@@ -96,6 +96,9 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 		parar();
 	}
 
+	if(posicionY + personajeAlto < maximoAlto){
+		saltando = true; //Esta en el aire.
+	}
 	//cout << "Mover: " << velocidadX << " " << velocidadY << '\n';
 
 }
@@ -199,7 +202,6 @@ void Personaje::posicionarseEn(int x, int y)
 void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, int indiceAnimacion)
 {
 	posicionarseEn(x, y);
-	this->puntaje->setX(x);
 
 	std::string animacionAnterior = animacionActual->obtenerNombre();
 	if(animacionAnterior.compare(animacion) == 0)
@@ -216,6 +218,7 @@ void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, in
 		animacionActual = &animacionCaminarDer;
 	}
 	else if(animacion.compare(ANIMACION_CORRER_DERECHA) == 0){
+		animacionActual = &animacionCorrerDer;
 	}
 	else if(animacion.compare(ANIMACION_SALTAR_DERECHA) == 0){
 		animacionActual = &animacionSaltarDer;
@@ -263,7 +266,6 @@ int Personaje::getPosicionX()
 	return this->posicionX;
 }
 int Personaje::getPosicionY()
-
 {
 	return this->posicionY;
 }
@@ -352,6 +354,23 @@ void Personaje::correr(bool estaCorriendo)
 	corriendo = estaCorriendo;
 }
 
+void Personaje::resbalar(Orientacion haciaDonde)
+{
+	saltando = false;
+	resbalando = true;
+	switch (haciaDonde)
+	{
+		case IZQUIERDA:
+			velocidadX = -personajeVelocidad;
+			break;
+		case DERECHA:
+			velocidadX = personajeVelocidad;
+			break;
+	}
+
+
+}
+
 void Personaje::irArriba()
 {
 	dejarDeEstarQuieto();
@@ -432,102 +451,44 @@ void Personaje::irDerecha()
 void Personaje::reanudarLuegoDeColision()
 {
 	if (this->colisionando)
-		{
-			debug(0,"Personaje::reanudarLuegoDeColision","Se reanuda el sonic luego de colision", 0);
-			this->puedeIrDerecha = true;
-			this->puedeIrIzquierda = true;
-			//this->velocidadY += GRAVEDAD;
-			this->saltando = true;
-		}
-		this->colisionando = false;
+	{
+		//debug(0,"Personaje::reanudarLuegoDeColision","Se reanuda el sonic luego de colision", 0);
+		this->puedeIrDerecha = true;
+		this->puedeIrIzquierda = true;
+		this->resbalando = false;
+	}
 }
 
-void Personaje::pararPorColision(SDL_Rect rectangulo)
+void Personaje::detener()
 {
-	 if (!this->colisionando)
-	   {
-		   debug(0,"Personaje::pararPorColision","Se detiene el sonic velocidad Y:%d", this->velocidadY);
-        //pongo esto aca para que no se caiga
-		  velocidadX = 0;
+	velocidadX = 0;
+	saltando = false;
+}
 
-		 if (estaQuieto)
-			return;
+void Personaje::pararPorColision(SDL_Rect obstaculo)
+{
+	cout << "Paro por colision\n";
+	colisionando = true;
+	detener();
 
+	if(posicionX < obstaculo.x)
+	{
+		//Si sonic esta colisionando a la izquierda de la piedra
+		cout << "Correrlo <-\n";
+		SDL_Rect limites = obtenerLimites();
+		int diferenciaX = limites.x + limites.w - obstaculo.x;
+		posicionX -= diferenciaX;
+	}
 
-				velocidadY = 0;
-				if (velocidadX == 0){
+	if(posicionX > obstaculo.x)
+	{
+		//Si sonic esta colisionando a la derecha de la piedra
+		cout << "Correrlo ->\n";
+		SDL_Rect limites = obtenerLimites();
+		int diferenciaX = obstaculo.x + obstaculo.w - limites.x;
+		posicionX += diferenciaX;
+	}
 
-					estaQuieto = true;
-					saltando = false;
-					corriendo = false;
-
-					animacionActual->detener();
-				}
-
-				   animacionActual->comenzar();
-
-				  // this->colisionando = true;
-
-
-					//jamas entra aca......
-				if (((this->obtenerLimites().y + this->obtenerLimites().h)  > rectangulo.y) && (this->velocidadY>0))
-
-				{
-
-							debug(0,"Personaje::pararPorColision","El sonic colisiono por arriba Pos Y: %d", this->obtenerLimites().y);
-							debug(0,"Personaje::pararPorColision","El sonic colisiono por arriba Altura Sonic: %d", this->obtenerLimites().h);
-							debug(0,"Personaje::pararPorColision","El sonic colisiono por arriba Rectangulo Y: %d", rectangulo.y);
-
-							//this->velocidadAnteriorY = this->velocidadY;
-							switch (orientacion)
-							{
-								case IZQUIERDA:
-									animacionActual = &animacionQuietoIzq;
-									break;
-								case DERECHA:
-									animacionActual = &animacionQuietoDer;
-									break;
-							}
-
-							//esto seria...para que no quede pata afuera..para adentro....
-							this->posicionY = 530;
-
-							if ((this->obtenerLimites().x +this->obtenerLimites().w ) < (rectangulo.x + 55))
-							{
-								this->posicionX = this->posicionX + 55;
-							}
-							else if ((this->obtenerLimites().x) > ((rectangulo.x + rectangulo.w) - 55))
-							{
-								this->posicionX = this->posicionX - 55;
-							}
-
-							//this->estadoSaltandoDespuesColision = true;
-
-
-				}
-				else if (this->obtenerLimites().x+this->obtenerLimites().w > rectangulo.x)
-				//if ((this->obtenerLimites().x+this->obtenerLimites().w ) > (rectangulo.x + this->obtenerLimites().x))
-				{
-
-					switch (orientacion)
-					{
-						case IZQUIERDA:
-							this->puedeIrIzquierda = false;
-							animacionActual = &animacionQuietoIzq;
-							break;
-						case DERECHA:
-							this->puedeIrDerecha = false;
-							animacionActual = &animacionQuietoDer;
-
-							break;
-					}
-
-					this->colisionando = true;
-
-				}
-
-
-		    }
 
 }
 
@@ -546,6 +507,8 @@ void Personaje::parar()
 		if (velocidadX <= 0)
 			velocidadX = 0;
 	}*/
+	if(resbalando)
+		return;
 
 	velocidadX = 0;
 
@@ -643,6 +606,19 @@ bool Personaje::estaAtacando()
 	return false;
 }
 
+bool Personaje::estaMirandoIzquierda()
+{
+	switch (orientacion)
+	{
+		case IZQUIERDA:
+			return true;
+		case DERECHA:
+			return false;
+		default:
+			return false;
+	}
+}
+
 std::string Personaje::intToStringConPadding(int number)
 {
   ostringstream oss;
@@ -693,7 +669,7 @@ std::string Personaje::obtenerMensajeEstado()
 
 SDL_Rect Personaje::obtenerLimites(){
 
-	SDL_Rect limites = { this->posicionX, this->posicionY, this->personajeAncho, this->personajeAlto };
+	SDL_Rect limites = {this->posicionX+15, this->posicionY+15, this->personajeAncho-30, this->personajeAlto-25};
 	return limites;
 }
 
