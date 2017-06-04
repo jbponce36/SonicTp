@@ -29,6 +29,7 @@
 #include "Cangrejo.h"
 #include "Pescado.h"
 #include "Mosca.h"
+#include "Pinche.h"
 
 #define FPS_SERVER 25
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
@@ -74,8 +75,10 @@ private:
 public:
 	list<Anillos*> anillos;
 	list<Piedra*>  piedra;
+	list<Pinche*> pinche;
 	void CreoAnillas();
 	void CreoPiedras();
+	void CreoPinche();
 	ControlServidor(int altura, int anchura, VistaSDL *vista, std::map<int, Personaje*> *sonics,
 		std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
 		ConexServidor *server, Logger *log);

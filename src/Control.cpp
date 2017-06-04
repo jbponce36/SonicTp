@@ -168,13 +168,41 @@ void Control::controlDeMensajes(Personaje* sonic,
 		} else if (mensaje == "Terminar juego") {
 			printf("Cerrando el juego...\n");
 			this->salir = true;
-		} else if (mensaje.substr(0, 14) == "BORRAR_ANILLA_") {
-			int numeroAnilla = atoi(mensaje.substr(14, 1).c_str());
+		}
 
-			debug(1, "Control::controlDeMensajes", "Voy a borrar la anilla %d",
-					numeroAnilla);
+		else if (mensaje.substr(0, 13) == "BORRAR_ANILLA"){
 
-			int posAnillaActual = 0;
+			//debug(1,"Control::controlDeMensajes_BORRADOANILLAS", (char*) mensaje.c_str() , 0);
+
+			std::string tid = mensaje.substr(13, 2);
+			tid.erase(std::remove(tid.begin(), tid.end(), PADDING), tid.end());
+
+
+			int numeroAnilla = atoi(tid.c_str());
+
+
+			debug(1, "Control::controlDeMensajes", "Voy a borrar la anilla %d",numeroAnilla);
+
+
+
+	     /*     	list<Anillos*>::iterator pos;
+
+	          for(pos= vista->getConstructorEntidades()->anillos.begin();pos!=vista->getConstructorEntidades()->anillos.end();pos++){
+
+	             if((*pos)->getId()== numeroAnilla){
+
+	            	 delete (*pos);
+	            	 vista->getConstructorEntidades()->anillos.erase(pos);
+
+	            	 //return;
+	             }
+	          }
+
+		}
+*/
+
+           ///////codigo viejo borrado
+		int posAnillaActual = 0;
 
 			list<Anillos*>::iterator pos;
 			Anillos* actual = NULL;
@@ -188,7 +216,12 @@ void Control::controlDeMensajes(Personaje* sonic,
 			}
 
 			vista->getConstructorEntidades()->anillos.remove(actual);
-		} else if (mensaje.substr(0, 5) == "Anill")
+		}
+
+
+         ////codigo viejo borrado
+
+		/*else if (mensaje.substr(0, 5) == "Anill")
 
 		{
 			debug(1,"Control::controlDeMensajes", "Mensaje anillas" , 0);
@@ -209,8 +242,39 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 			vista->getConstructorEntidades()->anillos.push_back(anillo);
 
+		}
+		*/
+		else if (mensaje.substr(0, 3) == "Aid")
+
+		 {
+			debug(1,"Control::controlDeMensajes", "Mensaje anillas" , 0);
+			debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
+
+			//ID
+			std::string id = mensaje.substr(3, 2);
+			id.erase(std::remove(id.begin(), id.end(), PADDING), id.end());
+
+			int intid = atoi(id.c_str());
+			//cout<<"********ID************"<<endl;
+			//cout<<intid<<endl;
+			//posx
+
+			std::string posX = mensaje.substr(6, 4);
+			posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
+
+			std::string posY = mensaje.substr(12, 3);
+
+			int iposX = atoi(posX.c_str());
+			int iposY = atoi(posY.c_str());
+
+
+			Anillos* anillo = new Anillos(64, 64, intid, "rojo", "images/Anillas.png", iposX, iposY, 99, this->log);
+
+			vista->getConstructorEntidades()->anillos.push_back(anillo);
+
 
 		}
+
 
 		else if (mensaje.substr(0, 1) == "p") {
 
@@ -244,12 +308,14 @@ void Control::controlDeMensajes(Personaje* sonic,
 			Piedra* p = new Piedra(300, 150, 1, "rojo", rutaImagen, iposX,
 					iposY, 99, this->log);
 
-			//  vista->getConstructorEntidades()->getEntidades().push_back(p);
+
 			vista->getConstructorEntidades()->piedra.push_back(p);
 			vista->getConstructorEntidades()->cargarImagenesPiedra(
 					vista->getConstructorEntidades()->getRenderizador());
 
 		}
+
+
 		//aca recibe el mensaje para pasar de nivel
 		else if (mensaje.compare("PASARNIVEL") == 0) {
 			if (!admNiveles.EsUltimoNivel()) {
@@ -334,6 +400,7 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 				vista->obtenerTextura(contador)->getIndex_z());
 		vista->mostrarPiedras(camara->devolverCamara(),
 				vista->obtenerTextura(contador)->getIndex_z());
+
 		//vista->mostrarAnillas(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
 	}
 

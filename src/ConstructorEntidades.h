@@ -20,6 +20,7 @@
 #include "Bonus.h"
 #include "Util.h"
 #include "Piedra.h"
+#include "Pinche.h"
 
 #define MAX_ID 100
 #define MAX_ANCHO 4000
@@ -48,6 +49,7 @@ public:
 	list<Anillos*> anillos;
 	list<Entidad*> entidades;
 	list<Piedra*> piedra;
+    list<Pinche*> pinche;
 
 	void setEntidades(list<Entidad*> Entidades);
 

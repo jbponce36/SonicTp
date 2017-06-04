@@ -508,16 +508,13 @@ void ConstructorEntidades::cargarImagenesPiedra(SDL_Renderer *renderizador){
 			{
 
 				(*pos)->cargarImagen(renderizador, log);
-				//this->log->setModulo("CONSTRUCTOR ENTIDADES");
-				//this->log->addLogMessage("[CARGAR IMAGENES] Imagen cargada en ruta: "+(*pos)->getRutaImagen(),3);
+
 			}
 
 		}
-	//	this->log->setModulo("CONSTRUCTOR ENTIDADES");
-	//	this->log->addLogMessage("[CARGAR IMAGENES] Terminado.",2);
 
-  //}
 }
+
 
 void ConstructorEntidades::mostrarPiedras(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ){
 	list<Piedra*>::iterator pos;
@@ -530,4 +527,7 @@ void ConstructorEntidades::mostrarPiedras(SDL_Renderer* renderizador, SDL_Rect *
 				//}
 		}
 }
+
+
+
 }//Namespace

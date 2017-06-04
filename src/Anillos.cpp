@@ -218,25 +218,49 @@ std::string Anillos::intToStringConPadding(int number)
 
 std::string Anillos::obtenerMensajeEstado(){
 
-	std::string a = "Anill";
+
+	/*std::string a = "Anill";
 	//std::string a = "Aid";
 	std::string numx = "x";
 	std::string numy = "y";
 
 
 	return(a + numx + intToStringConPadding(x) + numy + intToStringConPadding(y));
+*/
 
+
+   std::string a = "Aid";
+   std::string numx = "x";
+   std::string numy = "y";
+
+	return(a + this->intToStringConPaddingID(id) + numx + intToStringConPadding(x) + numy + intToStringConPadding(y));
+}
+
+std::string Anillos::intToStringConPaddingID(int number){
+
+	ostringstream oss;
+	  oss<< number;
+	  std::string numero = oss.str();
+	  while(numero.length() < 2){
+		  numero = PADDING + numero;
+	  }
+	  return numero;
 }
 
 std::string Anillos::obtenerMsjAnillaBorrada(int numero){
 
-		std::string a = "borar";
-		std::string numx = "x";
-		std::string numy = "y";
-		return(a + numx + intToStringConPadding(x) + numy +  intToStringConPadding(numero));
 
-
+	std::string a = "BORRAR_ANILLA";
+	//std::string numx = "x";
+	//std::string numy = "y";
+	return(a +  intToStringConPaddingID(numero));
 
 }
 
+int Anillos::getId() {
+		return id;
+	}
 
+void Anillos::setId(int Id) {
+		this->id = Id;
+	}
