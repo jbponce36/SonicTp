@@ -504,4 +504,7 @@ void VistaSDL::mostrarPiedras(SDL_Rect *camara, int indexZ){
 
 }
 
+void VistaSDL::mostrarPinches(SDL_Rect *camara, int indexZ){
+	constructorEntidades->mostrarPinches(renderizador, camara, indexZ);
+}
 

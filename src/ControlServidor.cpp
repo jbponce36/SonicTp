@@ -9,6 +9,8 @@
 #include "Colicion.h"
 #include "debug.h"
 
+
+
 ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, std::map<int, Personaje*> *sonics,
 	std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
 	ConexServidor *server, Logger *log)
@@ -352,9 +354,14 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 	this->CreoAnillas();
 	this->CreoPiedras();
+	this->CreoPinche();
+
+
+
 	Colicion *colicion = new Colicion();
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
+
 	while( !juegoTerminado ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
@@ -380,11 +387,52 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	delete camara;
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
 }
+void ControlServidor::CreoPinche(){
+
+	srand(time(NULL));
+	int cantidadpinche = 2;
+
+	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
+	int AnchoEscenario = vista->obtenerAnchoEscenario();
+
+	for(int i=0;i<cantidadpinche;i++){
+
+		 int  id = i;
+	     std::string color = "rojo";
+	     int ancho = 200;
+	     int alto = 100;
+
+
+//	     int coordX = i* 500 + 1000 ;
+	     int coordX = Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho);
+	     int coordY = 4*vista->getAltoEscenario()/5 - alto;
+
+	     std::string rutaImagen = "images/Pinchos.png";
+	     int indexZ = 99;
+
+	     Pinche* pinche = new Pinche(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+	     pinche->setAlto(alto);
+	     pinche->setAncho(ancho);
+	     pinche->setCoorx(coordX);
+	     pinche->setCoory(coordY);
+
+	     this->pinche.push_back(pinche);
+
+	}
+
+	list<Pinche*>:: iterator pos;
+	 for(pos = this->pinche.begin(); pos!= this->pinche.end();pos++){
+		 std::string mensaje = (*pos)->obtenerMensajeEstado();
+		 debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+		 enviarATodos(mensaje);
+	}
+
+}
 
 void ControlServidor::CreoAnillas(){
   srand(time(NULL));
  // int cantidadAnillas =(rand() % 10) + 1;
-int cantidadAnillas = 11;
+  int cantidadAnillas = 15;
   //el alto del escenario es de 800 en el grande, lo saco de vista
   // el ancho del escenario es de 4000, lo saco tambien de vista.
 
@@ -402,6 +450,7 @@ int cantidadAnillas = 11;
 	  //cualquier randon del ancho total del escenario
 
 	  int coordX = Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho);
+
 
 	  //la coordenada y la voy a dejar en 300 ya que es una buena altura....
 	  int coordY =  300;
@@ -431,17 +480,22 @@ int cantidadAnillas = 11;
 	}
 }
 
+
 void ControlServidor::CreoPiedras(){
 	//srand(time(NULL));
 	 // int cantidadPiedras = (rand() % 4) + 1;
+	 int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
+	  int AnchoEscenario = vista->obtenerAnchoEscenario();
+
 	  int cantidadPiedras = 1;
+
 		for(int i=0;i<cantidadPiedras;i++){
 		  int	id = i;
 		  std::string color = "rojo";
 		  int ancho = 180;
 		  int alto = 140;
 		  int coordX = i* 500 + 400 ;
-		  //Si lo pasas a constructorEntidades ponerle: int coordY = limiteAlto - alto;
+		  //int coordX = Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho);
 		  int coordY = 4*vista->getAltoEscenario()/5 - alto;
 
 		  std::string rutaImagen = "images/piedra2.png";
@@ -470,9 +524,11 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 	std::map<int, Personaje*>::iterator pos;
 	list<Anillos*>:: iterator posanillo;
     list<Piedra*>:: iterator pospiedra;
+    list<Pinche*>:: iterator pospinche;
 
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
+		Personaje * cl2 = (*pos).second;
 		//this->constructorEntidades->anillos.
 		//Por cada sonic, fijarse si se intersecta con alguna de las cosas...?
 		int numeroAnilla  = 0;
@@ -505,8 +561,8 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				   std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(numeroAnilla);
 
 
-				  // debug(1,"ControlServidor::chequearColicion","Colision con anilla GETID %d",cls->getId());
-				   //   std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(cls->getId());
+				   //debug(1,"ControlServidor::chequearColicion","Colision con anilla GETID %d",cls->getId());
+				   //std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(cls->getId());
 
 
 
@@ -539,6 +595,19 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 		if (!huboColision){
 			sonic->reanudarLuegoDeColision();
 			//El tipo se deberia poder seguir moviendo
+		}
+
+	//PINCHE
+
+		for(pospinche = this->pinche.begin(); pospinche!= this->pinche.end();pospinche++){
+
+			Pinche *pin = (*pospinche);
+			Personaje * cl2 = (*pos).second;
+
+			if(colicion->intersectaPinchePersonaje(pin,cl2)){
+              cout<<"COLICIONA PINCHE"<<endl;
+              pin->interactuar(cl2);
+			}
 		}
 
 

@@ -164,17 +164,16 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 		} else if (mensaje.substr(0, 13) == "BORRAR_ANILLA") {
 
+			std::string id = mensaje.substr(13, 2);
+			id.erase(std::remove(id.begin(), id.end(), PADDING), id.end());
+
+            int numeroAnilla = atoi(id.c_str());
+
+            cout<<"numuero Anilla borrada"<<endl;
+            cout<<numeroAnilla<<endl;
 
 
-			int numeroAnilla = atoi(mensaje.substr(14, 2).c_str());
-
-
-			debug(1, "Control::controlDeMensajes", "Voy a borrar la anilla %d",
-					numeroAnilla);
-
-
-
-          /* 	list<Anillos*>::iterator pos;
+     /*      	list<Anillos*>::iterator pos;
 
           for(pos= vista->getConstructorEntidades()->anillos.begin();pos!=vista->getConstructorEntidades()->anillos.end();pos++){
 
@@ -186,7 +185,7 @@ void Control::controlDeMensajes(Personaje* sonic,
             	 //return;
              }
           }
-         */
+     */
 
 			int posAnillaActual = 0;
 
@@ -274,12 +273,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 			std::string animacion = mensaje.substr(1, 3);
 
-			//  sonic->animacionQuietoDer.detener();
 
-			//	cout<<animacion<<endl;
-			//   sonic->parar();
-			//std::string animacionAnterior = sonic->animacionActual->obtenerNombre();
-			//cout<<animacionAnterior<<endl;
 
 		}
 
@@ -301,6 +295,33 @@ void Control::controlDeMensajes(Personaje* sonic,
 			vista->getConstructorEntidades()->piedra.push_back(p);
 			vista->getConstructorEntidades()->cargarImagenesPiedra(
 					vista->getConstructorEntidades()->getRenderizador());
+
+		}
+		else if (mensaje.substr(0,5) == "Pinch"){
+
+			debug(1, "MENSAJE PINCHE", (char*) mensaje.c_str(), 0);
+
+
+			debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
+
+
+			std::string posX = mensaje.substr(6, 4);
+			std::string posY = mensaje.substr(12, 3);
+
+			posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
+
+			int iposX = atoi(posX.c_str());
+			int iposY = atoi(posY.c_str());
+
+			debug(1,"POSX", (char*) posX.c_str() , 0);
+		    debug(1,"POSY", (char*) posY.c_str() , 0);
+
+		    std::string rutaImagen = "images/Pinchos.png";
+
+           Pinche* pinche = new Pinche(200,100,1,"rojo",rutaImagen,iposX,iposY,99,this->log);
+
+           vista->getConstructorEntidades()->pinche.push_back(pinche);
+           vista->getConstructorEntidades()->cargarImagenesPinche(vista->getConstructorEntidades()->getRenderizador());
 
 		}
 		//aca recibe el mensaje para pasar de nivel
@@ -387,7 +408,8 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 				vista->obtenerTextura(contador)->getIndex_z());
 		vista->mostrarPiedras(camara->devolverCamara(),
 				vista->obtenerTextura(contador)->getIndex_z());
-		//vista->mostrarAnillas(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
+        vista->mostrarPinches(camara->devolverCamara(),
+				vista->obtenerTextura(contador)->getIndex_z());
 	}
 
 	//dibujo todos los sonics
@@ -419,6 +441,10 @@ void Control::animarAnilla(Camara *camara, VistaSDL *vista) {
 			pos != vista->getConstructorEntidades()->anillos.end(); pos++) {
 		(*pos)->cargardatos(vista->obtenerRender());
 		(*pos)->render(camara->getPosicionX(), camara->getPosicionY());
+
+		//Dibujar cuadrado anillas
+				SDL_Rect limites = (*pos)->obtenerLimites();
+				Util::dibujarRecuadro(&limites, vista->obtenerRender(), camara->devolverCamara());
 	}
 }
 

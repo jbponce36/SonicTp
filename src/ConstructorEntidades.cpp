@@ -519,6 +519,32 @@ void ConstructorEntidades::cargarImagenesPiedra(SDL_Renderer *renderizador){
   //}
 }
 
+void ConstructorEntidades::cargarImagenesPinche(SDL_Renderer *renderizador){
+
+	this->log->setModulo("CONSTRUCTOR ENTIDADES");
+		//cout<<"LLEGA1"<<endl;
+			//this->log->addLogMessage("[CARGAR IMAGENES] Iniciado.",2);
+			list<Pinche*>::iterator pos;
+
+			for(pos = pinche.begin(); pos != pinche.end(); pos++)
+
+			  {
+
+				if ((*pos)->tieneRutaImagen())
+				{
+
+					(*pos)->cargarImagen(renderizador, log);
+					//this->log->setModulo("CONSTRUCTOR ENTIDADES");
+					//this->log->addLogMessage("[CARGAR IMAGENES] Imagen cargada en ruta: "+(*pos)->getRutaImagen(),3);
+				}
+
+			}
+		//	this->log->setModulo("CONSTRUCTOR ENTIDADES");
+		//	this->log->addLogMessage("[CARGAR IMAGENES] Terminado.",2);
+
+	  //}
+}
+
 void ConstructorEntidades::mostrarPiedras(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ){
 	list<Piedra*>::iterator pos;
 
@@ -532,4 +558,18 @@ void ConstructorEntidades::mostrarPiedras(SDL_Renderer* renderizador, SDL_Rect *
 				//}
 		}
 }
+
+void ConstructorEntidades::mostrarPinches(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ){
+  list<Pinche*>::iterator pos;
+
+  for(pos = pinche.begin();pos != pinche.end(); pos++)
+  		{
+  			//if ((*pos)->indexZes(indexZ))
+  				//{
+  				  (*pos)->dibujar(renderizador, camara);
+  				  SDL_Rect limites = (*pos)->obtenerLimites();
+  				  Util::dibujarRecuadro(&limites, renderizador, camara);
+  				//}
+  		}
+ }
 }//Namespace

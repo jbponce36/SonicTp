@@ -452,7 +452,7 @@ void Personaje::reanudarLuegoDeColision()
 {
 	if (this->colisionando)
 	{
-		//debug(0,"Personaje::reanudarLuegoDeColision","Se reanuda el sonic luego de colision", 0);
+
 		this->puedeIrDerecha = true;
 		this->puedeIrIzquierda = true;
 		this->resbalando = false;

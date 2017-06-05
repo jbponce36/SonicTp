@@ -45,6 +45,7 @@
 //Mensajes de entidades empiezan con E
 #define ANILLOS                     "EA"
 #define PIEDRA                      "PI"
+#define PINCHE                      "PN"
 #define BONUS						"EB"
 #define BONUS_RING					"E0"
 #define BONUS_ESCUDO				"E1"
