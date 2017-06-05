@@ -69,6 +69,7 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 				std::string msjPasarNivel = "PASARNIVEL" ;
 				strcpy(buffer, msjPasarNivel.c_str());
 				hiloEnviar->enviarDato(buffer);
+				adm->mostrarPunConPan(vista);
 				//adm->pasarDeNivel();
 				//adm->cargarNivel(vista,sonic);
 				break;}*/

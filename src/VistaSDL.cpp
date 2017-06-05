@@ -210,8 +210,12 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 
 		}
 	}
+
 	aux=NULL;
-	*/this->log->setModulo("VISTA SDL");
+	*/
+
+
+	this->log->setModulo("VISTA SDL");
 	this->log->addLogMessage("[CARGAR CAPAS] Terminado.",2);
 }
 void VistaSDL::cargarEnemigosTextura(){
@@ -565,3 +569,16 @@ void VistaSDL::mostrarScoJueInd(Personaje* personaje){
 	std::string textoscore = "PUNTOS:" + Util::intToString(personaje->getPuntos()->getPuntos());
 	this->dibujarTexto(textoscore,0,100);
 }
+
+SDL_Renderer* VistaSDL::getRenderizador(){
+	return this->renderizador;
+}
+
+int VistaSDL::getAltoVentana(){
+	return this->altoVentana;
+}
+
+int VistaSDL::getAnchoVentana(){
+	return this->anchoVentana;
+}
+

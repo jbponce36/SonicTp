@@ -253,10 +253,13 @@ void Control::controlDeMensajes(Personaje* sonic,
 		}
 		//aca recibe el mensaje para pasar de nivel
 		else if (mensaje.compare("PASARNIVEL") == 0) {
+			admNiveles.mostrarPunConPan(vista);
 			if (!admNiveles.EsUltimoNivel()) {
 				this->admNiveles.pasarDeNivel();
 				this->admNiveles.cargarNivel(vista, sonic);
 			}
+
+
 		} else if (mensaje.substr(0, 3) == MENSAJE_CAMARA) {
 			int nuevoX, nuevoY;
 			parsearMensajeCamara(nuevoX, nuevoY, mensaje);

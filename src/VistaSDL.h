@@ -59,6 +59,7 @@ private:
     SDL_Surface* superficieTexto;
     SDL_Texture* texturaTexto;
 
+
 public:
     VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion, jescenario *jescenario, Logger *logger, bool oculta);
     void cargarImagen();
@@ -96,6 +97,9 @@ public:
 
 	void setConstructorEntidades(ConstructorEntidades* ConstructorEntidades);
 	void mostrarScoJueInd(Personaje* personaje);
+	SDL_Renderer* getRenderizador();
+	int getAltoVentana();
+	int getAnchoVentana();
 
 };
 
