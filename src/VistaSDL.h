@@ -22,6 +22,7 @@
 #include <list>
 #include <vector>
 #include <unistd.h>
+#include <SDL2/SDL_ttf.h>
 
 #define ANCHO_VENTANA_POR_DEFECTO 640
 #define ALTO_VENTANA_POR_DEFECTO 500
@@ -53,6 +54,11 @@ private:
     ConstructorEntidades *constructorEntidades;
     Logger *log;
     bool oculta;
+    TTF_Font* fuente;
+    SDL_Color White;
+    SDL_Surface* superficieTexto;
+    SDL_Texture* texturaTexto;
+
 
 public:
     VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion, jescenario *jescenario, Logger *logger, bool oculta);
@@ -83,14 +89,20 @@ public:
     void mostrarPiedras(SDL_Rect *camara, int indexZ);
     void mostrarAnillas(SDL_Rect *camara, int indexZ);
 
+    void mostrarPinches(SDL_Rect *camara, int indexZ);
+
     Logger *getLog() const;
     void setLog(Logger *log);
     string intToString(int number);
     int getAltoEscenario();
-
+    void dibujarTexto(std::string  texto, int posX, int posY);
 	ConstructorEntidades* getConstructorEntidades();
 
 	void setConstructorEntidades(ConstructorEntidades* ConstructorEntidades);
+	void mostrarScoJueInd(Personaje* personaje);
+	SDL_Renderer* getRenderizador();
+	int getAltoVentana();
+	int getAnchoVentana();
 
 };
 

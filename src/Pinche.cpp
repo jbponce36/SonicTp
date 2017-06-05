@@ -13,6 +13,7 @@ Pinche::Pinche(int ancho, int alto, unsigned int id, std::string color, std::str
 	getLog()->setModulo("PIEDRA");
 }
 
+
 Pinche::~Pinche() {
 	// TODO Auto-generated destructor stub
 }
@@ -33,6 +34,7 @@ void Pinche::setAlto(int Alto) {
 	this->alto = Alto;
 }
 
+
 int Pinche::getCoorx() {
 	return x;
 }
@@ -51,7 +53,10 @@ void Pinche::setCoory(int Coory) {
 
 std::string Pinche::getRuta(){
 		return this->ruta;
-	}
+
+
+}
+
 
 void Pinche::setRuta(std::string Ruta) {
 		this->ruta = Ruta;
@@ -62,17 +67,6 @@ SDL_Rect Pinche::obtenerLimites()
 	SDL_Rect limites = { obtenerX(), obtenerY(), ancho, alto };
 
 	return limites;
-}
-
-std::string Pinche::intToStringConPadding(int number)
-{
-  ostringstream oss;
-  oss<< number;
-  std::string numero = oss.str();
-  while(numero.length() < MAX_CANT_DIGITOS_POS){
-	  numero = PADDING + numero;
-  }
-  return numero;
 }
 
 void Pinche::mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara){
@@ -138,6 +132,7 @@ void Pinche::mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara){
 			return;
 		}
 }
+
 void Pinche::dibujar(SDL_Renderer *renderer, SDL_Rect *camara){
 
 	if (tieneRutaImagen())
@@ -163,5 +158,37 @@ std::string Pinche::obtenerMensajeEstado(){
 }
 std::string Pinche::getNombre(){
 	return PINCHE;
+}
+
+
+std::string Pinche::intToStringConPadding(int number)
+{
+  ostringstream oss;
+  oss<< number;
+  std::string numero = oss.str();
+  while(numero.length() < MAX_CANT_DIGITOS_POS){
+	  numero = PADDING + numero;
+  }
+  return numero;
+}
+
+void Pinche::interactuar(Personaje *sonic){
+
+	if(colisionaArriba(sonic)) //Si el Sonic esta arriba de la piedra
+		{
+			//Si necesitas consultar el x, y, ancho o alto de algo usa siempre los limites,
+			//no los valores originales de x, y, ancho, alto de la entidad o Sonic
+
+			SDL_Rect limitesPinche = obtenerLimites();
+			SDL_Rect limitesSonic = sonic->obtenerLimites();
+			cout << "Colisiono arriba!\n";
+
+			//Aca herir al Sonic y si rebota cambiarle la velocidad x e y por la contraria creo. Supongo.
+
+			return;
+		}
+
+		//Si llega aca Sonic toca a los pinches de costado... Creo que no hay que herirlo
+		sonic->pararPorColision(this->obtenerLimites());
 }
 

@@ -52,3 +52,22 @@ bool Colicion::intersectaPiedraPersonaje(Piedra* piedra,Personaje* sonic){
 	}
 
 }
+
+bool Colicion::intersectaPinchePersonaje(Pinche* pinche,Personaje* sonic){
+
+	SDL_Rect RectanguloPinche = pinche->obtenerLimites();
+	SDL_Rect RectanguloPersonaje = sonic->obtenerLimites();
+
+		SDL_bool intersecta = SDL_HasIntersection(&RectanguloPinche, &RectanguloPersonaje);
+
+		if (intersecta == SDL_TRUE){
+		    return true;
+
+		}
+		else{
+				 //cout<<"COLICION"<<endl;
+			return false;
+
+		}
+
+}

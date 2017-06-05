@@ -42,6 +42,7 @@ private:
 	AdministradorDeNiveles admNiveles;
 
 	vector <Enemigo*> enemigos;
+	int idpropio;
 
 public:
 	typedef struct mensajePosicion{

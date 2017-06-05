@@ -57,7 +57,8 @@ void Pescado::actualizarPosicion(){
 	this->tiempo = SDL_GetTicks();
 }
 SDL_Rect Pescado::obtenerDimensiones(){
-	SDL_Rect recta = {this->getPosicionesX(),this->getPosicionesY(),90,90};
+	//SDL_Rect recta = {this->getPosicionesX(),this->getPosicionesY(),90,90};
+	SDL_Rect recta = {this->getPosicionesX()+15,this->getPosicionesY(),70,100};
 	return recta;
 }
 
@@ -66,7 +67,8 @@ SDL_Rect Pescado::obtenerDimensiones(){
 //lado cliente
 Pescado::Pescado(std::string mensaje, std::string tipo,VistaSDL *vista): Enemigo(0,0,tipo){
 	this->parsearMensajeInicial(mensaje);
-	cargarSprites(0, 0, 4);
+	//cargarSprites(0, 0, 4);
+	cargarSprites(0, 0, 2);
 	//cout<<"entro"<<endl;
 	this->textura = vista->obtenerTexturaDeEnemigoNumero(1);
 	//cout<<"salio"<<endl;
@@ -81,12 +83,14 @@ Pescado::Pescado(std::string mensaje, std::string tipo,VistaSDL *vista): Enemigo
 void Pescado::cargarSprites(int x, int y, int cantidad)
 {
 	//Carga los sprites de izquierda a derecha --->
-	SDL_Rect sprite = {x*34, y, 34, 34};
+	//SDL_Rect sprite = {x*34, y, 34, 34};
+	SDL_Rect sprite = {0, 0, 100, 100};
 
 	for (int i=0; i<cantidad; i++)
 	{
 		sprites.push_back(sprite);
-		sprite.x += 34;
+		//sprite.x += 34;
+		sprite.x += 100;
 	}
 }
 /*Cangrejo::Cangrejo(VistaSDL *vista,int dimension,Logger *log) :

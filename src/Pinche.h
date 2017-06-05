@@ -11,15 +11,11 @@
 #include "Entidad.h"
 #include "Definiciones.h"
 
-class Pinche:public Entidad {
+
+class Pinche: public Entidad {
 public:
 	Pinche(int ancho, int alto, unsigned int id, std::string color, std::string rutaImagen, int x, int y, unsigned int indexZ, Logger *log);
 	virtual ~Pinche();
-
-	void dibujar(SDL_Renderer *renderer, SDL_Rect *camara);
-    void mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara);
-    std::string obtenerMensajeEstado();
-    std::string intToStringConPadding(int number);
 
 	int getAncho();
 	void setAncho(int ancho);
@@ -38,7 +34,14 @@ public:
 
 	SDL_Rect obtenerLimites();
 
+
 	std::string getNombre();
+	void mostrarImagen(SDL_Renderer *renderer, SDL_Rect *camara);
+	void dibujar(SDL_Renderer *renderer, SDL_Rect *camara);
+	std::string intToStringConPadding(int number);
+	std::string obtenerMensajeEstado();
+	virtual void interactuar(Personaje *sonic);
+
 
 private:
 	int ancho;
@@ -46,6 +49,7 @@ private:
 	int x;
 	int y;
 	std::string ruta;
+
 };
 
 #endif /* PINCHE_H_ */

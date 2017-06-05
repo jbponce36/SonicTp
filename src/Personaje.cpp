@@ -48,16 +48,17 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 
     cargarSpriteSonic();
     this->log = log;
-
+    this->puntos = new Puntos(this->id);
     this->puedeIrDerecha = true;
     this->puedeIrIzquierda = true;
+    this->colisionando = false;
+    this->resbalando = false;
 }
 
 void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 {
 	int maximoAlto = limites->h;
 	int maximoAncho = limites->w;
-	//this->puntaje->setPosicionX(limites->x);
 
 	/*Limite en el suelo.*/
 	maximoAlto -= (maximoAlto/5);
@@ -78,7 +79,6 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 
     //Si esta saltando lo afecta la gravedad
     if (saltando){
-
     	this->velocidadY += GRAVEDAD;
     }
 
@@ -95,6 +95,9 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 		parar();
 	}
 
+	if(posicionY + personajeAlto < maximoAlto){
+		saltando = true; //Esta en el aire.
+	}
 	//cout << "Mover: " << velocidadX << " " << velocidadY << '\n';
 
 }
@@ -198,7 +201,6 @@ void Personaje::posicionarseEn(int x, int y)
 void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, int indiceAnimacion)
 {
 	posicionarseEn(x, y);
-	this->puntaje->setX(x);
 
 	std::string animacionAnterior = animacionActual->obtenerNombre();
 	if(animacionAnterior.compare(animacion) == 0)
@@ -215,6 +217,7 @@ void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, in
 		animacionActual = &animacionCaminarDer;
 	}
 	else if(animacion.compare(ANIMACION_CORRER_DERECHA) == 0){
+		animacionActual = &animacionCorrerDer;
 	}
 	else if(animacion.compare(ANIMACION_SALTAR_DERECHA) == 0){
 		animacionActual = &animacionSaltarDer;
@@ -262,7 +265,6 @@ int Personaje::getPosicionX()
 	return this->posicionX;
 }
 int Personaje::getPosicionY()
-
 {
 	return this->posicionY;
 }
@@ -302,6 +304,7 @@ Personaje::~Personaje(){
 		delete texturaInvencible;
 	}
 	delete puntaje;
+	delete puntos;
 }
 
 void Personaje::dejarDeEstarQuieto()
@@ -349,6 +352,23 @@ void Personaje::dejarDeSaltar()
 void Personaje::correr(bool estaCorriendo)
 {
 	corriendo = estaCorriendo;
+}
+
+void Personaje::resbalar(Orientacion haciaDonde)
+{
+	saltando = false;
+	resbalando = true;
+	switch (haciaDonde)
+	{
+		case IZQUIERDA:
+			velocidadX = -personajeVelocidad;
+			break;
+		case DERECHA:
+			velocidadX = personajeVelocidad;
+			break;
+	}
+
+
 }
 
 void Personaje::irArriba()
@@ -430,64 +450,44 @@ void Personaje::irDerecha()
 
 void Personaje::reanudarLuegoDeColision()
 {
-	this->puedeIrDerecha = true;
-	this->puedeIrIzquierda = true;
+	if (this->colisionando)
+	{
+
+		this->puedeIrDerecha = true;
+		this->puedeIrIzquierda = true;
+		this->resbalando = false;
+	}
 }
 
-void Personaje::pararPorColision()
+void Personaje::detener()
 {
-	debug(0,"Personaje::pararPorColision","Se detiene el sonic", 0);
-	/*if (velocidadX < 0)
-	{
-		velocidadX += 2*personajeAceleracion;
-		if (velocidadX >= 0)
-			velocidadX = 0;
-	}
-	else if(velocidadX > 0)
-	{
-		velocidadX -= 2*personajeAceleracion;
-		if (velocidadX <= 0)
-			velocidadX = 0;
-	}*/
-
 	velocidadX = 0;
+	saltando = false;
+}
 
+void Personaje::pararPorColision(SDL_Rect obstaculo)
+{
+	cout << "Paro por colision\n";
+	colisionando = true;
+	detener();
 
-
-	if (saltando)
-		return;
-
-	if (estaQuieto)
-		return;
-
-	velocidadY = 0;
-
-	if (velocidadX == 0){
-
-		estaQuieto = true;
-		saltando = false;
-		corriendo = false;
-
-		animacionActual->detener();
-	}
-
-
-	if (!this->saltando)
+	if(posicionX < obstaculo.x)
 	{
-		switch (orientacion)
-		{
-			case IZQUIERDA:
-				this->puedeIrIzquierda = false;
-				animacionActual = &animacionQuietoIzq;
-				break;
-			case DERECHA:
-				this->puedeIrDerecha = false;
-				animacionActual = &animacionQuietoDer;
-
-				break;
-		}
+		//Si sonic esta colisionando a la izquierda de la piedra
+		cout << "Correrlo <-\n";
+		SDL_Rect limites = obtenerLimites();
+		int diferenciaX = limites.x + limites.w - obstaculo.x;
+		posicionX -= diferenciaX;
 	}
-			animacionActual->comenzar();
+
+	if(posicionX > obstaculo.x)
+	{
+		//Si sonic esta colisionando a la derecha de la piedra
+		cout << "Correrlo ->\n";
+		SDL_Rect limites = obtenerLimites();
+		int diferenciaX = obstaculo.x + obstaculo.w - limites.x;
+		posicionX += diferenciaX;
+	}
 
 
 }
@@ -507,6 +507,8 @@ void Personaje::parar()
 		if (velocidadX <= 0)
 			velocidadX = 0;
 	}*/
+	if(resbalando)
+		return;
 
 	velocidadX = 0;
 
@@ -604,6 +606,19 @@ bool Personaje::estaAtacando()
 	return false;
 }
 
+bool Personaje::estaMirandoIzquierda()
+{
+	switch (orientacion)
+	{
+		case IZQUIERDA:
+			return true;
+		case DERECHA:
+			return false;
+		default:
+			return false;
+	}
+}
+
 std::string Personaje::intToStringConPadding(int number)
 {
   ostringstream oss;
@@ -643,6 +658,14 @@ void Personaje::setPuntaje(Puntaje* puntaje) {
 	this->puntaje = puntaje;
 }
 
+Puntos* Personaje::getPuntos() {
+	return puntos;
+}
+
+void Personaje::setPuntos(Puntos* puntaje) {
+	this->puntos = puntaje;
+}
+
 std::string Personaje::obtenerMensajeEstado()
 {
 	//Tamano es 15. Ej: 1x-300y--20AcD1
@@ -654,7 +677,7 @@ std::string Personaje::obtenerMensajeEstado()
 
 SDL_Rect Personaje::obtenerLimites(){
 
-	SDL_Rect limites = { this->posicionX, this->posicionY, this->personajeAncho, this->personajeAlto };
+	SDL_Rect limites = {this->posicionX+15, this->posicionY+15, this->personajeAncho-30, this->personajeAlto-25};
 	return limites;
 }
 

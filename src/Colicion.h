@@ -11,6 +11,7 @@
 #include "Personaje.h"
 #include "Entidad.h"
 #include "Piedra.h"
+#include "Pinche.h"
 
 class Colicion {
 public:
@@ -18,10 +19,12 @@ public:
 	virtual ~Colicion();
 	bool intersectaAnilloPersonaje(Anillos* anillo,Personaje* sonic);
 	bool intersectaPiedraPersonaje(Piedra* piedra, Personaje* sonic);
+    bool intersectaPinchePersonaje(Pinche* pinche,Personaje* sonic);
 
 private:
 	Anillos *anillo;
 	Personaje *sonic;
+	Pinche* pinche;
 };
 
 #endif /* COLICION_H_ */

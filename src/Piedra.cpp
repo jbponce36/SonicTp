@@ -159,12 +159,76 @@ std::string Piedra::obtenerMensajeEstado(){
 
 SDL_Rect Piedra::obtenerLimites()
 {
-	SDL_Rect limites = { obtenerX()+90, obtenerY(), ancho, alto };
-
+	//SDL_Rect limites = { obtenerX()+90, obtenerY(), ancho, alto };
+	SDL_Rect limites = { obtenerX()+30, obtenerY()+10, ancho-60, alto-20 };
 	return limites;
 }
 
 std::string Piedra::getNombre(){
 	return PIEDRA;
 }
+
+void Piedra::interactuar(Personaje *sonic){
+	//Sonic y piedra estan colisionando en algun lado
+
+	if(colisionaArriba(sonic)) //Si el Sonic esta arriba de la piedra
+	{
+		cout << "Colisiono arriba!\n";
+
+		SDL_Rect limitesPiedra = obtenerLimites();
+		SDL_Rect limitesSonic = sonic->obtenerLimites();
+
+		//Esto posiciona bien al Sonic justo encima de la piedra
+		int diferenciaY = limitesSonic.y + limitesSonic.h - limitesPiedra.y;
+		sonic->posicionarseEn(sonic->getPosicionX(), sonic->getPosicionY()- diferenciaY);
+
+		if(limitesSonic.x + limitesSonic.w/2 > limitesPiedra.x + limitesPiedra.w)
+		{
+			//Si Sonic esta parado al bordecito derecho de la piedra, se resbala
+			sonic->resbalar(Personaje::DERECHA);
+			cout<< "Estoy resbalando derecha!\n";
+			return;
+		}
+		else if(limitesSonic.x + limitesSonic.w/2 < limitesPiedra.x)
+		{
+			//Si Sonic esta parado al bordecito izquierdo de la piedra, se resbala
+			sonic->resbalar(Personaje::IZQUIERDA);
+			cout<< "Estoy resbalando izquierda!\n";
+			return;
+		}
+
+		sonic->detener();
+		return;
+	}
+
+	//Se evalua si el Sonic esta a la derecha o a la izquierda
+	sonic->pararPorColision(this->obtenerLimites());
+
+
+}
+
+/************/
+/* Nota: Para los pinches podes usar el mismo metodo interactuar de piedra pero asi:
+
+void Pinches::interactuar(Personaje *sonic){
+
+	if(colisionaArriba(sonic)) //Si el Sonic esta arriba de la piedra
+	{
+		//Si necesitas consultar el x, y, ancho o alto de algo usa siempre los limites,
+		//no los valores originales de x, y, ancho, alto de la entidad o Sonic
+
+		SDL_Rect limitesPinche = obtenerLimites();
+		SDL_Rect limitesSonic = sonic->obtenerLimites();
+		cout << "Colisiono arriba!\n";
+
+		//Aca herir al Sonic y si rebota cambiarle la velocidad x e y por la contraria creo. Supongo.
+
+		return;
+	}
+
+	//Si llega aca Sonic toca a los pinches de costado... Creo que no hay que herirlo
+	sonic->pararPorColision(this->obtenerLimites());
+
+}
+ */
 

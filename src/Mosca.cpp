@@ -55,7 +55,8 @@ void Mosca::actualizarPosicion(){
 	this->tiempo = SDL_GetTicks();
 }
 SDL_Rect Mosca::obtenerDimensiones(){
-	SDL_Rect recta = {this->getPosicionesX(),this->getPosicionesY(),90,90};
+	//SDL_Rect recta = {this->getPosicionesX() ,this->getPosicionesY(),90,90};
+	SDL_Rect recta = {this->getPosicionesX() + 10,this->getPosicionesY() + 36, 130, 80};
 	return recta;
 }
 
@@ -79,7 +80,7 @@ Mosca::Mosca(std::string mensaje, std::string tipo,VistaSDL *vista): Enemigo(0,0
 void Mosca::cargarSprites(int x, int y, int cantidad)
 {
 	//Carga los sprites de izquierda a derecha --->
-	SDL_Rect sprite = {0,0,45 , 28};
+	/*SDL_Rect sprite = {0,0,45 , 28};
 	sprites.push_back(sprite);
 
 	sprite.x = 47;
@@ -92,7 +93,20 @@ void Mosca::cargarSprites(int x, int y, int cantidad)
 
 	sprite.x = 146;
 	sprite.w = 46;
+	sprites.push_back(sprite);*/
+
+	SDL_Rect sprite = {0,0,150,150};
 	sprites.push_back(sprite);
+
+	sprite.x = 150;
+	sprites.push_back(sprite);
+
+	sprite.x = 300;
+	sprites.push_back(sprite);
+
+	sprite.x = 450;
+	sprites.push_back(sprite);
+
 }
 /*Cangrejo::Cangrejo(VistaSDL *vista,int dimension,Logger *log) :
 		Enemigo(0,0,"c")
@@ -115,8 +129,10 @@ void Mosca::renderizar(int camaraX, int camaraY){
 	//cout<<"numero animacion: "<<this->getNumeroSprite()<<endl;
 	cuadroDeVentana.x=(this->getPosicionesX()-camaraX);
 	cuadroDeVentana.y=(this->getPosicionesY()-camaraY);
-	cuadroDeVentana.w= 138;
-	cuadroDeVentana.h= 84;
+	//cuadroDeVentana.w= 138;
+	//cuadroDeVentana.h= 84;
+	cuadroDeVentana.w= 150;
+	cuadroDeVentana.h= 150;
 	//cout<<"posicion x: "<<this->posicionesX<<endl;
 	//cout<<"posicion y: "<<this->posicionesX<<endl;
 	//cout<<"ancho: "<<this->posicionesYdimensones.w<<endl;

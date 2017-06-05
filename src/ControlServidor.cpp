@@ -9,6 +9,8 @@
 #include "Colicion.h"
 #include "debug.h"
 
+
+
 ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, std::map<int, Personaje*> *sonics,
 	std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
 	ConexServidor *server, Logger *log)
@@ -62,13 +64,7 @@ void ControlServidor::administrarTeclasServidor()
 					teclas.at(indice).teclaAbajo = true;
 				}
 				else if(msj.tecla.compare(TECLA_DERECHA_PRESIONADA) == 0){
-					//if(this->colpiedra == false){
 					 teclas.at(indice).teclaDerecha = true;
-					//}
-					//else{
-						//teclas.at(indice).teclaDerecha = false;
-
-					//}
 				}
 				else if(msj.tecla.compare(TECLA_IZQUIERDA_PRESIONADA) == 0){
 					teclas.at(indice).teclaIzquierda = true;
@@ -124,7 +120,7 @@ void ControlServidor::administrarTeclasServidor()
 					cout << "El cliente ya se habia desconectado." << endl;
 				}
 			}
-			else if(mensaje.compare("PASARNIVEL") == 0)
+			/*else if(mensaje.compare("PASARNIVEL") == 0)
 			{
 				this->pasarNivel = true;
 				//aca va el mensaje para que pase de nivel el servidor debe reestablecer todos los valores
@@ -149,7 +145,7 @@ void ControlServidor::administrarTeclasServidor()
 					}
 					id++;
 				}
-			}
+			}*/
 			else
 			{
 				//No es un mensaje de tecla apretada. Ver que otros mensajes puede recibir.
@@ -191,9 +187,6 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 			sonic->parar();
 		}
 
-	//if(this->colpiedra == false){
-
-
 		sonic->correr(t.teclaCorrer);
 
 		if(t.teclaArriba){
@@ -212,17 +205,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		if(t.teclaIzquierda){
 			sonic->irIzquierda();
 		}
-		//}
-		/*else{
-			t.teclaIzquierda = false;
-			t.teclaDerecha = false;
-			t.teclaCorrer = true;
-			t.teclaArriba = true;
 
-		//	(*pos).second->parar();
-		}
-		*/
-		this->colpiedra == false;
 		///------------------------------------------------------------
 		//tiempoDeJuego = SDL_GetTicks()- tiempoDeJuego;
 
@@ -239,63 +222,44 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 			this->pasarNivel =true;
 		}
 		//aca posiciona a los sonics en el inicio del mapa
-		/*if(this->pasarNivel)
+
+		if( this->pasarNivel == true )
 		{
 			for(pos = sonics->begin();pos != sonics->end();pos++)
 			{
-				if(this-> pasarNivel = true)
-				{
-					Personaje* sonic = (*pos).second;
-					sonic->posicionarseConAnimacion(0,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
-				}
-				this->pasarNivel = false;
-				}
-			this->pasarNivel =false;
-		}
-	*/
+				//aca debemos resetear todos los valores para comenzar el nuevo nivel
+				//if(this-> pasarNivel = true)
 
+				Personaje* sonic = (*pos).second;
+				sonic->posicionarseConAnimacion(-250,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
 
-		/*Para pruebas: Para ver lo que pasa en el juego del servidor. No descomentar.*/
-		//(*pos).second->render(camara->getPosicionX(), camara->getPosicionY());
-		//SDL_RenderPresent( vista->obtenerRender());
-		/*Hasta aca. No descomentar*/
-	}
-	//esto es para pasar de nivel
-	if( this->pasarNivel == true )
-	{
-		for(pos = sonics->begin();pos != sonics->end();pos++)
-		{
-			//aca debemos resetear todos los valores para comenzar el nuevo nivel
-			//if(this-> pasarNivel = true)
-
-			Personaje* sonic = (*pos).second;
-			sonic->posicionarseConAnimacion(0,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
-
-			//this->pasarNivel = false;
-		}
-		camara->actualizarXY(0,0);
-		this->pasarNivel =false;
-		char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
-			std::string msjPasarNivel = "PASARNIVEL" ;
-			//cout<<"mensaje sin: "<<mensaje.size()<<endl;
-			msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
-			//cout<<"mensaje con: "<<mensaje.size()<<endl;
-			//cout<<"server envio: "<<mensaje<<endl;
-			strcpy(buffer, msjPasarNivel.c_str());
-			//cout<<"mensaje con buff: "<<strlen(buffer)<<endl;
-			int id = 1;
-			std::vector<Hiloenviar*>::iterator pos;
-			for(pos = hilosEnviar->begin();pos != hilosEnviar->end();pos++)
-			{
-				if(!sonics->at(id)->estaCongelado())
-				{
-					(*pos)->enviarDato(buffer);
-				}
-				id++;
+				//this->pasarNivel = false;
 			}
+			camara->actualizarXY(0,0);
+			this->pasarNivel =false;
+			char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
+				std::string msjPasarNivel = "PASARNIVEL" ;
+				//cout<<"mensaje sin: "<<mensaje.size()<<endl;
+				msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
+				//cout<<"mensaje con: "<<mensaje.size()<<endl;
+				//cout<<"server envio: "<<mensaje<<endl;
+				strcpy(buffer, msjPasarNivel.c_str());
+				//cout<<"mensaje con buff: "<<strlen(buffer)<<endl;
+				int id = 1;
+				std::vector<Hiloenviar*>::iterator pos;
+				for(pos = hilosEnviar->begin();pos != hilosEnviar->end();pos++)
+				{
+					if(!sonics->at(id)->estaCongelado())
+					{
+						//(*pos)->vaciar();
+						(*pos)->enviarDato(buffer);
+					}
+					id++;
+				}
+				sleep(2);
+		}
 	}
 }
-
 void ControlServidor::actualizarVistaServidor(Camara *camara)
 {
 	//Aca le envio a todos los clientes la posicion y sprite de todos los otros clientes.
@@ -372,9 +336,11 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	this->CreoAnillas();
 	this->CreoPiedras();
 	this->CreoPinche();
+
 	Colicion *colicion = new Colicion();
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
+
 	while( !juegoTerminado ){
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
 
@@ -400,6 +366,87 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	delete camara;
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
 }
+void ControlServidor::CreoPinche(){
+
+	srand(time(NULL));
+	int cantidadpinche = 2;
+
+	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
+	int AnchoEscenario = vista->obtenerAnchoEscenario();
+	int coordXActual = 1500;
+
+	for(int i=0;i<cantidadpinche;i++){
+
+		 int  id = i;
+	     std::string color = "rojo";
+	     int ancho = 200;
+	     int alto = 100;
+
+	     int coordX = i* 500 + 1600 ;
+//	     int coordX = Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho);
+	    // int coordX = coordXActual; //Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho);
+	     int coordY = 4*vista->getAltoEscenario()/5 - alto;
+	     coordXActual = coordXActual + 400;
+
+	     std::string rutaImagen = "images/Pinchos.png";
+	     int indexZ = 99;
+
+	     debug(0, "ControlServidor::CreoPiedras", "Creando pinche en pos X: %d", coordX);
+
+	     Pinche* pinche = new Pinche(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+	     pinche->setAlto(alto);
+	     pinche->setAncho(ancho);
+	     pinche->setCoorx(coordX);
+	     pinche->setCoory(coordY);
+
+	     this->pinche.push_back(pinche);
+
+	}
+
+	list<Pinche*>:: iterator pos;
+	 for(pos = this->pinche.begin(); pos!= this->pinche.end();pos++){
+		 std::string mensaje = (*pos)->obtenerMensajeEstado();
+		 debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+		 enviarATodos(mensaje);
+	}
+
+}
+void ControlServidor::CargarMatriz(int posX, int posY){
+
+	 for(int i=0; i<MAXCOLS; i++){
+		 for (int j=0; j<MAXFILAS; j++) {
+
+			 if((i == posX) && (j == posY)){
+				 mapa[i][j] = 1;
+			 }
+
+
+		 }
+	}
+}
+
+bool ControlServidor::buscarMatriz(int posX,int posY){
+
+	bool resultado;
+
+	for(int i=0; i<MAXCOLS; i++){
+		for (int j=0; j<MAXFILAS; j++) {
+
+			if((mapa[i][j] == 1)){
+
+				cout<<"La posicion esta ocuada"<<endl;
+				//resultado true;
+			}
+
+			else{
+//				CargarMatriz(int posX, int posY);
+				//resultado false;
+			}
+		}
+	}
+
+	return resultado;
+}
 
 void ControlServidor::CreoAnillas(){
   srand(time(NULL));
@@ -410,6 +457,7 @@ void ControlServidor::CreoAnillas(){
 
   int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
   int AnchoEscenario = vista->obtenerAnchoEscenario();
+  int coordXActual = 0;
 
   /* cout<<"ALTOESCENARIO"<<endl;
 
@@ -420,6 +468,7 @@ void ControlServidor::CreoAnillas(){
 	cout<<vista->obtenerAnchoEscenario()<<endl;
 	*/
 
+
    for(int i=0;i<cantidadAnillas;i++){
 
 	  int	id = i;
@@ -428,8 +477,11 @@ void ControlServidor::CreoAnillas(){
 	  int alto = 64;
 
 
-	  //cualquier randon del ancho total del escenario
-	  int coordX = Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho);
+
+	 //this->BuscarMatriz(Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho),300);
+
+	  int coordX = coordXActual + Util::numeroRandom((AnchoEscenario / cantidadAnillas)/(2*ancho)) * (2*ancho);
+	  coordXActual = coordXActual + AnchoEscenario / cantidadAnillas;
 
 	  //la coordenada y la voy a dejar en 300 ya que es una buena altura....
 	  int coordY =  300;
@@ -450,8 +502,6 @@ void ControlServidor::CreoAnillas(){
 
  }
 
-
-
 	//Vendria a ser el metodo ActualizarVistaServidor......
 	list<Anillos*>:: iterator posanillo;
 		for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
@@ -461,53 +511,37 @@ void ControlServidor::CreoAnillas(){
 	}
 }
 
-void ControlServidor::CreoPinche(){
-  int cantidadPinche = 1;
 
-  for(int i=0;i<cantidadPinche;i++){
-	  int	id = i;
-	  std::string color = "rojo";
-	  int ancho = 200;
-	  int alto = 100;
-	  int coordX = 500;
-	  int coordY = 4*vista->getAltoEscenario()/5 - alto;
-	  std::string rutaImagen = "images/Pinchos.png";
-	  int indexZ = 99;
-
-	  Pinche* pinche = new Pinche(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
-
-	  pinche->setAlto(alto);
-	  pinche->setAncho(ancho);
-	  pinche->setCoorx(coordX);
-	  pinche->setCoory(coordY);
-	  pinche->setRuta("images/Pinchos.png");
-
-
-   }
-
-   list<Pinche*>:: iterator pos;
-   for(pos = this->pinche.begin(); pos!= this->pinche.end();pos++){
-	   std::string mensaje = (*pos)->obtenerMensajeEstado();
-	   enviarATodos(mensaje);
-   }
-
-
-}
 
 void ControlServidor::CreoPiedras(){
 	//srand(time(NULL));
 	 // int cantidadPiedras = (rand() % 4) + 1;
-	  int cantidadPiedras = 1;
+	 int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
+	  int AnchoEscenario = vista->obtenerAnchoEscenario();
+	  debug(0, "ControlServidor::CreoPiedras", "Creando piedras. Ancho Escenario: %d", vista->obtenerAnchoEscenario());
+
+	  int cantidadPiedras = 2;
+	  int coordXActual = 500;
+
 		for(int i=0;i<cantidadPiedras;i++){
 		  int	id = i;
 		  std::string color = "rojo";
-		  int ancho = 150;
-		  int alto = 150;
-		  int coordX = i* 500 + 400 ;
-		  //Si lo pasas a constructorEntidades ponerle: int coordY = limiteAlto - alto;
+		  int ancho = 180;
+		  int alto = 140;
+		  //int coordX = i* 500 + 400 ;
+		  int coordX = i* 1000 + 400 ;
+		  //int coordX = coordXActual + Util::numeroRandom(3) * 500;
+				  //(Util::numeroRandom(((AnchoEscenario-400)/cantidadPiedras) / (2*ancho)) * (2*ancho));
+		  //Multiplos de 400
+		  //coordX = coordX - ((coordX)  % 400);
 		  int coordY = 4*vista->getAltoEscenario()/5 - alto;
 
-		  std::string rutaImagen = "images/Piedra.png";
+		  //coordXActual = coordXActual + ((AnchoEscenario-400)/cantidadPiedras);
+		  coordXActual = coordX;
+
+		  debug(0, "ControlServidor::CreoPiedras", "Creando piedra en pos X: %d", coordX);
+
+		  std::string rutaImagen = "images/piedra2.png";
 		  int indexZ = 99;
 
 		  Piedra* p = new Piedra(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
@@ -515,7 +549,7 @@ void ControlServidor::CreoPiedras(){
 		  p->setAncho(ancho);
 		  p->setCoorx(coordX);
 		  p->setCoory(coordY);
-	      p->setRuta("images/Piedra.png");
+	      p->setRuta("images/piedra2.png");
 
 		  this->piedra.push_back(p);
 
@@ -533,9 +567,11 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 	std::map<int, Personaje*>::iterator pos;
 	list<Anillos*>:: iterator posanillo;
     list<Piedra*>:: iterator pospiedra;
+    list<Pinche*>:: iterator pospinche;
 
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
+		Personaje * cl2 = (*pos).second;
 		//this->constructorEntidades->anillos.
 		//Por cada sonic, fijarse si se intersecta con alguna de las cosas...?
 		int numeroAnilla  = 0;
@@ -554,6 +590,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				//descomenta la linea de abajo si queres matar al bicho
 				//enemigo->setVivo(false);
 				//cout<<"colision con enemigo"<<endl;
+
 			}
 
 		}
@@ -564,13 +601,22 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 
 			  if (colicion->intersectaAnilloPersonaje(cls, cl2)){
 
-				 debug(1,"ControlServidor::chequearColicion","Colision con anilla NUMEROANILLA %d",numeroAnilla);
-				 std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(numeroAnilla);
 
-				 //  debug(1,"ControlServidor::chequearColicion","Colision con anilla GETID %d",cls->getId());
-				  // std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(cls->getId());
+				   debug(1,"ControlServidor::chequearColicion","Colision con anilla NUMEROANILLA %d",numeroAnilla);
+				   std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(numeroAnilla);
+
+
+				   //debug(1,"ControlServidor::chequearColicion","Colision con anilla GETID %d",cls->getId());
+				   //std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(cls->getId());
+
+
 				   this->enviarATodos(mensaje);
 				   colisionada = (*posanillo);
+				   //aca se le suma un anillo al sonic q lo agarro y se le envia a todos los sonics el mensaje
+
+				   cl2->getPuntos()->sumarXanillos(1);
+				   enviarATodos(cl2->getPuntos()->obtenerMensajeEstadoAnillos(cl2->getId()));
+
 			  }
 			  numeroAnilla++;
 
@@ -578,33 +624,39 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 
 		if (colisionada != NULL){
 			this->anillos.remove(colisionada);
+
 		}
 
         //PIEDRA
-
 		bool huboColision = false;
+		Personaje *sonic = (*pos).second;
+
 		for(pospiedra = this->piedra.begin();pospiedra!= this->piedra.end();pospiedra++){
 
 			Piedra *pdra = (*pospiedra);
-			Personaje * cl = (*pos).second;
 
-			if(colicion->intersectaPiedraPersonaje(pdra,cl)){
-				//cout<<"NOMBRE ANIMACION"<<endl;
-				// cout<<cl->getNombreAnimacion()<<endl;
-              this->colpiedra = true;
-
-				cl->pararPorColision();
+			if(colicion->intersectaPiedraPersonaje(pdra,sonic)){
+				pdra->interactuar(sonic); //Se fija si esta encima de la piedra
 				huboColision = true;
-				 this->enviarATodos("p" + cl->getNombreAnimacion());
-
-
 			}
 		}
 
 		if (!huboColision){
-			Personaje * cl3 = (*pos).second;
-			cl3->reanudarLuegoDeColision();
+			sonic->reanudarLuegoDeColision();
 			//El tipo se deberia poder seguir moviendo
+		}
+
+	//PINCHE
+
+		for(pospinche = this->pinche.begin(); pospinche!= this->pinche.end();pospinche++){
+
+			Pinche *pin = (*pospinche);
+			Personaje * cl2 = (*pos).second;
+
+			if(colicion->intersectaPinchePersonaje(pin,cl2)){
+              cout<<"COLICIONA PINCHE"<<endl;
+              pin->interactuar(cl2);
+			}
 		}
 
 
@@ -692,6 +744,8 @@ void ControlServidor::verificarDuracionBonus(Personaje *sonic)
 				+ "y" + Util::intToStringConPadding(sonic->getPosicionY())
 				+ ANIMACION_SIN_BONUS + PADDING;
 			mundo.enviarATodos(mensaje);
-		}
+		  }
 	}
 }
+
+

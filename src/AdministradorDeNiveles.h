@@ -22,11 +22,12 @@ class AdministradorDeNiveles {
 		int getNivel();
 		bool EsUltimoNivel();
 		~AdministradorDeNiveles();
+		void mostrarPunConPan(VistaSDL*);
 
 	private:
 		int nivelActual;
 		Textura* capa0;
 		Textura* capa1;
-
+		Textura* pantallaPuntos;
 };
 #endif /* ADMINISTRADORDENIVELES_H_ */

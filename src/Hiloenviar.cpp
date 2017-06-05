@@ -122,6 +122,10 @@ bool Hiloenviar::continua()
 {
 	return parametros.continuar;
 }
+void Hiloenviar::vaciar(){
+
+	parametros.pack.vaciarCola();
+}
 
 }
 /* namespace std */

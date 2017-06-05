@@ -35,6 +35,7 @@ public:
 
 	void eliminarElPrimetoDeLaCola();
 	bool estaVacia();
+	void vaciarCola();
 
 private:
 	std::queue<char*> colaPaquetes;
