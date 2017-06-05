@@ -275,6 +275,18 @@ void Control::controlDeMensajes(Personaje* sonic,
 			int anillos = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
 			cout<<"anillos:  "<<anillos<<"id:   "<<id<<endl;
 		}
+		else if(mensaje.substr(0,3).compare("liv") == 0){
+			cout<<"MENSAJE VIDAS:  "<< mensaje<<endl;
+			int id = atoi(mensaje.substr(3,1).c_str());
+			int vidas = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
+			cout<<"vidas:  "<<vidas<<"id:   "<<id<<endl;
+		}
+		else if(mensaje.substr(0,3).compare("sco") == 0){
+			cout<<"MENSAJE PUNTOS:  "<< mensaje<<endl;
+			int id = atoi(mensaje.substr(3,1).c_str());
+			int puntos = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
+			cout<<"puntos:  "<<puntos<<"id:   "<<id<<endl;
+		}
 		else {
 			//Otros mensajes
 			//cout << mensaje << endl;

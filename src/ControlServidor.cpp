@@ -522,6 +522,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				//descomenta la linea de abajo si queres matar al bicho
 				//enemigo->setVivo(false);
 				cout<<"colision con enemigo"<<endl;
+
 			}
 
 		}
@@ -538,6 +539,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 
 				   cl2->getPuntos()->sumarXanillos(1);
 				   enviarATodos(cl2->getPuntos()->obtenerMensajeEstadoAnillos(cl2->getId()));
+
 			  }
 			  numeroAnilla++;
 

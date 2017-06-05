@@ -89,6 +89,14 @@ std::string Puntos::obtenerMensajeEstadoAnillos(int id){
 	return ("rin" + this->enteroToString(id) + Util::intToStringConPadding(this->cantAnillos,3));
 }
 
+std::string Puntos::obtenerMensajeEstadoVidas(int id){
+	return ("liv" + this->enteroToString(id) + Util::intToStringConPadding(this->vidas,3));
+}
+
+std::string Puntos::obtenerMensajeEstadoPuntos(int id){
+	return ("sco" + this->enteroToString(id) + Util::intToStringConPadding(this->puntos,3));
+}
+
 std::string Puntos::enteroToString(int number)
 {
   ostringstream oss;
