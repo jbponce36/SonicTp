@@ -33,6 +33,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 
 	admNiveles.setNivel(0);
 	admNiveles.cargarNivel(vista, sonic);
+	this->idpropio = sonic->getId();
 
 	//Uint32 tiempoDeJuego = 0;
 	Uint32 tiempoInicio, tiempoFin, delta;
@@ -270,22 +271,51 @@ void Control::controlDeMensajes(Personaje* sonic,
 			quitarEntidad(mensaje);
 		}
 		else if(mensaje.substr(0,3).compare("rin") == 0){
-			cout<<"MENSAJE ANILLO:  "<< mensaje<<endl;
+			//cout<<"MENSAJE ANILLO:  "<< mensaje<<endl;
 			int id = atoi(mensaje.substr(3,1).c_str());
 			int anillos = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
-			cout<<"anillos:  "<<anillos<<"id:   "<<id<<endl;
+			//cout<<"anillos:  "<<anillos<<"id:   "<<id<<endl;
+			if( sonic->getId() == id){
+				sonic->getPuntos()->setCantAnillos(anillos);
+			}
+			std::vector<Personaje*>::iterator pos;
+			for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+				if((*pos)->getId() == id ){
+					(*pos)->getPuntos()->setCantAnillos(anillos);
+				}
+			}
+
 		}
 		else if(mensaje.substr(0,3).compare("liv") == 0){
-			cout<<"MENSAJE VIDAS:  "<< mensaje<<endl;
+		//	cout<<"MENSAJE VIDAS:  "<< mensaje<<endl;
 			int id = atoi(mensaje.substr(3,1).c_str());
 			int vidas = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
-			cout<<"vidas:  "<<vidas<<"id:   "<<id<<endl;
+			//cout<<"vidas:  "<<vidas<<"id:   "<<id<<endl;
+			if( sonic->getId() == id){
+				sonic->getPuntos()->setVidas(vidas);
+			}
+			std::vector<Personaje*>::iterator pos;
+			for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+				if((*pos)->getId() == id ){
+					(*pos)->getPuntos()->setVidas(vidas);
+				}
+			}
 		}
 		else if(mensaje.substr(0,3).compare("sco") == 0){
-			cout<<"MENSAJE PUNTOS:  "<< mensaje<<endl;
+		//	cout<<"MENSAJE PUNTOS:  "<< mensaje<<endl;
 			int id = atoi(mensaje.substr(3,1).c_str());
 			int puntos = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
-			cout<<"puntos:  "<<puntos<<"id:   "<<id<<endl;
+			//cout<<"puntos:  "<<puntos<<"id:   "<<id<<endl;
+			if( sonic->getId() == id){
+				sonic->getPuntos()->setPuntos(puntos);
+			}
+
+			std::vector<Personaje*>::iterator pos;
+			for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+				if((*pos)->getId() == id ){
+					(*pos)->getPuntos()->setPuntos(puntos);
+				}
+			}
 		}
 		else {
 			//Otros mensajes
@@ -346,7 +376,7 @@ void Control::parsearMensajePosicion(mensajePosicion& msj,
 void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 		SDL_Rect *imagenMostrar, Personaje *sonic) {
 	admNiveles.mostrarNivel(camara, vista, imagenMostrar);
-
+	//vista->mostrarScoJueInd(sonic);
 	//TTF_Font* fuente = TTF_OpenFont("images/NotoSansCJK-Black.ttc", 40);
 	//SDL_Color textColor = { 0, 0, 0, 0xFF };
 	//textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;

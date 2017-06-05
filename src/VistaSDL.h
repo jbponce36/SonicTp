@@ -91,10 +91,11 @@ public:
     void setLog(Logger *log);
     string intToString(int number);
     int getAltoEscenario();
-    void dibujarTexto(TTF_Font *font, const char* texto, int posX, int posY, SDL_Color color);
+    void dibujarTexto(std::string  texto, int posX, int posY);
 	ConstructorEntidades* getConstructorEntidades();
 
 	void setConstructorEntidades(ConstructorEntidades* ConstructorEntidades);
+	void mostrarScoJueInd(Personaje* personaje);
 
 };
 
