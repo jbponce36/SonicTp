@@ -33,6 +33,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 
 	admNiveles.setNivel(0);
 	admNiveles.cargarNivel(vista, sonic);
+	this->idpropio = sonic->getId();
 
 	//Uint32 tiempoDeJuego = 0;
 	Uint32 tiempoInicio, tiempoFin, delta;
@@ -331,10 +332,19 @@ void Control::controlDeMensajes(Personaje* sonic,
 		}
 		//aca recibe el mensaje para pasar de nivel
 		else if (mensaje.compare("PASARNIVEL") == 0) {
+
 			if (!admNiveles.EsUltimoNivel()) {
 				this->admNiveles.pasarDeNivel();
 				this->admNiveles.cargarNivel(vista, sonic);
 			}
+			admNiveles.mostrarPunConPan(vista);
+			std::vector<Personaje*>::iterator poss;
+			for (poss = sonics->begin(); poss != sonics->end(); poss++) {
+				Personaje * cl2 = (*poss);
+				cl2->posicionarseConAnimacion(0,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
+
+			}
+
 		} else if (mensaje.substr(0, 3) == MENSAJE_CAMARA) {
 			int nuevoX, nuevoY;
 			parsearMensajeCamara(nuevoX, nuevoY, mensaje);
@@ -347,7 +357,55 @@ void Control::controlDeMensajes(Personaje* sonic,
 		{
 			//Ej mensaje: EB---1x--10y-200 significa quitar el Bonus con id 1.
 			quitarEntidad(mensaje);
-		} else {
+		}
+		else if(mensaje.substr(0,3).compare("rin") == 0){
+			//cout<<"MENSAJE ANILLO:  "<< mensaje<<endl;
+			int id = atoi(mensaje.substr(3,1).c_str());
+			int anillos = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
+			//cout<<"anillos:  "<<anillos<<"id:   "<<id<<endl;
+			if( sonic->getId() == id){
+				sonic->getPuntos()->setCantAnillos(anillos);
+			}
+			std::vector<Personaje*>::iterator pos;
+			for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+				if((*pos)->getId() == id ){
+					(*pos)->getPuntos()->setCantAnillos(anillos);
+				}
+			}
+
+		}
+		else if(mensaje.substr(0,3).compare("liv") == 0){
+		//	cout<<"MENSAJE VIDAS:  "<< mensaje<<endl;
+			int id = atoi(mensaje.substr(3,1).c_str());
+			int vidas = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
+			//cout<<"vidas:  "<<vidas<<"id:   "<<id<<endl;
+			if( sonic->getId() == id){
+				sonic->getPuntos()->setVidas(vidas);
+			}
+			std::vector<Personaje*>::iterator pos;
+			for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+				if((*pos)->getId() == id ){
+					(*pos)->getPuntos()->setVidas(vidas);
+				}
+			}
+		}
+		else if(mensaje.substr(0,3).compare("sco") == 0){
+		//	cout<<"MENSAJE PUNTOS:  "<< mensaje<<endl;
+			int id = atoi(mensaje.substr(3,1).c_str());
+			int puntos = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
+			//cout<<"puntos:  "<<puntos<<"id:   "<<id<<endl;
+			if( sonic->getId() == id){
+				sonic->getPuntos()->setPuntos(puntos);
+			}
+
+			std::vector<Personaje*>::iterator pos;
+			for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+				if((*pos)->getId() == id ){
+					(*pos)->getPuntos()->setPuntos(puntos);
+				}
+			}
+		}
+		else {
 			//Otros mensajes
 			//cout << mensaje << endl;
 		}
@@ -406,6 +464,19 @@ void Control::parsearMensajePosicion(mensajePosicion& msj,
 void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 		SDL_Rect *imagenMostrar, Personaje *sonic) {
 	admNiveles.mostrarNivel(camara, vista, imagenMostrar);
+	vista->mostrarScoJueInd(sonic);
+	//TTF_Font* fuente = TTF_OpenFont("images/NotoSansCJK-Black.ttc", 40);
+	//SDL_Color textColor = { 0, 0, 0, 0xFF };
+	//textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;
+	//Aca usar la clase  Util::intToString (sonic->getPuntaje()->getPuntos()) para concatenar los string con los valores reales del puntaje
+	//const char* puntaje = "PUNTAJE: 0";
+	//const char* tiempo = "TIEMPO: 0";
+	//const char* cantAnillas = "ANILLAS: 0";
+
+	//vista->dibujarTexto(fuente, puntaje,10,5, textColor);
+	//vista->dibujarTexto(fuente, tiempo,10,45, textColor);
+	//vista->dibujarTexto(fuente, cantAnillas,10,85, textColor);
+
 	for (int contador = 0; contador < vista->cantidadCapasCargadas();
 			contador++) {
 		//vista->obtenerTextura(contador)->renderizar(camara->devolverCamara(),imagenMostrar);

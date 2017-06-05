@@ -12,7 +12,7 @@
 #include "HiloEnviarCliente.h"
 #include "Definiciones.h"
 #include <time.h>
-
+#include "Puntos.h"
 
 #define GRAVEDAD 9
 #define IMAGEN_POR_DEFECTO "images/sonicSprite.png"
@@ -60,6 +60,7 @@ class Personaje
 
 		Orientacion orientacion;
 		Puntaje *puntaje;
+		Puntos *puntos;
 
 		bool saltando;
 		bool corriendo;
@@ -133,7 +134,8 @@ class Personaje
 		std::string obtenerMensajeEstado();
 		Puntaje* getPuntaje();
 		void setPuntaje(Puntaje* puntaje);
-
+		Puntos* getPuntos();
+		void setPuntos(Puntos*);
 		void aumentarCantidadAnillos(int cantidad);
 		void ponerseEscudo();
 		void quitarseEscudo();

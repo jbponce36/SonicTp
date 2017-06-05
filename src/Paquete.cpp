@@ -98,4 +98,17 @@ bool Paquete::estaVacia()
 	return this->colaPaquetes.empty();
 }
 
+void Paquete::vaciarCola(){
+
+	pthread_mutex_lock(&mutex);
+
+
+		while(!this->colaPaquetes.empty()){
+			delete [] this->colaPaquetes.front();
+			this->colaPaquetes.pop();
+		}
+
+		pthread_mutex_unlock(&mutex);
+}
+
 }

@@ -51,9 +51,9 @@
 			"id": 2,
 			"tipo": "rectangulo",
 			"color": "verde",
-			"dimensiones": {"ancho": 235, "alto": 177},
-			"coordenada": {"x": 10, "y": 10},
-			"ruta_imagen": "images/puntaje.png",
+			"dimensiones": {"ancho": 10, "alto": 10},
+			"coordenada": {"x": 100, "y": 100},
+			"ruta_imagen": "images/entidad2.png",
 			"index_z": 99
 		},
 		{

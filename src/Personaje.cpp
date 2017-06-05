@@ -48,7 +48,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 
     cargarSpriteSonic();
     this->log = log;
-
+    this->puntos = new Puntos(this->id);
     this->puedeIrDerecha = true;
     this->puedeIrIzquierda = true;
     this->colisionando = false;
@@ -59,7 +59,6 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 {
 	int maximoAlto = limites->h;
 	int maximoAncho = limites->w;
-	//this->puntaje->setPosicionX(limites->x);
 
 	/*Limite en el suelo.*/
 	maximoAlto -= (maximoAlto/5);
@@ -305,6 +304,7 @@ Personaje::~Personaje(){
 		delete texturaInvencible;
 	}
 	delete puntaje;
+	delete puntos;
 }
 
 void Personaje::dejarDeEstarQuieto()
@@ -656,6 +656,14 @@ Puntaje* Personaje::getPuntaje() {
 
 void Personaje::setPuntaje(Puntaje* puntaje) {
 	this->puntaje = puntaje;
+}
+
+Puntos* Personaje::getPuntos() {
+	return puntos;
+}
+
+void Personaje::setPuntos(Puntos* puntaje) {
+	this->puntos = puntaje;
 }
 
 std::string Personaje::obtenerMensajeEstado()
