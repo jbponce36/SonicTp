@@ -47,6 +47,7 @@ public:
 	static void* serverEnviarQueue(void* args);
 	void enviarDato(char* dato);
 	bool continua();
+	void vaciar();
 
 private:
 	Hilo h;

@@ -253,12 +253,18 @@ void Control::controlDeMensajes(Personaje* sonic,
 		}
 		//aca recibe el mensaje para pasar de nivel
 		else if (mensaje.compare("PASARNIVEL") == 0) {
-			admNiveles.mostrarPunConPan(vista);
+
 			if (!admNiveles.EsUltimoNivel()) {
 				this->admNiveles.pasarDeNivel();
 				this->admNiveles.cargarNivel(vista, sonic);
 			}
+			admNiveles.mostrarPunConPan(vista);
+			std::vector<Personaje*>::iterator poss;
+			for (poss = sonics->begin(); poss != sonics->end(); poss++) {
+				Personaje * cl2 = (*poss);
+				cl2->posicionarseConAnimacion(0,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
 
+			}
 
 		} else if (mensaje.substr(0, 3) == MENSAJE_CAMARA) {
 			int nuevoX, nuevoY;

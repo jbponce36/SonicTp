@@ -124,7 +124,7 @@ void ControlServidor::administrarTeclasServidor()
 					cout << "El cliente ya se habia desconectado." << endl;
 				}
 			}
-			else if(mensaje.compare("PASARNIVEL") == 0)
+			/*else if(mensaje.compare("PASARNIVEL") == 0)
 			{
 				this->pasarNivel = true;
 				//aca va el mensaje para que pase de nivel el servidor debe reestablecer todos los valores
@@ -149,7 +149,7 @@ void ControlServidor::administrarTeclasServidor()
 					}
 					id++;
 				}
-			}
+			}*/
 			else
 			{
 				//No es un mensaje de tecla apretada. Ver que otros mensajes puede recibir.
@@ -239,63 +239,44 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 			this->pasarNivel =true;
 		}
 		//aca posiciona a los sonics en el inicio del mapa
-		/*if(this->pasarNivel)
+
+		if( this->pasarNivel == true )
 		{
 			for(pos = sonics->begin();pos != sonics->end();pos++)
 			{
-				if(this-> pasarNivel = true)
-				{
-					Personaje* sonic = (*pos).second;
-					sonic->posicionarseConAnimacion(0,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
-				}
-				this->pasarNivel = false;
-				}
-			this->pasarNivel =false;
-		}
-	*/
+				//aca debemos resetear todos los valores para comenzar el nuevo nivel
+				//if(this-> pasarNivel = true)
 
+				Personaje* sonic = (*pos).second;
+				sonic->posicionarseConAnimacion(-250,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
 
-		/*Para pruebas: Para ver lo que pasa en el juego del servidor. No descomentar.*/
-		//(*pos).second->render(camara->getPosicionX(), camara->getPosicionY());
-		//SDL_RenderPresent( vista->obtenerRender());
-		/*Hasta aca. No descomentar*/
-	}
-	//esto es para pasar de nivel
-	if( this->pasarNivel == true )
-	{
-		for(pos = sonics->begin();pos != sonics->end();pos++)
-		{
-			//aca debemos resetear todos los valores para comenzar el nuevo nivel
-			//if(this-> pasarNivel = true)
-
-			Personaje* sonic = (*pos).second;
-			sonic->posicionarseConAnimacion(0,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
-
-			//this->pasarNivel = false;
-		}
-		camara->actualizarXY(0,0);
-		this->pasarNivel =false;
-		char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
-			std::string msjPasarNivel = "PASARNIVEL" ;
-			//cout<<"mensaje sin: "<<mensaje.size()<<endl;
-			msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
-			//cout<<"mensaje con: "<<mensaje.size()<<endl;
-			//cout<<"server envio: "<<mensaje<<endl;
-			strcpy(buffer, msjPasarNivel.c_str());
-			//cout<<"mensaje con buff: "<<strlen(buffer)<<endl;
-			int id = 1;
-			std::vector<Hiloenviar*>::iterator pos;
-			for(pos = hilosEnviar->begin();pos != hilosEnviar->end();pos++)
-			{
-				if(!sonics->at(id)->estaCongelado())
-				{
-					(*pos)->enviarDato(buffer);
-				}
-				id++;
+				//this->pasarNivel = false;
 			}
+			camara->actualizarXY(0,0);
+			this->pasarNivel =false;
+			char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
+				std::string msjPasarNivel = "PASARNIVEL" ;
+				//cout<<"mensaje sin: "<<mensaje.size()<<endl;
+				msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
+				//cout<<"mensaje con: "<<mensaje.size()<<endl;
+				//cout<<"server envio: "<<mensaje<<endl;
+				strcpy(buffer, msjPasarNivel.c_str());
+				//cout<<"mensaje con buff: "<<strlen(buffer)<<endl;
+				int id = 1;
+				std::vector<Hiloenviar*>::iterator pos;
+				for(pos = hilosEnviar->begin();pos != hilosEnviar->end();pos++)
+				{
+					if(!sonics->at(id)->estaCongelado())
+					{
+						//(*pos)->vaciar();
+						(*pos)->enviarDato(buffer);
+					}
+					id++;
+				}
+				sleep(2);
+		}
 	}
 }
-
 void ControlServidor::actualizarVistaServidor(Camara *camara)
 {
 	//Aca le envio a todos los clientes la posicion y sprite de todos los otros clientes.
@@ -661,7 +642,7 @@ void ControlServidor::verificarDuracionBonus(Personaje *sonic)
 				+ "y" + Util::intToStringConPadding(sonic->getPosicionY())
 				+ ANIMACION_SIN_BONUS + PADDING;
 			mundo.enviarATodos(mensaje);
-		}
+		  }
 	}
 }
 
