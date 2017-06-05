@@ -328,7 +328,6 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 		SDL_Rect *imagenMostrar, Personaje *sonic) {
 	admNiveles.mostrarNivel(camara, vista, imagenMostrar);
 
-	TTF_Font* fuente = TTF_OpenFont("images/NotoSansCJK-Black.ttc", 40);
 	SDL_Color textColor = { 0, 0, 0, 0xFF };
 	textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;
 	//Aca usar la clase  Util::intToString (sonic->getPuntaje()->getPuntos()) para concatenar los string con los valores reales del puntaje
@@ -336,9 +335,9 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 	const char* tiempo = "TIEMPO: 0";
 	const char* cantAnillas = "ANILLAS: 0";
 
-	vista->dibujarTexto(fuente, puntaje,10,5, textColor);
-	vista->dibujarTexto(fuente, tiempo,10,45, textColor);
-	vista->dibujarTexto(fuente, cantAnillas,10,85, textColor);
+	vista->dibujarTexto(puntaje,10,5, textColor);
+	vista->dibujarTexto(tiempo,10,45, textColor);
+	vista->dibujarTexto(cantAnillas,10,85, textColor);
 
 	for (int contador = 0; contador < vista->cantidadCapasCargadas();
 			contador++) {

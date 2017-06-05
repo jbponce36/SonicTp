@@ -405,6 +405,8 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 		menuInicial.renderizar(&camara,&imagenMostrar);
 		camara.w = texturaConectar.obtenerAnchoTextura();
 		camara.h = texturaConectar.obtenerAltoTextura();
+		camara.x = 800;
+		camara.y = 800;
 		switch (seleccion){
 			case 0:
 			texturaConectar.renderizar(&imagenMostrar,&camara);
@@ -515,7 +517,7 @@ void VistaSDL::mostrarPiedras(SDL_Rect *camara, int indexZ){
 
 }
 
-void VistaSDL::dibujarTexto(TTF_Font *font, const char *texto, int posX, int posY, SDL_Color color){
+void VistaSDL::dibujarTexto(const char *texto, int posX, int posY, SDL_Color color){
 
 
 	//TTF_SetFontStyle(fuente, TTF_STYLE_BOLD); //esto hace la letra en negrita
@@ -524,7 +526,7 @@ void VistaSDL::dibujarTexto(TTF_Font *font, const char *texto, int posX, int pos
 	//cout<<&White<<endl;
 	SDL_Color textColor = { 0, 0, 0, 0xFF };
 	textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;
-	this->superficieTexto = TTF_RenderUTF8_Blended(font, texto,textColor);
+	this->superficieTexto = TTF_RenderUTF8_Blended(this->fuente, texto,textColor);
 	//SDL_Surface* textoCargado = TTF_RenderText_Blended(fuente, "PUNTAJES SONICS", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO22"<<endl;
 	this->texturaTexto = SDL_CreateTextureFromSurface(this->renderizador, superficieTexto);
