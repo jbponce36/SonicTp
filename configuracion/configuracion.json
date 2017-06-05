@@ -4,12 +4,12 @@
         "servidor":{"puerto": 8080,"clientes":4},
         "cliente":{"puerto": 8080,"IP":"127.0.0.1"},
 	"escenario": {
-		"dimensiones": {"ancho": 4000, "alto": 1000},
+		"dimensiones": {"ancho": 8000, "alto": 1000},
 		"capas": [
 			{
 			"id": 1,
 			"index_z": 99,
-			"ruta_imagen":"images/sonicFondo1.jpg"
+			"ruta_imagen":"images/capa0nivel1.png"
 			},
 			{
 			"id": 2,
@@ -24,7 +24,7 @@
 			{
 			"id": 4,
 			"index_z": 98,
-			"ruta_imagen":"images/capa1rnueva.png"
+			"ruta_imagen":"images/capa2rnueva.png"
 			},
 			{
 			"id": 5,
