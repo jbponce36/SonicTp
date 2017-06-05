@@ -343,10 +343,10 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 	Textura texturaConectar = Textura();
 	Textura texturaDesconectar = Textura();
 	Textura texturaSalir = Textura();
-	menuInicial.cargarImagen("images/imagenesMenu/sonicMenu.jpg", "images/entidaddefault.png",this->renderizador, logger);
-	texturaConectar.cargarImagen("images/imagenesMenu/conectar.png", "images/entidaddefault.png", this->renderizador, logger);
-	texturaDesconectar.cargarImagen("images/imagenesMenu/desconectar.png", "images/entidaddefault.png", this->renderizador, logger);
-	texturaSalir.cargarImagen("images/imagenesMenu/salir.png", "images/entidaddefault.png", this->renderizador, logger);
+	menuInicial.cargarImagen("images/imagenesMenu/login2.png", "images/entidaddefault.png",this->renderizador, logger);
+	texturaConectar.cargarImagen("images/imagenesMenu/conectar2.png", "images/entidaddefault.png", this->renderizador, logger);
+	texturaDesconectar.cargarImagen("images/imagenesMenu/desconectar2.png", "images/entidaddefault.png", this->renderizador, logger);
+	texturaSalir.cargarImagen("images/imagenesMenu/salir2.png", "images/entidaddefault.png", this->renderizador, logger);
 	bool salir = false;
 	SDL_Event e;
 	int seleccion = 0;
