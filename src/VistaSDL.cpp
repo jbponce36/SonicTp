@@ -545,7 +545,7 @@ void VistaSDL::dibujarTexto(TTF_Font *font, const char *texto, int posX, int pos
 	Mes.w = 500;
 	Mes.h = 250;
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO55"<<endl;
-	cout<<SDL_RenderCopy(this->renderizador, texturaTexto, NULL, &Message_rect)<<endl;
+	SDL_RenderCopy(this->renderizador, texturaTexto, NULL, &Message_rect);
 	SDL_FreeSurface(superficieTexto);
 	//VER Q LA TEXTURA FUE LIBERADA SI SE QUIERE ACCEDER A ELLA SE DEBE LIBARARLA DESPUES SINO TIRA
 	//VIOLACION DE SEGMENTO

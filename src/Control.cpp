@@ -268,7 +268,26 @@ void Control::controlDeMensajes(Personaje* sonic,
 		{
 			//Ej mensaje: EB---1x--10y-200 significa quitar el Bonus con id 1.
 			quitarEntidad(mensaje);
-		} else {
+		}
+		else if(mensaje.substr(0,3).compare("rin") == 0){
+			cout<<"MENSAJE ANILLO:  "<< mensaje<<endl;
+			int id = atoi(mensaje.substr(3,1).c_str());
+			int anillos = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
+			cout<<"anillos:  "<<anillos<<"id:   "<<id<<endl;
+		}
+		else if(mensaje.substr(0,3).compare("liv") == 0){
+			cout<<"MENSAJE VIDAS:  "<< mensaje<<endl;
+			int id = atoi(mensaje.substr(3,1).c_str());
+			int vidas = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
+			cout<<"vidas:  "<<vidas<<"id:   "<<id<<endl;
+		}
+		else if(mensaje.substr(0,3).compare("sco") == 0){
+			cout<<"MENSAJE PUNTOS:  "<< mensaje<<endl;
+			int id = atoi(mensaje.substr(3,1).c_str());
+			int puntos = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
+			cout<<"puntos:  "<<puntos<<"id:   "<<id<<endl;
+		}
+		else {
 			//Otros mensajes
 			//cout << mensaje << endl;
 		}
@@ -328,17 +347,17 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 		SDL_Rect *imagenMostrar, Personaje *sonic) {
 	admNiveles.mostrarNivel(camara, vista, imagenMostrar);
 
-	TTF_Font* fuente = TTF_OpenFont("images/NotoSansCJK-Black.ttc", 40);
-	SDL_Color textColor = { 0, 0, 0, 0xFF };
-	textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;
+	//TTF_Font* fuente = TTF_OpenFont("images/NotoSansCJK-Black.ttc", 40);
+	//SDL_Color textColor = { 0, 0, 0, 0xFF };
+	//textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;
 	//Aca usar la clase  Util::intToString (sonic->getPuntaje()->getPuntos()) para concatenar los string con los valores reales del puntaje
-	const char* puntaje = "PUNTAJE: 0";
-	const char* tiempo = "TIEMPO: 0";
-	const char* cantAnillas = "ANILLAS: 0";
+	//const char* puntaje = "PUNTAJE: 0";
+	//const char* tiempo = "TIEMPO: 0";
+	//const char* cantAnillas = "ANILLAS: 0";
 
-	vista->dibujarTexto(fuente, puntaje,10,5, textColor);
-	vista->dibujarTexto(fuente, tiempo,10,45, textColor);
-	vista->dibujarTexto(fuente, cantAnillas,10,85, textColor);
+	//vista->dibujarTexto(fuente, puntaje,10,5, textColor);
+	//vista->dibujarTexto(fuente, tiempo,10,45, textColor);
+	//vista->dibujarTexto(fuente, cantAnillas,10,85, textColor);
 
 	for (int contador = 0; contador < vista->cantidadCapasCargadas();
 			contador++) {

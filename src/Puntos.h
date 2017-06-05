@@ -36,6 +36,9 @@ public:
 		void restarUnaVida();
 		std::string obtenerMensajeEstadoAnillos(int);
 		std::string enteroToString(int number);
+		std::string obtenerMensajeEstadoVidas(int id);
+		std::string obtenerMensajeEstadoPuntos(int id);
+
 
 private:
 

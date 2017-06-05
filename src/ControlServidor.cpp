@@ -522,6 +522,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				//descomenta la linea de abajo si queres matar al bicho
 				//enemigo->setVivo(false);
 				cout<<"colision con enemigo"<<endl;
+
 			}
 
 		}
@@ -534,6 +535,11 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				   debug(1,"ControlServidor::chequearColicion","Colision con anilla %d",numeroAnilla);
 				   this->enviarATodos("BORRAR_ANILLA_" + this->intToString(numeroAnilla));
 				   colisionada = (*posanillo);
+				   //aca se le suma un anillo al sonic q lo agarro y se le envia a todos los sonics el mensaje
+
+				   cl2->getPuntos()->sumarXanillos(1);
+				   enviarATodos(cl2->getPuntos()->obtenerMensajeEstadoAnillos(cl2->getId()));
+
 			  }
 			  numeroAnilla++;
 
@@ -658,3 +664,5 @@ void ControlServidor::verificarDuracionBonus(Personaje *sonic)
 		}
 	}
 }
+
+
