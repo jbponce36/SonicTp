@@ -281,11 +281,16 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 			debug(1, "MENSAJE PIEDRA", (char*) mensaje.c_str(), 0);
 
-			std::string pos_pX = mensaje.substr(7, 3);
+			std::string pos_pX = mensaje.substr(6, 4);
 			std::string pos_pY = mensaje.substr(12, 3);
+
+			pos_pX.erase(std::remove(pos_pX.begin(), pos_pX.end(), PADDING), pos_pX.end());
 
 			int iposX = atoi(pos_pX.c_str());
 			int iposY = atoi(pos_pY.c_str());
+
+			debug(0,"Control::controlDeMensajes","Creando Piedra en X: %d",iposX);
+			debug(0,"Control::controlDeMensajes","Creando Piedra en Y: %d",iposY);
 
 			std::string rutaImagen = "images/piedra2.png";
 

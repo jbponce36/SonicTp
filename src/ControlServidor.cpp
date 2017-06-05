@@ -394,6 +394,7 @@ void ControlServidor::CreoPinche(){
 
 	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
 	int AnchoEscenario = vista->obtenerAnchoEscenario();
+	int coordXActual = 1500;
 
 	for(int i=0;i<cantidadpinche;i++){
 
@@ -402,13 +403,16 @@ void ControlServidor::CreoPinche(){
 	     int ancho = 200;
 	     int alto = 100;
 
-
-//	     int coordX = i* 500 + 1000 ;
-	     int coordX = Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho);
+	     int coordX = i* 500 + 1600 ;
+//	     int coordX = Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho);
+	    // int coordX = coordXActual; //Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho);
 	     int coordY = 4*vista->getAltoEscenario()/5 - alto;
+	     coordXActual = coordXActual + 400;
 
 	     std::string rutaImagen = "images/Pinchos.png";
 	     int indexZ = 99;
+
+	     debug(0, "ControlServidor::CreoPiedras", "Creando pinche en pos X: %d", coordX);
 
 	     Pinche* pinche = new Pinche(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
 	     pinche->setAlto(alto);
@@ -428,6 +432,42 @@ void ControlServidor::CreoPinche(){
 	}
 
 }
+void ControlServidor::CargarMatriz(int posX, int posY){
+
+	 for(int i=0; i<MAXCOLS; i++){
+		 for (int j=0; j<MAXFILAS; j++) {
+
+			 if((i == posX) && (j == posY)){
+				 mapa[i][j] = 1;
+			 }
+
+
+		 }
+	}
+}
+
+bool ControlServidor::buscarMatriz(int posX,int posY){
+
+	bool resultado;
+
+	for(int i=0; i<MAXCOLS; i++){
+		for (int j=0; j<MAXFILAS; j++) {
+
+			if((mapa[i][j] == 1)){
+
+				cout<<"La posicion esta ocuada"<<endl;
+				//resultado true;
+			}
+
+			else{
+//				CargarMatriz(int posX, int posY);
+				//resultado false;
+			}
+		}
+	}
+
+	return resultado;
+}
 
 void ControlServidor::CreoAnillas(){
   srand(time(NULL));
@@ -438,6 +478,7 @@ void ControlServidor::CreoAnillas(){
 
   int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
   int AnchoEscenario = vista->obtenerAnchoEscenario();
+  int coordXActual = 0;
 
    for(int i=0;i<cantidadAnillas;i++){
 
@@ -447,10 +488,10 @@ void ControlServidor::CreoAnillas(){
 	  int alto = 64;
 
 
-	  //cualquier randon del ancho total del escenario
+	 //this->BuscarMatriz(Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho),300);
 
-	  int coordX = Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho);
-
+	  int coordX = coordXActual + Util::numeroRandom((AnchoEscenario / cantidadAnillas)/(2*ancho)) * (2*ancho);
+	  coordXActual = coordXActual + AnchoEscenario / cantidadAnillas;
 
 	  //la coordenada y la voy a dejar en 300 ya que es una buena altura....
 	  int coordY =  300;
@@ -486,17 +527,28 @@ void ControlServidor::CreoPiedras(){
 	 // int cantidadPiedras = (rand() % 4) + 1;
 	 int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
 	  int AnchoEscenario = vista->obtenerAnchoEscenario();
+	  debug(0, "ControlServidor::CreoPiedras", "Creando piedras. Ancho Escenario: %d", vista->obtenerAnchoEscenario());
 
-	  int cantidadPiedras = 1;
+	  int cantidadPiedras = 2;
+	  int coordXActual = 500;
 
 		for(int i=0;i<cantidadPiedras;i++){
 		  int	id = i;
 		  std::string color = "rojo";
 		  int ancho = 180;
 		  int alto = 140;
-		  int coordX = i* 500 + 400 ;
-		  //int coordX = Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho);
+		  //int coordX = i* 500 + 400 ;
+		  int coordX = i* 1000 + 400 ;
+		  //int coordX = coordXActual + Util::numeroRandom(3) * 500;
+				  //(Util::numeroRandom(((AnchoEscenario-400)/cantidadPiedras) / (2*ancho)) * (2*ancho));
+		  //Multiplos de 400
+		  //coordX = coordX - ((coordX)  % 400);
 		  int coordY = 4*vista->getAltoEscenario()/5 - alto;
+
+		  //coordXActual = coordXActual + ((AnchoEscenario-400)/cantidadPiedras);
+		  coordXActual = coordX;
+
+		  debug(0, "ControlServidor::CreoPiedras", "Creando piedra en pos X: %d", coordX);
 
 		  std::string rutaImagen = "images/piedra2.png";
 		  int indexZ = 99;

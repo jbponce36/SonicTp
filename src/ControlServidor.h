@@ -31,7 +31,10 @@
 #include "Mosca.h"
 #include "Pinche.h"
 
+
 #define FPS_SERVER 25
+#define MAXFILAS 4000
+#define MAXCOLS  800
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
 
 class ControlServidor {
@@ -103,10 +106,15 @@ public:
 	void CreacionEnemigos();
 	void enviarDatosEnemigosIniciales();
 	void actualizarPosicionesEnemigos();
+	void CargarMatriz(int posX, int posY);
+	bool buscarMatriz(int posX,int posY);
 
+	 char mapa[MAXFILAS][MAXCOLS];
 
 
 private:
+
+
 
 	void administrarTeclasServidor();
 	ControlServidor::mensajeRecibido parsearMensajePosicion(std::string mensaje);

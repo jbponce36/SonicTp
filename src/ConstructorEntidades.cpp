@@ -458,38 +458,54 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 		std::string color, std::string rutaImagen, int indexZ)
 {
 	//Genera bonus en posiciones y cantidades aleatorias
-	srand(time(NULL));
+	/*srand(time(NULL));
 	//Agrego bonus de Escudo
-	int cantidadBonus = Util::numeroRandom(3);
+	int cantidadBonus = 2;
+			//Util::numeroRandom(3);
 	int y = limiteAlto - alto;
+
+	int coordXActual = 2200;
+	int c= 0;
 
 	for(int i = 0; i < cantidadBonus; i++)
 	{
 		//Divide el escenario en partes iguales del doble del ancho del bonus para que no se superpongan
 		//Y al sumarle 2*ancho hago que caiga en una de esas divisiones
-		int x = Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+		//int x = coordXActual + Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+		int x = coordXActual + c * 200;
+		debug(0, "ConstructorEntidades::generarBonus", "Creando escudo en pos X: %d", x);
 		Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::ESCUDO);
 		entidades.push_back(nuevoBonus);
+		c++;
 	}
 
 	//Agrego bonus de Anillos
-	cantidadBonus = Util::numeroRandom(3);
+	cantidadBonus = 2;
+			//Util::numeroRandom(3);
 	for(int i = 0; i < cantidadBonus; i++)
 	{
-		int x = Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+		int x = coordXActual + c* 200;
+		debug(0, "ConstructorEntidades::generarBonus", "Creando Anillo en pos X: %d", x);
+				//+ Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
 		Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::RING);
 		entidades.push_back(nuevoBonus);
+		c++;
 	}
 
 	//Agrego bonus de Invencibilidad
-	cantidadBonus = Util::numeroRandom(3);
+	cantidadBonus = 2;
+			//Util::numeroRandom(3);
+
 	for(int i = 0; i < cantidadBonus; i++)
 	{
-		int x = Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+		int x = coordXActual + c* 200;
+		debug(0, "ConstructorEntidades::generarBonus", "Creando invencibiilidad en pos X: %d", x);
+				//Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
 		Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::INVENCIBILIDAD);
 		entidades.push_back(nuevoBonus);
+		c++;
 	}
-
+*/
 }
 
 void ConstructorEntidades::cargarImagenesPiedra(SDL_Renderer *renderizador){

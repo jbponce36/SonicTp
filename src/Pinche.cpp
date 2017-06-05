@@ -170,18 +170,20 @@ std::string Pinche::obtenerMensajeEstado(){
 
 void Pinche::interactuar(Personaje *sonic){
 
- if(colisionaArriba(sonic)) //Si el Sonic esta arriba de la piedra
-  {
+	if(colisionaArriba(sonic)) //Si el Sonic esta arriba de la piedra
+		{
+			//Si necesitas consultar el x, y, ancho o alto de algo usa siempre los limites,
+			//no los valores originales de x, y, ancho, alto de la entidad o Sonic
 
-	SDL_Rect limitesPinche = obtenerLimites();
-	SDL_Rect limitesSonic = sonic->obtenerLimites();
-	cout << "Colisiono arriba!\n";
+			SDL_Rect limitesPinche = obtenerLimites();
+			SDL_Rect limitesSonic = sonic->obtenerLimites();
+			cout << "Colisiono arriba!\n";
 
 			//Aca herir al Sonic y si rebota cambiarle la velocidad x e y por la contraria creo. Supongo.
 
-	 return;
-	}
+			return;
+		}
 
 		//Si llega aca Sonic toca a los pinches de costado... Creo que no hay que herirlo
-	sonic->pararPorColision(this->obtenerLimites());
+		sonic->pararPorColision(this->obtenerLimites());
 }

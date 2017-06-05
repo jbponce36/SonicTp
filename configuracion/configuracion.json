@@ -1,10 +1,10 @@
 {
-	"ventana": {"dimensiones": {"ancho": 800, "alto": 700}},
+	"ventana": {"dimensiones": {"ancho": 1800, "alto": 1000}},
 	"configuracion": {"vel_scroll": 350},
         "servidor":{"puerto": 8080,"clientes":4},
         "cliente":{"puerto": 8080,"IP":"127.0.0.1"},
 	"escenario": {
-		"dimensiones": {"ancho": 4000, "alto": 700},
+		"dimensiones": {"ancho": 4000, "alto": 1000},
 		"capas": [
 			{
 			"id": 1,
