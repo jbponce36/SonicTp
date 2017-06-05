@@ -376,7 +376,7 @@ void Control::parsearMensajePosicion(mensajePosicion& msj,
 void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 		SDL_Rect *imagenMostrar, Personaje *sonic) {
 	admNiveles.mostrarNivel(camara, vista, imagenMostrar);
-	//vista->mostrarScoJueInd(sonic);
+	vista->mostrarScoJueInd(sonic);
 	//TTF_Font* fuente = TTF_OpenFont("images/NotoSansCJK-Black.ttc", 40);
 	//SDL_Color textColor = { 0, 0, 0, 0xFF };
 	//textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;
