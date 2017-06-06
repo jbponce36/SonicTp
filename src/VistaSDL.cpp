@@ -49,7 +49,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 
 	this->cargarCapas(jescenario);
 
-	this->fuente = TTF_OpenFont("images/NotoSansCJK-Black.ttc", 44);
+	this->fuente = TTF_OpenFont("images/arial.ttf", 44);
 	this->White = {255, 255, 255,0};
 
 
@@ -210,8 +210,12 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 
 		}
 	}
+
 	aux=NULL;
-	*/this->log->setModulo("VISTA SDL");
+	*/
+
+
+	this->log->setModulo("VISTA SDL");
 	this->log->addLogMessage("[CARGAR CAPAS] Terminado.",2);
 }
 void VistaSDL::cargarEnemigosTextura(){
@@ -515,16 +519,20 @@ void VistaSDL::mostrarPiedras(SDL_Rect *camara, int indexZ){
 
 }
 
-void VistaSDL::dibujarTexto(TTF_Font *font, const char *texto, int posX, int posY, SDL_Color color){
+
+void VistaSDL::mostrarPinches(SDL_Rect *camara, int indexZ){
+	constructorEntidades->mostrarPinches(renderizador, camara, indexZ);
+}
+
+void VistaSDL::dibujarTexto(std::string texto, int posX, int posY){
 
 
 	//TTF_SetFontStyle(fuente, TTF_STYLE_BOLD); //esto hace la letra en negrita
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO11"<<endl;
 	//cout<<&fuente<<endl;
 	//cout<<&White<<endl;
-	SDL_Color textColor = { 0, 0, 0, 0xFF };
-	textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;
-	this->superficieTexto = TTF_RenderUTF8_Blended(font, texto,textColor);
+
+	this->superficieTexto = TTF_RenderUTF8_Blended(fuente, texto.c_str(),White);
 	//SDL_Surface* textoCargado = TTF_RenderText_Blended(fuente, "PUNTAJES SONICS", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO22"<<endl;
 	this->texturaTexto = SDL_CreateTextureFromSurface(this->renderizador, superficieTexto);
@@ -534,6 +542,7 @@ void VistaSDL::dibujarTexto(TTF_Font *font, const char *texto, int posX, int pos
 	//SDL_RenderClear(this->renderizador);
 	int text_ancho = superficieTexto->w;
 	int text_alto = superficieTexto->h;
+
 	Message_rect.x = posX;
 	Message_rect.y = posY;
 	Message_rect.w = text_ancho;
@@ -556,3 +565,25 @@ void VistaSDL::dibujarTexto(TTF_Font *font, const char *texto, int posX, int pos
 	//cout<<"LLEGO ACA despues DIBUJAR PUNTOS"<<endl;
 
 }
+
+void VistaSDL::mostrarScoJueInd(Personaje* personaje){
+	std::string textovidas ="VIDAS:" + Util::intToString(personaje->getPuntos()->getVidas());
+	this->dibujarTexto(textovidas,0,0);
+	std::string textoanillos = "ANILLOS:" + Util::intToString(personaje->getPuntos()->getCantAnillos());
+	this->dibujarTexto(textoanillos,0,50);
+	std::string textoscore = "PUNTOS:" + Util::intToString(personaje->getPuntos()->getPuntos());
+	this->dibujarTexto(textoscore,0,100);
+}
+
+SDL_Renderer* VistaSDL::getRenderizador(){
+	return this->renderizador;
+}
+
+int VistaSDL::getAltoVentana(){
+	return this->altoVentana;
+}
+
+int VistaSDL::getAnchoVentana(){
+	return this->anchoVentana;
+}
+

@@ -33,6 +33,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 
 	admNiveles.setNivel(0);
 	admNiveles.cargarNivel(vista, sonic);
+	this->idpropio = sonic->getId();
 
 	//Uint32 tiempoDeJuego = 0;
 	Uint32 tiempoInicio, tiempoFin, delta;
@@ -117,13 +118,6 @@ void Control::administrarTeclas(ControladorTeclas *controlador,
 	SDL_Event e;
 
 	while (SDL_PollEvent(&e) != 0) {
-
-		if (e.key.keysym.sym == SDLK_w) {
-
-			//debug(1, "Control::administrarTeclas", "Voy a borrar las anillas", 0);
-			//vista->getConstructorEntidades()->anillos.clear();
-		}
-
 		//usuario pide cierre
 		if (e.type == SDL_QUIT) {
 			salir = true;
@@ -168,13 +162,56 @@ void Control::controlDeMensajes(Personaje* sonic,
 		} else if (mensaje == "Terminar juego") {
 			printf("Cerrando el juego...\n");
 			this->salir = true;
-		} else if (mensaje.substr(0, 14) == "BORRAR_ANILLA_") {
-			int numeroAnilla = atoi(mensaje.substr(14, 1).c_str());
 
-			debug(1, "Control::controlDeMensajes", "Voy a borrar la anilla %d",
-					numeroAnilla);
+		}
 
-			int posAnillaActual = 0;
+		else if (mensaje.substr(0, 13) == "BORRAR_ANILLA"){
+
+			//debug(1,"Control::controlDeMensajes_BORRADOANILLAS", (char*) mensaje.c_str() , 0);
+
+			std::string tid = mensaje.substr(13, 2);
+			tid.erase(std::remove(tid.begin(), tid.end(), PADDING), tid.end());
+
+
+			int numeroAnilla = atoi(tid.c_str());
+
+
+			debug(1, "Control::controlDeMensajes", "Voy a borrar la anilla %d",numeroAnilla);
+
+
+
+	     /*     	list<Anillos*>::iterator pos;
+
+	          for(pos= vista->getConstructorEntidades()->anillos.begin();pos!=vista->getConstructorEntidades()->anillos.end();pos++){
+
+		} else if (mensaje.substr(0, 13) == "BORRAR_ANILLA") {
+
+			std::string id = mensaje.substr(13, 2);
+			id.erase(std::remove(id.begin(), id.end(), PADDING), id.end());
+
+            int numeroAnilla = atoi(id.c_str());
+
+            cout<<"numuero Anilla borrada"<<endl;
+            cout<<numeroAnilla<<endl;
+
+
+     /*      	list<Anillos*>::iterator pos;
+
+          for(pos= vista->getConstructorEntidades()->anillos.begin();pos!=vista->getConstructorEntidades()->anillos.end();pos++){
+
+             if((*pos)->getId()== numeroAnilla){
+
+            	 delete (*pos);
+            	 vista->getConstructorEntidades()->anillos.erase(pos);
+
+            	 //return;
+             }
+          }
+     */
+
+
+           ///////codigo viejo borrado
+		int posAnillaActual = 0;
 
 			list<Anillos*>::iterator pos;
 			Anillos* actual = NULL;
@@ -188,29 +225,46 @@ void Control::controlDeMensajes(Personaje* sonic,
 			}
 
 			vista->getConstructorEntidades()->anillos.remove(actual);
-		} else if (mensaje.substr(0, 5) == "Anill")
-
-		{
-			debug(1,"Control::controlDeMensajes", "Mensaje anillas" , 0);
-			debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
-
-
-			std::string posX = mensaje.substr(6, 4);
-			std::string posY = mensaje.substr(12, 3);
-
-			posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
-			int iposX = atoi(posX.c_str());
-			int iposY = atoi(posY.c_str());
-
-			debug(1,"POSX", (char*) posX.c_str() , 0);
-			debug(1,"POSY", (char*) posY.c_str() , 0);
-
-			Anillos* anillo = new Anillos(64, 64, 1, "rojo", "images/Anillas.png", iposX, iposY, 99, this->log);
-
-			vista->getConstructorEntidades()->anillos.push_back(anillo);
-
 
 		}
+
+         ////codigo viejo borrado
+		else if (mensaje.substr(0, 3) == "Aid")
+
+				{
+					debug(1,"Control::controlDeMensajes", "Mensaje anillas" , 0);
+					debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
+
+					//ID
+					std::string id = mensaje.substr(3, 2);
+					id.erase(std::remove(id.begin(), id.end(), PADDING), id.end());
+
+					int intid = atoi(id.c_str());
+					cout<<"********ID************"<<endl;
+					cout<<intid<<endl;
+					//posx
+
+					std::string posX = mensaje.substr(6, 4);
+					posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
+
+					std::string posY = mensaje.substr(12, 3);
+
+					int iposX = atoi(posX.c_str());
+					int iposY = atoi(posY.c_str());
+
+
+
+
+					Anillos* anillo = new Anillos(64, 64, intid, "rojo", "images/Anillas.png", iposX, iposY, 99, this->log);
+
+
+
+					vista->getConstructorEntidades()->anillos.push_back(anillo);
+
+
+				}
+
+
 
 		else if (mensaje.substr(0, 1) == "p") {
 
@@ -220,12 +274,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 			std::string animacion = mensaje.substr(1, 3);
 
-			//  sonic->animacionQuietoDer.detener();
 
-			//	cout<<animacion<<endl;
-			//   sonic->parar();
-			//std::string animacionAnterior = sonic->animacionActual->obtenerNombre();
-			//cout<<animacionAnterior<<endl;
 
 		}
 
@@ -233,29 +282,71 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 			debug(1, "MENSAJE PIEDRA", (char*) mensaje.c_str(), 0);
 
-			std::string pos_pX = mensaje.substr(7, 3);
+			std::string pos_pX = mensaje.substr(6, 4);
 			std::string pos_pY = mensaje.substr(12, 3);
+
+			pos_pX.erase(std::remove(pos_pX.begin(), pos_pX.end(), PADDING), pos_pX.end());
 
 			int iposX = atoi(pos_pX.c_str());
 			int iposY = atoi(pos_pY.c_str());
 
-			std::string rutaImagen = "images/Piedra.png";
+			debug(0,"Control::controlDeMensajes","Creando Piedra en X: %d",iposX);
+			debug(0,"Control::controlDeMensajes","Creando Piedra en Y: %d",iposY);
 
-			Piedra* p = new Piedra(300, 150, 1, "rojo", rutaImagen, iposX,
-					iposY, 99, this->log);
+			std::string rutaImagen = "images/piedra2.png";
 
-			//  vista->getConstructorEntidades()->getEntidades().push_back(p);
+			Piedra* p = new Piedra(180,140, 1, "rojo",rutaImagen,iposX,iposY,99, this->log);
+
+
 			vista->getConstructorEntidades()->piedra.push_back(p);
 			vista->getConstructorEntidades()->cargarImagenesPiedra(
 					vista->getConstructorEntidades()->getRenderizador());
 
 		}
+
+		else if (mensaje.substr(0,5) == "Pinch"){
+
+			debug(1, "MENSAJE PINCHE", (char*) mensaje.c_str(), 0);
+
+
+			debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
+
+
+			std::string posX = mensaje.substr(6, 4);
+			std::string posY = mensaje.substr(12, 3);
+
+			posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
+
+			int iposX = atoi(posX.c_str());
+			int iposY = atoi(posY.c_str());
+
+			debug(1,"POSX", (char*) posX.c_str() , 0);
+		    debug(1,"POSY", (char*) posY.c_str() , 0);
+
+		    std::string rutaImagen = "images/Pinchos.png";
+
+           Pinche* pinche = new Pinche(200,100,1,"rojo",rutaImagen,iposX,iposY,99,this->log);
+
+           vista->getConstructorEntidades()->pinche.push_back(pinche);
+           vista->getConstructorEntidades()->cargarImagenesPinche(vista->getConstructorEntidades()->getRenderizador());
+
+		}
+
 		//aca recibe el mensaje para pasar de nivel
 		else if (mensaje.compare("PASARNIVEL") == 0) {
+
 			if (!admNiveles.EsUltimoNivel()) {
 				this->admNiveles.pasarDeNivel();
 				this->admNiveles.cargarNivel(vista, sonic);
 			}
+			admNiveles.mostrarPunConPan(vista);
+			std::vector<Personaje*>::iterator poss;
+			for (poss = sonics->begin(); poss != sonics->end(); poss++) {
+				Personaje * cl2 = (*poss);
+				cl2->posicionarseConAnimacion(0,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
+
+			}
+
 		} else if (mensaje.substr(0, 3) == MENSAJE_CAMARA) {
 			int nuevoX, nuevoY;
 			parsearMensajeCamara(nuevoX, nuevoY, mensaje);
@@ -270,22 +361,51 @@ void Control::controlDeMensajes(Personaje* sonic,
 			quitarEntidad(mensaje);
 		}
 		else if(mensaje.substr(0,3).compare("rin") == 0){
-			cout<<"MENSAJE ANILLO:  "<< mensaje<<endl;
+			//cout<<"MENSAJE ANILLO:  "<< mensaje<<endl;
 			int id = atoi(mensaje.substr(3,1).c_str());
 			int anillos = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
-			cout<<"anillos:  "<<anillos<<"id:   "<<id<<endl;
+			//cout<<"anillos:  "<<anillos<<"id:   "<<id<<endl;
+			if( sonic->getId() == id){
+				sonic->getPuntos()->setCantAnillos(anillos);
+			}
+			std::vector<Personaje*>::iterator pos;
+			for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+				if((*pos)->getId() == id ){
+					(*pos)->getPuntos()->setCantAnillos(anillos);
+				}
+			}
+
 		}
 		else if(mensaje.substr(0,3).compare("liv") == 0){
-			cout<<"MENSAJE VIDAS:  "<< mensaje<<endl;
+		//	cout<<"MENSAJE VIDAS:  "<< mensaje<<endl;
 			int id = atoi(mensaje.substr(3,1).c_str());
 			int vidas = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
-			cout<<"vidas:  "<<vidas<<"id:   "<<id<<endl;
+			//cout<<"vidas:  "<<vidas<<"id:   "<<id<<endl;
+			if( sonic->getId() == id){
+				sonic->getPuntos()->setVidas(vidas);
+			}
+			std::vector<Personaje*>::iterator pos;
+			for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+				if((*pos)->getId() == id ){
+					(*pos)->getPuntos()->setVidas(vidas);
+				}
+			}
 		}
 		else if(mensaje.substr(0,3).compare("sco") == 0){
-			cout<<"MENSAJE PUNTOS:  "<< mensaje<<endl;
+		//	cout<<"MENSAJE PUNTOS:  "<< mensaje<<endl;
 			int id = atoi(mensaje.substr(3,1).c_str());
 			int puntos = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
-			cout<<"puntos:  "<<puntos<<"id:   "<<id<<endl;
+			//cout<<"puntos:  "<<puntos<<"id:   "<<id<<endl;
+			if( sonic->getId() == id){
+				sonic->getPuntos()->setPuntos(puntos);
+			}
+
+			std::vector<Personaje*>::iterator pos;
+			for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+				if((*pos)->getId() == id ){
+					(*pos)->getPuntos()->setPuntos(puntos);
+				}
+			}
 		}
 		else {
 			//Otros mensajes
@@ -346,7 +466,7 @@ void Control::parsearMensajePosicion(mensajePosicion& msj,
 void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 		SDL_Rect *imagenMostrar, Personaje *sonic) {
 	admNiveles.mostrarNivel(camara, vista, imagenMostrar);
-
+	vista->mostrarScoJueInd(sonic);
 	//TTF_Font* fuente = TTF_OpenFont("images/NotoSansCJK-Black.ttc", 40);
 	//SDL_Color textColor = { 0, 0, 0, 0xFF };
 	//textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;
@@ -366,13 +486,20 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 				vista->obtenerTextura(contador)->getIndex_z());
 		vista->mostrarPiedras(camara->devolverCamara(),
 				vista->obtenerTextura(contador)->getIndex_z());
-		//vista->mostrarAnillas(camara->devolverCamara(), vista->obtenerTextura(contador)->getIndex_z());
+
+        vista->mostrarPinches(camara->devolverCamara(),
+				vista->obtenerTextura(contador)->getIndex_z());
+
 	}
 
 	//dibujo todos los sonics
 	std::vector<Personaje*>::iterator pos;
 	for (pos = sonics->begin(); pos != sonics->end(); pos++) {
 		(*pos)->render(camara->getPosicionX(), camara->getPosicionY());
+
+		//Dibujar cuadrado sonic
+		SDL_Rect limites = (*pos)->obtenerLimites();
+		Util::dibujarRecuadro(&limites, vista->obtenerRender(), camara->devolverCamara());
 	}
 
 	this->animarAnilla(camara, vista);
@@ -394,6 +521,10 @@ void Control::animarAnilla(Camara *camara, VistaSDL *vista) {
 			pos != vista->getConstructorEntidades()->anillos.end(); pos++) {
 		(*pos)->cargardatos(vista->obtenerRender());
 		(*pos)->render(camara->getPosicionX(), camara->getPosicionY());
+
+		//Dibujar cuadrado anillas
+				SDL_Rect limites = (*pos)->obtenerLimites();
+				Util::dibujarRecuadro(&limites, vista->obtenerRender(), camara->devolverCamara());
 	}
 }
 

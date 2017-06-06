@@ -55,6 +55,7 @@ public:
     std::string getNombreColor();
 	void setX(int x);
 	void setY(int y);
+	bool colisionaArriba(Personaje *sonic);
 
 private:
 	SDL_Color convertirColor(std::string color);

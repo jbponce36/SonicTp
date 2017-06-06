@@ -59,6 +59,7 @@ private:
     SDL_Surface* superficieTexto;
     SDL_Texture* texturaTexto;
 
+
 public:
     VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion, jescenario *jescenario, Logger *logger, bool oculta);
     void cargarImagen();
@@ -87,14 +88,21 @@ public:
     void mostrarEntidades(SDL_Rect *camara, int indexZ);
     void mostrarPiedras(SDL_Rect *camara, int indexZ);
     void mostrarAnillas(SDL_Rect *camara, int indexZ);
+
+    void mostrarPinches(SDL_Rect *camara, int indexZ);
+
     Logger *getLog() const;
     void setLog(Logger *log);
     string intToString(int number);
     int getAltoEscenario();
-    void dibujarTexto(TTF_Font *font, const char* texto, int posX, int posY, SDL_Color color);
+    void dibujarTexto(std::string  texto, int posX, int posY);
 	ConstructorEntidades* getConstructorEntidades();
 
 	void setConstructorEntidades(ConstructorEntidades* ConstructorEntidades);
+	void mostrarScoJueInd(Personaje* personaje);
+	SDL_Renderer* getRenderizador();
+	int getAltoVentana();
+	int getAnchoVentana();
 
 };
 
