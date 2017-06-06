@@ -367,8 +367,39 @@ void Personaje::resbalar(Orientacion haciaDonde)
 			velocidadX = personajeVelocidad;
 			break;
 	}
+}
 
+void Personaje::rebotar()
+{
+	velocidadY = -velocidadY;
+}
 
+void Personaje::herir()
+{
+	if (tieneEscudo)
+	{
+		quitarseEscudo();
+		return;
+	}
+
+	if(puntos->getCantAnillos() > 0)
+	{
+		//Sonic tiene anillos. Sacarselos
+		puntos->setCantAnillos(0);
+	}
+	else
+	{
+		if(puntos->getVidas() <= 0)
+		{
+			//Aca Sonic pierde
+			cout << "Game Over!\n";
+		}
+		else
+		{
+			//Sonic no tiene anillos pero tiene vidas
+			puntos->restarUnaVida();
+		}
+	}
 }
 
 void Personaje::irArriba()
@@ -467,14 +498,12 @@ void Personaje::detener()
 
 void Personaje::pararPorColision(SDL_Rect obstaculo)
 {
-	cout << "Paro por colision\n";
 	colisionando = true;
 	detener();
 
 	if(posicionX < obstaculo.x)
 	{
 		//Si sonic esta colisionando a la izquierda de la piedra
-		cout << "Correrlo <-\n";
 		SDL_Rect limites = obtenerLimites();
 		int diferenciaX = limites.x + limites.w - obstaculo.x;
 		posicionX -= diferenciaX;
@@ -483,13 +512,10 @@ void Personaje::pararPorColision(SDL_Rect obstaculo)
 	if(posicionX > obstaculo.x)
 	{
 		//Si sonic esta colisionando a la derecha de la piedra
-		cout << "Correrlo ->\n";
 		SDL_Rect limites = obtenerLimites();
 		int diferenciaX = obstaculo.x + obstaculo.w - limites.x;
 		posicionX += diferenciaX;
 	}
-
-
 }
 
 
@@ -673,6 +699,22 @@ std::string Personaje::obtenerMensajeEstado()
 			+ "x" + intToStringConPadding(posicionX)
 			+ "y" + intToStringConPadding(posicionY)
 			+ getNombreAnimacion() + getEstadoAnimacion());
+}
+
+std::string Personaje::obtenerMensajeEstadoBonus()
+{
+	std::string nombreAnimacion;
+	if (animacionBonus != NULL){
+		nombreAnimacion = animacionBonus->obtenerNombre();
+	}
+	else{
+		nombreAnimacion = ANIMACION_SIN_BONUS;
+	}
+
+	return ( Util::intToString(getId())
+		+ "x" + Util::intToStringConPadding(getPosicionX())
+		+ "y" + Util::intToStringConPadding(getPosicionY())
+		+ nombreAnimacion + PADDING);
 }
 
 SDL_Rect Personaje::obtenerLimites(){

@@ -173,8 +173,6 @@ void Piedra::interactuar(Personaje *sonic){
 
 	if(colisionaArriba(sonic)) //Si el Sonic esta arriba de la piedra
 	{
-		cout << "Colisiono arriba!\n";
-
 		SDL_Rect limitesPiedra = obtenerLimites();
 		SDL_Rect limitesSonic = sonic->obtenerLimites();
 
@@ -186,14 +184,12 @@ void Piedra::interactuar(Personaje *sonic){
 		{
 			//Si Sonic esta parado al bordecito derecho de la piedra, se resbala
 			sonic->resbalar(Personaje::DERECHA);
-			cout<< "Estoy resbalando derecha!\n";
 			return;
 		}
 		else if(limitesSonic.x + limitesSonic.w/2 < limitesPiedra.x)
 		{
 			//Si Sonic esta parado al bordecito izquierdo de la piedra, se resbala
 			sonic->resbalar(Personaje::IZQUIERDA);
-			cout<< "Estoy resbalando izquierda!\n";
 			return;
 		}
 
@@ -206,29 +202,4 @@ void Piedra::interactuar(Personaje *sonic){
 
 
 }
-
-/************/
-/* Nota: Para los pinches podes usar el mismo metodo interactuar de piedra pero asi:
-
-void Pinches::interactuar(Personaje *sonic){
-
-	if(colisionaArriba(sonic)) //Si el Sonic esta arriba de la piedra
-	{
-		//Si necesitas consultar el x, y, ancho o alto de algo usa siempre los limites,
-		//no los valores originales de x, y, ancho, alto de la entidad o Sonic
-
-		SDL_Rect limitesPinche = obtenerLimites();
-		SDL_Rect limitesSonic = sonic->obtenerLimites();
-		cout << "Colisiono arriba!\n";
-
-		//Aca herir al Sonic y si rebota cambiarle la velocidad x e y por la contraria creo. Supongo.
-
-		return;
-	}
-
-	//Si llega aca Sonic toca a los pinches de costado... Creo que no hay que herirlo
-	sonic->pararPorColision(this->obtenerLimites());
-
-}
- */
 

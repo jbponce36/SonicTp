@@ -458,7 +458,7 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 		std::string color, std::string rutaImagen, int indexZ)
 {
 	//Genera bonus en posiciones y cantidades aleatorias
-	/*srand(time(NULL));
+	srand(time(NULL));
 	//Agrego bonus de Escudo
 	int cantidadBonus = 2;
 			//Util::numeroRandom(3);
@@ -505,7 +505,6 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 		entidades.push_back(nuevoBonus);
 		c++;
 	}
-*/
 }
 
 void ConstructorEntidades::cargarImagenesPiedra(SDL_Renderer *renderizador){

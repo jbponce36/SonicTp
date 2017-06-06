@@ -571,7 +571,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
-		Personaje * cl2 = (*pos).second;
+		Personaje *sonic = (*pos).second;
 		//this->constructorEntidades->anillos.
 		//Por cada sonic, fijarse si se intersecta con alguna de las cosas...?
 		int numeroAnilla  = 0;
@@ -594,43 +594,34 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 			}
 
 		}
-		 for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
-			 Anillos *cls = (*posanillo);
 
-			 Personaje * cl2 = (*pos).second;
+		for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
+			Anillos *cls = (*posanillo);
+			if (colicion->intersectaAnilloPersonaje(cls, sonic)){
+				debug(1,"ControlServidor::chequearColicion","Colision con anilla NUMEROANILLA %d",numeroAnilla);
+				std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(numeroAnilla);
 
-			  if (colicion->intersectaAnilloPersonaje(cls, cl2)){
-
-
-				   debug(1,"ControlServidor::chequearColicion","Colision con anilla NUMEROANILLA %d",numeroAnilla);
-				   std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(numeroAnilla);
-
-
-				   //debug(1,"ControlServidor::chequearColicion","Colision con anilla GETID %d",cls->getId());
-				   //std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(cls->getId());
+				//debug(1,"ControlServidor::chequearColicion","Colision con anilla GETID %d",cls->getId());
+				//std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(cls->getId());
 
 
-				   this->enviarATodos(mensaje);
-				   colisionada = (*posanillo);
-				   //aca se le suma un anillo al sonic q lo agarro y se le envia a todos los sonics el mensaje
+				this->enviarATodos(mensaje);
+				colisionada = (*posanillo);
+				//aca se le suma un anillo al sonic q lo agarro y se le envia a todos los sonics el mensaje
 
-				   cl2->getPuntos()->sumarXanillos(1);
-				   enviarATodos(cl2->getPuntos()->obtenerMensajeEstadoAnillos(cl2->getId()));
+				sonic->getPuntos()->sumarXanillos(1);
+				enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
 
-			  }
-			  numeroAnilla++;
-
-		 }
+			}
+			numeroAnilla++;
+		}
 
 		if (colisionada != NULL){
 			this->anillos.remove(colisionada);
-
 		}
 
         //PIEDRA
 		bool huboColision = false;
-		Personaje *sonic = (*pos).second;
-
 		for(pospiedra = this->piedra.begin();pospiedra!= this->piedra.end();pospiedra++){
 
 			Piedra *pdra = (*pospiedra);
@@ -646,16 +637,19 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 			//El tipo se deberia poder seguir moviendo
 		}
 
-	//PINCHE
-
+		//PINCHE
 		for(pospinche = this->pinche.begin(); pospinche!= this->pinche.end();pospinche++){
 
 			Pinche *pin = (*pospinche);
-			Personaje * cl2 = (*pos).second;
+			bool fueHerido = false;
+			if(colicion->intersectaPinchePersonaje(pin,sonic)){
+              pin->interactuar(sonic, fueHerido);
+			}
 
-			if(colicion->intersectaPinchePersonaje(pin,cl2)){
-              cout<<"COLICIONA PINCHE"<<endl;
-              pin->interactuar(cl2);
+			if (fueHerido){
+				enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
+				enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoVidas(sonic->getId()));
+				enviarATodos(sonic->obtenerMensajeEstadoBonus());
 			}
 		}
 
