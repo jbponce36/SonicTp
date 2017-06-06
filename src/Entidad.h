@@ -11,6 +11,8 @@
 #include "Util.h"
 #include "Personaje.h"
 
+class Mundo;
+
 class Entidad {
 
 private:
