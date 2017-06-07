@@ -416,14 +416,17 @@ string VistaSDL::mostrarLogin(Logger *logger){
 		switch (seleccion){
 			case 0:
 			texturaUsuario.renderizar(&imagenMostrar,&camara);
+			setUsuario();
 			break;
 
 			case 1:
 			texturaContrasenia.renderizar(&imagenMostrar,&camara);
+			setContrasenia();
 			break;
 
 			case 2:
 			texturaBotonAceptar.renderizar(&imagenMostrar,&camara);
+			aceptarLogin();
 			break;
 		}
 
@@ -431,6 +434,18 @@ string VistaSDL::mostrarLogin(Logger *logger){
 	}
 	return "";
 
+}
+
+string VistaSDL::setUsuario(){
+	return "";
+}
+
+string VistaSDL::setContrasenia(){
+	return "";
+}
+
+string VistaSDL::aceptarLogin(){
+	return "";
 }
 
 int VistaSDL::mostraMenuInicial(Logger *logger){

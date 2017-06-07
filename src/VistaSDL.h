@@ -81,6 +81,9 @@ public:
     int obtenerVelocidadDeScroll();
     void validacionesVentana();
     string mostrarLogin(Logger *logger);
+    string setUsuario();
+    string setContrasenia();
+    string aceptarLogin();
     int mostraMenuInicial(Logger *logger);
     void mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado);
     void mostrarServidorDesconectado();
