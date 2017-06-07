@@ -51,8 +51,13 @@ public:
 	//devuelve solo la cantclientes
 	int CargarCantClientes();
 
-	void setraiz(json_t*);
+	void setraiz(json_t* Raiz);
 	json_t* getraiz();
+
+	int CargarMaximoAnillas();
+
+	int CargarMinimoAnillas();
+
 
 	int cargarPuerto(json_t* raiz);
 	char* cargarIP(json_t* raiz);

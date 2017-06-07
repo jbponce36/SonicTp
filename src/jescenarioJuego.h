@@ -33,6 +33,8 @@ public:
 	jservidor* getServidor();
 	void setServidor(jservidor* pservidor);
 
+
+
 private:
 	jventana* ventana;
 	jconfiguracion* configuracion;

@@ -30,6 +30,7 @@
 #include "Pescado.h"
 #include "Mosca.h"
 #include "Pinche.h"
+#include "parseadorJson.h"
 
 #define FPS_SERVER 25
 #define MAXFILAS 4000
@@ -44,6 +45,7 @@ private:
 	VistaSDL *vista;
 	ConexServidor *server;
 	Logger *log;
+    parseadorJson *parseador;
 
 
 	bool pasarNivel;
@@ -106,10 +108,8 @@ public:
 	void CreacionEnemigos();
 	void enviarDatosEnemigosIniciales();
 	void actualizarPosicionesEnemigos();
-	void CargarMatriz(int posX, int posY);
-	bool buscarMatriz(int posX,int posY);
 
-	 char mapa[MAXFILAS][MAXCOLS];
+	int ValidadValorMaximo(int Defecto,int Original);
 
 
 private:

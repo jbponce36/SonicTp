@@ -57,7 +57,7 @@ namespace std {
 parseadorJson::parseadorJson() {
 	// TODO Auto-generated constructor stub
 	//jconexion conexion2 = *conexion2.getinstance();
-	this->raiz = NULL;
+	//this->raiz = NULL;
 }
 
 parseadorJson::parseadorJson(Logger *log) {
@@ -326,6 +326,8 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 			json_t *entidadi;
 			json_t *dimensiones;
 			json_t *coordenada;
+			json_t *minimor;
+			json_t *maximor;
 
 			//voy creando nuevos objetos entidades
 			jentidades *entidades = new jentidades();
@@ -335,7 +337,15 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 				entidades->setid(this->leerValorEntero(entidadi, "id", 1));
 				entidades->settipo(this->leerValorStringCapas(entidadi, "tipo", ""));
 				entidades->setcolor(this->leerValorStringCapas(entidadi, "color", "rojo"));
+				//entidades->setMinimor(this->leerValorEntero(entidadi,"minimor",1));
+				//entidades->setMaximor(this->leerValorEntero(entidadi,"maximor",1));
 				coordenada = json_object_get(entidadi,"coordenada");
+                //el json lo setea correcto
+           	    minimor  = json_object_get(entidadi,"minimor");
+           	    entidades->setMinimor(json_number_value(minimor));
+           	    maximor = json_object_get(entidadi,"maximor");
+           	    entidades->setMaximor(json_number_value(maximor));
+
 
 				if (coordenada){
 					double cordx,cordy;
@@ -344,6 +354,7 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 					&& this->tryLeerValorEntero(coordenada, "y", &cordy)){
 					 entidades->setcoorx(cordx);
 					 entidades->setcoory(cordy);
+
 					}
 				}
 
@@ -446,8 +457,9 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
 
 	 this->log->addLogMessage("[PARSEAR ARCHIVO] Iniciado.", 2);
 	 json = json_load_file(nombreArchivo,0,&error);
+
        //nuevo
-	   this->setraiz(json);
+	  // this->setraiz(json);
 	   //
 	  if(!json) {
 	       cout << "!!! hay  probremas!!!" << endl;
@@ -456,7 +468,9 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
 	       cout << "Cargando archivo por defecto" << endl;
 	       json = json_load_file("configuracion/default.json",0,&error);
 	       //nuevo
-	       this->setraiz(json);
+	       // this->setraiz(json);
+
+
 	       //nuevo
 	       this->log->addLogMessage("[PARSEAR ARCHIVO] Se carga un archivo por defecto: configuracion/default.json .", 1);
 	       if (!json){
@@ -471,12 +485,16 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
         jconfiguracion *config = cargarConfiguracion(json);
         jescenario *escenario = cargarEscenario(json);
         jservidor* servidor = this->cargarServidor(json);
+
+
         jescenarioJuego *result = new jescenarioJuego();
+
 
         result->setVentana(ventana);
         result->setEscenario(escenario);
         result->setConfiguracion(config);
         result->setServidor(servidor);
+        this->setraiz(json);
 
         validarDimensionesVentana(result);
         this->log->addLogMessage("[PARSEAR ARCHIVO] Terminado. \n", 2);
@@ -621,7 +639,6 @@ int parseadorJson::CargarPuertoServidor(){
 }
 
 int parseadorJson::CargarCantClientes(){
-
 	this->log->addLogMessage("[CARGAR CANT CLIENTES] Iniciado.",2);
 	json_t* raiz;
 	json_t *jsonservidor;
@@ -630,6 +647,7 @@ int parseadorJson::CargarCantClientes(){
     int cantclientes;
 
     raiz = this->getraiz();
+
 	jsonservidor = json_object_get(raiz, "servidor");
 
 	if(jsonservidor){
@@ -644,6 +662,58 @@ int parseadorJson::CargarCantClientes(){
 
 	this->log->addLogMessage("[CARGAR CANT CLIENTES] Terminado.",2);
 	return cantclientes;
+}
+
+
+
+int parseadorJson::CargarMaximoAnillas(){
+
+	json_t* padre;
+	json_t *jsonanillos;
+	json_t *jsonmaximo;
+
+
+	padre = this->getraiz();
+
+	jsonanillos = json_object_get(padre, "anillos");
+	jsonmaximo = json_object_get(jsonanillos,"maximo");
+
+	return json_number_value(jsonmaximo);
+
+
+}
+
+int parseadorJson::CargarMinimoAnillas(){
+
+	/*json_t *json;
+	json_error_t error;
+
+	json_t *jsonanillos;
+	json_t *jsonminimo;
+
+	json = json_load_file("configuracion/configuracion.json",0,&error);
+
+	jsonanillos = json_object_get(json, "anillos");
+	jsonminimo = json_object_get(jsonanillos,"minimo");
+
+	return json_number_value(jsonminimo);
+
+	*/
+
+	json_t *padre;
+	json_t *jsonanillos;
+	json_t *jsonminimo;
+
+    padre = this->getraiz();
+
+	jsonanillos = json_object_get(padre, "anillos");
+
+    jsonminimo = json_object_get(jsonanillos,"minimo");
+
+	return json_number_value(jsonminimo);
+
+
+
 }
 
 jservidor* parseadorJson::cargarServidor(json_t* raiz){

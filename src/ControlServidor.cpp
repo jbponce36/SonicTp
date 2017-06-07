@@ -316,6 +316,13 @@ void ControlServidor::enviarATodos(std::string mensaje)
 }
 
 void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado){
+
+	//Una Sola vez
+    int semilla = time(NULL);
+	debug(0, "ControlServidor::ControlarJuegoServidor", "Semilla Usada: %d", semilla);
+	srand(semilla);
+
+
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Iniciado.", 2);
 
 	Uint32 tiempoDeJuego = 0;
@@ -367,40 +374,63 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
 }
 void ControlServidor::CreoPinche(){
+	//int semilla = time(NULL);
+	//debug(0, "ControlServidor::CreoPinche", "Semilla Usada: %d", semilla);
+	//srand(semilla);
 
-	srand(time(NULL));
-	int cantidadpinche = 2;
+//	srand(Util::numeroRandom(100000));
+	int cantidadpinche = 3;
 
 	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
 	int AnchoEscenario = vista->obtenerAnchoEscenario();
 	int coordXActual = 1500;
 
+	  std::vector<int> myvector;
+	  // set some values:
+	  for (int i=0; i<=7; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
+	  std::random_shuffle ( myvector.begin(), myvector.end() );
+
+
 	for(int i=0;i<cantidadpinche;i++){
+		if (!myvector.empty()){
+			 int  id = i;
+			 std::string color = "rojo";
+			 int ancho = 200;
+			 int alto = 100;
 
-		 int  id = i;
-	     std::string color = "rojo";
-	     int ancho = 200;
-	     int alto = 100;
 
-	     int coordX = i* 500 + 1600 ;
-//	     int coordX = Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho);
-	    // int coordX = coordXActual; //Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho);
-	     int coordY = 4*vista->getAltoEscenario()/5 - alto;
-	     coordXActual = coordXActual + 400;
+			 //int coordX = (Util::numeroRandom(((AnchoEscenario - 211)/cantidadpinche)/ (2*ancho)) * (2*ancho));
+			 //int coordX = Util::numeroRandom(7);
+			  int coordX = myvector.back();
+   		      myvector.pop_back();
+   		      debug(0, "ControlServidor::CreoPinche", "Creando pinche en Random: %d", coordX);
+			 coordX = (coordX * 500) + 200;
+			 debug(0, "ControlServidor::CreoPinche", "Creando pinche en pos X: %d", coordX);
 
-	     std::string rutaImagen = "images/Pinchos.png";
-	     int indexZ = 99;
+			  //Multiplos de 500
 
-	     debug(0, "ControlServidor::CreoPiedras", "Creando pinche en pos X: %d", coordX);
 
-	     Pinche* pinche = new Pinche(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
-	     pinche->setAlto(alto);
-	     pinche->setAncho(ancho);
-	     pinche->setCoorx(coordX);
-	     pinche->setCoory(coordY);
 
-	     this->pinche.push_back(pinche);
 
+			 debug(0, "ControlServidor::CreoPinches", "Creando pinche en pos Despues del Randon X: %d", coordX);
+
+
+			 int coordY = 4*vista->getAltoEscenario()/5 - alto;
+			 coordXActual = coordXActual + 400;
+
+			 std::string rutaImagen = "images/Pinchos.png";
+			 int indexZ = 99;
+
+
+
+			 Pinche* pinche = new Pinche(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+			 pinche->setAlto(alto);
+			 pinche->setAncho(ancho);
+			 pinche->setCoorx(coordX);
+			 pinche->setCoory(coordY);
+
+			 this->pinche.push_back(pinche);
+		}
 	}
 
 	list<Pinche*>:: iterator pos;
@@ -411,62 +441,24 @@ void ControlServidor::CreoPinche(){
 	}
 
 }
-void ControlServidor::CargarMatriz(int posX, int posY){
-
-	 for(int i=0; i<MAXCOLS; i++){
-		 for (int j=0; j<MAXFILAS; j++) {
-
-			 if((i == posX) && (j == posY)){
-				 mapa[i][j] = 1;
-			 }
 
 
-		 }
-	}
-}
-
-bool ControlServidor::buscarMatriz(int posX,int posY){
-
-	bool resultado;
-
-	for(int i=0; i<MAXCOLS; i++){
-		for (int j=0; j<MAXFILAS; j++) {
-
-			if((mapa[i][j] == 1)){
-
-				cout<<"La posicion esta ocuada"<<endl;
-				//resultado true;
-			}
-
-			else{
-//				CargarMatriz(int posX, int posY);
-				//resultado false;
-			}
-		}
-	}
-
-	return resultado;
-}
 
 void ControlServidor::CreoAnillas(){
-  srand(time(NULL));
+  //srand(Util::numeroRandom(100000));
  // int cantidadAnillas =(rand() % 10) + 1;
-  int cantidadAnillas = 15;
+  int cantidadAnillas = 10;
   //el alto del escenario es de 800 en el grande, lo saco de vista
   // el ancho del escenario es de 4000, lo saco tambien de vista.
+
+  //cout<<"IMPRIMO EL JSON PARA VER SI ESTA OK"<<endl;
+  //parseador->CargarMinimoAnillas();
 
   int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
   int AnchoEscenario = vista->obtenerAnchoEscenario();
   int coordXActual = 0;
 
-  /* cout<<"ALTOESCENARIO"<<endl;
 
-	int numero = 4*(vista->obtenerAltoEscenario())/5;
-	cout<<numero<<endl;
-
-	cout<<"OBTENER ANCHO"<<endl;
-	cout<<vista->obtenerAnchoEscenario()<<endl;
-	*/
 
 
    for(int i=0;i<cantidadAnillas;i++){
@@ -514,45 +506,72 @@ void ControlServidor::CreoAnillas(){
 
 
 void ControlServidor::CreoPiedras(){
-	//srand(time(NULL));
+
 	 // int cantidadPiedras = (rand() % 4) + 1;
 	 int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
 	  int AnchoEscenario = vista->obtenerAnchoEscenario();
 	  debug(0, "ControlServidor::CreoPiedras", "Creando piedras. Ancho Escenario: %d", vista->obtenerAnchoEscenario());
 
-	  int cantidadPiedras = 2;
-	  int coordXActual = 500;
+	 // aca iria lo del json minimo y maximo en valor original iria lo del json minimo.
+
+	// int valorminimo = this->ValidadValorMaximo(7,parseador->CargarMinimoAnillas);
+	//int cantidadPiedras =(rand() % parseador->CargarMaximoAnillas()) + valorminimo;
+
+
+	  int cantidadPiedras = 3;
+
+
+	  std::vector<int> myvector;
+	  // set some values:
+	  for (int i=1; i<=7; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
+	  std::random_shuffle ( myvector.begin(), myvector.end() );
+
+
 
 		for(int i=0;i<cantidadPiedras;i++){
-		  int	id = i;
-		  std::string color = "rojo";
-		  int ancho = 180;
-		  int alto = 140;
-		  //int coordX = i* 500 + 400 ;
-		  int coordX = i* 1000 + 400 ;
-		  //int coordX = coordXActual + Util::numeroRandom(3) * 500;
-				  //(Util::numeroRandom(((AnchoEscenario-400)/cantidadPiedras) / (2*ancho)) * (2*ancho));
-		  //Multiplos de 400
-		  //coordX = coordX - ((coordX)  % 400);
-		  int coordY = 4*vista->getAltoEscenario()/5 - alto;
+		  if (!myvector.empty()){
+  			  int	id = i;
+			  std::string color = "rojo";
+			  int ancho = 180;
+			  int alto = 140;
+			  //int coordX = i* 500 + 400 ;
 
-		  //coordXActual = coordXActual + ((AnchoEscenario-400)/cantidadPiedras);
-		  coordXActual = coordX;
+			//(Util::numeroRandom(((AnchoEscenario-400)/cantidadPiedras) / (2*ancho)) * (2*ancho));
+			  //Multiplos de 400
+			  //coordX = coordX - ((coordX)  % 400);
 
-		  debug(0, "ControlServidor::CreoPiedras", "Creando piedra en pos X: %d", coordX);
+			  //int coordX = //(Util::numeroRandom(((AnchoEscenario - 181)/cantidadPiedras)/ (2*ancho)) * (2*ancho));
+			  int coordX = myvector.back();
+			  myvector.pop_back();
 
-		  std::string rutaImagen = "images/piedra2.png";
-		  int indexZ = 99;
+					  //Util::numeroRandom(7);
+			  debug(0, "ControlServidor::CreoPiedras", "Creando piedra ranrom: %d", coordX);
+			  coordX = coordX * 500;
 
-		  Piedra* p = new Piedra(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
-		  p->setAlto(alto);
-		  p->setAncho(ancho);
-		  p->setCoorx(coordX);
-		  p->setCoory(coordY);
-	      p->setRuta("images/piedra2.png");
+			  //Multiplos de 300 y le sumo 300 por si me cae al principio...creo
+			  //coordX = coordX - ((coordX)  % 181) + 181 ;
 
-		  this->piedra.push_back(p);
+			  debug(0, "ControlServidor::CreoPiedras", "Creando piedra en pos Despues del Randon X: %d", coordX);
 
+
+			  int coordY = 4*vista->getAltoEscenario()/5 - alto;
+
+			  //coordXActual = coordX;
+
+			  debug(0, "ControlServidor::CreoPiedras", "Creando piedra en pos X: %d", coordX);
+
+			  std::string rutaImagen = "images/piedra2.png";
+			  int indexZ = 99;
+
+			  Piedra* p = new Piedra(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
+			  p->setAlto(alto);
+			  p->setAncho(ancho);
+			  p->setCoorx(coordX);
+			  p->setCoory(coordY);
+			  p->setRuta("images/piedra2.png");
+
+			  this->piedra.push_back(p);
+		  }
 		}
 
 		list<Piedra*>::iterator pos;
@@ -562,6 +581,21 @@ void ControlServidor::CreoPiedras(){
 	    	enviarATodos(mensaje);
 	    }
 }
+
+int ControlServidor::ValidadValorMaximo(int Defecto,int Original){
+
+	int resultado;
+
+    if (Original > 7){
+     resultado = Defecto;
+    }
+
+    else{
+    	resultado = Original;
+    }
+     return resultado;
+}
+
 void ControlServidor::chequearColicion(Colicion *colicion){
 
 	std::map<int, Personaje*>::iterator pos;
@@ -654,7 +688,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 			Personaje * cl2 = (*pos).second;
 
 			if(colicion->intersectaPinchePersonaje(pin,cl2)){
-              cout<<"COLICIONA PINCHE"<<endl;
+             // cout<<"COLICIONA PINCHE"<<endl;
               pin->interactuar(cl2);
 			}
 		}

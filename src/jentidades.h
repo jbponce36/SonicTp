@@ -61,6 +61,14 @@ public:
 	bool esValida();
 	string toString();
 
+	//minimo randon
+	int getMinimor();
+	void setMinimor(int Minimor);
+
+	//maximo random
+	int getMaximor();
+	void setMaximor(int Maximor);
+
 private:
 	int id;
 	std::string tipo;
@@ -72,6 +80,8 @@ private:
 	std::string ruta;
 	int index;
 	dimensiones* dim;
+	int minimor;
+	int maximor;
 	bool hasEnding (string const &fullString, string const &ending);
 	std::string intToString(int number);
 
