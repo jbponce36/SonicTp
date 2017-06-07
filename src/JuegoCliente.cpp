@@ -274,6 +274,7 @@ void JuegoCliente::iniciarJuego()
 }
 
 int JuegoCliente::elegirOpcionDeMenu(Logger *log){
+	this->vista->mostrarLogin(log);
 	return this->vista->mostraMenuInicial(log);
 }
 

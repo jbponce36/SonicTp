@@ -337,13 +337,109 @@ std::string VistaSDL::intToString(int number)
 	return oss.str();
 }
 
+
+
+string VistaSDL::mostrarLogin(Logger *logger){
+	this->log->addLogMessage("[MOSTRAR LOGIN] Iniciado.",2);
+	Textura fondoLogin = Textura();
+	Textura texturaUsuario = Textura();
+	Textura texturaBotonAceptar = Textura();
+	Textura texturaContrasenia = Textura();
+
+	fondoLogin.cargarImagen("images/imagenesMenu/botonesLogin/login2.png", "images/entidaddefault.png",this->renderizador, logger);
+	texturaUsuario.cargarImagen("images/imagenesMenu/botonesLogin/usuario2.png", "images/entidaddefault.png", this->renderizador, logger);
+	texturaContrasenia.cargarImagen("images/imagenesMenu/botonesLogin/contrasenia2.png", "images/entidaddefault.png", this->renderizador, logger);
+	texturaBotonAceptar.cargarImagen("images/imagenesMenu/botonesLogin/aceptar2.png", "images/entidaddefault.png", this->renderizador, logger);
+
+
+	bool salir = false;
+	SDL_Event e;
+	int seleccion = 0;
+	while( !salir ){
+	//manejar eventos en la cola
+		while( SDL_PollEvent( &e ) != 0 )
+		{
+			//cout<<e.key.keysym.sym<<endl;
+			if( e.type == SDL_QUIT )
+			{
+				salir = true;
+				seleccion = 2;
+				this->log->addLogMessage("[MOSTRAR LOGIN] Saliendo del login.",2);
+			}
+			else if((e.type == SDL_KEYDOWN) && (e.key.repeat == 0)){
+					switch (e.key.keysym.sym){
+						case SDLK_UP:
+							seleccion--;
+							if(seleccion<0){
+								seleccion = 2;
+							}
+						break;
+
+						case SDLK_DOWN:
+							seleccion++;
+							if(seleccion>2){
+								seleccion = 0;
+							}
+						break;
+
+						case SDLK_RETURN:
+							salir = true;
+						break;
+					}
+
+				}
+
+		}
+
+		SDL_Rect camara;
+		SDL_Rect imagenMostrar;
+
+		SDL_SetRenderDrawColor(this->obtenerRender(),0xff,0xff,0xff,0xff);
+		SDL_RenderClear(this->obtenerRender());
+
+		camara.x = 0;
+		camara.y = 0;
+		camara.w = fondoLogin.obtenerAnchoTextura();
+		camara.h = fondoLogin.obtenerAltoTextura();
+
+		imagenMostrar.x = 0;
+		imagenMostrar.y = 0;
+		//imagenMostrar.w = menuInicial->obtenerAnchoTextura();
+		//imagenMostrar.h = menuInicial->obtenerAltoTextura();
+		imagenMostrar.w = anchoVentana;
+		imagenMostrar.h = altoVentana;
+		fondoLogin.renderizar(&camara,&imagenMostrar);
+		camara.w = texturaUsuario.obtenerAnchoTextura();
+		camara.h = texturaUsuario.obtenerAltoTextura();
+		camara.x = 800;
+		camara.y = 700;
+		switch (seleccion){
+			case 0:
+			texturaUsuario.renderizar(&imagenMostrar,&camara);
+			break;
+
+			case 1:
+			texturaContrasenia.renderizar(&imagenMostrar,&camara);
+			break;
+
+			case 2:
+			texturaBotonAceptar.renderizar(&imagenMostrar,&camara);
+			break;
+		}
+
+		SDL_RenderPresent(this->renderizador);
+	}
+	return "";
+
+}
+
 int VistaSDL::mostraMenuInicial(Logger *logger){
 	this->log->addLogMessage("[MOSTRAR MENU INICIAL] Iniciado.",2);
 	Textura menuInicial = Textura();
 	Textura texturaConectar = Textura();
 	Textura texturaDesconectar = Textura();
 	Textura texturaSalir = Textura();
-	menuInicial.cargarImagen("images/imagenesMenu/login2.png", "images/entidaddefault.png",this->renderizador, logger);
+	menuInicial.cargarImagen("images/imagenesMenu/botonesLogin/login2.png", "images/entidaddefault.png",this->renderizador, logger);
 	texturaConectar.cargarImagen("images/imagenesMenu/conectar2.png", "images/entidaddefault.png", this->renderizador, logger);
 	texturaDesconectar.cargarImagen("images/imagenesMenu/desconectar2.png", "images/entidaddefault.png", this->renderizador, logger);
 	texturaSalir.cargarImagen("images/imagenesMenu/salir2.png", "images/entidaddefault.png", this->renderizador, logger);
@@ -385,6 +481,7 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 				}
 
 		}
+
 		SDL_Rect camara;
 		SDL_Rect imagenMostrar;
 

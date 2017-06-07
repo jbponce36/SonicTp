@@ -34,6 +34,7 @@
 #define ALTO_ESCENARIO_POR_DEFAULT 600
 #define MAX_ANCHO_VENTANA 1900
 #define MAX_ALTO_VENTANA 1000
+#define POS_USUARIO 700
 
 class VistaSDL{
 
@@ -79,6 +80,7 @@ public:
     SDL_Renderer *obtenerRender();
     int obtenerVelocidadDeScroll();
     void validacionesVentana();
+    string mostrarLogin(Logger *logger);
     int mostraMenuInicial(Logger *logger);
     void mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado);
     void mostrarServidorDesconectado();
