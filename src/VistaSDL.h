@@ -64,6 +64,7 @@ private:
     SDL_Color amarillo;
     vector <SDL_Color> colores;
     SDL_Color negro;
+    TTF_Font* fuente2;
 
 
 public:
@@ -111,6 +112,8 @@ public:
 	int getAnchoVentana();
 	void dibujarTextoColor(std::string texto, int posX, int posY,SDL_Color color);
 	void mostrarScoJueIndTodos(vector<Personaje*>*);
+	void dibujarTextoColorFuente(std::string texto, int posX, int posY,SDL_Color color,TTF_Font* fuente);
+	void mostrarScoJueIndTodosFinNiv(vector<Personaje*>* sonics);
 
 };
 

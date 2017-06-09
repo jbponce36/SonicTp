@@ -60,6 +60,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	colores.push_back(verde);
 	colores.push_back(amarillo);
 	negro = {0,0,0};
+	this->fuente2 = TTF_OpenFont("images/font_puntajes.ttf", 30);
 
 
 }
@@ -604,7 +605,7 @@ void VistaSDL::dibujarTextoColor(std::string texto, int posX, int posY,SDL_Color
 	//cout<<&fuente<<endl;
 	//cout<<&White<<endl;
 
-	this->superficieTexto = TTF_RenderUTF8_Shaded(fuente, texto.c_str(),color,negro);
+	this->superficieTexto = TTF_RenderUTF8_Shaded(fuente, texto.c_str(),color,White);
 	//SDL_Surface* textoCargado = TTF_RenderText_Blended(fuente, "PUNTAJES SONICS", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO22"<<endl;
 	this->texturaTexto = SDL_CreateTextureFromSurface(this->renderizador, superficieTexto);
@@ -637,7 +638,31 @@ void VistaSDL::dibujarTextoColor(std::string texto, int posX, int posY,SDL_Color
 	//cout<<"LLEGO ACA despues DIBUJAR PUNTOS"<<endl;
 
 }
+void VistaSDL::dibujarTextoColorFuente(std::string texto, int posX, int posY,SDL_Color color,TTF_Font* fuentee){
 
+
+	this->superficieTexto = TTF_RenderUTF8_Shaded(fuentee, texto.c_str(),color,negro);
+	this->texturaTexto = SDL_CreateTextureFromSurface(this->renderizador, superficieTexto);
+	SDL_Rect Message_rect;
+	int text_ancho = superficieTexto->w;
+	int text_alto = superficieTexto->h;
+
+	Message_rect.x = posX;
+	Message_rect.y = posY;
+	Message_rect.w = text_ancho;
+	Message_rect.h = text_alto;
+	SDL_Rect Mes;
+	Mes.x = 0;
+	Mes.y = 0;
+	Mes.w = 500;
+	Mes.h = 250;
+	SDL_RenderCopy(this->renderizador, texturaTexto, NULL, &Message_rect);
+	SDL_FreeSurface(superficieTexto);
+	if( texturaTexto != NULL )
+		{
+			SDL_DestroyTexture( texturaTexto );
+		}
+}
 void VistaSDL::mostrarScoJueIndTodos(vector<Personaje*>* sonics){
 
 		//std::vector<Personaje*>::iterator pos;
@@ -650,9 +675,9 @@ void VistaSDL::mostrarScoJueIndTodos(vector<Personaje*>* sonics){
 
 
 			//Personaje* personaje = (*Personaje) pos;
-			std::string textovidas = "VIDAS: " + Util::intToString(sonics->at(0)->getPuntos()->getVidas())+
-					"  ANILLOS: "+ Util::intToString(sonics->at(0)->getPuntos()->getCantAnillos())+
-					"  PUNTOS: " + Util::intToString(sonics->at(0)->getPuntos()->getPuntos());
+			std::string textovidas = "VIDAS: " + Util::intToString(sonics->at(indice)->getPuntos()->getVidas())+
+					"  ANILLOS: "+ Util::intToString(sonics->at(indice)->getPuntos()->getCantAnillos())+
+					"  PUNTOS: " + Util::intToString(sonics->at(indice)->getPuntos()->getPuntos());
 			this->dibujarTextoColor(textovidas,0,alto,colores.at(indice));
 			alto += 23;
 		}
@@ -663,3 +688,32 @@ void VistaSDL::mostrarScoJueIndTodos(vector<Personaje*>* sonics){
 	//std::string textoscore = "PUNTOS:" + Util::intToString(personaje->getPuntos()->getPuntos());
 	//this->dibujarTexto(textoscore,0,100);
 }
+
+void VistaSDL::mostrarScoJueIndTodosFinNiv(vector<Personaje*>* sonics){
+
+		//std::vector<Personaje*>::iterator pos;
+
+		//sonics->size();
+
+		int indice;
+		int alto = 150;
+
+		this->dibujarTextoColorFuente("PUNTAJES",200,50,White,fuente);
+		for (indice = 0; indice < sonics->size(); indice++) {
+
+
+			//Personaje* personaje = (*Personaje) pos;
+			std::string textovidas = "VIDAS: " + Util::intToString(sonics->at(indice)->getPuntos()->getVidas())+
+					"  ANILLOS: "+ Util::intToString(sonics->at(indice)->getPuntos()->getCantAnillos())+
+					"  PUNTOS: " + Util::intToString(sonics->at(indice)->getPuntos()->getPuntos());
+			this->dibujarTextoColorFuente(textovidas,200,alto,colores.at(indice),fuente);
+			alto += 33;
+		}
+
+
+	//std::string textoanillos = "ANILLOS:" + Util::intToString(personaje->getPuntos()->getCantAnillos());
+	//this->dibujarTexto(textoanillos,0,50);
+	//std::string textoscore = "PUNTOS:" + Util::intToString(personaje->getPuntos()->getPuntos());
+	//this->dibujarTexto(textoscore,0,100);
+}
+

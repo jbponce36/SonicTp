@@ -256,7 +256,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 					}
 					id++;
 				}
-				sleep(2);
+				sleep(3);
 		}
 	}
 }

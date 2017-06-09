@@ -339,7 +339,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 				this->admNiveles.pasarDeNivel();
 				this->admNiveles.cargarNivel(vista, sonic);
 			}
-			admNiveles.mostrarPunConPan(vista);
+			admNiveles.mostrarPunConPan(vista,sonics);
 			std::vector<Personaje*>::iterator poss;
 			for (poss = sonics->begin(); poss != sonics->end(); poss++) {
 				Personaje * cl2 = (*poss);
@@ -371,7 +371,9 @@ void Control::controlDeMensajes(Personaje* sonic,
 			std::vector<Personaje*>::iterator pos;
 			for (pos = sonics->begin(); pos != sonics->end(); pos++) {
 				if((*pos)->getId() == id ){
+
 					(*pos)->getPuntos()->setCantAnillos(anillos);
+					cout<<"ID:"<<(*pos)->getId()<<"ANILLOS  "<<(*pos)->getPuntos()->getCantAnillos()<<endl;
 				}
 			}
 
