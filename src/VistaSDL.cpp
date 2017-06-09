@@ -49,8 +49,17 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 
 	this->cargarCapas(jescenario);
 
-	this->fuente = TTF_OpenFont("images/arial.ttf", 44);
+	this->fuente = TTF_OpenFont("images/arial.ttf", 20);
 	this->White = {255, 255, 255,0};
+	this->azul = {26,26,227};
+	this->rojo = {202,15,15};
+	this->verde = {32,202,15};
+	this->amarillo = {173,202,12};
+	colores.push_back(azul);
+	colores.push_back(rojo);
+	colores.push_back(verde);
+	colores.push_back(amarillo);
+	negro = {0,0,0};
 
 
 }
@@ -587,3 +596,70 @@ int VistaSDL::getAnchoVentana(){
 	return this->anchoVentana;
 }
 
+void VistaSDL::dibujarTextoColor(std::string texto, int posX, int posY,SDL_Color color){
+
+
+	//TTF_SetFontStyle(fuente, TTF_STYLE_BOLD); //esto hace la letra en negrita
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO11"<<endl;
+	//cout<<&fuente<<endl;
+	//cout<<&White<<endl;
+
+	this->superficieTexto = TTF_RenderUTF8_Shaded(fuente, texto.c_str(),color,negro);
+	//SDL_Surface* textoCargado = TTF_RenderText_Blended(fuente, "PUNTAJES SONICS", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO22"<<endl;
+	this->texturaTexto = SDL_CreateTextureFromSurface(this->renderizador, superficieTexto);
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO33"<<endl;
+	SDL_Rect Message_rect;
+	//SDL_SetRenderDrawColor(this->renderizador, 0, 0, 0, 0);
+	//SDL_RenderClear(this->renderizador);
+	int text_ancho = superficieTexto->w;
+	int text_alto = superficieTexto->h;
+
+	Message_rect.x = posX;
+	Message_rect.y = posY;
+	Message_rect.w = text_ancho;
+	Message_rect.h = text_alto;
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO44"<<endl;
+	SDL_Rect Mes;
+	Mes.x = 0;
+	Mes.y = 0;
+	Mes.w = 500;
+	Mes.h = 250;
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO55"<<endl;
+	SDL_RenderCopy(this->renderizador, texturaTexto, NULL, &Message_rect);
+	SDL_FreeSurface(superficieTexto);
+	//VER Q LA TEXTURA FUE LIBERADA SI SE QUIERE ACCEDER A ELLA SE DEBE LIBARARLA DESPUES SINO TIRA
+	//VIOLACION DE SEGMENTO
+	if( texturaTexto != NULL )
+		{
+			SDL_DestroyTexture( texturaTexto );
+		}
+	//cout<<"LLEGO ACA despues DIBUJAR PUNTOS"<<endl;
+
+}
+
+void VistaSDL::mostrarScoJueIndTodos(vector<Personaje*>* sonics){
+
+		//std::vector<Personaje*>::iterator pos;
+
+		//sonics->size();
+
+		int indice;
+		int alto = 0;
+		for (indice = 0; indice < sonics->size(); indice++) {
+
+
+			//Personaje* personaje = (*Personaje) pos;
+			std::string textovidas = "VIDAS: " + Util::intToString(sonics->at(0)->getPuntos()->getVidas())+
+					"  ANILLOS: "+ Util::intToString(sonics->at(0)->getPuntos()->getCantAnillos())+
+					"  PUNTOS: " + Util::intToString(sonics->at(0)->getPuntos()->getPuntos());
+			this->dibujarTextoColor(textovidas,0,alto,colores.at(indice));
+			alto += 23;
+		}
+
+
+	//std::string textoanillos = "ANILLOS:" + Util::intToString(personaje->getPuntos()->getCantAnillos());
+	//this->dibujarTexto(textoanillos,0,50);
+	//std::string textoscore = "PUNTOS:" + Util::intToString(personaje->getPuntos()->getPuntos());
+	//this->dibujarTexto(textoscore,0,100);
+}

@@ -58,6 +58,12 @@ private:
     SDL_Color White;
     SDL_Surface* superficieTexto;
     SDL_Texture* texturaTexto;
+    SDL_Color azul;
+    SDL_Color rojo;
+    SDL_Color verde;
+    SDL_Color amarillo;
+    vector <SDL_Color> colores;
+    SDL_Color negro;
 
 
 public:
@@ -103,6 +109,8 @@ public:
 	SDL_Renderer* getRenderizador();
 	int getAltoVentana();
 	int getAnchoVentana();
+	void dibujarTextoColor(std::string texto, int posX, int posY,SDL_Color color);
+	void mostrarScoJueIndTodos(vector<Personaje*>*);
 
 };
 
