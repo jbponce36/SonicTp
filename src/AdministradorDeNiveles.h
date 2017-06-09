@@ -22,7 +22,7 @@ class AdministradorDeNiveles {
 		int getNivel();
 		bool EsUltimoNivel();
 		~AdministradorDeNiveles();
-		void mostrarPunConPan(VistaSDL*);
+		void mostrarPunConPan(VistaSDL*,vector<Personaje*>*);
 
 	private:
 		int nivelActual;

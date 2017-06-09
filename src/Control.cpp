@@ -339,7 +339,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 				this->admNiveles.pasarDeNivel();
 				this->admNiveles.cargarNivel(vista, sonic);
 			}
-			admNiveles.mostrarPunConPan(vista);
+			admNiveles.mostrarPunConPan(vista,sonics);
 			std::vector<Personaje*>::iterator poss;
 			for (poss = sonics->begin(); poss != sonics->end(); poss++) {
 				Personaje * cl2 = (*poss);
@@ -371,7 +371,9 @@ void Control::controlDeMensajes(Personaje* sonic,
 			std::vector<Personaje*>::iterator pos;
 			for (pos = sonics->begin(); pos != sonics->end(); pos++) {
 				if((*pos)->getId() == id ){
+
 					(*pos)->getPuntos()->setCantAnillos(anillos);
+					cout<<"ID:"<<(*pos)->getId()<<"ANILLOS  "<<(*pos)->getPuntos()->getCantAnillos()<<endl;
 				}
 			}
 
@@ -481,7 +483,7 @@ void Control::parsearMensajePosicion(mensajePosicion& msj,
 void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 		SDL_Rect *imagenMostrar, Personaje *sonic) {
 	admNiveles.mostrarNivel(camara, vista, imagenMostrar);
-	vista->mostrarScoJueInd(sonic);
+	vista->mostrarScoJueIndTodos(sonics);
 	//TTF_Font* fuente = TTF_OpenFont("images/NotoSansCJK-Black.ttc", 40);
 	//SDL_Color textColor = { 0, 0, 0, 0xFF };
 	//textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;
