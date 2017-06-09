@@ -55,6 +55,14 @@ int Util::numeroRandom(int hasta)
 	return (rand() % hasta) + 1;
 }
 
+int Util::numeroRandomEntre(int desde, int hasta)
+{
+	//Genera un numero random de 1 hasta 'hasta'
+	//Precondiciones: Inicializar semilla una vez antes de llamarlo
+	return (rand() % (hasta - desde + 1)) + desde;
+}
+
+
 void Util::dibujarRecuadro(SDL_Rect *entidad, SDL_Renderer *renderizador, SDL_Rect *camara)
 {
 	SDL_SetRenderDrawColor(renderizador, 0, 0, 0, 255);

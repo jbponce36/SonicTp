@@ -40,7 +40,7 @@ public:
 	void dibujar(SDL_Renderer *renderer, SDL_Rect *camara);
 	std::string intToStringConPadding(int number);
 	std::string obtenerMensajeEstado();
-	virtual void interactuar(Personaje *sonic);
+	virtual void interactuar(Personaje *sonic, bool &fueHerido);
 
 
 private:

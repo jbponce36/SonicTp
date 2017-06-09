@@ -20,6 +20,8 @@
 #include <iostream>   // std::cout
 #include <string>     // std::string, std::to_string
 #include <sstream>
+#include "debug.h"
+
 
 #define SSTR( x ) dynamic_cast< std::ostringstream & >( \
             ( std::ostringstream() << std::dec << x ) ).str()
@@ -58,6 +60,7 @@ parseadorJson::parseadorJson() {
 	// TODO Auto-generated constructor stub
 	//jconexion conexion2 = *conexion2.getinstance();
 	//this->raiz = NULL;
+
 }
 
 parseadorJson::parseadorJson(Logger *log) {
@@ -485,7 +488,12 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
         jconfiguracion *config = cargarConfiguracion(json);
         jescenario *escenario = cargarEscenario(json);
         jservidor* servidor = this->cargarServidor(json);
-
+        janillos* anillo = cargarRandonAnillos(json);
+        jpiedra* piedra = cargarRandonPiedras(json);
+        jpinche* pinche = cargarRandonPinche(json);
+        jcangrejo* cangrejo = cargarRandonCangrejo(json);
+        jmosca* mosca = cargarRandonMosca(json);
+        jpescado* pescado = cargarRandonPescado(json);
 
         jescenarioJuego *result = new jescenarioJuego();
 
@@ -493,7 +501,14 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
         result->setVentana(ventana);
         result->setEscenario(escenario);
         result->setConfiguracion(config);
+        result->setAnillo(anillo);
+        result->setPiedra(piedra);
+        result->setPinche(pinche);
+        result->setCangrejo(cangrejo);
+        result->setMosca(mosca);
+        result->setPescado(pescado);
         result->setServidor(servidor);
+
         this->setraiz(json);
 
         validarDimensionesVentana(result);
@@ -664,56 +679,109 @@ int parseadorJson::CargarCantClientes(){
 	return cantclientes;
 }
 
+janillos* parseadorJson::cargarRandonAnillos(json_t* raiz){
 
+  json_t *jsonanillos;
+  json_t *jsonminimo;
+  json_t *jsonmaximo;
 
-int parseadorJson::CargarMaximoAnillas(){
+  jsonanillos = json_object_get(raiz, "anillos");
 
-	json_t* padre;
-	json_t *jsonanillos;
-	json_t *jsonmaximo;
+  jsonminimo = json_object_get(jsonanillos,"minimo");
+  jsonmaximo = json_object_get(jsonanillos,"maximo");
 
+  janillos *janillo = new janillos();
 
-	padre = this->getraiz();
-
-	jsonanillos = json_object_get(padre, "anillos");
-	jsonmaximo = json_object_get(jsonanillos,"maximo");
-
-	return json_number_value(jsonmaximo);
-
+  janillo->setMaximoran(json_number_value(jsonmaximo));
+  janillo->setMinimoran(json_number_value(jsonminimo));
 
 }
 
-int parseadorJson::CargarMinimoAnillas(){
+jpiedra* parseadorJson::cargarRandonPiedras(json_t* raiz){
 
-	/*json_t *json;
-	json_error_t error;
+  json_t *jsonpiedra;
+  json_t *jsonminimo;
+  json_t *jsonmaximo;
 
-	json_t *jsonanillos;
-	json_t *jsonminimo;
+  jsonpiedra = json_object_get(raiz, "piedras");
 
-	json = json_load_file("configuracion/configuracion.json",0,&error);
+  jsonminimo = json_object_get(jsonpiedra,"minimo");
+  jsonmaximo = json_object_get(jsonpiedra,"maximo");
 
-	jsonanillos = json_object_get(json, "anillos");
-	jsonminimo = json_object_get(jsonanillos,"minimo");
+  jpiedra *piedra = new jpiedra();
 
-	return json_number_value(jsonminimo);
+  piedra->setMaximoran(json_number_value(jsonmaximo));
+  piedra->setMinimoran(json_number_value(jsonminimo));
 
-	*/
+}
 
-	json_t *padre;
-	json_t *jsonanillos;
-	json_t *jsonminimo;
+jpinche* parseadorJson::cargarRandonPinche(json_t* raiz){
 
-    padre = this->getraiz();
+ json_t *jsonpinche;
+ json_t *jsonminimo;
+ json_t *jsonmaximo;
 
-	jsonanillos = json_object_get(padre, "anillos");
+ jsonpinche = json_object_get(raiz, "pinches");
 
-    jsonminimo = json_object_get(jsonanillos,"minimo");
+ jsonminimo = json_object_get(jsonpinche,"minimo");
+ jsonmaximo = json_object_get(jsonpinche,"maximo");
 
-	return json_number_value(jsonminimo);
+ jpinche *pinche = new jpinche();
 
+ pinche->setMaximoran(json_number_value(jsonmaximo));
+ pinche->setMinimoran(json_number_value(jsonminimo));
 
+}
 
+jcangrejo* parseadorJson::cargarRandonCangrejo(json_t* raiz){
+
+  json_t *jsoncangrejo;
+  json_t *jsonminimo;
+  json_t *jsonmaximo;
+
+  jsoncangrejo = json_object_get(raiz, "cangrejo");
+
+  jsonminimo = json_object_get(jsoncangrejo,"minimo");
+  jsonmaximo = json_object_get(jsoncangrejo,"maximo");
+
+  jcangrejo *cangrejo = new jcangrejo();
+
+  cangrejo->setMaximoran(json_number_value(jsonmaximo));
+  cangrejo->setMinimoran(json_number_value(jsonminimo));
+
+}
+jmosca* parseadorJson::cargarRandonMosca(json_t* raiz){
+
+  json_t *jsonmosca;
+  json_t *jsonminimo;
+  json_t *jsonmaximo;
+
+  jsonmosca = json_object_get(raiz, "mosca");
+
+  jsonminimo = json_object_get(jsonmosca,"minimo");
+  jsonmaximo = json_object_get(jsonmosca,"maximo");
+
+  jmosca *mosca = new jmosca();
+
+   mosca->setMaximoran(json_number_value(jsonmaximo));
+   mosca->setMinimoran(json_number_value(jsonminimo));
+}
+
+jpescado* parseadorJson::cargarRandonPescado(json_t* raiz){
+
+  json_t *jsonpescado;
+  json_t *jsonminimo;
+  json_t *jsonmaximo;
+
+  jsonpescado = json_object_get(raiz, "pescado");
+
+  jsonminimo = json_object_get(jsonpescado,"minimo");
+  jsonmaximo = json_object_get(jsonpescado,"maximo");
+
+  jpescado *pescado = new jpescado();
+
+  pescado->setMaximoran(json_number_value(jsonmaximo));
+  pescado->setMinimoran(json_number_value(jsonminimo));
 }
 
 jservidor* parseadorJson::cargarServidor(json_t* raiz){
@@ -750,6 +818,7 @@ jservidor* parseadorJson::cargarServidor(json_t* raiz){
 
 
 json_t* parseadorJson::getraiz(){
+	debug(0,"parseadorJson::getraiz", "La raiz es %d", 0);
 	return raiz;
 }
 

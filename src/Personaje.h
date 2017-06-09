@@ -107,6 +107,9 @@ class Personaje
 		void dejarDeSaltar();
 		void correr(bool estaCorriendo);
 		void resbalar(Orientacion haciaDonde);
+		void rebotar();
+		void herir();
+
 		void irArriba();
 		void irAbajo();
 		void irIzquierda();
@@ -132,6 +135,7 @@ class Personaje
 
 		void enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje);
 		std::string obtenerMensajeEstado();
+		std::string obtenerMensajeEstadoBonus();
 		Puntaje* getPuntaje();
 		void setPuntaje(Puntaje* puntaje);
 		Puntos* getPuntos();

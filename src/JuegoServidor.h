@@ -22,6 +22,7 @@
 #include <vector>
 #include <map>
 
+
 class JuegoServidor {
 
 private:
@@ -37,8 +38,10 @@ private:
 	bool &juegoTerminado;
 	int velocidad;
 	int altoEscenario;
+	jescenarioJuego* escenario;
 
 public:
+
 	JuegoServidor(ConexServidor *server, std::vector<Hiloenviar*> &hiloEnviar,
 			std::vector<Hilorecibir*> &hiloRecibir, Logger *log, bool &juegoTerminado);
 	virtual ~JuegoServidor();
@@ -48,6 +51,7 @@ public:
 	void enviarATodosLosClientes(std::string mensaje);
 	int obtenerIdLibre();
 	void reconectar(int socket);
+
 
 private:
 	static void* iniciarJuegoServidor(void *datos);

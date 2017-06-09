@@ -94,7 +94,6 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 
 				cout<<"LLEGA"<<endl;
 
-				//srand(time(NULL));
 				int cantidadAnillas = (rand() % 4) + 1;
 
 				debug(1, "ConstructorEntidades::cargarEntidadess", "Cordenada X %d\n", (*pos).getcoorx());
@@ -467,18 +466,16 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 		std::string color, std::string rutaImagen, int indexZ, int minimor,int maximor)
 {
 	//Genera bonus en posiciones y cantidades aleatorias
-	//srand(Util::numeroRandom(100000));
+
 	//Agrego bonus de Escudo
 
   //tengo que reemplazar el numero random por lo que leeo del json.....
 	int cantidadBonus =(rand() % maximor) + minimor;
+	//int cantidadBonus = 5;
 
     cout<<"CANTIDAD DE BONUS GENERADOS"<<endl;
     cout<<cantidadBonus<<endl;
 
-
-	//int cantidadBonus = 2;
-		//Util::numeroRandom(3);
 	int y = limiteAlto - alto;
 
 	int coordXActual = 2200;
@@ -499,7 +496,7 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 			  int x = myvector.back();
  		      myvector.pop_back();
 
-			x = x * 500 + 400;
+			x = x * 1000 + 700;
 			debug(0, "ConstructorEntidades::generarBonus", "Creando escudo en pos X: %d", x);
 			Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::ESCUDO);
 			entidades.push_back(nuevoBonus);
@@ -508,7 +505,7 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 	}
 
 	//Agrego bonus de Anillos
-	cantidadBonus = 2;
+	//cantidadBonus = 2;
 			//Util::numeroRandom(3);
 	for(int i = 0; i < cantidadBonus; i++)
 	{
@@ -516,7 +513,7 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 		  int x = myvector.back();
 	      myvector.pop_back();
 
-			x = x * 500 + 400;
+			x = x * 1000 + 700;
 
 			debug(0, "ConstructorEntidades::generarBonus", "Creando Anillo en pos X: %d", x);
 					//+ Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
@@ -527,7 +524,7 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 	}
 
 	//Agrego bonus de Invencibilidad
-	cantidadBonus = 2;
+	//cantidadBonus = 2;
 			//Util::numeroRandom(3);
 
 	for(int i = 0; i < cantidadBonus; i++)
@@ -536,7 +533,7 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 		  int x = myvector.back();
 	      myvector.pop_back();
 
-	      x = x * 500 + 400;
+	      x = x * 1000 + 700;
 
 			debug(0, "ConstructorEntidades::generarBonus", "Creando invencibiilidad en pos X: %d", x);
 					//Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);

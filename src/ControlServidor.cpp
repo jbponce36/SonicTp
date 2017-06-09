@@ -217,7 +217,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		//Mueve la camara segun los sonics
 		camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
 
-		if((*pos).second->getPosicionX() >= 3750)
+		if((*pos).second->getPosicionX() + (*pos).second->getAncho() >= vista->obtenerAnchoEscenario())
 		{
 			this->pasarNivel =true;
 		}
@@ -320,8 +320,6 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	//Una Sola vez
     int semilla = time(NULL);
 	debug(0, "ControlServidor::ControlarJuegoServidor", "Semilla Usada: %d", semilla);
-	srand(semilla);
-
 
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Iniciado.", 2);
 
@@ -374,19 +372,18 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
 }
 void ControlServidor::CreoPinche(){
-	//int semilla = time(NULL);
-	//debug(0, "ControlServidor::CreoPinche", "Semilla Usada: %d", semilla);
-	//srand(semilla);
 
-//	srand(Util::numeroRandom(100000));
-	int cantidadpinche = 3;
+	int cantidadpinche = (rand() % this->getJpin()->getMaximoran()) + this->getJpin()->getMinimoran();
+
+	cout<<"CANTIDAD DE PINCHES"<<endl;
+    cout<<cantidadpinche<<endl;
 
 	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
 	int AnchoEscenario = vista->obtenerAnchoEscenario();
 	int coordXActual = 1500;
 
 	  std::vector<int> myvector;
-	  // set some values:
+
 	  for (int i=0; i<=7; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
 	  std::random_shuffle ( myvector.begin(), myvector.end() );
 
@@ -403,16 +400,16 @@ void ControlServidor::CreoPinche(){
 			 //int coordX = Util::numeroRandom(7);
 			  int coordX = myvector.back();
    		      myvector.pop_back();
-   		      debug(0, "ControlServidor::CreoPinche", "Creando pinche en Random: %d", coordX);
-			 coordX = (coordX * 500) + 200;
-			 debug(0, "ControlServidor::CreoPinche", "Creando pinche en pos X: %d", coordX);
+   		     // debug(0, "ControlServidor::CreoPinche", "Creando pinche en Random: %d", coordX);
+			  coordX = (coordX * 1000) + 400;
+			// debug(0, "ControlServidor::CreoPinche", "Creando pinche en pos X: %d", coordX);
 
 			  //Multiplos de 500
 
 
 
 
-			 debug(0, "ControlServidor::CreoPinches", "Creando pinche en pos Despues del Randon X: %d", coordX);
+			 //debug(0, "ControlServidor::CreoPinches", "Creando pinche en pos Despues del Randon X: %d", coordX);
 
 
 			 int coordY = 4*vista->getAltoEscenario()/5 - alto;
@@ -442,24 +439,25 @@ void ControlServidor::CreoPinche(){
 
 }
 
+void ControlServidor::setEscenarioJuego(jescenarioJuego* esc)
+{
+  this->parseador = esc;
+}
+
+jescenarioJuego* ControlServidor::getEscenarioJuego(){
+	this->parseador;
+}
 
 
 void ControlServidor::CreoAnillas(){
-  //srand(Util::numeroRandom(100000));
- // int cantidadAnillas =(rand() % 10) + 1;
-  int cantidadAnillas = 10;
-  //el alto del escenario es de 800 en el grande, lo saco de vista
-  // el ancho del escenario es de 4000, lo saco tambien de vista.
 
-  //cout<<"IMPRIMO EL JSON PARA VER SI ESTA OK"<<endl;
-  //parseador->CargarMinimoAnillas();
+  int cantidadAnillas = (rand() % this->getAnill()->getMaximoran()) + this->getAnill()->getMinimoran();
+  debug(0,"ControlServidor::CreoAnillas","CANTIDAD ANILLAS RANDOM %d", cantidadAnillas);
 
   int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
   int AnchoEscenario = vista->obtenerAnchoEscenario();
+
   int coordXActual = 0;
-
-
-
 
    for(int i=0;i<cantidadAnillas;i++){
 
@@ -468,9 +466,6 @@ void ControlServidor::CreoAnillas(){
 	  int ancho = 64;
 	  int alto = 64;
 
-
-
-	 //this->BuscarMatriz(Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho),300);
 
 	  int coordX = coordXActual + Util::numeroRandom((AnchoEscenario / cantidadAnillas)/(2*ancho)) * (2*ancho);
 	  coordXActual = coordXActual + AnchoEscenario / cantidadAnillas;
@@ -507,19 +502,13 @@ void ControlServidor::CreoAnillas(){
 
 void ControlServidor::CreoPiedras(){
 
-	 // int cantidadPiedras = (rand() % 4) + 1;
 	 int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
-	  int AnchoEscenario = vista->obtenerAnchoEscenario();
-	  debug(0, "ControlServidor::CreoPiedras", "Creando piedras. Ancho Escenario: %d", vista->obtenerAnchoEscenario());
+	 int AnchoEscenario = vista->obtenerAnchoEscenario();
 
-	 // aca iria lo del json minimo y maximo en valor original iria lo del json minimo.
-
-	// int valorminimo = this->ValidadValorMaximo(7,parseador->CargarMinimoAnillas);
-	//int cantidadPiedras =(rand() % parseador->CargarMaximoAnillas()) + valorminimo;
-
-
-	  int cantidadPiedras = 3;
-
+	 int cantidadPiedras = Util::numeroRandomEntre(this->getJpied()->getMinimoran(), this->getJpied()->getMaximoran());
+	 debug(0,"ControlServidor::CreoPiedras","Minimo Random %d", this->getJpied()->getMinimoran());
+	 debug(0,"ControlServidor::CreoPiedras","Maximo Random %d", this->getJpied()->getMaximoran());
+	 debug(0,"ControlServidor::CreoPiedras","Valor Random %d", cantidadPiedras);
 
 	  std::vector<int> myvector;
 	  // set some values:
@@ -527,6 +516,7 @@ void ControlServidor::CreoPiedras(){
 	  std::random_shuffle ( myvector.begin(), myvector.end() );
 
 
+	  int cantidadPiedrasMostradas = 0;
 
 		for(int i=0;i<cantidadPiedras;i++){
 		  if (!myvector.empty()){
@@ -546,7 +536,7 @@ void ControlServidor::CreoPiedras(){
 
 					  //Util::numeroRandom(7);
 			  debug(0, "ControlServidor::CreoPiedras", "Creando piedra ranrom: %d", coordX);
-			  coordX = coordX * 500;
+			  coordX = coordX * 1000;
 
 			  //Multiplos de 300 y le sumo 300 por si me cae al principio...creo
 			  //coordX = coordX - ((coordX)  % 181) + 181 ;
@@ -571,8 +561,12 @@ void ControlServidor::CreoPiedras(){
 			  p->setRuta("images/piedra2.png");
 
 			  this->piedra.push_back(p);
+
+			  cantidadPiedrasMostradas++;
 		  }
 		}
+
+		debug(0, "ControlServidor::CreoPiedras", "Cantidad de Piedras Mostradas: %d", cantidadPiedrasMostradas);
 
 		list<Piedra*>::iterator pos;
 	    for(pos = this->piedra.begin();pos!=this->piedra.end();pos++){
@@ -605,7 +599,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
-		Personaje * cl2 = (*pos).second;
+		Personaje *sonic = (*pos).second;
 		//this->constructorEntidades->anillos.
 		//Por cada sonic, fijarse si se intersecta con alguna de las cosas...?
 		int numeroAnilla  = 0;
@@ -628,43 +622,34 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 			}
 
 		}
-		 for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
-			 Anillos *cls = (*posanillo);
 
-			 Personaje * cl2 = (*pos).second;
+		for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
+			Anillos *cls = (*posanillo);
+			if (colicion->intersectaAnilloPersonaje(cls, sonic)){
+				debug(1,"ControlServidor::chequearColicion","Colision con anilla NUMEROANILLA %d",numeroAnilla);
+				std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(numeroAnilla);
 
-			  if (colicion->intersectaAnilloPersonaje(cls, cl2)){
-
-
-				   debug(1,"ControlServidor::chequearColicion","Colision con anilla NUMEROANILLA %d",numeroAnilla);
-				   std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(numeroAnilla);
-
-
-				   //debug(1,"ControlServidor::chequearColicion","Colision con anilla GETID %d",cls->getId());
-				   //std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(cls->getId());
+				//debug(1,"ControlServidor::chequearColicion","Colision con anilla GETID %d",cls->getId());
+				//std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(cls->getId());
 
 
-				   this->enviarATodos(mensaje);
-				   colisionada = (*posanillo);
-				   //aca se le suma un anillo al sonic q lo agarro y se le envia a todos los sonics el mensaje
+				this->enviarATodos(mensaje);
+				colisionada = (*posanillo);
+				//aca se le suma un anillo al sonic q lo agarro y se le envia a todos los sonics el mensaje
 
-				   cl2->getPuntos()->sumarXanillos(1);
-				   enviarATodos(cl2->getPuntos()->obtenerMensajeEstadoAnillos(cl2->getId()));
+				sonic->getPuntos()->sumarXanillos(1);
+				enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
 
-			  }
-			  numeroAnilla++;
-
-		 }
+			}
+			numeroAnilla++;
+		}
 
 		if (colisionada != NULL){
 			this->anillos.remove(colisionada);
-
 		}
 
         //PIEDRA
 		bool huboColision = false;
-		Personaje *sonic = (*pos).second;
-
 		for(pospiedra = this->piedra.begin();pospiedra!= this->piedra.end();pospiedra++){
 
 			Piedra *pdra = (*pospiedra);
@@ -680,16 +665,21 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 			//El tipo se deberia poder seguir moviendo
 		}
 
-	//PINCHE
-
+		//PINCHE
 		for(pospinche = this->pinche.begin(); pospinche!= this->pinche.end();pospinche++){
 
 			Pinche *pin = (*pospinche);
-			Personaje * cl2 = (*pos).second;
+			bool fueHerido = false;
+			if(colicion->intersectaPinchePersonaje(pin,sonic)){
+              pin->interactuar(sonic, fueHerido);
+			}
 
-			if(colicion->intersectaPinchePersonaje(pin,cl2)){
-             // cout<<"COLICIONA PINCHE"<<endl;
-              pin->interactuar(cl2);
+
+			if (fueHerido){
+				enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
+				enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoVidas(sonic->getId()));
+				enviarATodos(sonic->obtenerMensajeEstadoBonus());
+
 			}
 		}
 
@@ -782,4 +772,51 @@ void ControlServidor::verificarDuracionBonus(Personaje *sonic)
 	}
 }
 
+janillos* ControlServidor::getAnill(){
+		return anill;
+}
 
+void ControlServidor::setAnill(janillos* Anill) {
+		this->anill = Anill;
+}
+
+jpiedra* ControlServidor::getJpied(){
+	return jpied;
+}
+
+void ControlServidor::setJpied(jpiedra* Jpied) {
+	this->jpied = Jpied;
+
+}
+
+jpinche* ControlServidor::getJpin(){
+	return jpin;
+}
+
+void ControlServidor::setJpin(jpinche* Jpin) {
+		this->jpin = Jpin;
+}
+
+jcangrejo* ControlServidor::getJcang() {
+		return jcang;
+}
+
+void ControlServidor::setJcang(jcangrejo* Jcang) {
+		this->jcang = Jcang;
+}
+
+jmosca*  ControlServidor::getJmos(){
+	return jmos;
+}
+
+void ControlServidor::setJmos(jmosca* Jmos) {
+	this->jmos = Jmos;
+}
+
+jpescado* ControlServidor::getJpes(){
+	return jpes;
+}
+
+void ControlServidor::setJpes(jpescado* Jpes) {
+	this->jpes = Jpes;
+}
