@@ -65,6 +65,8 @@ public:
     list<int> getListaClientes();
     void setListaClientes(list<int>);
 
+    void quitarCliente(int sock);
+
 private:
 	int sock_recep;
 	//ConexCliente cliente; // luego va a ser una lista

@@ -31,6 +31,8 @@
 #define TECLA_IZQUIERDA_PRESIONADA 	"TlP"
 #define TECLA_CORRER_PRESIONADA 	"TcP"
 
+#define TECLA_INMORTAL_PRESIONADA	"TiP"
+
 #define TECLA_ARRIBA_LIBERADA	 	"TuL"
 #define TECLA_ABAJO_LIBERADA 		"TdL"
 #define TECLA_DERECHA_LIBERADA 		"TrL"
@@ -41,6 +43,7 @@
 #define MENSAJE_POSICION			"POS"
 #define MENSAJE_DESCONEXION_CLIENTE	"DES"
 #define MENSAJE_ID					"IDi"
+#define MENSAJE_PERDIO_JUGADOR		"LOS"
 
 //Mensajes de entidades empiezan con E
 #define ANILLOS                     "EA"

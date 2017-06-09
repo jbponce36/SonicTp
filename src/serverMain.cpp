@@ -174,7 +174,7 @@ int main(int argc, char *argv[]) {
 			}
 			else{
 				cout<<"reconectar"<<endl;
-				juego->reconectar(skt);
+				juego->reconectar(skt, server);
 			}
 	    }
 

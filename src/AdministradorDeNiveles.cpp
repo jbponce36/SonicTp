@@ -58,7 +58,7 @@ AdministradorDeNiveles::~AdministradorDeNiveles(){
 
 }
 
-void AdministradorDeNiveles::mostrarPunConPan(VistaSDL* vista){
+void AdministradorDeNiveles::mostrarPunConPan(VistaSDL* vista,vector<Personaje*>*personajes){
 
 	// ACA CARGAMOS LA PANTALLA DE PUNTOS
 		this->pantallaPuntos = new Textura();
@@ -104,8 +104,9 @@ void AdministradorDeNiveles::mostrarPunConPan(VistaSDL* vista){
 			break;
 		}
 		*/
+		vista->mostrarScoJueIndTodosFinNiv(personajes);
 
 		SDL_RenderPresent(vista->getRenderizador());
 
-		sleep(2);
+		sleep(3);
 }

@@ -52,6 +52,7 @@ private:
 	VistaSDL *vista;
 	ConexServidor *server;
 	Logger *log;
+
 	jescenarioJuego* parseador;
     janillos* anill;
     jpiedra* jpied;
@@ -59,6 +60,7 @@ private:
     jcangrejo* jcang;
     jmosca* jmos;
     jpescado* jpes;
+
 
 	bool pasarNivel;
 	bool colpiedra;
@@ -126,6 +128,7 @@ public:
 
 	int ValidadValorMaximo(int Defecto,int Original);
 
+
 	janillos* getAnill();
 	void setAnill(janillos* Anill);
 
@@ -146,11 +149,17 @@ public:
 
 private:
 
+
+	void gameOverJugador(int idDesconectado);
+
+private:
+
 	void administrarTeclasServidor();
 	ControlServidor::mensajeRecibido parsearMensajePosicion(std::string mensaje);
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor(Camara *camara);
 	void verificarDuracionBonus(Personaje* sonic);
+	void volverInmortalesTodosLosSonics();
 	std::string intToString(int number);
 
 };
