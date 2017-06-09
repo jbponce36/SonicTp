@@ -360,4 +360,17 @@ void ConexServidor::comenzarPartida(std::vector<Hiloenviar*> &hrEnviar)
 	this->log->addLogMessage("[COMENZAR PARTIDA] Terminado. \n",2);
 }
 
+void ConexServidor::quitarCliente(int sock)
+{
+	this->cantclientes = this->cantclientes - 1;
+	this->listaClientes.remove(sock);
+
+	const char* mensaje = "Conex rechazada$";
+	this->log->addLogMessage("[ACEPTAR] Error, conexion rechazada. No se pudo aceptar un nuevo cliente en el puerto "+
+	    			intToString(puerto)+"ya estan conectados la maxima cantidad de clientes posible :"+intToString(this->cantMaximaClientes),1);
+	send(sock, mensaje, strlen(mensaje), MSG_DONTWAIT);
+	close(sock);
+
+}
+
 }//Namespace

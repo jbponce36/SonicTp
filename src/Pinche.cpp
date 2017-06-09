@@ -176,7 +176,7 @@ void Pinche::interactuar(Personaje *sonic, bool &fueHerido){
 		int diferenciaY = limitesSonic.y + limitesSonic.h - limitesPinche.y;
 		sonic->posicionarseEn(sonic->getPosicionX(), sonic->getPosicionY()- diferenciaY);
 
-		sonic->herir();
+		//sonic->herir();
 		fueHerido = true;
 		sonic->rebotar();
 		return;

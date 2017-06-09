@@ -407,6 +407,21 @@ void Control::controlDeMensajes(Personaje* sonic,
 				}
 			}
 		}
+		else if(mensaje.substr(0, 3) == MENSAJE_PERDIO_JUGADOR)
+		{
+			int idPerdedor = atoi(mensaje.substr(3, 1).c_str());
+			if(idPerdedor == sonic->getId())
+			{
+				//Perdio este jugador
+				printf("Game Over. Cerrando el juego...\n");
+				this->salir = true;
+			}
+			else
+			{
+				//Perdio otro jugador
+				sonics->at(idPerdedor - 1)->dejarDeEstarVivo();
+			}
+		}
 		else {
 			//Otros mensajes
 			//cout << mensaje << endl;
@@ -494,12 +509,16 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 
 	//dibujo todos los sonics
 	std::vector<Personaje*>::iterator pos;
-	for (pos = sonics->begin(); pos != sonics->end(); pos++) {
-		(*pos)->render(camara->getPosicionX(), camara->getPosicionY());
+	for (pos = sonics->begin(); pos != sonics->end(); pos++)
+	{
+		if((*pos)->sigueVivo())
+		{
+			(*pos)->render(camara->getPosicionX(), camara->getPosicionY());
 
-		//Dibujar cuadrado sonic
-		SDL_Rect limites = (*pos)->obtenerLimites();
-		Util::dibujarRecuadro(&limites, vista->obtenerRender(), camara->devolverCamara());
+			//Dibujar cuadrado sonic
+			SDL_Rect limites = (*pos)->obtenerLimites();
+			Util::dibujarRecuadro(&limites, vista->obtenerRender(), camara->devolverCamara());
+		}
 	}
 
 	this->animarAnilla(camara, vista);

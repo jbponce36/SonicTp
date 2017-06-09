@@ -19,6 +19,7 @@
 #define REGULADOR_ALTURA_SALTO 0.05 //Regula la altura del salto (Es como un "promedio" de tiempoDeJuego)
 
 class Puntaje;
+class ControlServidor;
 
 class Personaje
 {
@@ -73,6 +74,7 @@ class Personaje
 		bool esInmortal; //No pierde la ultima vida pero pierde vidas y anillos.
         bool colisionando;
         bool resbalando;
+        bool estaVivo;
 		time_t tiempoInicioInvencible;
 
 		Logger *log;
@@ -108,7 +110,7 @@ class Personaje
 		void correr(bool estaCorriendo);
 		void resbalar(Orientacion haciaDonde);
 		void rebotar();
-		void herir();
+		void herir(ControlServidor *control);
 
 		void irArriba();
 		void irAbajo();
@@ -129,7 +131,8 @@ class Personaje
 		bool estaCongelado();
 		bool estaParado();
 		bool estaAtacando();
-		bool estaMirandoIzquierda();
+		bool sigueVivo();
+		void dejarDeEstarVivo();
 
 		SDL_Rect obtenerLimites();
 
@@ -147,6 +150,7 @@ class Personaje
 		void dejarDeSerInvencible();
 		bool sigueSiendoInvencible();
 		bool agarroBonusInvencible();
+		void serInmortalODejarDeSerlo();
 };
 
 #endif

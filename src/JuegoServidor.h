@@ -47,7 +47,7 @@ public:
 	void terminarHiloJuego();
 	void enviarATodosLosClientes(std::string mensaje);
 	int obtenerIdLibre();
-	void reconectar(int socket);
+	void reconectar(int socket, ConexServidor *servidor);
 
 private:
 	static void* iniciarJuegoServidor(void *datos);

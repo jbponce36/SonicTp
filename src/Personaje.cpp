@@ -1,6 +1,7 @@
 #include "Personaje.h"
 #include "debug.h"
 #include "Puntaje.h"
+#include "ControlServidor.h"
 
 
 const int POSICION_INICIALX = 0;
@@ -43,6 +44,9 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->estaQuieto = true;
     this->congelado = false;
     this->tieneEscudo = false;
+    this->esInmortal = false;
+    this->esInvencible = false;
+    this->estaVivo = true;
 
     this->puntaje = new Puntaje(id, render,log);
 
@@ -374,7 +378,7 @@ void Personaje::rebotar()
 	velocidadY = -velocidadY;
 }
 
-void Personaje::herir()
+void Personaje::herir(ControlServidor *control)
 {
 	if (tieneEscudo)
 	{
@@ -391,8 +395,17 @@ void Personaje::herir()
 	{
 		if(puntos->getVidas() <= 0)
 		{
-			//Aca Sonic pierde
-			cout << "Game Over!\n";
+			if (esInmortal)
+			{
+				return;
+			}
+			else
+			{
+				//Aca Sonic pierde el juego
+				cout << "Game Over!\n";
+				estaVivo = false;
+				control->gameOverJugador(id);
+			}
 		}
 		else
 		{
@@ -632,17 +645,20 @@ bool Personaje::estaAtacando()
 	return false;
 }
 
-bool Personaje::estaMirandoIzquierda()
+bool Personaje::sigueVivo()
 {
-	switch (orientacion)
-	{
-		case IZQUIERDA:
-			return true;
-		case DERECHA:
-			return false;
-		default:
-			return false;
-	}
+	return estaVivo;
+}
+
+void Personaje::dejarDeEstarVivo()
+{
+	estaVivo = false;
+	velocidadX = 0;
+	velocidadY = 0;
+	estaQuieto = true;
+	saltando = false;
+	corriendo = false;
+	congelado = true;
 }
 
 std::string Personaje::intToStringConPadding(int number)
@@ -777,3 +793,10 @@ bool Personaje::agarroBonusInvencible()
 	return esInvencible;
 }
 
+void Personaje::serInmortalODejarDeSerlo()
+{
+	if (esInmortal)
+		esInmortal = false;
+	else
+		esInmortal = true;
+}

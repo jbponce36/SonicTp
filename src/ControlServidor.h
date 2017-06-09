@@ -45,7 +45,6 @@ private:
 	ConexServidor *server;
 	Logger *log;
 
-
 	bool pasarNivel;
 	bool colpiedra;
 
@@ -111,16 +110,15 @@ public:
 
 	 char mapa[MAXFILAS][MAXCOLS];
 
+	void gameOverJugador(int idDesconectado);
 
 private:
-
-
-
 	void administrarTeclasServidor();
 	ControlServidor::mensajeRecibido parsearMensajePosicion(std::string mensaje);
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor(Camara *camara);
 	void verificarDuracionBonus(Personaje* sonic);
+	void volverInmortalesTodosLosSonics();
 	std::string intToString(int number);
 
 };

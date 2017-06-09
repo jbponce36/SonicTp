@@ -9,8 +9,6 @@
 #include "Colicion.h"
 #include "debug.h"
 
-
-
 ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, std::map<int, Personaje*> *sonics,
 	std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
 	ConexServidor *server, Logger *log)
@@ -47,10 +45,6 @@ void ControlServidor::administrarTeclasServidor()
 		while (mensaje.compare("Sin elementos") != 0)
 		{
 			//Segun la tecla seteo el vector de teclas
-			//cout << "Control recibio: "<< mensaje << endl;
-
-			//Idea: Quizas:
-			//Si la tecla ya estaba seteada significa que hubo un error y hay que corregir la posicion del sonic
 			if (mensaje.substr(1,1).compare("T") == 0)
 			{
 				msj = parsearMensajePosicion(mensaje);
@@ -95,6 +89,9 @@ void ControlServidor::administrarTeclasServidor()
 				}
 				else if(msj.tecla.compare(TECLA_CORRER_LIBERADA) == 0){
 					teclas.at(indice).teclaCorrer = false;
+				}
+				else if(msj.tecla.compare(TECLA_INMORTAL_PRESIONADA) == 0){
+					volverInmortalesTodosLosSonics();
 				}
 
 			}
@@ -260,15 +257,19 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		}
 	}
 }
+
 void ControlServidor::actualizarVistaServidor(Camara *camara)
 {
 	//Aca le envio a todos los clientes la posicion y sprite de todos los otros clientes.
 	std::map<int, Personaje*>::iterator pos;
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
-		std::string mensaje = (*pos).second->obtenerMensajeEstado();
-		enviarATodos(mensaje);
+		if ((*pos).second->sigueVivo()){
+			std::string mensaje = (*pos).second->obtenerMensajeEstado();
+			enviarATodos(mensaje);
+		}
 	}
+
 	//envio las posiciones de los enemigos
 	for(int i=0; i <this->enemigos.size(); i++){
 		if(enemigos[i]->getSeguirEnviandoMensajes()){
@@ -366,6 +367,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	delete camara;
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
 }
+
 void ControlServidor::CreoPinche(){
 
 	srand(time(NULL));
@@ -500,7 +502,7 @@ void ControlServidor::CreoAnillas(){
 
 	  this->anillos.push_back(anillo);
 
- }
+   }
 
 	//Vendria a ser el metodo ActualizarVistaServidor......
 	list<Anillos*>:: iterator posanillo;
@@ -510,8 +512,6 @@ void ControlServidor::CreoAnillas(){
 			   enviarATodos(mensaje);
 	}
 }
-
-
 
 void ControlServidor::CreoPiedras(){
 	//srand(time(NULL));
@@ -562,6 +562,7 @@ void ControlServidor::CreoPiedras(){
 	    	enviarATodos(mensaje);
 	    }
 }
+
 void ControlServidor::chequearColicion(Colicion *colicion){
 
 	std::map<int, Personaje*>::iterator pos;
@@ -572,90 +573,87 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
 		Personaje *sonic = (*pos).second;
-		//this->constructorEntidades->anillos.
-		//Por cada sonic, fijarse si se intersecta con alguna de las cosas...?
-		int numeroAnilla  = 0;
-		int posAnillaColisionada = 0;
-		Anillos* colisionada = NULL;
-		for(int i = 0; i<enemigos.size(); i++){
-			SDL_bool colision;
-			SDL_Rect enemigoRec = enemigos[i]->obtenerDimensiones();
-			SDL_Rect sonicRect = (*pos).second->obtenerLimites();
-			colision = SDL_HasIntersection(&sonicRect,&enemigoRec);
-			if(colision == SDL_TRUE){
-				// aca falta me logica de q hace el sonic cuado
-				//closiona con el enemigo(le quita vida al sonic,
-				//mata al enemigo, es protegico por el bonus, etc)
 
-				//descomenta la linea de abajo si queres matar al bicho
-				//enemigo->setVivo(false);
-				//cout<<"colision con enemigo"<<endl;
+		if(sonic->sigueVivo())
+		{
+			//this->constructorEntidades->anillos.
+			//Por cada sonic, fijarse si se intersecta con alguna de las cosas...?
+			int numeroAnilla  = 0;
+			int posAnillaColisionada = 0;
+			Anillos* colisionada = NULL;
+			for(int i = 0; i<enemigos.size(); i++){
+				SDL_bool colision;
+				SDL_Rect enemigoRec = enemigos[i]->obtenerDimensiones();
+				SDL_Rect sonicRect = (*pos).second->obtenerLimites();
+				colision = SDL_HasIntersection(&sonicRect,&enemigoRec);
+				if(colision == SDL_TRUE){
+					// aca falta me logica de q hace el sonic cuado
+					//closiona con el enemigo(le quita vida al sonic,
+					//mata al enemigo, es protegico por el bonus, etc)
 
+					//descomenta la linea de abajo si queres matar al bicho
+					//enemigo->setVivo(false);
+					//cout<<"colision con enemigo"<<endl;
+				}
 			}
 
-		}
+			for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
+				Anillos *cls = (*posanillo);
+				if (colicion->intersectaAnilloPersonaje(cls, sonic)){
+					debug(1,"ControlServidor::chequearColicion","Colision con anilla NUMEROANILLA %d",numeroAnilla);
+					std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(numeroAnilla);
 
-		for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
-			Anillos *cls = (*posanillo);
-			if (colicion->intersectaAnilloPersonaje(cls, sonic)){
-				debug(1,"ControlServidor::chequearColicion","Colision con anilla NUMEROANILLA %d",numeroAnilla);
-				std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(numeroAnilla);
-
-				//debug(1,"ControlServidor::chequearColicion","Colision con anilla GETID %d",cls->getId());
-				//std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(cls->getId());
+					//debug(1,"ControlServidor::chequearColicion","Colision con anilla GETID %d",cls->getId());
+					//std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(cls->getId());
 
 
-				this->enviarATodos(mensaje);
-				colisionada = (*posanillo);
-				//aca se le suma un anillo al sonic q lo agarro y se le envia a todos los sonics el mensaje
+					this->enviarATodos(mensaje);
+					colisionada = (*posanillo);
+					//aca se le suma un anillo al sonic q lo agarro y se le envia a todos los sonics el mensaje
 
-				sonic->getPuntos()->sumarXanillos(1);
-				enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
-
-			}
-			numeroAnilla++;
-		}
-
-		if (colisionada != NULL){
-			this->anillos.remove(colisionada);
-		}
-
-        //PIEDRA
-		bool huboColision = false;
-		for(pospiedra = this->piedra.begin();pospiedra!= this->piedra.end();pospiedra++){
-
-			Piedra *pdra = (*pospiedra);
-
-			if(colicion->intersectaPiedraPersonaje(pdra,sonic)){
-				pdra->interactuar(sonic); //Se fija si esta encima de la piedra
-				huboColision = true;
-			}
-		}
-
-		if (!huboColision){
-			sonic->reanudarLuegoDeColision();
-			//El tipo se deberia poder seguir moviendo
-		}
-
-		//PINCHE
-		for(pospinche = this->pinche.begin(); pospinche!= this->pinche.end();pospinche++){
-
-			Pinche *pin = (*pospinche);
-			bool fueHerido = false;
-			if(colicion->intersectaPinchePersonaje(pin,sonic)){
-              pin->interactuar(sonic, fueHerido);
+					sonic->getPuntos()->sumarXanillos(1);
+					enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
+				}
+				numeroAnilla++;
 			}
 
-			if (fueHerido){
-				enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
-				enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoVidas(sonic->getId()));
-				enviarATodos(sonic->obtenerMensajeEstadoBonus());
+			if (colisionada != NULL){
+				this->anillos.remove(colisionada);
+			}
+
+			//PIEDRA
+			bool huboColision = false;
+			for(pospiedra = this->piedra.begin();pospiedra!= this->piedra.end();pospiedra++){
+				Piedra *pdra = (*pospiedra);
+
+				if(colicion->intersectaPiedraPersonaje(pdra,sonic)){
+					pdra->interactuar(sonic); //Se fija si esta encima de la piedra
+					huboColision = true;
+				}
+			}
+
+			if (!huboColision){
+				sonic->reanudarLuegoDeColision();
+				//El tipo se deberia poder seguir moviendo
+			}
+
+			//PINCHE
+			for(pospinche = this->pinche.begin(); pospinche!= this->pinche.end();pospinche++){
+				Pinche *pin = (*pospinche);
+				bool fueHerido = false;
+				if(colicion->intersectaPinchePersonaje(pin,sonic)){
+				  pin->interactuar(sonic, fueHerido);
+				}
+
+				if (fueHerido){
+					sonic->herir(this);
+					enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
+					enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoVidas(sonic->getId()));
+					enviarATodos(sonic->obtenerMensajeEstadoBonus());
+				}
 			}
 		}
-
-
 	}
-
 }
 
 int ControlServidor::mostrarMenuServer(){
@@ -679,6 +677,7 @@ int ControlServidor::mostrarMenuServer(){
 
 	return opcion;
 }
+
 void ControlServidor::CreacionEnemigos(){
 	Cangrejo *enemigo1 = new Cangrejo(500,470,100,200);
 	this->enemigos.push_back(enemigo1);
@@ -687,6 +686,7 @@ void ControlServidor::CreacionEnemigos(){
 	Mosca *enemigo3 = new Mosca(700,300,200,100);
 	this->enemigos.push_back(enemigo3);
 }
+
 void ControlServidor::enviarDatosEnemigosIniciales(){
 	//envio la posicion y el tipo De enemigo
 	for(int i=0;i<this->enemigos.size();i++){
@@ -705,6 +705,7 @@ void ControlServidor::enviarDatosEnemigosIniciales(){
 		}
 	}
 }
+
 void ControlServidor::actualizarPosicionesEnemigos(){
 	for(int i=0;i<this->enemigos.size();i++){
 		if(enemigos[i]->getVivo()){
@@ -712,10 +713,10 @@ void ControlServidor::actualizarPosicionesEnemigos(){
 		}
 	}
 }
-void ControlServidor::chequearColisiones(){
 
+void ControlServidor::chequearColisiones()
+{
 	mundo.manejarColisiones();
-
 }
 
 void ControlServidor::enviarDatosEscenario(Hiloenviar *hiloEnviar)
@@ -742,4 +743,37 @@ void ControlServidor::verificarDuracionBonus(Personaje *sonic)
 	}
 }
 
+void ControlServidor::volverInmortalesTodosLosSonics()
+{
+	std::map<int, Personaje*>::iterator pos;
+	for(pos = sonics->begin();pos != sonics->end();pos++)
+	{
+		Personaje *sonic = (*pos).second;
+		sonic->serInmortalODejarDeSerlo();
+	}
+}
 
+void ControlServidor::gameOverJugador(int id)
+{
+	cout << "Game over - Id: " << id << endl;
+
+	//Detengo la ejecucion de los hilos
+	hilosRecibir->at(id - 1)->parametros.continuar = false;
+
+	std::string mensaje = MENSAJE_PERDIO_JUGADOR + Util::intToString(id) + "-----------";
+	enviarATodos(mensaje);
+
+	//hilosEnviar->at(id - 1)->parametros.continuar = false;
+	try{
+		sonics->at(id)->dejarDeEstarVivo();
+		teclas.at(id).teclaAbajo = false;
+		teclas.at(id).teclaArriba = false;
+		teclas.at(id).teclaDerecha = false;
+		teclas.at(id).teclaIzquierda = false;
+		teclas.at(id).teclaCorrer = false;
+	}
+	catch(std::out_of_range &e)
+	{
+		cout << "El cliente ya se habia desconectado." << endl;
+	}
+}

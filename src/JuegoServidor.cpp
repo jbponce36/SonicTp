@@ -96,20 +96,21 @@ int JuegoServidor::obtenerIdLibre()
 {
 	std::map<int ,Personaje*>::iterator pos;
 	for(pos = sonics.begin();pos != sonics.end();pos++){
-		if((*pos).second->estaCongelado())
+		if((*pos).second->estaCongelado() && (*pos).second->sigueVivo())
 		{
-			return (*pos).first; //Devuelve el id de algun sonic congelado.
+			return (*pos).first; //Devuelve el id de algun sonic congelado y que no este muerto
 		}
 	}
 	return 0;
 }
 
-void JuegoServidor::reconectar(int sock)
+void JuegoServidor::reconectar(int sock, ConexServidor *servidor)
 {
 	int idLibre = obtenerIdLibre();
 	if(idLibre == 0)
 	{
 		cout << "No hay ningun sonic desconectado." << endl;
+		servidor->quitarCliente(sock);
 		return;
 	}
 
@@ -118,7 +119,8 @@ void JuegoServidor::reconectar(int sock)
 
 	if((hrecibir->continua()) || (henviar->continua()))
 	{
-		//cout << "Los hilos enviar/recibir aun no terminaron." << endl;
+		cout << "Los hilos enviar/recibir aun no terminaron." << endl;
+		servidor->quitarCliente(sock);
 		return;
 	}
 
