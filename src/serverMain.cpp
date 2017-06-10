@@ -85,6 +85,7 @@ int main(int argc, char *argv[]) {
 
 		int puerto = jsonSer->CargarPuertoServidor();
 		int maxConexiones = jsonSer->CargarCantClientes();
+		int modoDeJuego = jsonSer->CargarModoJuego();
 
 		if(server->crear() == false){
 			server->cerrar();
@@ -110,7 +111,7 @@ int main(int argc, char *argv[]) {
 
 		vector<Hilorecibir*> hrRecibir;
 		vector<Hiloenviar*> hrEnviar;
-		JuegoServidor *juego = new JuegoServidor(server, hrEnviar, hrRecibir, log, juegoTerminado);
+		JuegoServidor *juego = new JuegoServidor(server, hrEnviar, hrRecibir, log, juegoTerminado, modoDeJuego);
 
 
 		HiloMenuSer *hiloMenu = new HiloMenuSer(log);
@@ -154,6 +155,16 @@ int main(int argc, char *argv[]) {
 
 				henviar->enviarDato(buffer);
 				henviar->iniciarHiloQueue();
+
+				char buffer2[6] = "";
+				ostringstream ossModoDeJuego;
+				ossModoDeJuego << modoDeJuego;
+				string stringModo = MENSAJE_MODO + ossModoDeJuego.str();
+				stringModo = stringModo + PADDING + SEPARADOR_DE_MENSAJE;
+				strcpy(buffer2, stringModo.c_str());
+				cout << "Server envio modo de juego: " << buffer2 << endl;
+				henviar->enviarDato(buffer2);
+
 				hrEnviar.push_back(henviar);
 
 			}

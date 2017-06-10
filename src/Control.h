@@ -43,6 +43,7 @@ private:
 
 	vector <Enemigo*> enemigos;
 	int idpropio;
+	int modoDeJuego;
 
 public:
 	typedef struct mensajePosicion{
@@ -53,7 +54,8 @@ public:
 			int indiceAnimacion;
 	}mensajePosicion;
 
-	Control(int posicionX, int posicionY, int maxJugadores, std::vector<Personaje*> *sonics, Logger *log, VistaSDL *vista);
+	Control(int posicionX, int posicionY, int maxJugadores, std::vector<Personaje*> *sonics,
+		Logger *log, VistaSDL *vista, int modoDeJuego);
 	virtual ~Control();
 	int getPosicionInicialX();
 	int getPosicionInicialY();

@@ -23,6 +23,7 @@ public:
 	void parsearArchivo(std::string nombreArchivo);
 	int CargarPuertoServidor();
 	int CargarCantClientes();
+	int CargarModoJuego();
 	double leeValorEnteroServer(json_t* padre, const char* nombre,const char* nombrep,int valorPorDefecto);
 	void setraiz(json_t*);
 	json_t* getraiz();

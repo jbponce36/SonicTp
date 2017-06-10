@@ -3,10 +3,11 @@
 #define MODULO 'CONTROL'
 
 Control::Control(int posicionX, int posicionY, int maxJugadores,
-		std::vector<Personaje*> *sonics, Logger *log, VistaSDL *vista) :
+		std::vector<Personaje*> *sonics, Logger *log, VistaSDL *vista, int modoDeJuego) :
 		posicionInicialX(posicionX), posicionInicialY(posicionY), log(log), salir(
 				false), sonics(sonics), maxJugadores(maxJugadores), vista(
-				vista), constructorEntidades(vista->getConstructorEntidades()) {
+				vista), constructorEntidades(vista->getConstructorEntidades()),
+				modoDeJuego(modoDeJuego) {
 	this->log->setModulo("CONTROL");
 }
 

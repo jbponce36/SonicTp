@@ -126,4 +126,20 @@ int parseadorJsonSer::CargarCantClientes(){
   return cantclientes;
 
  }
+
+int parseadorJsonSer::CargarModoJuego(){
+
+	 json_t* raiz;
+	 int modoJuego;
+
+	 raiz = this->getraiz();
+
+	 this->log->addLogMessage("[PARSEADOR JSON SERVER] Iniciado.", 2);
+
+	 modoJuego = this->leeValorEnteroServer(raiz,"modo","SERVIDOR",2);
+
+	 this->log->addLogMessage("[PARSEADOR JSON SERVER] Terminado.", 2);
+
+	 return modoJuego;
+}
 } /* namespace std */
