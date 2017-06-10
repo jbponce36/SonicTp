@@ -172,10 +172,39 @@ int JuegoCliente::inicializarJuegoCliente()
 	this->log->addLogMessage("[INICIALIZAR JUEGO CLIENTE] Se crea personaje con id: "+sonic->intToString(sonic->getId()) ,3);
 
 	inicializarOtrosSonics(id);
+
+	while (mensaje.substr(0, 3) != MENSAJE_MODO){
+		mensaje = hiloRecibir->obtenerElementoDeLaCola();
+		if ((mensaje.compare("Conex rechazada") == 0) || (mensaje.compare("Servidor Desconectado") == 0))
+		{
+			//cout << "Mensaje: " << mensaje << endl;
+			this->log->addLogMessage("[INICIALIZAR JUEGO CLIENTE] Error, "+mensaje ,1);
+			return ERR_CONEXION_RECHAZADA;
+		}
+	}
+
+	int modo = atoi(mensaje.substr(3,1).c_str());
+	cout << "Modo: " << modo << endl;
+
 	if(control != NULL){
 		delete control;
 	}
-	control = new Control(0, 0, maxJugadores, &sonics, log, vista);
+	control = new Control(0, 0, maxJugadores, &sonics, log, vista, modo);
+
+	if(modo == 3)
+	{
+		cout << "Modo grupal: Elija un grupo.\n";
+		//int eleccion = vista->coso que muestra eleccion de grupos
+		int eleccion = 1;
+
+		//Le envia el numero de grupo al servidor
+		std::string eleccionGrupo = Util::intToString(eleccion) + Util::intToString(sonic->getId());
+		char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
+		eleccionGrupo = eleccionGrupo + SEPARADOR_DE_MENSAJE;
+		strcpy(buffer, mensaje.c_str());
+
+		hiloEnviar->enviarDato(buffer);
+	}
 
 	this->log->addLogMessage("[INICIALIZAR JUEGO CLIENTE] Terminado. \n",2);
 	return 0;

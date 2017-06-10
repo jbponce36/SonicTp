@@ -9,11 +9,12 @@
 #include "debug.h"
 
 JuegoServidor::JuegoServidor(ConexServidor *server,
-	std::vector<Hiloenviar*> &hiloEnviar, std::vector<Hilorecibir*> &hiloRecibir, Logger *log, bool &juegoTerminado)
+	std::vector<Hiloenviar*> &hiloEnviar, std::vector<Hilorecibir*> &hiloRecibir, Logger *log,
+	bool &juegoTerminado, int modoJuego)
 : vista(NULL), control(NULL),server(server), log(log),
   hiloJuego(NULL), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir),
   cantJugadores(server->getCantclientes()), sonics(), juegoTerminado(juegoTerminado), velocidad(0),
-  altoEscenario(0){
+  altoEscenario(0), modoJuego(modoJuego){
 	//Vista, sonic y control se setean desde el thread
 
 }
@@ -41,29 +42,41 @@ void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
 		sonics[id] = sonic;
 	}
 
-
-	control = new ControlServidor(0, 0, vista, &sonics, &hilosEnviar, &hilosRecibir, server,log);
+	control = new ControlServidor(0, 0, vista, &sonics, &hilosEnviar, &hilosRecibir, server, log);
 
 	control->setAnill(jparseador->getAnillo());
 	control->setJpied(jparseador->getPiedra());
     control->setJpin(jparseador->getPinche());
 
-   // cout<<"PRUEBA CANGREJO MAXIMO"<<endl;
-    //cout<<jparseador->getCangrejo()->getMaximoran()<<endl;
+    if(modoJuego == 3)
+    {
+    	cout << "Modo juego es 3\n";
+    	//Aca recibe los numeros de grupo de los clientes
+    	std::vector<Hilorecibir*>::iterator pos;
+    	std::string mensaje;
+    	for(pos = hilosRecibir.begin();pos != hilosRecibir.end();pos++)
+		{
+    		int grupo = 1;
+    		mensaje = (*pos)->obtenerElementoDeLaCola();
+			while (mensaje.substr(0, 3).compare(MENSAJE_EQUIPO) != 0)
+			{
+				if (mensaje.substr(0,3).compare(MENSAJE_DESCONEXION_CLIENTE) == 0)
+				{
+					//Recibe "DES1"
+					this->log->addLogMessage("[RECIBIR GRUPO] Error. Cliente desconectado. Se asignara al grupo 1." ,1);
+					mensaje = MENSAJE_EQUIPO + mensaje.substr(3,1) + "1";
+					break;
+				}
+				mensaje = (*pos)->obtenerElementoDeLaCola();
+			}
+			int idSonic = atoi(mensaje.substr(3,1).c_str());
+			grupo = atoi(mensaje.substr(4,1).c_str());
 
-    //cout<<"PRUEBA CANGREJO MINIMO"<<endl;
-    //cout<<jparseador->getCangrejo()->getMinimoran()<<endl;
 
-   // cout<<"PRUEBA MOSCA MAXIMO"<<endl;
-    //cout<<jparseador->getMosca()->getMaximoran()<<endl;
 
-   // cout<<"PRUEBA MOSCA MINIMO"<<endl;
-    //cout<<jparseador->getMosca()->getMinimoran()<<endl;
+		}
+    }
 
-   // cout<<"PRUEBA PESCADO MAXIMO"<<endl;
-   // cout<<jparseador->getPescado()->getMaximoran()<<endl;
-   // cout<<"PRUEBA PESCADO MINIMO"<<endl;
-    //cout<<jparseador->getPescado()->getMinimoran()<<endl;
 
 }
 
@@ -187,6 +200,15 @@ void JuegoServidor::reconectar(int sock, ConexServidor *servidor)
 
 	henviar->enviarDato(buffer);
 	henviar->iniciarHiloQueue();
+
+	char buffer2[6] = "";
+	ostringstream ossModoDeJuego;
+	ossModoDeJuego << 1;
+	string stringModo = MENSAJE_MODO + ossModoDeJuego.str();
+	stringModo = stringModo + PADDING + SEPARADOR_DE_MENSAJE;
+	strcpy(buffer2, stringModo.c_str());
+	cout << "Server envio modo de juego: " << buffer2 << endl;
+	henviar->enviarDato(buffer2);
 
 	sleep(1);
 

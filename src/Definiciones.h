@@ -44,6 +44,8 @@
 #define MENSAJE_DESCONEXION_CLIENTE	"DES"
 #define MENSAJE_ID					"IDi"
 #define MENSAJE_PERDIO_JUGADOR		"LOS"
+#define MENSAJE_MODO				"MOD"
+#define MENSAJE_EQUIPO				"EQU"
 
 //Mensajes de entidades empiezan con E
 #define ANILLOS                     "EA"
