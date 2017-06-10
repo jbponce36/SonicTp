@@ -60,10 +60,10 @@ void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
    // cout<<"PRUEBA MOSCA MINIMO"<<endl;
     //cout<<jparseador->getMosca()->getMinimoran()<<endl;
 
-    cout<<"PRUEBA PESCADO MAXIMO"<<endl;
-    cout<<jparseador->getPescado()->getMaximoran()<<endl;
-    cout<<"PRUEBA PESCADO MINIMO"<<endl;
-    cout<<jparseador->getPescado()->getMinimoran()<<endl;
+   // cout<<"PRUEBA PESCADO MAXIMO"<<endl;
+   // cout<<jparseador->getPescado()->getMaximoran()<<endl;
+   // cout<<"PRUEBA PESCADO MINIMO"<<endl;
+    //cout<<jparseador->getPescado()->getMinimoran()<<endl;
 
 }
 
@@ -135,6 +135,20 @@ int JuegoServidor::obtenerIdLibre()
 	return 0;
 }
 
+void JuegoServidor::obtenerPosicionValida(int &x, int &y)
+{
+	std::map<int ,Personaje*>::iterator pos;
+	for(pos = sonics.begin();pos != sonics.end();pos++){
+		if(!(*pos).second->estaCongelado() && (*pos).second->sigueVivo())
+		{
+			x = (*pos).second->getPosicionX();
+			y = (*pos).second->getPosicionY();
+			return;
+		}
+	}
+
+}
+
 void JuegoServidor::reconectar(int sock, ConexServidor *servidor)
 {
 	int idLibre = obtenerIdLibre();
@@ -182,7 +196,13 @@ void JuegoServidor::reconectar(int sock, ConexServidor *servidor)
 	sleep(1);
 	//hlatidos->IniciarHilo();
 
-	control->enviarDatosEscenario(henviar);
-
+	int x = 0, y = 0;
+	obtenerPosicionValida(x, y);
+	sonics.at(idLibre)->posicionarseEn(x, y);
 	sonics.at(idLibre)->descongelar();
+
+	control->enviarDatosEscenario(henviar);
+	control->enviarDatosEnemigosInicialesAUno(henviar);
+	control->enviarAUno(FIN_MENSAJES_ENEMIGOS, henviar);
+	control->enviarAnillasPiedrasYPinches(henviar);
 }

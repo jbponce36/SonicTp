@@ -63,6 +63,8 @@ private:
 
 
 	bool pasarNivel;
+	int nivelActual;
+
 	bool colpiedra;
 
 	std::map<int, Personaje*> *sonics;
@@ -95,10 +97,6 @@ public:
 	list<Piedra*>  piedra;
 	list<Pinche*> pinche;
 
-
-	void CreoAnillas();
-	void CreoPiedras();
-	void CreoPinche();
 	ControlServidor(int altura, int anchura, VistaSDL *vista, std::map<int, Personaje*> *sonics,
 		std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
 		ConexServidor *server, Logger *log);
@@ -106,7 +104,14 @@ public:
 
 	void ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado);
 	void enviarATodos(std::string mensaje);
+	void enviarAUno(std::string mensaje, Hiloenviar *hiloEnviar);
 	int mostrarMenuServer();
+
+	void CreoAnillas();
+	void CreoPiedras();
+	void CreoPinche();
+	void enviarAnillasPiedrasYPinches(Hiloenviar *hiloEnviar);
+	std::string obtenerMensajeNivel();
 
 	typedef struct mensajeRecibido{
 		int id;
@@ -122,6 +127,7 @@ public:
 
 	void CreacionEnemigos();
 	void enviarDatosEnemigosIniciales();
+	void enviarDatosEnemigosInicialesAUno(Hiloenviar *hiloEnviar);
 	void actualizarPosicionesEnemigos();
 	void setEscenarioJuego(jescenarioJuego* esc);
 	jescenarioJuego* getEscenarioJuego();

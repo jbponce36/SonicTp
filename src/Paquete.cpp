@@ -78,6 +78,19 @@ char* Paquete::obtenerElementoDelaCola(){
 	return elem;
 }
 
+char* Paquete::obtenerUltimoElementoDelaCola(){
+	//El elemento mas nuevo
+	char* elem = "";
+	pthread_mutex_lock(&mutex);
+
+	if(!this->colaPaquetes.empty()){
+		elem = this->colaPaquetes.back();
+	}
+
+	pthread_mutex_unlock(&mutex);
+	return elem;
+}
+
 /*Posicion* Paquete::obtenerElementoDelaCola(){
 	return this->colaPaquetes.front();
 }*/

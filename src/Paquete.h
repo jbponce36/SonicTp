@@ -31,6 +31,7 @@ public:
 	//std::queue<Posicion *> getColaPaquetes();
 
 	char* obtenerElementoDelaCola();
+	char* obtenerUltimoElementoDelaCola();
 	//Posicion* obtenerElementoDelaCola();
 
 	void eliminarElPrimetoDeLaCola();

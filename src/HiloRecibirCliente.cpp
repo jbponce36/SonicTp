@@ -59,8 +59,8 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					parametros->colaPaquete.agregarAlaColaSoloUnProceso(result,buffer);
 					//parametros->alc->actualizarTiempoLatido();
 
-					if (strcmp(parametros->colaPaquete.obtenerElementoDelaCola(),CONEXION_RECHAZADA)==0 ){
-					    printf("****** La conexion fue rechaza por el servidor ******* \n");
+					if (strcmp(parametros->colaPaquete.obtenerUltimoElementoDelaCola(),CONEXION_RECHAZADA)==0 ){
+					    printf("****** La conexion fue rechazada por el servidor ******* \n");
 					    parametros->continuar = false;
 
 					    if(parametros->vcIniciarJuego != NULL)
@@ -71,7 +71,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					}
 
 
-					if (strcmp(parametros->colaPaquete.obtenerElementoDelaCola(),INICIO_JUEGO)==0){
+					if (strcmp(parametros->colaPaquete.obtenerUltimoElementoDelaCola(),INICIO_JUEGO)==0){
 				         printf("****** VOY A INICIAR EL JUEGO ******* \n");
 				         //alc->setCadena("INICIAR JUEGO");
 				         //alc->actualizarTiempoLatido();

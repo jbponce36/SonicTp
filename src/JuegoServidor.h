@@ -50,6 +50,7 @@ public:
 	void terminarHiloJuego();
 	void enviarATodosLosClientes(std::string mensaje);
 	int obtenerIdLibre();
+	void obtenerPosicionValida(int &x, int &y);
 	void reconectar(int socket, ConexServidor *servidor);
 
 

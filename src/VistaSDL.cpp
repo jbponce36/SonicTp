@@ -457,12 +457,12 @@ int VistaSDL::mostrarLogin(Logger *logger){
 			}
 			case 1:{
 			texturaContrasenia.renderizar(&imagenMostrar,&camara);
-			contrasenia = setContrasenia(inputContrasenia, color, imagenMostrar, camara);
+			//contrasenia = setContrasenia(inputContrasenia, color, imagenMostrar, camara);
 			break;
 			}
 			case 2:{
 			texturaBotonAceptar.renderizar(&imagenMostrar,&camara);
-			aceptarLogin(usuarioNombre, contrasenia);
+			//aceptarLogin(usuarioNombre, contrasenia);
 			break;}
 		}
 

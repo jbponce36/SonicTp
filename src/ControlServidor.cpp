@@ -18,6 +18,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 	teclasPresionadas t = {false, false, false, false, false};
 	posSonic ultimasPosiciones = {0, 300};
 	this->pasarNivel = false;
+	this->nivelActual = 0;
 	this->colpiedra = false;
 	std::map<int, Personaje*>::iterator pos;
 	for(pos = sonics->begin();pos != sonics->end();pos++)
@@ -234,6 +235,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 			}
 			camara->actualizarXY(0,0);
 			this->pasarNivel =false;
+			this->nivelActual++;
 			char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
 				std::string msjPasarNivel = "PASARNIVEL" ;
 				//cout<<"mensaje sin: "<<mensaje.size()<<endl;
@@ -316,6 +318,15 @@ void ControlServidor::enviarATodos(std::string mensaje)
 	}
 }
 
+void ControlServidor::enviarAUno(std::string mensaje, Hiloenviar *hiloEnviar)
+{
+	char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
+	mensaje = mensaje + SEPARADOR_DE_MENSAJE;
+	strcpy(buffer, mensaje.c_str());
+
+	hiloEnviar->enviarDato(buffer);
+}
+
 void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado){
 
 	//Una Sola vez
@@ -333,6 +344,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	//Le aviso a todos los jugadores que inicio el juego
 	server->comenzarPartida(*hilosEnviar);
 
+	enviarATodos(obtenerMensajeNivel());
 	mundo.enviarDatosEscenario(hilosEnviar);
 
 	this->CreacionEnemigos();
@@ -375,10 +387,9 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 void ControlServidor::CreoPinche(){
 
-	int cantidadpinche = (rand() % this->getJpin()->getMaximoran()) + this->getJpin()->getMinimoran();
-
-	cout<<"CANTIDAD DE PINCHES"<<endl;
-    cout<<cantidadpinche<<endl;
+	int cantidadpinche = Util::numeroRandomEntre(this->getJpin()->getMinimoran(), this->getJpin()->getMaximoran());
+	//int cantidadpinche = (rand() % this->getJpin()->getMaximoran()) + this->getJpin()->getMinimoran();
+	 debug(0,"ControlServidor::CREO PINCHES","Valor Random %d", cantidadpinche);
 
 	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
 	int AnchoEscenario = vista->obtenerAnchoEscenario();
@@ -397,22 +408,11 @@ void ControlServidor::CreoPinche(){
 			 int ancho = 200;
 			 int alto = 100;
 
-
-			 //int coordX = (Util::numeroRandom(((AnchoEscenario - 211)/cantidadpinche)/ (2*ancho)) * (2*ancho));
-			 //int coordX = Util::numeroRandom(7);
-			  int coordX = myvector.back();
-   		      myvector.pop_back();
+			 int coordX = myvector.back();
+   		     myvector.pop_back();
    		     // debug(0, "ControlServidor::CreoPinche", "Creando pinche en Random: %d", coordX);
 			  coordX = (coordX * 1000) + 400;
 			// debug(0, "ControlServidor::CreoPinche", "Creando pinche en pos X: %d", coordX);
-
-			  //Multiplos de 500
-
-
-
-
-			 //debug(0, "ControlServidor::CreoPinches", "Creando pinche en pos Despues del Randon X: %d", coordX);
-
 
 			 int coordY = 4*vista->getAltoEscenario()/5 - alto;
 			 coordXActual = coordXActual + 400;
@@ -432,7 +432,7 @@ void ControlServidor::CreoPinche(){
 		}
 	}
 
-	list<Pinche*>:: iterator pos;
+     list<Pinche*>:: iterator pos;
 	 for(pos = this->pinche.begin(); pos!= this->pinche.end();pos++){
 		 std::string mensaje = (*pos)->obtenerMensajeEstado();
 		 debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
@@ -453,7 +453,8 @@ jescenarioJuego* ControlServidor::getEscenarioJuego(){
 
 void ControlServidor::CreoAnillas(){
 
-  int cantidadAnillas = (rand() % this->getAnill()->getMaximoran()) + this->getAnill()->getMinimoran();
+	int cantidadAnillas = Util::numeroRandomEntre(this->getAnill()->getMinimoran(), this->getAnill()->getMaximoran());
+ // int cantidadAnillas = (rand() % this->getAnill()->getMaximoran()) + this->getAnill()->getMinimoran();
   debug(0,"ControlServidor::CreoAnillas","CANTIDAD ANILLAS RANDOM %d", cantidadAnillas);
 
   int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
@@ -468,7 +469,6 @@ void ControlServidor::CreoAnillas(){
 	  int ancho = 64;
 	  int alto = 64;
 
-
 	  int coordX = coordXActual + Util::numeroRandom((AnchoEscenario / cantidadAnillas)/(2*ancho)) * (2*ancho);
 	  coordXActual = coordXActual + AnchoEscenario / cantidadAnillas;
 
@@ -477,7 +477,6 @@ void ControlServidor::CreoAnillas(){
 	  std::string rutaImagen = "images/Anillas.png";
 	  int indexZ = 99;
 
-
 	  Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
 
 	  anillo->setAlto(alto);
@@ -485,7 +484,6 @@ void ControlServidor::CreoAnillas(){
 	  anillo->setCoorx(coordX);
 	  anillo->setCoory(coordY);
 	  anillo->setId(id);
-
 
 	  this->anillos.push_back(anillo);
 
@@ -511,7 +509,7 @@ void ControlServidor::CreoPiedras(){
 	 debug(0,"ControlServidor::CreoPiedras","Valor Random %d", cantidadPiedras);
 
 	  std::vector<int> myvector;
-	  // set some values:
+
 	  for (int i=1; i<=7; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
 	  std::random_shuffle ( myvector.begin(), myvector.end() );
 
@@ -524,29 +522,17 @@ void ControlServidor::CreoPiedras(){
 			  std::string color = "rojo";
 			  int ancho = 180;
 			  int alto = 140;
-			  //int coordX = i* 500 + 400 ;
 
-			//(Util::numeroRandom(((AnchoEscenario-400)/cantidadPiedras) / (2*ancho)) * (2*ancho));
-			  //Multiplos de 400
-			  //coordX = coordX - ((coordX)  % 400);
-
-			  //int coordX = //(Util::numeroRandom(((AnchoEscenario - 181)/cantidadPiedras)/ (2*ancho)) * (2*ancho));
 			  int coordX = myvector.back();
 			  myvector.pop_back();
 
-					  //Util::numeroRandom(7);
-			  debug(0, "ControlServidor::CreoPiedras", "Creando piedra ranrom: %d", coordX);
+			 // debug(0, "ControlServidor::CreoPiedras", "Creando piedra ranrom: %d", coordX);
 			  coordX = coordX * 1000;
 
-			  //Multiplos de 300 y le sumo 300 por si me cae al principio...creo
-			  //coordX = coordX - ((coordX)  % 181) + 181 ;
-
-			  debug(0, "ControlServidor::CreoPiedras", "Creando piedra en pos Despues del Randon X: %d", coordX);
+			  //debug(0, "ControlServidor::CreoPiedras", "Creando piedra en pos Despues del Randon X: %d", coordX);
 
 
 			  int coordY = 4*vista->getAltoEscenario()/5 - alto;
-
-			  //coordXActual = coordX;
 
 			  debug(0, "ControlServidor::CreoPiedras", "Creando piedra en pos X: %d", coordX);
 
@@ -576,6 +562,35 @@ void ControlServidor::CreoPiedras(){
 	    }
 }
 
+std::string ControlServidor::obtenerMensajeNivel()
+{
+	return ("N" + Util::intToString(nivelActual) + "--------------");
+}
+
+void ControlServidor::enviarAnillasPiedrasYPinches(Hiloenviar *hiloEnviar)
+{
+	//Para el jugador reconectado
+	list<Anillos*>:: iterator posanillo;
+	for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
+		   std::string mensaje = (*posanillo)->obtenerMensajeEstado();
+		   debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+		   enviarAUno(mensaje, hiloEnviar);
+	}
+
+	list<Piedra*>::iterator pospiedra;
+	for(pospiedra = this->piedra.begin();pospiedra!=this->piedra.end();pospiedra++){
+		std::string mensaje = (*pospiedra)->obtenerMensajeEstado();
+		debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+		enviarAUno(mensaje, hiloEnviar);
+	}
+
+	list<Pinche*>:: iterator pospinche;
+	 for(pospinche = this->pinche.begin(); pospinche != this->pinche.end();pospinche++){
+		 std::string mensaje = (*pospinche)->obtenerMensajeEstado();
+		 debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+		 enviarAUno(mensaje, hiloEnviar);
+	}
+}
 
 int ControlServidor::ValidadValorMaximo(int Defecto,int Original){
 
@@ -591,7 +606,6 @@ int ControlServidor::ValidadValorMaximo(int Defecto,int Original){
      return resultado;
 }
 
-
 void ControlServidor::chequearColicion(Colicion *colicion){
 
 	std::map<int, Personaje*>::iterator pos;
@@ -603,7 +617,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 	{
 		Personaje *sonic = (*pos).second;
 
-		if(sonic->sigueVivo())
+		if(sonic->sigueVivo() && !sonic->estaCongelado())
 		{
 			//this->constructorEntidades->anillos.
 			//Por cada sonic, fijarse si se intersecta con alguna de las cosas...?
@@ -705,6 +719,37 @@ int ControlServidor::mostrarMenuServer(){
 }
 
 void ControlServidor::CreacionEnemigos(){
+
+	/*int maximoCangrejo = this->getJcang()->getMaximoran();
+	int minimoCangrejo = this->getJcang()->getMinimoran();
+
+	int maximopescado = this->getJpes()->getMaximoran();
+	int minimopescad = this->getJpes()->getMinimoran();
+
+	int maximomosca = this->getJmos()->getMaximoran();
+	int minimomosca = this->getJmos()->getMinimoran();
+*/
+	//ojo que si los dos numeros son iguales . creo no funciona
+	   /*int cantidadCangrejos = Util::numeroRandomEntre(minimoCangrejo, maximoCangrejo);
+
+
+		  std::vector<int> myvector;
+		  // el siete es cantidad fija que se puede poner en el escenario
+		  for (int i=1; i<=7; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
+		  std::random_shuffle ( myvector.begin(), myvector.end() );//randon shuffle es para que no se surpenpongan
+
+
+		  int cantidadPiedrasMostradas = 0;
+
+			for(int i=0;i<cantidadCangrejos;i++){
+			  if (!myvector.empty()){
+
+			  }
+
+			}
+
+		*/
+
 	Cangrejo *enemigo1 = new Cangrejo(500,470,100,200);
 	this->enemigos.push_back(enemigo1);
 	Pescado *enemigo2 = new Pescado(900,470,200,100);
@@ -732,6 +777,26 @@ void ControlServidor::enviarDatosEnemigosIniciales(){
 	}
 }
 
+void ControlServidor::enviarDatosEnemigosInicialesAUno(Hiloenviar *hiloEnviar)
+{
+	//Para el reconectado
+	for(int i=0;i<this->enemigos.size();i++){
+		if(this->enemigos[i]->getTipoEnemigo()=="c"){
+			std::string mensajeCangrejo = "/";
+			mensajeCangrejo = mensajeCangrejo + enemigos[i]->obteneMensajeEstadoInicial();
+			this->enviarAUno(mensajeCangrejo, hiloEnviar);
+		}else if(this->enemigos[i]->getTipoEnemigo()=="p"){
+			std::string mensajePescado = "/";
+			mensajePescado = mensajePescado + enemigos[i]->obteneMensajeEstadoInicial();
+			this->enviarAUno(mensajePescado, hiloEnviar);
+		}else if(this->enemigos[i]->getTipoEnemigo()=="m"){
+			std::string mensajePescado = "/";
+			mensajePescado = mensajePescado + enemigos[i]->obteneMensajeEstadoInicial();
+			this->enviarAUno(mensajePescado, hiloEnviar);
+		}
+	}
+}
+
 void ControlServidor::actualizarPosicionesEnemigos(){
 	for(int i=0;i<this->enemigos.size();i++){
 		if(enemigos[i]->getVivo()){
@@ -747,9 +812,9 @@ void ControlServidor::chequearColisiones()
 
 void ControlServidor::enviarDatosEscenario(Hiloenviar *hiloEnviar)
 {
-	std::vector<Hiloenviar*> vec; //Un vector con un solo hilo
-	vec.push_back(hiloEnviar);
-	mundo.enviarDatosEscenario(&vec);
+	//Para el reconectado
+	enviarAUno(obtenerMensajeNivel(), hiloEnviar);
+	mundo.enviarDatosEscenario(hiloEnviar);
 }
 
 void ControlServidor::verificarDuracionBonus(Personaje *sonic)

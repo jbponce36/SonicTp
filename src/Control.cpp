@@ -31,8 +31,8 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	imagenMostrar.w = vista->obtenerAnchoVentana();
 	imagenMostrar.h = vista->getAltoEscenario();
 
-	admNiveles.setNivel(0);
-	admNiveles.cargarNivel(vista, sonic);
+	//admNiveles.setNivel(0); //Hice que lo mande el servidor al nivel
+	//admNiveles.cargarNivel(vista, sonic); //Movido abajo
 	this->idpropio = sonic->getId();
 
 	//Uint32 tiempoDeJuego = 0;
@@ -53,7 +53,9 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 			&sonicsMapa);
 
 	inicializarEscenario(hiloRecibir);
+	admNiveles.cargarNivel(vista, sonic);
 	inicializarEnemigos(hiloRecibir);
+
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while (!salir) {
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes
@@ -550,20 +552,27 @@ void Control::inicializarEscenario(HiloRecibirCliente *hiloRecibir) {
 	{
 		if(mensaje != "Sin elementos")
 		{
-			//cout << mensaje << "\n";
+			cout << mensaje << "\n";
 			if(mensaje.compare("Servidor Desconectado") == 0)
 			{
 				salir = true;
 				return;
-			} else if (mensaje.substr(0, 1).compare("E") == 0) //Los mensajes sobre entidades tienen el prefijo E
-					{
+			}
+			else if (mensaje.substr(0, 1).compare("E") == 0) //Los mensajes sobre entidades tienen el prefijo E
+			{
 				agregarEntidad(mensaje);
+			}
+			else if (mensaje.substr(0, 1).compare("N") == 0) //Recibio el nivel
+			{
+				int nivel = atoi(mensaje.substr(1,1).c_str());
+				admNiveles.setNivel(2*nivel);
 			}
 		}
 		mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	}
 
 	constructorEntidades->inicializarImagenes(vista->obtenerRender());
+
 	this->log->addLogMessage("[INICIALIZAR ESCENARIO CLIENTE] Terminado.", 2);
 }
 void Control::inicializarEnemigos(HiloRecibirCliente *hiloRecibir){

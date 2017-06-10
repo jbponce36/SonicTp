@@ -59,6 +59,7 @@ void Mundo::enviarDatosEscenario(std::vector<Hiloenviar*> *hilosEnviar)
 	//Le envia a todos los clientes las posiciones de los objetos al principio de la partida
 	std::string mensaje;
 
+	cout << "Voy a enviar datos escenario\n";
 	std::list<Entidad*>::iterator pos;
 	for(pos = constructorEntidades->entidades.begin();pos != constructorEntidades->entidades.end();pos++){
 		mensaje = (*pos)->getNombre() + Util::intToStringConPadding((*pos)->getId(), MAX_CANT_DIGITOS_POS - 1)
@@ -74,7 +75,7 @@ void Mundo::enviarDatosEscenario(std::vector<Hiloenviar*> *hilosEnviar)
 
 void Mundo::enviarDatosEscenario(Hiloenviar *unHilo)
 {
-	//Le envia a todos los clientes las posiciones de los objetos al principio de la partida
+	//Le envia a un cliente las posiciones de los objetos al principio de la partida
 	std::string mensaje;
 
 	std::list<Entidad*>::iterator pos;
