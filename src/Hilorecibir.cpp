@@ -57,7 +57,7 @@ void *Hilorecibir::serverRecibir(void *args){
 				//result = parametros->server->recibirPosicion(parametros->skt, pos, sizeof(pos));
 
 				if (result>0){
-					//cout<<"server recibio: "<<buffer <<endl;
+					cout<<"server recibio: "<<buffer <<endl;
 					alc->actualizarTiempoLatido();
 					//parametros->colaDeMensajes.agregarPosicion(pos);
 					if(strcmp(buffer,"ESTOYVIVO") ==0){
