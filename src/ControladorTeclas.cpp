@@ -63,15 +63,20 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 				sonic->enviarAServer(hiloEnviar, TECLA_CORRER_PRESIONADA);
 				teclaCorrer = true;
 				break;}
-			case SDLK_n:{
+			case SDLK_i:{
+				mensaje = TECLA_INMORTAL_PRESIONADA;
+				sonic->enviarAServer(hiloEnviar, TECLA_INMORTAL_PRESIONADA);
+				break;}
+			/*case SDLK_n:{
 				//tecla pasar de nivel luego pasara cuando se mate al monstruo de cada nivel o al finalizar el nivel
 				char buffer [40];
 				std::string msjPasarNivel = "PASARNIVEL" ;
 				strcpy(buffer, msjPasarNivel.c_str());
 				hiloEnviar->enviarDato(buffer);
+				adm->mostrarPunConPan(vista);
 				//adm->pasarDeNivel();
 				//adm->cargarNivel(vista,sonic);
-				break;}
+				break;}*/
 			case SDLK_q:{
 				opcionMenu = vista->mostraMenuInicial(vista->getLog());
 				switch(opcionMenu)

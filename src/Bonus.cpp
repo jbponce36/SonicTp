@@ -37,9 +37,9 @@ void Bonus::dibujar(SDL_Renderer *renderer, SDL_Rect *camara)
 
 void Bonus::interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar)
 {
-	/*if(sonic->estaAtacando())
+	if(sonic->estaAtacando())
 	{
-		mundo->eliminar(this);
+		eliminar = true;
 		switch(tipo)
 		{
 			case RING: {
@@ -48,9 +48,20 @@ void Bonus::interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar)
 			}
 			case ESCUDO: {
 				sonic->ponerseEscudo();
+				std::string mensaje = Util::intToString(sonic->getId())
+					+ "x" + Util::intToStringConPadding(sonic->getPosicionX())
+					+ "y" + Util::intToStringConPadding(sonic->getPosicionY())
+					+ ANIMACION_ESCUDO + PADDING;
+				mundo->enviarATodos(mensaje);
 				break;
 			}
 			case INVENCIBILIDAD: {
+				sonic->serInvencible();
+				std::string mensaje = Util::intToString(sonic->getId())
+					+ "x" + Util::intToStringConPadding(sonic->getPosicionX())
+					+ "y" + Util::intToStringConPadding(sonic->getPosicionY())
+					+ ANIMACION_INVENCIBLE + PADDING;
+				mundo->enviarATodos(mensaje);
 				break;
 			}
 			default: break;
@@ -58,36 +69,40 @@ void Bonus::interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar)
 	}
 	else
 	{
-		sonic->pararPorColision();
-	}*/
-	//Para pruebas:
-	eliminar = true;
-	switch(tipo)
-	{
-		case RING: {
-			sonic->aumentarCantidadAnillos(CANTIDAD_ANILLOS);
-			break;
-		}
-		case ESCUDO: {
-			sonic->ponerseEscudo();
-			std::string mensaje = Util::intToString(sonic->getId())
-				+ "x" + Util::intToStringConPadding(sonic->getPosicionX())
-				+ "y" + Util::intToStringConPadding(sonic->getPosicionY())
-				+ ANIMACION_ESCUDO + PADDING;
-			mundo->enviarATodos(mensaje);
-			break;
-		}
-		case INVENCIBILIDAD: {
-			sonic->serInvencible();
-			std::string mensaje = Util::intToString(sonic->getId())
-				+ "x" + Util::intToStringConPadding(sonic->getPosicionX())
-				+ "y" + Util::intToStringConPadding(sonic->getPosicionY())
-				+ ANIMACION_INVENCIBLE + PADDING;
-			mundo->enviarATodos(mensaje);
-			break;
-		}
-		default: break;
+		//Solo colisiona
+		colisionar(sonic);
 	}
+}
+
+void Bonus::colisionar(Personaje *sonic)
+{
+	if(colisionaArriba(sonic))
+	{
+		SDL_Rect limitesBonus = obtenerLimites();
+		SDL_Rect limitesSonic = sonic->obtenerLimites();
+
+		int diferenciaY = limitesSonic.y + limitesSonic.h - limitesBonus.y;
+		sonic->posicionarseEn(sonic->getPosicionX(), sonic->getPosicionY()- diferenciaY);
+
+		if(limitesSonic.x + limitesSonic.w/2 > limitesBonus.x + limitesBonus.w)
+		{
+			//Si Sonic esta parado al bordecito derecho, se resbala
+			sonic->resbalar(Personaje::DERECHA);
+			return;
+		}
+		else if(limitesSonic.x + limitesSonic.w/2 < limitesBonus.x)
+		{
+			//Si Sonic esta parado al bordecito izquierdo, se resbala
+			sonic->resbalar(Personaje::IZQUIERDA);
+			return;
+		}
+
+		sonic->detener();
+		return;
+	}
+
+	//Se evalua si el Sonic esta a la derecha o a la izquierda
+	sonic->pararPorColision(this->obtenerLimites());
 }
 
 std::string Bonus::getNombre()

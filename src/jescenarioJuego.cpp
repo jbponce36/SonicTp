@@ -50,5 +50,52 @@ jservidor* jescenarioJuego::getServidor(){
 	return this->servidor;
 }
 
+janillos* jescenarioJuego::getAnillo(){
+	return this->anillo;
+}
 
+void jescenarioJuego::setAnillo(janillos* panillos){
+   this->anillo = panillos;
+}
+
+void jescenarioJuego::setPiedra(jpiedra* ppiedra){
+	this->piedra = ppiedra;
+}
+
+jpiedra* jescenarioJuego::getPiedra(){
+	return this->piedra;
+}
+
+void jescenarioJuego::setPinche(jpinche* ppinche){
+	this->pinche = ppinche;
+}
+
+jpinche* jescenarioJuego::getPinche(){
+	return this->pinche;
+}
+
+void jescenarioJuego::setCangrejo(jcangrejo* pcangrejo){
+	this->cangrejo = pcangrejo;
+}
+
+jcangrejo* jescenarioJuego::getCangrejo(){
+	return this->cangrejo;
+}
+
+void jescenarioJuego::setMosca(jmosca* pmosca){
+	this->mosca = pmosca;
+
+}
+
+jmosca* jescenarioJuego::getMosca(){
+	return this->mosca;
+}
+
+void jescenarioJuego::setPescado(jpescado* ppescado){
+	this->pescado = ppescado;
+}
+
+jpescado* jescenarioJuego::getPescado(){
+	return this->pescado;
+}
 } /* namespace std */

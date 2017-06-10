@@ -159,12 +159,47 @@ std::string Piedra::obtenerMensajeEstado(){
 
 SDL_Rect Piedra::obtenerLimites()
 {
-	SDL_Rect limites = { obtenerX()+90, obtenerY(), ancho, alto };
-
+	//SDL_Rect limites = { obtenerX()+90, obtenerY(), ancho, alto };
+	SDL_Rect limites = { obtenerX()+30, obtenerY()+10, ancho-60, alto-20 };
 	return limites;
 }
 
 std::string Piedra::getNombre(){
 	return PIEDRA;
+}
+
+void Piedra::interactuar(Personaje *sonic){
+	//Sonic y piedra estan colisionando en algun lado
+
+	if(colisionaArriba(sonic)) //Si el Sonic esta arriba de la piedra
+	{
+		SDL_Rect limitesPiedra = obtenerLimites();
+		SDL_Rect limitesSonic = sonic->obtenerLimites();
+
+		//Esto posiciona bien al Sonic justo encima de la piedra
+		int diferenciaY = limitesSonic.y + limitesSonic.h - limitesPiedra.y;
+		sonic->posicionarseEn(sonic->getPosicionX(), sonic->getPosicionY()- diferenciaY);
+
+		if(limitesSonic.x + limitesSonic.w/2 > limitesPiedra.x + limitesPiedra.w)
+		{
+			//Si Sonic esta parado al bordecito derecho de la piedra, se resbala
+			sonic->resbalar(Personaje::DERECHA);
+			return;
+		}
+		else if(limitesSonic.x + limitesSonic.w/2 < limitesPiedra.x)
+		{
+			//Si Sonic esta parado al bordecito izquierdo de la piedra, se resbala
+			sonic->resbalar(Personaje::IZQUIERDA);
+			return;
+		}
+
+		sonic->detener();
+		return;
+	}
+
+	//Se evalua si el Sonic esta a la derecha o a la izquierda
+	sonic->pararPorColision(this->obtenerLimites());
+
+
 }
 

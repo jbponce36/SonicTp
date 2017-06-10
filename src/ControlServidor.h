@@ -29,8 +29,19 @@
 #include "Cangrejo.h"
 #include "Pescado.h"
 #include "Mosca.h"
+#include "Pinche.h"
+#include "parseadorJson.h"
+#include "jescenarioJuego.h"
+#include "janillos.h"
+#include "jpiedra.h"
+#include "jpinche.h"
+#include "jcangrejo.h"
+#include "jmosca.h"
+#include "jpescado.h"
 
 #define FPS_SERVER 25
+#define MAXFILAS 4000
+#define MAXCOLS  800
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
 
 class ControlServidor {
@@ -41,6 +52,14 @@ private:
 	VistaSDL *vista;
 	ConexServidor *server;
 	Logger *log;
+
+	jescenarioJuego* parseador;
+    janillos* anill;
+    jpiedra* jpied;
+    jpinche* jpin;
+    jcangrejo* jcang;
+    jmosca* jmos;
+    jpescado* jpes;
 
 
 	bool pasarNivel;
@@ -74,8 +93,12 @@ private:
 public:
 	list<Anillos*> anillos;
 	list<Piedra*>  piedra;
+	list<Pinche*> pinche;
+
+
 	void CreoAnillas();
 	void CreoPiedras();
+	void CreoPinche();
 	ControlServidor(int altura, int anchura, VistaSDL *vista, std::map<int, Personaje*> *sonics,
 		std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
 		ConexServidor *server, Logger *log);
@@ -100,14 +123,40 @@ public:
 	void CreacionEnemigos();
 	void enviarDatosEnemigosIniciales();
 	void actualizarPosicionesEnemigos();
+	void setEscenarioJuego(jescenarioJuego* esc);
+	jescenarioJuego* getEscenarioJuego();
 
+	int ValidadValorMaximo(int Defecto,int Original);
+
+
+	janillos* getAnill();
+	void setAnill(janillos* Anill);
+
+	jpiedra* getJpied();
+	void setJpied(jpiedra* Jpied);
+
+	jpinche* getJpin();
+	void setJpin(jpinche* Jpin);
+
+	jcangrejo* getJcang();
+	void setJcang(jcangrejo* Jcang);
+
+	jmosca* getJmos();
+	void setJmos(jmosca* Jmos);
+
+	jpescado* getJpes();
+	void setJpes(jpescado* Jpes);
+
+	void gameOverJugador(int idDesconectado);
 
 private:
+
 	void administrarTeclasServidor();
 	ControlServidor::mensajeRecibido parsearMensajePosicion(std::string mensaje);
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor(Camara *camara);
 	void verificarDuracionBonus(Personaje* sonic);
+	void volverInmortalesTodosLosSonics();
 	std::string intToString(int number);
 
 };

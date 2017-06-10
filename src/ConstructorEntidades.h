@@ -20,6 +20,9 @@
 #include "Bonus.h"
 #include "Util.h"
 #include "Piedra.h"
+#include "Pinche.h"
+
+
 
 #define MAX_ID 100
 #define MAX_ANCHO 4000
@@ -48,10 +51,13 @@ public:
 	list<Anillos*> anillos;
 	list<Entidad*> entidades;
 	list<Piedra*> piedra;
+    list<Pinche*> pinche;
+
 
 	void setEntidades(list<Entidad*> Entidades);
 
 	void cargarImagenesPiedra(SDL_Renderer *renderizador);
+	void cargarImagenesPinche(SDL_Renderer *renderizador);
 	SDL_Renderer* getRenderizador();
 	void setRenderizador(SDL_Renderer* Renderizador);
 
@@ -63,6 +69,7 @@ public:
 	void mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
 	void mostrarAnillas(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
 	void mostrarPiedras(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
+	void mostrarPinches(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
 	virtual ~ConstructorEntidades();
     Logger* getLog() const;
     void setLog(Logger *log);
@@ -70,7 +77,7 @@ public:
 	void agregarEntidadCliente(std::string nombre, int id, int x, int y);
 	void quitarEntidad(std::string nombre, int id);
 
-	void generarBonus(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ);
+	void generarBonus(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ,int minimor,int maximor);
 
 private:
 

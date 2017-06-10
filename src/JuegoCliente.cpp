@@ -262,8 +262,8 @@ void JuegoCliente::iniciarJuego()
 	int result = inicializarJuegoCliente(); //Inicializa vista, sonic y control.
 	if (result == ERR_CONEXION_RECHAZADA)
 	{
-		cout << "[JUEGO CLIENTE] Conexion rechazada. El cliente se cerrara." << endl;
-		log->addLogMessage("[JUEGO CLIENTE] Error. Conexion rechazada. Se termina el juego.",1);
+		cout << "[JUEGO CLIENTE] Conexion rechazada." << endl;
+		log->addLogMessage("[JUEGO CLIENTE] Error. Conexion rechazada por el servidor.",1);
 		return;
 	}
 

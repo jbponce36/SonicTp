@@ -13,6 +13,12 @@
 #include "jescenario.h"
 #include "jescenarioJuego.h"
 #include "jservidor.h"
+#include "janillos.h"
+#include "jpiedra.h"
+#include "jpinche.h"
+#include "jcangrejo.h"
+#include "jmosca.h"
+#include "jpescado.h"
 
 namespace std {
 
@@ -33,11 +39,36 @@ public:
 	jservidor* getServidor();
 	void setServidor(jservidor* pservidor);
 
+    janillos* getAnillo();
+    void setAnillo(janillos* panillos);
+
+    jpiedra* getPiedra();
+    void setPiedra(jpiedra* ppiedra);
+
+    jpinche* getPinche();
+    void setPinche(jpinche* ppinche);
+
+    jcangrejo* getCangrejo();
+    void setCangrejo(jcangrejo* pcangrejo);
+
+    jmosca* getMosca();
+    void setMosca(jmosca* pmosca);
+
+    jpescado* getPescado();
+    void setPescado(jpescado* ppescado);
+
 private:
 	jventana* ventana;
 	jconfiguracion* configuracion;
 	jescenario* escenario;
 	jservidor* servidor;
+	janillos* anillo;
+	jpiedra* piedra;
+	jpinche* pinche;
+	jcangrejo* cangrejo;
+	jmosca* mosca;
+	jpescado* pescado;
+
 };
 
 } /* namespace std */

@@ -49,8 +49,21 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 
 	this->cargarCapas(jescenario);
 
-	this->fuente = TTF_OpenFont("images/NotoSansCJK-Black.ttc", 44);
+	this->fuente = TTF_OpenFont("images/arial.ttf", 20);
 	this->White = {255, 255, 255,0};
+
+	this->azul = {26,26,227};
+	this->rojo = {202,15,15};
+	this->verde = {32,202,15};
+	this->amarillo = {173,202,12};
+	colores.push_back(azul);
+	colores.push_back(rojo);
+	colores.push_back(verde);
+	colores.push_back(amarillo);
+	negro = {0,0,0};
+	this->fuente2 = TTF_OpenFont("images/font_puntajes.ttf", 30);
+
+
 }
 
 void VistaSDL::validacionesEscenario(jescenario *jescenario)
@@ -208,8 +221,12 @@ void VistaSDL::cargarCapas(jescenario* jescenario)
 
 		}
 	}
+
 	aux=NULL;
-	*/this->log->setModulo("VISTA SDL");
+	*/
+
+
+	this->log->setModulo("VISTA SDL");
 	this->log->addLogMessage("[CARGAR CAPAS] Terminado.",2);
 }
 void VistaSDL::cargarEnemigosTextura(){
@@ -346,6 +363,7 @@ int VistaSDL::mostrarLogin(Logger *logger){
 	TTF_Font* fuenteInput =  TTF_OpenFont("images/NotoSansCJK-Black.ttc", 10);
 	SDL_Color color = { 0, 0, 0, 0xFF };
 	color.r = 255; color.g = 255; color.b = 0; color.a = 255;
+
 	Textura inputUsuario = Textura(this->renderizador, fuenteInput, color);
 	Textura inputContrasenia = Textura(this->renderizador, fuenteInput, color);
 
@@ -434,17 +452,17 @@ int VistaSDL::mostrarLogin(Logger *logger){
 		switch (seleccion){
 			case 0:{
 			texturaUsuario.renderizar(&imagenMostrar,&camara);
-			usuarioNombre = setUsuario(inputUsuario, color, imagenMostrar, camaraInput);
+			//usuarioNombre = setUsuario(seleccion,inputUsuario, color, imagenMostrar, camaraInput);
 			break;
 			}
 			case 1:{
 			texturaContrasenia.renderizar(&imagenMostrar,&camara);
-			contrasenia = setContrasenia(inputContrasenia, color);
+			contrasenia = setContrasenia(inputContrasenia, color, imagenMostrar, camara);
 			break;
 			}
 			case 2:{
 			texturaBotonAceptar.renderizar(&imagenMostrar,&camara);
-			aceptarLogin();
+			aceptarLogin(usuarioNombre, contrasenia);
 			break;}
 		}
 
@@ -457,20 +475,204 @@ int VistaSDL::mostrarLogin(Logger *logger){
 }
 
 
-string VistaSDL::setUsuario(Textura inputUsuario, SDL_Color color, SDL_Rect imagenMostrar, SDL_Rect camara){
+string VistaSDL::setUsuario(int opcion,Textura textureNombre, SDL_Color textColor, SDL_Rect imagenMostrar, SDL_Rect camara){
+	string inputText = "";
+	bool quit = false;
+	SDL_StartTextInput();
+	SDL_Event event;
+	string nombre = "nombre";
+	Textura textureInput = Textura( this->renderizador, this->fuente,textColor);
+
+	while (!quit) {
+
+		//The rerender text flag
+		bool renderText = false;
+		while (SDL_PollEvent(&event) != 0) {
+
+			//Para salir de la ventana
+			if (event.type == SDL_QUIT) {
+				quit = true;
+			}
+
+
+			//Special key input
+			else if (event.type == SDL_KEYDOWN) {
+				//Manejo del borrado del string
+				if (event.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0) {
+					//Se borra el ultimo caracter
+					string nuevo = inputText.substr(0, inputText.size() - 1);
+					inputText = nuevo;
+					renderText = true;
+				}
+				//Cuando hay un enter, significa que termino de escribir en ese campo
+				if (event.key.keysym.sym == SDLK_RETURN) {
+					//Nombre de usuario
+					if (opcion == 0) {
+							nombre = inputText;
+							textureNombre.cargarTexto(nombre.c_str(), textColor);
+
+						inputText = "";
+						textureInput.cargarTexto( inputText.c_str(), textColor);
+					}
+
+				}
+			}
+
+		}
+		//Se renderiza si es necesario
+		if (renderText) {
+			//Si el texto no es vacio
+			if (inputText != "") {
+				//Se renderiza el nuevo texto
+				textureInput.cargarTexto( inputText.c_str(), textColor);
+			}
+			//Si el texto esta vacio
+			else {
+				//Se renderiza una nueva textura
+				textureInput.cargarTexto( " ", textColor);
+			}
+		}
+			/*
+			if (opcion == 0) {
+				//Imprime el texto ingresado.
+				// Si me ingresaron un texto lo imprimo, sino tira error
+				if (inputText.length()) {
+					textureInput.render(
+							{ POSX_NOMBRE + textureTextoNombre.getWidth(), POSY_NOMBRE, textureInput.obtenerAnchoTextura(),
+									textureInput.obtenerAltoTextura() }, NULL, 0, NULL, SDL_FLIP_NONE, render);
+				}
+
+
+			}
+
+			if (opcion == 1) {
+				//Imprime el nombre de usuraio y el texto ingresado o vacio en caso de error.
+				// Si me ingresaron un texto lo imprimo, sino tira error
+				if (inputText.length()) {
+					textureInput.render( { POSX_IP + textureTextoIP.getWidth(), POSY_IP, textureInput.getWidth(),
+							textureInput.getHeight() }, NULL, 0, NULL, SDL_FLIP_NONE, render);
+				}
+				textureNombre.render( { POSX_NOMBRE + textureTextoNombre.getWidth(), POSY_NOMBRE,
+						textureNombre.getWidth(), textureNombre.getHeight() }, NULL, 0, NULL, SDL_FLIP_NONE, render);
+
+
+			}*/
+
+		}
+
+		//Actualiza la pantalla
+		SDL_RenderPresent(this->renderizador);
+
+
+	//Para finalizar deshabilita la entrada de texto
+	SDL_StopTextInput();
+
+	return inputText;
+}
+
+string VistaSDL::setContrasenia(Textura inputContrasenia, SDL_Color textColor, SDL_Rect imagenMostrar, SDL_Rect camara){
 	bool quit = false;
 
+	//Event handler
+	SDL_Event e;
 
-	return "";
+
+	//The current input text.
+	std::string inputText = "Username";
+	inputContrasenia.cargarTexto( inputText.c_str(), textColor );
+
+	//Enable text input
+	SDL_StartTextInput();
+
+	//While application is running
+	while( !quit )
+	{
+		//The rerender text flag
+		bool renderText = false;
+
+		//Handle events on queue
+		while( SDL_PollEvent( &e ) != 0 )
+		{
+			//User requests quit
+			if( e.type == SDL_QUIT )
+			{
+				quit = true;
+			}
+			//Special key input
+			else if( e.type == SDL_KEYDOWN )
+			{
+				//Handle backspace
+				if( e.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0 )
+				{
+					//lop off character
+					inputText.pop_back();
+					renderText = true;
+				}
+				//Handle copy
+				else if( e.key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL )
+				{
+					SDL_SetClipboardText( inputText.c_str() );
+				}
+				//Handle paste
+				else if( e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL )
+				{
+					inputText = SDL_GetClipboardText();
+					renderText = true;
+				}
+			}
+			//Special text input event
+			else if( e.type == SDL_TEXTINPUT )
+			{
+				//Not copy or pasting
+				if( !( ( e.text.text[ 0 ] == 'c' || e.text.text[ 0 ] == 'C' ) && ( e.text.text[ 0 ] == 'v' || e.text.text[ 0 ] == 'V' ) && SDL_GetModState() & KMOD_CTRL ) )
+				{
+					//Append character
+					inputText += e.text.text;
+					renderText = true;
+				}
+			}
+		}
+
+		//Rerender text if needed
+		if( renderText )
+		{
+			//Text is not empty
+			if( inputText != "" )
+			{
+				//Render new text
+				inputContrasenia.cargarTexto( inputText.c_str(), textColor );
+			}
+			//Text is empty
+			else
+			{
+				//Render space texture
+				inputContrasenia.cargarTexto( " ", textColor );
+			}
+		}
+
+		//Clear screen
+		//SDL_SetRenderDrawColor( this->renderizador, 0x00, 0x00, 0x00, 0x00 );
+		//SDL_RenderClear( this->renderizador );
+
+		//Render text textures
+		inputContrasenia.renderizar( &camara, &imagenMostrar);
+
+		//Update screen
+		SDL_RenderPresent( this->renderizador );
+	}
+
+	//Disable text input
+	SDL_StopTextInput();
+
+	return inputText;
+
 }
 
-string VistaSDL::setContrasenia(Textura inputContrasenia, SDL_Color color){
+string VistaSDL::aceptarLogin(string nombre, string contrasenia){
 
-	return "";
+	Usuario usuario = Usuario(nombre, contrasenia);
+	usuario.esValido();
 
-}
-
-string VistaSDL::aceptarLogin(){
 	return "";
 }
 
@@ -656,16 +858,20 @@ void VistaSDL::mostrarPiedras(SDL_Rect *camara, int indexZ){
 }
 
 
-void VistaSDL::dibujarTexto(const char *texto, int posX, int posY, SDL_Color color){
+
+void VistaSDL::mostrarPinches(SDL_Rect *camara, int indexZ){
+	constructorEntidades->mostrarPinches(renderizador, camara, indexZ);
+}
+
+void VistaSDL::dibujarTexto(std::string texto, int posX, int posY){
 
 
 	//TTF_SetFontStyle(fuente, TTF_STYLE_BOLD); //esto hace la letra en negrita
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO11"<<endl;
 	//cout<<&fuente<<endl;
 	//cout<<&White<<endl;
-	SDL_Color textColor = { 0, 0, 0, 0xFF };
-	textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;
-	this->superficieTexto = TTF_RenderUTF8_Blended(this->fuente, texto,textColor);
+
+	this->superficieTexto = TTF_RenderUTF8_Blended(fuente, texto.c_str(),White);
 	//SDL_Surface* textoCargado = TTF_RenderText_Blended(fuente, "PUNTAJES SONICS", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO22"<<endl;
 	this->texturaTexto = SDL_CreateTextureFromSurface(this->renderizador, superficieTexto);
@@ -675,6 +881,7 @@ void VistaSDL::dibujarTexto(const char *texto, int posX, int posY, SDL_Color col
 	//SDL_RenderClear(this->renderizador);
 	int text_ancho = superficieTexto->w;
 	int text_alto = superficieTexto->h;
+
 	Message_rect.x = posX;
 	Message_rect.y = posY;
 	Message_rect.w = text_ancho;
@@ -686,7 +893,7 @@ void VistaSDL::dibujarTexto(const char *texto, int posX, int posY, SDL_Color col
 	Mes.w = 500;
 	Mes.h = 250;
 	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO55"<<endl;
-	cout<<SDL_RenderCopy(this->renderizador, texturaTexto, NULL, &Message_rect)<<endl;
+	SDL_RenderCopy(this->renderizador, texturaTexto, NULL, &Message_rect);
 	SDL_FreeSurface(superficieTexto);
 	//VER Q LA TEXTURA FUE LIBERADA SI SE QUIERE ACCEDER A ELLA SE DEBE LIBARARLA DESPUES SINO TIRA
 	//VIOLACION DE SEGMENTO
@@ -697,3 +904,145 @@ void VistaSDL::dibujarTexto(const char *texto, int posX, int posY, SDL_Color col
 	//cout<<"LLEGO ACA despues DIBUJAR PUNTOS"<<endl;
 
 }
+
+void VistaSDL::mostrarScoJueInd(Personaje* personaje){
+	std::string textovidas ="VIDAS:" + Util::intToString(personaje->getPuntos()->getVidas());
+	this->dibujarTexto(textovidas,0,0);
+	std::string textoanillos = "ANILLOS:" + Util::intToString(personaje->getPuntos()->getCantAnillos());
+	this->dibujarTexto(textoanillos,0,50);
+	std::string textoscore = "PUNTOS:" + Util::intToString(personaje->getPuntos()->getPuntos());
+	this->dibujarTexto(textoscore,0,100);
+}
+
+SDL_Renderer* VistaSDL::getRenderizador(){
+	return this->renderizador;
+}
+
+int VistaSDL::getAltoVentana(){
+	return this->altoVentana;
+}
+
+int VistaSDL::getAnchoVentana(){
+	return this->anchoVentana;
+}
+
+void VistaSDL::dibujarTextoColor(std::string texto, int posX, int posY,SDL_Color color){
+	//TTF_SetFontStyle(fuente, TTF_STYLE_BOLD); //esto hace la letra en negrita
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO11"<<endl;
+	//cout<<&fuente<<endl;
+	//cout<<&White<<endl;
+
+
+	this->superficieTexto = TTF_RenderUTF8_Shaded(fuente, texto.c_str(),color,White);
+
+	//SDL_Surface* textoCargado = TTF_RenderText_Blended(fuente, "PUNTAJES SONICS", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO22"<<endl;
+	this->texturaTexto = SDL_CreateTextureFromSurface(this->renderizador, superficieTexto);
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO33"<<endl;
+	SDL_Rect Message_rect;
+	//SDL_SetRenderDrawColor(this->renderizador, 0, 0, 0, 0);
+	//SDL_RenderClear(this->renderizador);
+	int text_ancho = superficieTexto->w;
+	int text_alto = superficieTexto->h;
+
+	Message_rect.x = posX;
+	Message_rect.y = posY;
+	Message_rect.w = text_ancho;
+	Message_rect.h = text_alto;
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO44"<<endl;
+	SDL_Rect Mes;
+	Mes.x = 0;
+	Mes.y = 0;
+	Mes.w = 500;
+	Mes.h = 250;
+	//cout<<"LLEGO ACA ANTES DIBUJAR TEXTO55"<<endl;
+	SDL_RenderCopy(this->renderizador, texturaTexto, NULL, &Message_rect);
+	SDL_FreeSurface(superficieTexto);
+	//VER Q LA TEXTURA FUE LIBERADA SI SE QUIERE ACCEDER A ELLA SE DEBE LIBARARLA DESPUES SINO TIRA
+	//VIOLACION DE SEGMENTO
+	if( texturaTexto != NULL )
+		{
+			SDL_DestroyTexture( texturaTexto );
+		}
+	//cout<<"LLEGO ACA despues DIBUJAR PUNTOS"<<endl;
+
+}
+void VistaSDL::dibujarTextoColorFuente(std::string texto, int posX, int posY,SDL_Color color,TTF_Font* fuentee){
+
+
+	this->superficieTexto = TTF_RenderUTF8_Shaded(fuentee, texto.c_str(),color,negro);
+	this->texturaTexto = SDL_CreateTextureFromSurface(this->renderizador, superficieTexto);
+	SDL_Rect Message_rect;
+	int text_ancho = superficieTexto->w;
+	int text_alto = superficieTexto->h;
+
+	Message_rect.x = posX;
+	Message_rect.y = posY;
+	Message_rect.w = text_ancho;
+	Message_rect.h = text_alto;
+	SDL_Rect Mes;
+	Mes.x = 0;
+	Mes.y = 0;
+	Mes.w = 500;
+	Mes.h = 250;
+	SDL_RenderCopy(this->renderizador, texturaTexto, NULL, &Message_rect);
+	SDL_FreeSurface(superficieTexto);
+	if( texturaTexto != NULL )
+		{
+			SDL_DestroyTexture( texturaTexto );
+		}
+}
+void VistaSDL::mostrarScoJueIndTodos(vector<Personaje*>* sonics){
+
+		//std::vector<Personaje*>::iterator pos;
+
+		//sonics->size();
+
+		int indice;
+		int alto = 0;
+		for (indice = 0; indice < sonics->size(); indice++) {
+
+
+			//Personaje* personaje = (*Personaje) pos;
+			std::string textovidas = "VIDAS: " + Util::intToString(sonics->at(indice)->getPuntos()->getVidas())+
+					"  ANILLOS: "+ Util::intToString(sonics->at(indice)->getPuntos()->getCantAnillos())+
+					"  PUNTOS: " + Util::intToString(sonics->at(indice)->getPuntos()->getPuntos());
+			this->dibujarTextoColor(textovidas,0,alto,colores.at(indice));
+			alto += 23;
+		}
+
+
+	//std::string textoanillos = "ANILLOS:" + Util::intToString(personaje->getPuntos()->getCantAnillos());
+	//this->dibujarTexto(textoanillos,0,50);
+	//std::string textoscore = "PUNTOS:" + Util::intToString(personaje->getPuntos()->getPuntos());
+	//this->dibujarTexto(textoscore,0,100);
+}
+
+void VistaSDL::mostrarScoJueIndTodosFinNiv(vector<Personaje*>* sonics){
+
+		//std::vector<Personaje*>::iterator pos;
+
+		//sonics->size();
+
+		int indice;
+		int alto = 150;
+
+		this->dibujarTextoColorFuente("PUNTAJES",200,50,White,fuente);
+		for (indice = 0; indice < sonics->size(); indice++) {
+
+
+			//Personaje* personaje = (*Personaje) pos;
+			std::string textovidas = "VIDAS: " + Util::intToString(sonics->at(indice)->getPuntos()->getVidas())+
+					"  ANILLOS: "+ Util::intToString(sonics->at(indice)->getPuntos()->getCantAnillos())+
+					"  PUNTOS: " + Util::intToString(sonics->at(indice)->getPuntos()->getPuntos());
+			this->dibujarTextoColorFuente(textovidas,200,alto,colores.at(indice),fuente);
+			alto += 33;
+		}
+
+
+	//std::string textoanillos = "ANILLOS:" + Util::intToString(personaje->getPuntos()->getCantAnillos());
+	//this->dibujarTexto(textoanillos,0,50);
+	//std::string textoscore = "PUNTOS:" + Util::intToString(personaje->getPuntos()->getPuntos());
+	//this->dibujarTexto(textoscore,0,100);
+}
+

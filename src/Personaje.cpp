@@ -1,6 +1,7 @@
 #include "Personaje.h"
 #include "debug.h"
 #include "Puntaje.h"
+#include "ControlServidor.h"
 
 
 const int POSICION_INICIALX = 0;
@@ -43,14 +44,19 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->estaQuieto = true;
     this->congelado = false;
     this->tieneEscudo = false;
+    this->esInmortal = false;
+    this->esInvencible = false;
+    this->estaVivo = true;
 
     this->puntaje = new Puntaje(id, render,log);
 
     cargarSpriteSonic();
     this->log = log;
-
+    this->puntos = new Puntos(this->id);
     this->puedeIrDerecha = true;
     this->puedeIrIzquierda = true;
+    this->colisionando = false;
+    this->resbalando = false;
 }
 
 void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
@@ -77,7 +83,6 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 
     //Si esta saltando lo afecta la gravedad
     if (saltando){
-
     	this->velocidadY += GRAVEDAD;
     }
 
@@ -94,6 +99,9 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 		parar();
 	}
 
+	if(posicionY + personajeAlto < maximoAlto){
+		saltando = true; //Esta en el aire.
+	}
 	//cout << "Mover: " << velocidadX << " " << velocidadY << '\n';
 
 }
@@ -213,6 +221,7 @@ void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, in
 		animacionActual = &animacionCaminarDer;
 	}
 	else if(animacion.compare(ANIMACION_CORRER_DERECHA) == 0){
+		animacionActual = &animacionCorrerDer;
 	}
 	else if(animacion.compare(ANIMACION_SALTAR_DERECHA) == 0){
 		animacionActual = &animacionSaltarDer;
@@ -260,7 +269,6 @@ int Personaje::getPosicionX()
 	return this->posicionX;
 }
 int Personaje::getPosicionY()
-
 {
 	return this->posicionY;
 }
@@ -300,6 +308,7 @@ Personaje::~Personaje(){
 		delete texturaInvencible;
 	}
 	delete puntaje;
+	delete puntos;
 }
 
 void Personaje::dejarDeEstarQuieto()
@@ -347,6 +356,63 @@ void Personaje::dejarDeSaltar()
 void Personaje::correr(bool estaCorriendo)
 {
 	corriendo = estaCorriendo;
+}
+
+void Personaje::resbalar(Orientacion haciaDonde)
+{
+	saltando = false;
+	resbalando = true;
+	switch (haciaDonde)
+	{
+		case IZQUIERDA:
+			velocidadX = -personajeVelocidad;
+			break;
+		case DERECHA:
+			velocidadX = personajeVelocidad;
+			break;
+	}
+}
+
+void Personaje::rebotar()
+{
+	velocidadY = -velocidadY;
+}
+
+void Personaje::herir(ControlServidor *control)
+{
+	if (tieneEscudo)
+	{
+		quitarseEscudo();
+		return;
+	}
+
+	if(puntos->getCantAnillos() > 0)
+	{
+		//Sonic tiene anillos. Sacarselos
+		puntos->setCantAnillos(0);
+	}
+	else
+	{
+		if(puntos->getVidas() <= 0)
+		{
+			if (esInmortal)
+			{
+				return;
+			}
+			else
+			{
+				//Aca Sonic pierde el juego
+				cout << "Game Over!\n";
+				estaVivo = false;
+				control->gameOverJugador(id);
+			}
+		}
+		else
+		{
+			//Sonic no tiene anillos pero tiene vidas
+			puntos->restarUnaVida();
+		}
+	}
 }
 
 void Personaje::irArriba()
@@ -428,66 +494,41 @@ void Personaje::irDerecha()
 
 void Personaje::reanudarLuegoDeColision()
 {
-	this->puedeIrDerecha = true;
-	this->puedeIrIzquierda = true;
+	if (this->colisionando)
+	{
+
+		this->puedeIrDerecha = true;
+		this->puedeIrIzquierda = true;
+		this->resbalando = false;
+	}
 }
 
-void Personaje::pararPorColision()
+void Personaje::detener()
 {
-	debug(0,"Personaje::pararPorColision","Se detiene el sonic", 0);
-	/*if (velocidadX < 0)
-	{
-		velocidadX += 2*personajeAceleracion;
-		if (velocidadX >= 0)
-			velocidadX = 0;
-	}
-	else if(velocidadX > 0)
-	{
-		velocidadX -= 2*personajeAceleracion;
-		if (velocidadX <= 0)
-			velocidadX = 0;
-	}*/
-
 	velocidadX = 0;
+	saltando = false;
+}
 
+void Personaje::pararPorColision(SDL_Rect obstaculo)
+{
+	colisionando = true;
+	detener();
 
-
-	if (saltando)
-		return;
-
-	if (estaQuieto)
-		return;
-
-	velocidadY = 0;
-
-	if (velocidadX == 0){
-
-		estaQuieto = true;
-		saltando = false;
-		corriendo = false;
-
-		animacionActual->detener();
-	}
-
-
-	if (!this->saltando)
+	if(posicionX < obstaculo.x)
 	{
-		switch (orientacion)
-		{
-			case IZQUIERDA:
-				this->puedeIrIzquierda = false;
-				animacionActual = &animacionQuietoIzq;
-				break;
-			case DERECHA:
-				this->puedeIrDerecha = false;
-				animacionActual = &animacionQuietoDer;
-
-				break;
-		}
+		//Si sonic esta colisionando a la izquierda de la piedra
+		SDL_Rect limites = obtenerLimites();
+		int diferenciaX = limites.x + limites.w - obstaculo.x;
+		posicionX -= diferenciaX;
 	}
-			animacionActual->comenzar();
 
-
+	if(posicionX > obstaculo.x)
+	{
+		//Si sonic esta colisionando a la derecha de la piedra
+		SDL_Rect limites = obtenerLimites();
+		int diferenciaX = obstaculo.x + obstaculo.w - limites.x;
+		posicionX += diferenciaX;
+	}
 }
 
 
@@ -505,6 +546,8 @@ void Personaje::parar()
 		if (velocidadX <= 0)
 			velocidadX = 0;
 	}*/
+	if(resbalando)
+		return;
 
 	velocidadX = 0;
 
@@ -602,6 +645,22 @@ bool Personaje::estaAtacando()
 	return false;
 }
 
+bool Personaje::sigueVivo()
+{
+	return estaVivo;
+}
+
+void Personaje::dejarDeEstarVivo()
+{
+	estaVivo = false;
+	velocidadX = 0;
+	velocidadY = 0;
+	estaQuieto = true;
+	saltando = false;
+	corriendo = false;
+	congelado = true;
+}
+
 std::string Personaje::intToStringConPadding(int number)
 {
   ostringstream oss;
@@ -641,6 +700,14 @@ void Personaje::setPuntaje(Puntaje* puntaje) {
 	this->puntaje = puntaje;
 }
 
+Puntos* Personaje::getPuntos() {
+	return puntos;
+}
+
+void Personaje::setPuntos(Puntos* puntaje) {
+	this->puntos = puntaje;
+}
+
 std::string Personaje::obtenerMensajeEstado()
 {
 	//Tamano es 15. Ej: 1x-300y--20AcD1
@@ -650,9 +717,25 @@ std::string Personaje::obtenerMensajeEstado()
 			+ getNombreAnimacion() + getEstadoAnimacion());
 }
 
+std::string Personaje::obtenerMensajeEstadoBonus()
+{
+	std::string nombreAnimacion;
+	if (animacionBonus != NULL){
+		nombreAnimacion = animacionBonus->obtenerNombre();
+	}
+	else{
+		nombreAnimacion = ANIMACION_SIN_BONUS;
+	}
+
+	return ( Util::intToString(getId())
+		+ "x" + Util::intToStringConPadding(getPosicionX())
+		+ "y" + Util::intToStringConPadding(getPosicionY())
+		+ nombreAnimacion + PADDING);
+}
+
 SDL_Rect Personaje::obtenerLimites(){
 
-	SDL_Rect limites = { this->posicionX, this->posicionY, this->personajeAncho, this->personajeAlto };
+	SDL_Rect limites = {this->posicionX+15, this->posicionY+15, this->personajeAncho-30, this->personajeAlto-25};
 	return limites;
 }
 
@@ -710,3 +793,10 @@ bool Personaje::agarroBonusInvencible()
 	return esInvencible;
 }
 
+void Personaje::serInmortalODejarDeSerlo()
+{
+	if (esInmortal)
+		esInmortal = false;
+	else
+		esInmortal = true;
+}

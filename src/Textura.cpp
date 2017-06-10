@@ -114,37 +114,30 @@ void Textura::cargarImagen(std::string path, std::string porDefecto, SDL_Rendere
 #ifdef _SDL_TTF_H
 bool Textura::cargarTexto( std::string textureText, SDL_Color textColor )
 {
-	//Get rid of preexisting texture
 	liberarTextura();
+	SDL_Surface* textSurface = TTF_RenderText_Solid(this->fuente, textureText.c_str(), textColor);
 
-	//Render text surface
-	SDL_Surface* textSurface = TTF_RenderText_Solid( this->fuente, textureText.c_str(), textColor );
-	if( textSurface != NULL )
-	{
+	if(textSurface == nullptr){
+		cout<<"erro cargando texto en textura"<<endl;
+	}
+	else{
 		//Create texture from surface pixels
-        this->textura = SDL_CreateTextureFromSurface( this->renderizador, textSurface );
-		if( this->textura == NULL )
+		this->textura = SDL_CreateTextureFromSurface(this->renderizador, textSurface);
+		if(this->textura)
 		{
-			printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
-		}
-		else
-		{
-			//Get image dimensions
 			anchoTextura = textSurface->w;
 			altoTextura = textSurface->h;
 		}
+		else {
+			//todo loguear error
+		}
 
 		//Get rid of old surface
-		SDL_FreeSurface( textSurface );
-	}
-	else
-	{
-		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+		SDL_FreeSurface(textSurface);
 	}
 
-
-	//Return success
-	return this->textura != NULL;
+	if (this->textura == nullptr ) return false;
+	return true;
 }
 #endif
 

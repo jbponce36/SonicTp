@@ -183,4 +183,20 @@ std::string jentidades::toString(){
 			", y: "+intToString(coory)+", index_z: "+ intToString(index)+", ruta_imagen: "+ ruta;
 }
 
+//minimo random
+int jentidades::getMinimor(){
+	return minimor;
+}
+void jentidades::setMinimor(int Minimor) {
+	this->minimor = Minimor;
+}
+
+
+int jentidades::getMaximor(){
+	return maximor;
+}
+void jentidades::setMaximor(int Maximor) {
+	this->maximor = Maximor;
+}
+
 } /* namespace std */
