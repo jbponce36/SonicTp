@@ -574,6 +574,32 @@ void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado){
 	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Terminado.\n",2);
 
 }
+void VistaSDL::mostrarGameOver(Logger *logger){
+	Textura imagenServDesc = Textura();
+
+	imagenServDesc.cargarImagen("images/imagenesMenu/gameOver.png", "images/entidaddefault.png",this->renderizador, log);
+
+	SDL_Rect camara;
+	SDL_Rect imagenMostrar;
+
+	camara.x = 0;
+	camara.y = 0;
+	camara.w = imagenServDesc.obtenerAnchoTextura();
+	camara.h = imagenServDesc.obtenerAltoTextura();
+
+	imagenMostrar.x = anchoVentana/2;
+	imagenMostrar.y = altoVentana/2;
+	imagenMostrar.w = camara.w;
+	imagenMostrar.h = camara.h;
+
+	imagenServDesc.renderizar(&camara,&imagenMostrar);
+	SDL_RenderPresent(this->renderizador);
+
+	sleep(5);
+
+	this->log->addLogMessage("[MOSTRAR GAME OVER] Terminado.\n",2);
+
+}
 
 void VistaSDL::mostrarServidorDesconectado()
 {

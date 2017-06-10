@@ -917,4 +917,5 @@ void ControlServidor::gameOverJugador(int id)
 		cout << "El cliente ya se habia desconectado." << endl;
 	}
 
+	vista->mostrarGameOver(log);
 }

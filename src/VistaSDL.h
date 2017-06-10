@@ -91,6 +91,7 @@ public:
     int mostrarGrupos(Logger *logger);
     void mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado);
     void mostrarServidorDesconectado();
+    void mostrarGameOver(Logger *logger);
     void cerrar();
     ~VistaSDL();
     void mostrarEntidades(SDL_Rect *camara, int indexZ);
