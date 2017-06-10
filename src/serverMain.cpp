@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
 
 	srand(time(NULL));
 
-	char *archivoLog=(char*)"log/logServidor.txt";
+	char *archivoLog=(char*)"logs/logServidor.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv), "SERVER");
 	log->iniciarLog("INICIAR LOGGER");
 
