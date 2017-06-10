@@ -68,6 +68,8 @@ int mostrarMenuServer(){
 
 int main(int argc, char *argv[]) {
 
+	srand(time(NULL));
+
 	char *archivoLog=(char*)"log/logServidor.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv), "SERVER");
 	log->iniciarLog("INICIAR LOGGER");
@@ -109,6 +111,7 @@ int main(int argc, char *argv[]) {
 		vector<Hilorecibir*> hrRecibir;
 		vector<Hiloenviar*> hrEnviar;
 		JuegoServidor *juego = new JuegoServidor(server, hrEnviar, hrRecibir, log, juegoTerminado);
+
 
 		HiloMenuSer *hiloMenu = new HiloMenuSer(log);
 		hiloMenu->IniciarHilo(&juegoTerminado);

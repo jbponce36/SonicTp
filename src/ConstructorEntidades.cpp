@@ -51,6 +51,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 	int coordX, coordY, indexZ;
 	std::string rutaImagen;
 	int radio;
+	int minimor,maximor;
 
 	this->log->addLogMessage("[CARGA DE ENTIDADES] Iniciado.", 2);
 
@@ -59,6 +60,8 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 	{
 		if(((*pos).gettipo() == "rectangulo") || ((*pos).gettipo() == "cuadrado"))
 		{
+
+
 			//id = (*pos).getid();
 			id = (*pos).getid();
 			color = (*pos).getcolor();
@@ -72,6 +75,8 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 
 			rutaImagen = (*pos).getruta();
 			indexZ = (*pos).getindex();
+			minimor = (*pos).getMinimor();
+			maximor = (*pos).getMaximor();
 
 			validarDatosNumericos(id, coordX, coordY, indexZ);
 			validar(ancho, 0, MAX_ANCHO);
@@ -89,14 +94,9 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 
 				cout<<"LLEGA"<<endl;
 
-				srand(time(NULL));
 				int cantidadAnillas = (rand() % 4) + 1;
 
-
-				// cout<<"####CANTIDADANILLAS###"<<endl;
-				// cout<<cantidadAnillas<<endl;
-
-				debug(1, "ConstructorEntidades::cargarEntidadesssssssssssssssssssssssssssssssssssss", "Cordenada X %d\n", (*pos).getcoorx());
+				debug(1, "ConstructorEntidades::cargarEntidadess", "Cordenada X %d\n", (*pos).getcoorx());
 				debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada Y %d\n", (*pos).getcoory());
 
 				for(int i=0;i<cantidadAnillas;i++){
@@ -124,7 +124,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			}
 			else if ((*pos).getruta() == "images/Bonus.png")
 			{
-				generarBonus(ancho, alto, color, rutaImagen, indexZ);
+				generarBonus(ancho, alto, color, rutaImagen, indexZ,minimor,maximor);
 			}
 			else
 			{
@@ -132,6 +132,8 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 				entidades.push_back(rectangulo);
 				this->log->setModulo("CONSTRUCTOR ENTIDADES");
 				this->log->addLogMessage("[CARGAR ENTIDADES] Rectangulo->"+rectangulo->toString(), 3);
+
+
 			}
 		}
 		else if((*pos).gettipo() == "circulo")
@@ -173,6 +175,8 @@ void ConstructorEntidades::cargarEntidadesCliente(list<jentidades> jEntidades, S
 	int coordX, coordY, indexZ;
 	std::string rutaImagen;
 	int radio;
+    int minimor;
+    int maximor;
 
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
 	this->log->addLogMessage("[CARGA DE ENTIDADES] Iniciado.", 2);
@@ -190,6 +194,9 @@ void ConstructorEntidades::cargarEntidadesCliente(list<jentidades> jEntidades, S
 			coordY = (*pos).getcoory();
 			rutaImagen = (*pos).getruta();
 			indexZ = (*pos).getindex();
+			minimor = (*pos).getMinimor();
+			maximor = (*pos).getMaximor();
+
 
 			validarDatosNumericos(id, coordX, coordY, indexZ);
 			validar(ancho, 0, MAX_ANCHO);
@@ -225,6 +232,7 @@ void ConstructorEntidades::cargarEntidadesCliente(list<jentidades> jEntidades, S
 			}
 			else
 			{
+
 				//No lo agrega al generadorEntidades
 				//Pero lo pone en la lista de entidades asi la dibuja y no depende del servidor
 				Rectangulo *rectangulo = new Rectangulo(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
@@ -455,56 +463,88 @@ void ConstructorEntidades::quitarEntidad(std::string nombre, int id)
 }
 
 void ConstructorEntidades::generarBonus(int ancho, int alto,
-		std::string color, std::string rutaImagen, int indexZ)
+		std::string color, std::string rutaImagen, int indexZ, int minimor,int maximor)
 {
 	//Genera bonus en posiciones y cantidades aleatorias
-	srand(time(NULL));
+
 	//Agrego bonus de Escudo
-	int cantidadBonus = 2;
-			//Util::numeroRandom(3);
+
+  //tengo que reemplazar el numero random por lo que leeo del json.....
+
+	 int cantidadBonus = Util::numeroRandomEntre(minimor, maximor);
+	//int cantidadBonus =(rand() % maximor) + minimor;
+
+
+    cout<<"CANTIDAD DE BONUS GENERADOS"<<endl;
+    cout<<cantidadBonus<<endl;
+
 	int y = limiteAlto - alto;
 
 	int coordXActual = 2200;
 	int c= 0;
 
+	std::vector<int> myvector;
+	  // set some values:
+	for (int i=0; i<=7; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
+	std::random_shuffle ( myvector.begin(), myvector.end() );
+
+
 	for(int i = 0; i < cantidadBonus; i++)
 	{
-		//Divide el escenario en partes iguales del doble del ancho del bonus para que no se superpongan
-		//Y al sumarle 2*ancho hago que caiga en una de esas divisiones
-		//int x = coordXActual + Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
-		int x = coordXActual + c * 200;
-		debug(0, "ConstructorEntidades::generarBonus", "Creando escudo en pos X: %d", x);
-		Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::ESCUDO);
-		entidades.push_back(nuevoBonus);
-		c++;
+		if (!myvector.empty()){
+			//Divide el escenario en partes iguales del doble del ancho del bonus para que no se superpongan
+			//Y al sumarle 2*ancho hago que caiga en una de esas divisiones
+			//int x = coordXActual + Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+			  int x = myvector.back();
+ 		      myvector.pop_back();
+
+			x = x * 1000 + 700;
+			debug(0, "ConstructorEntidades::generarBonus", "Creando escudo en pos X: %d", x);
+			Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::ESCUDO);
+			entidades.push_back(nuevoBonus);
+			c++;
+		}
 	}
 
 	//Agrego bonus de Anillos
-	cantidadBonus = 2;
+	//cantidadBonus = 2;
 			//Util::numeroRandom(3);
 	for(int i = 0; i < cantidadBonus; i++)
 	{
-		int x = coordXActual + c* 200;
-		debug(0, "ConstructorEntidades::generarBonus", "Creando Anillo en pos X: %d", x);
-				//+ Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
-		Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::RING);
-		entidades.push_back(nuevoBonus);
-		c++;
+		if (!myvector.empty()){
+		  int x = myvector.back();
+	      myvector.pop_back();
+
+			x = x * 1000 + 700;
+
+			debug(0, "ConstructorEntidades::generarBonus", "Creando Anillo en pos X: %d", x);
+					//+ Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+			Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::RING);
+			entidades.push_back(nuevoBonus);
+			c++;
+		}
 	}
 
 	//Agrego bonus de Invencibilidad
-	cantidadBonus = 2;
+	//cantidadBonus = 2;
 			//Util::numeroRandom(3);
 
 	for(int i = 0; i < cantidadBonus; i++)
 	{
-		int x = coordXActual + c* 200;
-		debug(0, "ConstructorEntidades::generarBonus", "Creando invencibiilidad en pos X: %d", x);
-				//Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
-		Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::INVENCIBILIDAD);
-		entidades.push_back(nuevoBonus);
-		c++;
+		if (!myvector.empty()){
+		  int x = myvector.back();
+	      myvector.pop_back();
+
+	      x = x * 1000 + 700;
+
+			debug(0, "ConstructorEntidades::generarBonus", "Creando invencibiilidad en pos X: %d", x);
+					//Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+			Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::INVENCIBILIDAD);
+			entidades.push_back(nuevoBonus);
+			c++;
+		}
 	}
+
 }
 
 void ConstructorEntidades::cargarImagenesPiedra(SDL_Renderer *renderizador){

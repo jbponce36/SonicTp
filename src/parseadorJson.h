@@ -20,7 +20,12 @@
 #include "jventana.h"
 #include "jservidor.h"
 #include "ConexServidor.h"
-
+#include "janillos.h"
+#include "jpiedra.h"
+#include "jpinche.h"
+#include "jcangrejo.h"
+#include "jmosca.h"
+#include "jpescado.h"
 
 namespace std {
 
@@ -51,8 +56,10 @@ public:
 	//devuelve solo la cantclientes
 	int CargarCantClientes();
 
-	void setraiz(json_t*);
+	void setraiz(json_t* Raiz);
 	json_t* getraiz();
+
+
 
 	int cargarPuerto(json_t* raiz);
 	char* cargarIP(json_t* raiz);
@@ -73,7 +80,12 @@ private:
     std::string leerValorStringCapas(json_t* padre,const char* nombre,std::string valorPorDefecto);
     list<capas> DevolverCapasPorDefecto();
     list<jentidades> DevolverEntidadesPorDefecto();
-
+    janillos* cargarRandonAnillos(json_t* raiz);
+    jpiedra* cargarRandonPiedras(json_t* raiz);
+    jpinche* cargarRandonPinche(json_t* raiz);
+    jcangrejo* cargarRandonCangrejo(json_t* raiz);
+    jmosca* cargarRandonMosca(json_t* raiz);
+    jpescado* cargarRandonPescado(json_t* raiz);
 
 };
 

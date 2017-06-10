@@ -30,6 +30,14 @@
 #include "Pescado.h"
 #include "Mosca.h"
 #include "Pinche.h"
+#include "parseadorJson.h"
+#include "jescenarioJuego.h"
+#include "janillos.h"
+#include "jpiedra.h"
+#include "jpinche.h"
+#include "jcangrejo.h"
+#include "jmosca.h"
+#include "jpescado.h"
 
 #define FPS_SERVER 25
 #define MAXFILAS 4000
@@ -44,6 +52,15 @@ private:
 	VistaSDL *vista;
 	ConexServidor *server;
 	Logger *log;
+
+	jescenarioJuego* parseador;
+    janillos* anill;
+    jpiedra* jpied;
+    jpinche* jpin;
+    jcangrejo* jcang;
+    jmosca* jmos;
+    jpescado* jpes;
+
 
 	bool pasarNivel;
 	int nivelActual;
@@ -112,14 +129,35 @@ public:
 	void enviarDatosEnemigosIniciales();
 	void enviarDatosEnemigosInicialesAUno(Hiloenviar *hiloEnviar);
 	void actualizarPosicionesEnemigos();
-	void CargarMatriz(int posX, int posY);
-	bool buscarMatriz(int posX,int posY);
+	void setEscenarioJuego(jescenarioJuego* esc);
+	jescenarioJuego* getEscenarioJuego();
 
-	 char mapa[MAXFILAS][MAXCOLS];
+	int ValidadValorMaximo(int Defecto,int Original);
+
+
+	janillos* getAnill();
+	void setAnill(janillos* Anill);
+
+	jpiedra* getJpied();
+	void setJpied(jpiedra* Jpied);
+
+	jpinche* getJpin();
+	void setJpin(jpinche* Jpin);
+
+	jcangrejo* getJcang();
+	void setJcang(jcangrejo* Jcang);
+
+	jmosca* getJmos();
+	void setJmos(jmosca* Jmos);
+
+	jpescado* getJpes();
+	void setJpes(jpescado* Jpes);
+
 
 	void gameOverJugador(int idDesconectado);
 
 private:
+
 	void administrarTeclasServidor();
 	ControlServidor::mensajeRecibido parsearMensajePosicion(std::string mensaje);
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);

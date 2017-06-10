@@ -24,6 +24,7 @@ public:
 	static std::string intToStringConPadding(int numero, int largo);
 	static int stringConPaddingToInt(std::string mensaje);
 	static int numeroRandom(int hasta);
+	static int numeroRandomEntre(int desde, int hasta);
 	static void dibujarRecuadro(SDL_Rect *entidad, SDL_Renderer *renderizador, SDL_Rect *camara);
 };
 

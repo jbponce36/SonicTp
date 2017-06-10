@@ -22,6 +22,8 @@
 #include "Piedra.h"
 #include "Pinche.h"
 
+
+
 #define MAX_ID 100
 #define MAX_ANCHO 4000
 #define MAX_ALTO 500
@@ -75,7 +77,7 @@ public:
 	void agregarEntidadCliente(std::string nombre, int id, int x, int y);
 	void quitarEntidad(std::string nombre, int id);
 
-	void generarBonus(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ);
+	void generarBonus(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ,int minimor,int maximor);
 
 private:
 

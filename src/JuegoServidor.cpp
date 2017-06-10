@@ -6,6 +6,7 @@
  */
 
 #include "JuegoServidor.h"
+#include "debug.h"
 
 JuegoServidor::JuegoServidor(ConexServidor *server,
 	std::vector<Hiloenviar*> &hiloEnviar, std::vector<Hilorecibir*> &hiloRecibir, Logger *log, bool &juegoTerminado)
@@ -40,17 +41,43 @@ void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
 		sonics[id] = sonic;
 	}
 
+
 	control = new ControlServidor(0, 0, vista, &sonics, &hilosEnviar, &hilosRecibir, server,log);
+
+	control->setAnill(jparseador->getAnillo());
+	control->setJpied(jparseador->getPiedra());
+    control->setJpin(jparseador->getPinche());
+
+   // cout<<"PRUEBA CANGREJO MAXIMO"<<endl;
+    //cout<<jparseador->getCangrejo()->getMaximoran()<<endl;
+
+    //cout<<"PRUEBA CANGREJO MINIMO"<<endl;
+    //cout<<jparseador->getCangrejo()->getMinimoran()<<endl;
+
+   // cout<<"PRUEBA MOSCA MAXIMO"<<endl;
+    //cout<<jparseador->getMosca()->getMaximoran()<<endl;
+
+   // cout<<"PRUEBA MOSCA MINIMO"<<endl;
+    //cout<<jparseador->getMosca()->getMinimoran()<<endl;
+
+   // cout<<"PRUEBA PESCADO MAXIMO"<<endl;
+   // cout<<jparseador->getPescado()->getMaximoran()<<endl;
+   // cout<<"PRUEBA PESCADO MINIMO"<<endl;
+    //cout<<jparseador->getPescado()->getMinimoran()<<endl;
+
 }
+
 
 void JuegoServidor::iniciarJuegoControlServidor()
 {
 	control->ControlarJuegoServidor(vista, juegoTerminado);
+
 }
 
 void JuegoServidor::iniciarJuego()
 {
 	//Se leen los datos del json
+
 	parseadorJson* parseador = new parseadorJson(log);
 
 	char *file=(char*)"configuracion/configuracion.json";
@@ -61,10 +88,14 @@ void JuegoServidor::iniciarJuego()
 
 	//Inicia el juego
 	inicializarJuegoServidor(jparseador); //Inicializa vista y control.
+
 	iniciarJuegoControlServidor();
 
 	log->setModulo("JUEGO_SERVIDOR");
 	log->addLogMessage("Se termina el juego.",1);
+
+	delete parseador;
+
 }
 
 void* JuegoServidor::iniciarJuegoServidor(void *datos)
