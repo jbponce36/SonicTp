@@ -611,7 +611,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 	{
 		Personaje *sonic = (*pos).second;
 
-		if(sonic->sigueVivo())
+		if(sonic->sigueVivo() && !sonic->estaCongelado())
 		{
 			//this->constructorEntidades->anillos.
 			//Por cada sonic, fijarse si se intersecta con alguna de las cosas...?
