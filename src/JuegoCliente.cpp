@@ -274,8 +274,14 @@ void JuegoCliente::iniciarJuego()
 }
 
 int JuegoCliente::elegirOpcionDeMenu(Logger *log){
-	this->vista->mostrarLogin(log);
+	int opcion = 0;
+
+	while (opcion < 2){
+		opcion = this->vista->mostrarLogin(log);
+	}
+
 	return this->vista->mostraMenuInicial(log);
+
 }
 
 Personaje* JuegoCliente::getSonic(){

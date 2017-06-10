@@ -18,6 +18,16 @@ Textura::Textura()
 	this->anchoTextura = 0;
 	this->altoTextura = 0;
 	this->renderizador = NULL;
+
+}
+
+Textura::Textura(SDL_Renderer* renderizador, TTF_Font* fuente, SDL_Color color ){
+	this->renderizador = renderizador;
+	this->fuente = fuente;
+	this->color = color;
+	this->textura = NULL;
+	this->anchoTextura = 0;
+	this->altoTextura = 0;
 }
 
 void Textura::cargarImagenCapa(std::string path,SDL_Renderer* render, Logger *log)
@@ -101,6 +111,43 @@ void Textura::cargarImagen(std::string path, std::string porDefecto, SDL_Rendere
 	log->addLogMessage("[CARGAR IMAGEN] Terminado.", 2);
 }
 
+#ifdef _SDL_TTF_H
+bool Textura::cargarTexto( std::string textureText, SDL_Color textColor )
+{
+	//Get rid of preexisting texture
+	liberarTextura();
+
+	//Render text surface
+	SDL_Surface* textSurface = TTF_RenderText_Solid( this->fuente, textureText.c_str(), textColor );
+	if( textSurface != NULL )
+	{
+		//Create texture from surface pixels
+        this->textura = SDL_CreateTextureFromSurface( this->renderizador, textSurface );
+		if( this->textura == NULL )
+		{
+			printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+		}
+		else
+		{
+			//Get image dimensions
+			anchoTextura = textSurface->w;
+			altoTextura = textSurface->h;
+		}
+
+		//Get rid of old surface
+		SDL_FreeSurface( textSurface );
+	}
+	else
+	{
+		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+	}
+
+
+	//Return success
+	return this->textura != NULL;
+}
+#endif
+
 int Textura::obtenerAnchoTextura()
 {
 	return this->anchoTextura;
@@ -110,6 +157,32 @@ int Textura::obtenerAltoTextura()
 {
 	return this->altoTextura;
 }
+
+
+
+bool Textura::renderizarTexto(string texto, SDL_Color color){
+	this->liberarTextura();
+
+	SDL_Surface* texturaTexto = TTF_RenderUTF8_Solid(this->fuente,texto.c_str(),color);
+
+	if (texturaTexto == NULL){
+		cout << "Error: " << IMG_GetError() << endl;
+	}
+	else {
+		this->textura = SDL_CreateTextureFromSurface(this->renderizador,texturaTexto);
+		if (this->textura == NULL){
+			cout << "Error: " << SDL_GetError() << endl;
+		} else {
+			this->anchoTextura = texturaTexto->w;
+			this->altoTextura = texturaTexto->h;
+		}
+
+		SDL_FreeSurface(texturaTexto);
+	}
+
+	return (this->textura != NULL);
+}
+
 
 void Textura::renderizar(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVentana )
 {
@@ -194,4 +267,20 @@ string Textura::toString(){
 	return "id: " + intToString(id)
 			+ ", dimensiones-> ancho:"+intToString(anchoTextura)+
 	", alto: "+intToString(altoTextura)+", index_z: "+ intToString(index_z)+", ruta_imagen: "+ ruta;
+}
+
+TTF_Font* Textura::getFuente() {
+	return fuente;
+}
+
+void Textura::setFuente(TTF_Font* fuente) {
+	this->fuente = fuente;
+}
+
+SDL_Renderer* Textura::getRenderizador() {
+	return renderizador;
+}
+
+void Textura::setRenderizador(SDL_Renderer* renderizador) {
+	this->renderizador = renderizador;
 }

@@ -51,8 +51,6 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 
 	this->fuente = TTF_OpenFont("images/NotoSansCJK-Black.ttc", 44);
 	this->White = {255, 255, 255,0};
-
-
 }
 
 void VistaSDL::validacionesEscenario(jescenario *jescenario)
@@ -339,22 +337,29 @@ std::string VistaSDL::intToString(int number)
 
 
 
-string VistaSDL::mostrarLogin(Logger *logger){
+int VistaSDL::mostrarLogin(Logger *logger){
 	this->log->addLogMessage("[MOSTRAR LOGIN] Iniciado.",2);
 	Textura fondoLogin = Textura();
 	Textura texturaUsuario = Textura();
 	Textura texturaBotonAceptar = Textura();
 	Textura texturaContrasenia = Textura();
+	TTF_Font* fuenteInput =  TTF_OpenFont("images/NotoSansCJK-Black.ttc", 10);
+	SDL_Color color = { 0, 0, 0, 0xFF };
+	color.r = 255; color.g = 255; color.b = 0; color.a = 255;
+	Textura inputUsuario = Textura(this->renderizador, fuenteInput, color);
+	Textura inputContrasenia = Textura(this->renderizador, fuenteInput, color);
 
 	fondoLogin.cargarImagen("images/imagenesMenu/botonesLogin/login2.png", "images/entidaddefault.png",this->renderizador, logger);
 	texturaUsuario.cargarImagen("images/imagenesMenu/botonesLogin/usuario2.png", "images/entidaddefault.png", this->renderizador, logger);
 	texturaContrasenia.cargarImagen("images/imagenesMenu/botonesLogin/contrasenia2.png", "images/entidaddefault.png", this->renderizador, logger);
 	texturaBotonAceptar.cargarImagen("images/imagenesMenu/botonesLogin/aceptar2.png", "images/entidaddefault.png", this->renderizador, logger);
+	//input.cargarImagen("images/imagenesMenu/inputSeleccionado.png", "images/entidaddefault.png", this->renderizador, logger);
 
 
 	bool salir = false;
 	SDL_Event e;
 	int seleccion = 0;
+
 	while( !salir ){
 	//manejar eventos en la cola
 		while( SDL_PollEvent( &e ) != 0 )
@@ -413,35 +418,56 @@ string VistaSDL::mostrarLogin(Logger *logger){
 		camara.h = texturaUsuario.obtenerAltoTextura();
 		camara.x = 800;
 		camara.y = 700;
+
+		SDL_Rect camaraInput;
+		camaraInput.w = texturaUsuario.obtenerAnchoTextura();
+		camaraInput.h = texturaUsuario.obtenerAltoTextura();
+		camaraInput.x = 820;
+		camaraInput.y = 800;
+
+		Usuario usuario = Usuario();
+		string usuarioNombre = "nombre";
+		string contrasenia = "contrasenia";
+
+
+		SDL_StartTextInput();
 		switch (seleccion){
-			case 0:
+			case 0:{
 			texturaUsuario.renderizar(&imagenMostrar,&camara);
-			setUsuario();
+			usuarioNombre = setUsuario(inputUsuario, color, imagenMostrar, camaraInput);
 			break;
-
-			case 1:
+			}
+			case 1:{
 			texturaContrasenia.renderizar(&imagenMostrar,&camara);
-			setContrasenia();
+			contrasenia = setContrasenia(inputContrasenia, color);
 			break;
-
-			case 2:
+			}
+			case 2:{
 			texturaBotonAceptar.renderizar(&imagenMostrar,&camara);
 			aceptarLogin();
-			break;
+			break;}
 		}
+
+		SDL_StopTextInput();
 
 		SDL_RenderPresent(this->renderizador);
 	}
-	return "";
+	return seleccion;
 
 }
 
-string VistaSDL::setUsuario(){
+
+string VistaSDL::setUsuario(Textura inputUsuario, SDL_Color color, SDL_Rect imagenMostrar, SDL_Rect camara){
+	bool quit = false;
+
+
 	return "";
 }
 
-string VistaSDL::setContrasenia(){
+string VistaSDL::setContrasenia(Textura inputContrasenia, SDL_Color color){
+
 	return "";
+
 }
 
 string VistaSDL::aceptarLogin(){
@@ -628,6 +654,7 @@ void VistaSDL::mostrarPiedras(SDL_Rect *camara, int indexZ){
 	constructorEntidades->mostrarPiedras(renderizador, camara, indexZ);
 
 }
+
 
 void VistaSDL::dibujarTexto(const char *texto, int posX, int posY, SDL_Color color){
 

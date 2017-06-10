@@ -23,6 +23,7 @@
 #include <vector>
 #include <unistd.h>
 #include <SDL2/SDL_ttf.h>
+#include "Usuario.h"
 
 #define ANCHO_VENTANA_POR_DEFECTO 640
 #define ALTO_VENTANA_POR_DEFECTO 500
@@ -80,9 +81,10 @@ public:
     SDL_Renderer *obtenerRender();
     int obtenerVelocidadDeScroll();
     void validacionesVentana();
-    string mostrarLogin(Logger *logger);
-    string setUsuario();
-    string setContrasenia();
+    int mostrarLogin(Logger *logger);
+   // bool loadFromRenderedText(std::string textureText, SDL_Color textColor);
+    string setUsuario(Textura inputUsuario, SDL_Color color, SDL_Rect imagenMostrar, SDL_Rect camara);
+    string setContrasenia(Textura inputContrasenia, SDL_Color color);
     string aceptarLogin();
     int mostraMenuInicial(Logger *logger);
     void mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado);
