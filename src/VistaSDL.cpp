@@ -584,10 +584,11 @@ int VistaSDL::mostrarGrupos(Logger *logger){
 		imagenMostrar.w = anchoVentana;
 		imagenMostrar.h = altoVentana;
 		menuInicial.renderizar(&camara,&imagenMostrar);
+
 		camara.w = texturaGrupo1.obtenerAnchoTextura();
 		camara.h = texturaGrupo1.obtenerAltoTextura();
-		camara.x = 800;
-		camara.y = 830;
+		camara.x = anchoVentana/2 - camara.w/2;
+		camara.y = 3*altoVentana/4;
 		switch (seleccion){
 			case 0:
 			texturaGrupo1.renderizar(&imagenMostrar,&camara);
