@@ -60,10 +60,10 @@ void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
    // cout<<"PRUEBA MOSCA MINIMO"<<endl;
     //cout<<jparseador->getMosca()->getMinimoran()<<endl;
 
-    cout<<"PRUEBA PESCADO MAXIMO"<<endl;
-    cout<<jparseador->getPescado()->getMaximoran()<<endl;
-    cout<<"PRUEBA PESCADO MINIMO"<<endl;
-    cout<<jparseador->getPescado()->getMinimoran()<<endl;
+   // cout<<"PRUEBA PESCADO MAXIMO"<<endl;
+   // cout<<jparseador->getPescado()->getMaximoran()<<endl;
+   // cout<<"PRUEBA PESCADO MINIMO"<<endl;
+    //cout<<jparseador->getPescado()->getMinimoran()<<endl;
 
 }
 

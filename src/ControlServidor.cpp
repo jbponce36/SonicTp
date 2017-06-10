@@ -375,10 +375,9 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 void ControlServidor::CreoPinche(){
 
-	int cantidadpinche = (rand() % this->getJpin()->getMaximoran()) + this->getJpin()->getMinimoran();
-
-	cout<<"CANTIDAD DE PINCHES"<<endl;
-    cout<<cantidadpinche<<endl;
+	int cantidadpinche = Util::numeroRandomEntre(this->getJpin()->getMinimoran(), this->getJpin()->getMaximoran());
+	//int cantidadpinche = (rand() % this->getJpin()->getMaximoran()) + this->getJpin()->getMinimoran();
+	 debug(0,"ControlServidor::CREO PINCHES","Valor Random %d", cantidadpinche);
 
 	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
 	int AnchoEscenario = vista->obtenerAnchoEscenario();
@@ -397,22 +396,11 @@ void ControlServidor::CreoPinche(){
 			 int ancho = 200;
 			 int alto = 100;
 
-
-			 //int coordX = (Util::numeroRandom(((AnchoEscenario - 211)/cantidadpinche)/ (2*ancho)) * (2*ancho));
-			 //int coordX = Util::numeroRandom(7);
-			  int coordX = myvector.back();
-   		      myvector.pop_back();
+			 int coordX = myvector.back();
+   		     myvector.pop_back();
    		     // debug(0, "ControlServidor::CreoPinche", "Creando pinche en Random: %d", coordX);
 			  coordX = (coordX * 1000) + 400;
 			// debug(0, "ControlServidor::CreoPinche", "Creando pinche en pos X: %d", coordX);
-
-			  //Multiplos de 500
-
-
-
-
-			 //debug(0, "ControlServidor::CreoPinches", "Creando pinche en pos Despues del Randon X: %d", coordX);
-
 
 			 int coordY = 4*vista->getAltoEscenario()/5 - alto;
 			 coordXActual = coordXActual + 400;
@@ -432,7 +420,7 @@ void ControlServidor::CreoPinche(){
 		}
 	}
 
-	list<Pinche*>:: iterator pos;
+     list<Pinche*>:: iterator pos;
 	 for(pos = this->pinche.begin(); pos!= this->pinche.end();pos++){
 		 std::string mensaje = (*pos)->obtenerMensajeEstado();
 		 debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
@@ -453,7 +441,8 @@ jescenarioJuego* ControlServidor::getEscenarioJuego(){
 
 void ControlServidor::CreoAnillas(){
 
-  int cantidadAnillas = (rand() % this->getAnill()->getMaximoran()) + this->getAnill()->getMinimoran();
+	int cantidadAnillas = Util::numeroRandomEntre(this->getAnill()->getMinimoran(), this->getAnill()->getMaximoran());
+ // int cantidadAnillas = (rand() % this->getAnill()->getMaximoran()) + this->getAnill()->getMinimoran();
   debug(0,"ControlServidor::CreoAnillas","CANTIDAD ANILLAS RANDOM %d", cantidadAnillas);
 
   int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
@@ -511,7 +500,7 @@ void ControlServidor::CreoPiedras(){
 	 debug(0,"ControlServidor::CreoPiedras","Valor Random %d", cantidadPiedras);
 
 	  std::vector<int> myvector;
-	  // set some values:
+
 	  for (int i=1; i<=7; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
 	  std::random_shuffle ( myvector.begin(), myvector.end() );
 
@@ -524,29 +513,17 @@ void ControlServidor::CreoPiedras(){
 			  std::string color = "rojo";
 			  int ancho = 180;
 			  int alto = 140;
-			  //int coordX = i* 500 + 400 ;
 
-			//(Util::numeroRandom(((AnchoEscenario-400)/cantidadPiedras) / (2*ancho)) * (2*ancho));
-			  //Multiplos de 400
-			  //coordX = coordX - ((coordX)  % 400);
-
-			  //int coordX = //(Util::numeroRandom(((AnchoEscenario - 181)/cantidadPiedras)/ (2*ancho)) * (2*ancho));
 			  int coordX = myvector.back();
 			  myvector.pop_back();
 
-					  //Util::numeroRandom(7);
-			  debug(0, "ControlServidor::CreoPiedras", "Creando piedra ranrom: %d", coordX);
+			 // debug(0, "ControlServidor::CreoPiedras", "Creando piedra ranrom: %d", coordX);
 			  coordX = coordX * 1000;
 
-			  //Multiplos de 300 y le sumo 300 por si me cae al principio...creo
-			  //coordX = coordX - ((coordX)  % 181) + 181 ;
-
-			  debug(0, "ControlServidor::CreoPiedras", "Creando piedra en pos Despues del Randon X: %d", coordX);
+			  //debug(0, "ControlServidor::CreoPiedras", "Creando piedra en pos Despues del Randon X: %d", coordX);
 
 
 			  int coordY = 4*vista->getAltoEscenario()/5 - alto;
-
-			  //coordXActual = coordX;
 
 			  debug(0, "ControlServidor::CreoPiedras", "Creando piedra en pos X: %d", coordX);
 
@@ -705,6 +682,37 @@ int ControlServidor::mostrarMenuServer(){
 }
 
 void ControlServidor::CreacionEnemigos(){
+
+	/*int maximoCangrejo = this->getJcang()->getMaximoran();
+	int minimoCangrejo = this->getJcang()->getMinimoran();
+
+	int maximopescado = this->getJpes()->getMaximoran();
+	int minimopescad = this->getJpes()->getMinimoran();
+
+	int maximomosca = this->getJmos()->getMaximoran();
+	int minimomosca = this->getJmos()->getMinimoran();
+*/
+	//ojo que si los dos numeros son iguales . creo no funciona
+	   /*int cantidadCangrejos = Util::numeroRandomEntre(minimoCangrejo, maximoCangrejo);
+
+
+		  std::vector<int> myvector;
+		  // el siete es cantidad fija que se puede poner en el escenario
+		  for (int i=1; i<=7; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
+		  std::random_shuffle ( myvector.begin(), myvector.end() );//randon shuffle es para que no se surpenpongan
+
+
+		  int cantidadPiedrasMostradas = 0;
+
+			for(int i=0;i<cantidadCangrejos;i++){
+			  if (!myvector.empty()){
+
+			  }
+
+			}
+
+		*/
+
 	Cangrejo *enemigo1 = new Cangrejo(500,470,100,200);
 	this->enemigos.push_back(enemigo1);
 	Pescado *enemigo2 = new Pescado(900,470,200,100);

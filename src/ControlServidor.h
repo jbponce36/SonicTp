@@ -147,8 +147,6 @@ public:
 	jpescado* getJpes();
 	void setJpes(jpescado* Jpes);
 
-private:
-
 
 	void gameOverJugador(int idDesconectado);
 
