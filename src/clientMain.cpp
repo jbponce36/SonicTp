@@ -54,9 +54,13 @@ int main(int argc, char *argv[]) {
 	int puerto =  parseadorCliente->CargarPuertoCliente(); // 8080;
 
 	int opcion = -1;
+	int grupo = -1;
+	string modoJuego = "GRUPAL";
+
 	JuegoCliente juego = JuegoCliente(cliente, log, opcion);
 	while (opcion != 2){
 		opcion = juego.elegirOpcionDeMenu(log);
+
 		switch (opcion){
 			case 0:
 			{
@@ -72,6 +76,9 @@ int main(int argc, char *argv[]) {
 					juego.mostrarServidorDesconectado();
 
 				}else{
+					/*if (modoJuego.compare("GRUPAL") == 0){
+						grupo = juego.elegirGrupo(log);
+					}*/
 					juego.iniciarHilos(log);
 					juego.terminarHilos();
 				}

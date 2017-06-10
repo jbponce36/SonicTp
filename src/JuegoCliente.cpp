@@ -273,6 +273,11 @@ void JuegoCliente::iniciarJuego()
 	this->log->addLogMessage("[INICIAR JUEGO] Terminado.",1);
 }
 
+int JuegoCliente::elegirGrupo(Logger *log){
+	cout<<"entro mostrar grupo---------"<<endl;
+	return this->vista->mostrarGrupos(log);
+}
+
 int JuegoCliente::elegirOpcionDeMenu(Logger *log){
 	return this->vista->mostraMenuInicial(log);
 }

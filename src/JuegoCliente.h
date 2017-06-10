@@ -55,6 +55,7 @@ public:
 	void terminarHilos();
 	void iniciarJuego(); //Crea el parseador e inicia el juego
 	void CargarVistaParaElMenu();
+	int elegirGrupo(Logger *log);
 	int elegirOpcionDeMenu(Logger *log);
 	std::string intToString(int number);
 	Personaje* getSonic();

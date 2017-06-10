@@ -419,6 +419,8 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 		menuInicial.renderizar(&camara,&imagenMostrar);
 		camara.w = texturaConectar.obtenerAnchoTextura();
 		camara.h = texturaConectar.obtenerAltoTextura();
+		camara.x = 800;
+		camara.y = 850;
 		switch (seleccion){
 			case 0:
 			texturaConectar.renderizar(&imagenMostrar,&camara);
@@ -437,6 +439,96 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 	}
 
 	this->log->addLogMessage("[MOSTRAR MENU INICIAL] Terminado.",2);
+	return seleccion;
+}
+
+int VistaSDL::mostrarGrupos(Logger *logger){
+	this->log->addLogMessage("[MOSTRAR MENU GRUPOS] Iniciado.",2);
+	Textura menuInicial = Textura();
+	Textura texturaGrupo1 = Textura();
+	Textura texturaGrupo2 = Textura();
+
+	menuInicial.cargarImagen("images/imagenesMenu/sonicMenu.jpg", "images/entidaddefault.png",this->renderizador, logger);
+	texturaGrupo1.cargarImagen("images/imagenesMenu/grupo1.png", "images/entidaddefault.png", this->renderizador, logger);
+	texturaGrupo2.cargarImagen("images/imagenesMenu/grupo2.png", "images/entidaddefault.png", this->renderizador, logger);
+
+	bool salir = false;
+	SDL_Event e;
+	int seleccion = 0;
+
+	while( !salir ){
+	//manejar eventos en la cola
+		while( SDL_PollEvent( &e ) != 0 )
+		{
+			//cout<<e.key.keysym.sym<<endl;
+			if( e.type == SDL_QUIT )
+			{
+				salir = true;
+				seleccion = 0;
+				this->log->addLogMessage("[MOSTRAR GRUPOS] Saliendo del menu.",2);
+			}
+			else if((e.type == SDL_KEYDOWN) && (e.key.repeat == 0)){
+					switch (e.key.keysym.sym){
+						case SDLK_UP:
+							seleccion--;
+							if(seleccion<0){
+								seleccion = 1;
+							}
+						break;
+
+						case SDLK_DOWN:
+							seleccion++;
+							if(seleccion>1){
+								seleccion = 0;
+							}
+						break;
+
+						case SDLK_RETURN:
+							salir = true;
+						break;
+					}
+
+				}
+
+		}
+		SDL_Rect camara;
+		SDL_Rect imagenMostrar;
+
+		SDL_SetRenderDrawColor(this->obtenerRender(),0xff,0xff,0xff,0xff);
+		SDL_RenderClear(this->obtenerRender());
+
+		camara.x = 0;
+		camara.y = 0;
+		camara.w = menuInicial.obtenerAnchoTextura();
+		camara.h = menuInicial.obtenerAltoTextura();
+
+		imagenMostrar.x = 0;
+		imagenMostrar.y = 0;
+		//imagenMostrar.w = menuInicial->obtenerAnchoTextura();
+		//imagenMostrar.h = menuInicial->obtenerAltoTextura();
+
+		imagenMostrar.w = anchoVentana;
+		imagenMostrar.h = altoVentana;
+		menuInicial.renderizar(&camara,&imagenMostrar);
+		camara.w = texturaGrupo1.obtenerAnchoTextura();
+		camara.h = texturaGrupo1.obtenerAltoTextura();
+		camara.x = 800;
+		camara.y = 830;
+		switch (seleccion){
+			case 0:
+			texturaGrupo1.renderizar(&imagenMostrar,&camara);
+			break;
+
+			case 1:
+			texturaGrupo2.renderizar(&imagenMostrar,&camara);
+			break;
+		}
+
+		SDL_RenderPresent(this->renderizador);
+	}
+
+	this->log->addLogMessage("[MOSTRAR MENU INICIAL] Terminado.",2);
+	cout<<"termino elegir grupo"<<endl;
 	return seleccion;
 }
 

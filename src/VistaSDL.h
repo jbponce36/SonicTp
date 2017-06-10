@@ -88,6 +88,7 @@ public:
     int obtenerVelocidadDeScroll();
     void validacionesVentana();
     int mostraMenuInicial(Logger *logger);
+    int mostrarGrupos(Logger *logger);
     void mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado);
     void mostrarServidorDesconectado();
     void cerrar();
