@@ -151,7 +151,10 @@ void JuegoServidor::reconectar(int sock, ConexServidor *servidor)
 	sleep(1);
 	//hlatidos->IniciarHilo();
 
-	control->enviarDatosEscenario(henviar);
-
 	sonics.at(idLibre)->descongelar();
+
+	control->enviarDatosEscenario(henviar);
+	control->enviarDatosEnemigosInicialesAUno(henviar);
+	control->enviarAUno(FIN_MENSAJES_ENEMIGOS, henviar);
+	control->enviarAnillasPiedrasYPinches(henviar);
 }

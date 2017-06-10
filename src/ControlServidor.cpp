@@ -18,6 +18,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 	teclasPresionadas t = {false, false, false, false, false};
 	posSonic ultimasPosiciones = {0, 300};
 	this->pasarNivel = false;
+	this->nivelActual = 0;
 	this->colpiedra = false;
 	std::map<int, Personaje*>::iterator pos;
 	for(pos = sonics->begin();pos != sonics->end();pos++)
@@ -234,6 +235,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 			}
 			camara->actualizarXY(0,0);
 			this->pasarNivel =false;
+			this->nivelActual++;
 			char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
 				std::string msjPasarNivel = "PASARNIVEL" ;
 				//cout<<"mensaje sin: "<<mensaje.size()<<endl;
@@ -316,6 +318,15 @@ void ControlServidor::enviarATodos(std::string mensaje)
 	}
 }
 
+void ControlServidor::enviarAUno(std::string mensaje, Hiloenviar *hiloEnviar)
+{
+	char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
+	mensaje = mensaje + SEPARADOR_DE_MENSAJE;
+	strcpy(buffer, mensaje.c_str());
+
+	hiloEnviar->enviarDato(buffer);
+}
+
 void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado){
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Iniciado.", 2);
 
@@ -328,6 +339,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	//Le aviso a todos los jugadores que inicio el juego
 	server->comenzarPartida(*hilosEnviar);
 
+	enviarATodos(obtenerMensajeNivel());
 	mundo.enviarDatosEscenario(hilosEnviar);
 
 	this->CreacionEnemigos();
@@ -451,17 +463,17 @@ bool ControlServidor::buscarMatriz(int posX,int posY){
 }
 
 void ControlServidor::CreoAnillas(){
-  srand(time(NULL));
- // int cantidadAnillas =(rand() % 10) + 1;
-  int cantidadAnillas = 15;
-  //el alto del escenario es de 800 en el grande, lo saco de vista
-  // el ancho del escenario es de 4000, lo saco tambien de vista.
+	srand(time(NULL));
+	// int cantidadAnillas =(rand() % 10) + 1;
+	int cantidadAnillas = 15;
+	//el alto del escenario es de 800 en el grande, lo saco de vista
+	// el ancho del escenario es de 4000, lo saco tambien de vista.
 
-  int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
-  int AnchoEscenario = vista->obtenerAnchoEscenario();
-  int coordXActual = 0;
+	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
+	int AnchoEscenario = vista->obtenerAnchoEscenario();
+	int coordXActual = 0;
 
-  /* cout<<"ALTOESCENARIO"<<endl;
+	/* cout<<"ALTOESCENARIO"<<endl;
 
 	int numero = 4*(vista->obtenerAltoEscenario())/5;
 	cout<<numero<<endl;
@@ -470,15 +482,12 @@ void ControlServidor::CreoAnillas(){
 	cout<<vista->obtenerAnchoEscenario()<<endl;
 	*/
 
-
    for(int i=0;i<cantidadAnillas;i++){
 
 	  int	id = i;
 	  std::string color = "rojo";
 	  int ancho = 64;
 	  int alto = 64;
-
-
 
 	 //this->BuscarMatriz(Util::numeroRandom(AnchoEscenario/(2*ancho)) * (2*ancho),300);
 
@@ -490,7 +499,6 @@ void ControlServidor::CreoAnillas(){
 	  std::string rutaImagen = "images/Anillas.png";
 	  int indexZ = 99;
 
-
 	  Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
 
 	  anillo->setAlto(alto);
@@ -498,7 +506,6 @@ void ControlServidor::CreoAnillas(){
 	  anillo->setCoorx(coordX);
 	  anillo->setCoory(coordY);
 	  anillo->setId(id);
-
 
 	  this->anillos.push_back(anillo);
 
@@ -561,6 +568,36 @@ void ControlServidor::CreoPiedras(){
 	    	debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
 	    	enviarATodos(mensaje);
 	    }
+}
+
+std::string ControlServidor::obtenerMensajeNivel()
+{
+	return ("N" + Util::intToString(nivelActual) + "--------------");
+}
+
+void ControlServidor::enviarAnillasPiedrasYPinches(Hiloenviar *hiloEnviar)
+{
+	//Para el jugador reconectado
+	list<Anillos*>:: iterator posanillo;
+	for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
+		   std::string mensaje = (*posanillo)->obtenerMensajeEstado();
+		   debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+		   enviarAUno(mensaje, hiloEnviar);
+	}
+
+	list<Piedra*>::iterator pospiedra;
+	for(pospiedra = this->piedra.begin();pospiedra!=this->piedra.end();pospiedra++){
+		std::string mensaje = (*pospiedra)->obtenerMensajeEstado();
+		debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+		enviarAUno(mensaje, hiloEnviar);
+	}
+
+	list<Pinche*>:: iterator pospinche;
+	 for(pospinche = this->pinche.begin(); pospinche != this->pinche.end();pospinche++){
+		 std::string mensaje = (*pospinche)->obtenerMensajeEstado();
+		 debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+		 enviarAUno(mensaje, hiloEnviar);
+	}
 }
 
 void ControlServidor::chequearColicion(Colicion *colicion){
@@ -706,6 +743,26 @@ void ControlServidor::enviarDatosEnemigosIniciales(){
 	}
 }
 
+void ControlServidor::enviarDatosEnemigosInicialesAUno(Hiloenviar *hiloEnviar)
+{
+	//Para el reconectado
+	for(int i=0;i<this->enemigos.size();i++){
+		if(this->enemigos[i]->getTipoEnemigo()=="c"){
+			std::string mensajeCangrejo = "/";
+			mensajeCangrejo = mensajeCangrejo + enemigos[i]->obteneMensajeEstadoInicial();
+			this->enviarAUno(mensajeCangrejo, hiloEnviar);
+		}else if(this->enemigos[i]->getTipoEnemigo()=="p"){
+			std::string mensajePescado = "/";
+			mensajePescado = mensajePescado + enemigos[i]->obteneMensajeEstadoInicial();
+			this->enviarAUno(mensajePescado, hiloEnviar);
+		}else if(this->enemigos[i]->getTipoEnemigo()=="m"){
+			std::string mensajePescado = "/";
+			mensajePescado = mensajePescado + enemigos[i]->obteneMensajeEstadoInicial();
+			this->enviarAUno(mensajePescado, hiloEnviar);
+		}
+	}
+}
+
 void ControlServidor::actualizarPosicionesEnemigos(){
 	for(int i=0;i<this->enemigos.size();i++){
 		if(enemigos[i]->getVivo()){
@@ -721,9 +778,9 @@ void ControlServidor::chequearColisiones()
 
 void ControlServidor::enviarDatosEscenario(Hiloenviar *hiloEnviar)
 {
-	std::vector<Hiloenviar*> vec; //Un vector con un solo hilo
-	vec.push_back(hiloEnviar);
-	mundo.enviarDatosEscenario(&vec);
+	//Para el reconectado
+	enviarAUno(obtenerMensajeNivel(), hiloEnviar);
+	mundo.enviarDatosEscenario(hiloEnviar);
 }
 
 void ControlServidor::verificarDuracionBonus(Personaje *sonic)
