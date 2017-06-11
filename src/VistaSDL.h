@@ -23,6 +23,7 @@
 #include <vector>
 #include <unistd.h>
 #include <SDL2/SDL_ttf.h>
+#include "jescenarioJuego.h"
 
 #define ANCHO_VENTANA_POR_DEFECTO 640
 #define ALTO_VENTANA_POR_DEFECTO 500
@@ -65,9 +66,13 @@ private:
     vector <SDL_Color> colores;
     SDL_Color negro;
     TTF_Font* fuente2;
-
+    vector<jescenarioJuego*> jjuego;
 
 public:
+    //vector<jescenarioJuego*> parser;
+    vector<jescenarioJuego*> getJjuego();
+    void setJjuego(vector<jescenarioJuego*> jjuego);
+
     VistaSDL(jventana *ventana, jconfiguracion *jconfiguracion, jescenario *jescenario, Logger *logger, bool oculta);
     void cargarImagen();
     int obtenerAltoVentana();
@@ -115,7 +120,7 @@ public:
 	void mostrarScoJueIndTodos(vector<Personaje*>*);
 	void dibujarTextoColorFuente(std::string texto, int posX, int posY,SDL_Color color,TTF_Font* fuente);
 	void mostrarScoJueIndTodosFinNiv(vector<Personaje*>* sonics);
-
+	jescenarioJuego* obtenerNivel(int);
 };
 
 
