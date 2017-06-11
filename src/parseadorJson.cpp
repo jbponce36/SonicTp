@@ -469,7 +469,7 @@ jescenarioJuego* parseadorJson::parsearArchivo(char* nombreArchivo){
 	       cout << error.text << endl;
 	       this->log->addLogMessage("[PARSEAR ARCHIVO] [ERROR] No se encontro el archivo o directorio.", 1);
 	       cout << "Cargando archivo por defecto" << endl;
-	       json = json_load_file("configuracion/default.json",0,&error);
+	       json = json_load_file("configuracion/configuraciondefault.json",0,&error);
 	       //nuevo
 	       // this->setraiz(json);
 

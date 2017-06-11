@@ -494,14 +494,16 @@ void ControlServidor::CreoAnillas(int minRam, int maxRam){
 
    }
 
+
 	//Vendria a ser el metodo ActualizarVistaServidor......
 	list<Anillos*>:: iterator posanillo;
 		for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
-			   std::string mensaje = (*posanillo)->obtenerMensajeEstado();
-			   debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
-			   enviarATodos(mensaje);
+		  std::string mensaje = (*posanillo)->obtenerMensajeEstado();
+	      debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+		  enviarATodos(mensaje);
 	}
 }
+
 
 void ControlServidor::CreoPiedras(int minRam, int maxRam){
 
@@ -598,7 +600,7 @@ void ControlServidor::enviarAnillasPiedrasYPinches(Hiloenviar *hiloEnviar)
 	}
 }
 
-int ControlServidor::ValidadValorMaximo(int Defecto,int Original){
+/*int ControlServidor::ValidadValorMaximo(int Defecto,int Original){
 
 	int resultado;
 
@@ -611,6 +613,7 @@ int ControlServidor::ValidadValorMaximo(int Defecto,int Original){
     }
      return resultado;
 }
+*/
 
 void ControlServidor::chequearColicion(Colicion *colicion){
 
@@ -931,5 +934,11 @@ vector<jescenarioJuego*> ControlServidor::getJjuego(){
 
 void ControlServidor::setJjuego(vector<jescenarioJuego*> Jjuego) {
 		this->jjuego = Jjuego;
-	}
+}
 
+void ControlServidor::limpiarObstaculos(){
+
+    this->piedra.clear();
+	this->anillos.clear();
+	this->pinche.clear();
+}

@@ -136,7 +136,7 @@ public:
 	void setEscenarioJuego(jescenarioJuego* esc);
 	jescenarioJuego* getEscenarioJuego();
 
-	int ValidadValorMaximo(int Defecto,int Original);
+	//int ValidadValorMaximo(int Defecto,int Original);
 
 
 	janillos* getAnill();
@@ -163,6 +163,8 @@ public:
 	vector<jescenarioJuego*> getJjuego();
 
 	void setJjuego(vector<jescenarioJuego*> jjuego);
+
+	void limpiarObstaculos();
 
 private:
 

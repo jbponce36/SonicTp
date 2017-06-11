@@ -472,7 +472,6 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
   //tengo que reemplazar el numero random por lo que leeo del json.....
 
 	 int cantidadBonus = Util::numeroRandomEntre(minimor, maximor);
-	//int cantidadBonus =(rand() % maximor) + minimor;
 
 
     cout<<"CANTIDAD DE BONUS GENERADOS"<<endl;
