@@ -40,11 +40,13 @@ private:
 	int velocidad;
 	int altoEscenario;
 	jescenarioJuego* escenario;
+	int modoJuego;
 
 public:
 	vector<jescenarioJuego*> parser;
 	JuegoServidor(ConexServidor *server, std::vector<Hiloenviar*> &hiloEnviar,
-			std::vector<Hilorecibir*> &hiloRecibir, Logger *log, bool &juegoTerminado);
+			std::vector<Hilorecibir*> &hiloRecibir, Logger *log, bool &juegoTerminado,
+			int modoJuego);
 	virtual ~JuegoServidor();
 	void iniciarJuego();
 	void iniciarHiloJuego();
@@ -54,7 +56,6 @@ public:
 	void obtenerPosicionValida(int &x, int &y);
 	void reconectar(int socket, ConexServidor *servidor);
 	void cargarNiveles(jescenarioJuego *jparseador,vector<jescenarioJuego*> parser);
-
 
 private:
 	static void* iniciarJuegoServidor(void *datos);
