@@ -97,6 +97,7 @@ public:
     int mostraMenuInicial(Logger *logger);
     void mostrarGameOver(Logger *logger);
     void mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado);
+    void mostrarImagenEsperarJugadores(); //Solo renderiza la imagen
     void mostrarServidorDesconectado();
     int mostrarGrupos(Logger *logger);
     void cerrar();

@@ -442,26 +442,8 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 }
 
 void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado){
-	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Iniciado.",2);
-	Textura imagenEspera = Textura();
 
-	imagenEspera.cargarImagen("images/imagenesMenu/esperar.png", "images/entidaddefault.png",this->renderizador, logger);
-
-	SDL_Rect camara;
-	SDL_Rect imagenMostrar;
-
-	camara.x = 0;
-	camara.y = 0;
-	camara.w = imagenEspera.obtenerAnchoTextura();
-	camara.h = imagenEspera.obtenerAltoTextura();
-
-	imagenMostrar.x = anchoVentana - camara.w;
-	imagenMostrar.y = altoVentana - camara.h;
-	imagenMostrar.w = camara.w;
-	imagenMostrar.h = camara.h;
-
-	cout << "Renderizo 1\n";
-	imagenEspera.renderizar(&camara,&imagenMostrar);
+	mostrarImagenEsperarJugadores();
 	SDL_RenderPresent(this->renderizador);
 
 	bool salir = false;
@@ -481,15 +463,35 @@ void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado){
 			}
 
 		}
-		//imagenEspera.renderizar(&camara,&imagenMostrar);
-		//SDL_RenderPresent(this->renderizador);
 
 		pthread_mutex_unlock(&mutexRenderizar);
 
 	}
+}
+
+void VistaSDL::mostrarImagenEsperarJugadores()
+{
+	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Iniciado.",2);
+	Textura imagenEspera = Textura();
+
+	imagenEspera.cargarImagen("images/imagenesMenu/esperar.png", "images/entidaddefault.png",this->renderizador, log);
+
+	SDL_Rect camara;
+	SDL_Rect imagenMostrar;
+
+	camara.x = 0;
+	camara.y = 0;
+	camara.w = imagenEspera.obtenerAnchoTextura();
+	camara.h = imagenEspera.obtenerAltoTextura();
+
+	imagenMostrar.x = anchoVentana - camara.w;
+	imagenMostrar.y = altoVentana - camara.h;
+	imagenMostrar.w = camara.w;
+	imagenMostrar.h = camara.h;
+
+	imagenEspera.renderizar(&camara,&imagenMostrar);
 
 	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Terminado.\n",2);
-
 }
 
 void VistaSDL::mostrarGameOver(Logger *logger){
@@ -554,7 +556,6 @@ int VistaSDL::mostrarGrupos(Logger *logger){
 
 	pthread_mutex_lock(&mutexRenderizar); //Quiero que haga todo esto sin que se meta el mostrarEsperarJugadores
 
-	cout << "Render 2\n";
 	this->log->addLogMessage("[MOSTRAR MENU GRUPOS] Iniciado.",2);
 	Textura menuInicial = Textura();
 	Textura texturaGrupo1 = Textura();
@@ -640,6 +641,8 @@ int VistaSDL::mostrarGrupos(Logger *logger){
 		SDL_RenderPresent(this->renderizador);
 	}
 
+	SDL_RenderClear(this->obtenerRender());
+
 	camara.x = 0;
 	camara.y = 0;
 	camara.w = menuInicial.obtenerAnchoTextura();
@@ -651,6 +654,9 @@ int VistaSDL::mostrarGrupos(Logger *logger){
 	imagenMostrar.h = altoVentana;
 
 	menuInicial.renderizar(&camara,&imagenMostrar);
+	mostrarImagenEsperarJugadores();
+
+	SDL_RenderPresent(this->renderizador);
 
 	pthread_mutex_unlock(&mutexRenderizar);
 
