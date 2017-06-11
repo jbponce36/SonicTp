@@ -945,3 +945,8 @@ void ControlServidor::limpiarObstaculos(){
 	this->anillos.clear();
 	this->pinche.clear();
 }
+
+void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez,int maxPez,int minCangrejo,int maxCangrejo){
+
+
+}
