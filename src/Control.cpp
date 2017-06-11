@@ -420,6 +420,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 				//Perdio este jugador
 				printf("Game Over. Cerrando el juego...\n");
 				this->salir = true;
+				this->vista->mostrarGameOver(log);
 			}
 			else
 			{
@@ -487,17 +488,6 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 		SDL_Rect *imagenMostrar, Personaje *sonic) {
 	admNiveles.mostrarNivel(camara, vista, imagenMostrar);
 	vista->mostrarScoJueIndTodos(sonics);
-	//TTF_Font* fuente = TTF_OpenFont("images/NotoSansCJK-Black.ttc", 40);
-	//SDL_Color textColor = { 0, 0, 0, 0xFF };
-	//textColor.r = 255; textColor.g = 255; textColor.b = 0; textColor.a = 255;
-	//Aca usar la clase  Util::intToString (sonic->getPuntaje()->getPuntos()) para concatenar los string con los valores reales del puntaje
-	//const char* puntaje = "PUNTAJE: 0";
-	//const char* tiempo = "TIEMPO: 0";
-	//const char* cantAnillas = "ANILLAS: 0";
-
-	//vista->dibujarTexto(fuente, puntaje,10,5, textColor);
-	//vista->dibujarTexto(fuente, tiempo,10,45, textColor);
-	//vista->dibujarTexto(fuente, cantAnillas,10,85, textColor);
 
 	for (int contador = 0; contador < vista->cantidadCapasCargadas();
 			contador++) {
@@ -532,6 +522,8 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 		if(enemigos[i]->getVivo()){
 			this->enemigos[i]->renderizar(camara->getPosicionX(),camara->getPosicionY());
 		}
+
+
 	}
 
 	SDL_RenderPresent(vista->obtenerRender());

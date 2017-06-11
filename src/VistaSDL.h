@@ -94,6 +94,7 @@ public:
     void validacionesVentana();
     int mostraMenuInicial(Logger *logger);
     void mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado, bool &pausa);
+    void mostrarGameOver(Logger *logger);
     void mostrarServidorDesconectado();
     int mostrarGrupos(Logger *logger);
     void cerrar();

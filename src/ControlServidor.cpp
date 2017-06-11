@@ -27,6 +27,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 		this->teclas[(*pos).second->getId()] = t;
 		this->ultimasPosiciones[(*pos).second->getId()] = ultimasPosiciones;
 	}
+	this->log->setModulo("CONTRON SERVIDOR");
 }
 
 ControlServidor::~ControlServidor() {
@@ -901,6 +902,7 @@ void ControlServidor::volverInmortalesTodosLosSonics()
 
 void ControlServidor::gameOverJugador(int id)
 {
+	this->log->addLogMessage("[GAME OVER] Iniciado",2);
 	cout << "Game over - Id: " << id << endl;
 
 	//Detengo la ejecucion de los hilos
@@ -917,6 +919,7 @@ void ControlServidor::gameOverJugador(int id)
 		teclas.at(id).teclaDerecha = false;
 		teclas.at(id).teclaIzquierda = false;
 		teclas.at(id).teclaCorrer = false;
+		this->log->addLogMessage("[GAME OVER] Terminado",2);
 	}
 	catch(std::out_of_range &e)
 	{

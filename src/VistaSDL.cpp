@@ -466,7 +466,7 @@ void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado, bool
 	SDL_Event e;
 	while(!juegoIniciado)
 	{
-		if(!pausa){
+		//if(!pausa){
 			//manejar eventos en la cola
 			while( SDL_PollEvent( &e ) != 0 )
 			{
@@ -478,12 +478,41 @@ void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado, bool
 					this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Saliendo del menu.",3);
 				}
 			}
-			imagenEspera.renderizar(&camara,&imagenMostrar);
+			/*imagenEspera.renderizar(&camara,&imagenMostrar);
 			SDL_RenderPresent(this->renderizador);
-		}
+		}*/
 	}
 
 	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Terminado.\n",2);
+
+}
+
+void VistaSDL::mostrarGameOver(Logger *logger){
+	this->log->addLogMessage("[MOSTRAR GAME OVER] Iniciado.",2);
+	Textura gameOverTextura = Textura();
+
+	gameOverTextura.cargarImagen("images/gameOver.png", "images/entidaddefault.png",this->renderizador, log);
+
+	SDL_Rect camara;
+	SDL_Rect imagenMostrar;
+
+	camara.x = 0;
+	camara.y = 0;
+	camara.w = gameOverTextura.obtenerAnchoTextura();
+	camara.h = gameOverTextura.obtenerAltoTextura();
+
+	imagenMostrar.x = anchoVentana/2;
+	imagenMostrar.y = altoVentana /2;
+	imagenMostrar.w = camara.w;
+	imagenMostrar.h = camara.h;
+
+
+	gameOverTextura.renderizar(&camara,&imagenMostrar);
+	SDL_RenderPresent(this->renderizador);
+
+	sleep(5);
+
+	this->log->addLogMessage("[MOSTRAR GAME OVER] Terminado.\n",2);
 
 }
 
