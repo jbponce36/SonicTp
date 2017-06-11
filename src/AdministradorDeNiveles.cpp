@@ -119,7 +119,7 @@ void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor*
 	controlSevidor->CreoAnillas(jjuego->getAnillo()->getMinimoran(),jjuego->getAnillo()->getMaximoran());
 	controlSevidor->CreoPiedras(jjuego->getPiedra()->getMinimoran(),jjuego->getPiedra()->getMaximoran());
 	controlSevidor->CreoPinche(jjuego->getPinche()->getMinimoran(),jjuego->getPinche()->getMaximoran());
-	jjuego->getEscenario()->getentidades()
+	//jjuego->getEscenario()->getentidades();
 
 
 }
