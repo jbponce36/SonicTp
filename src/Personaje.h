@@ -41,6 +41,7 @@ class Personaje
 		int personajeAceleracion;
 		int posicionX, posicionY;
 		int velocidadX, velocidadY;
+		int grupo;
 
 		Animacion animacionQuietoDer;
 		Animacion animacionCaminarDer;
@@ -143,6 +144,7 @@ class Personaje
 		void setPuntaje(Puntaje* puntaje);
 		Puntos* getPuntos();
 		void setPuntos(Puntos*);
+		void setGrupo(int grupo);
 		void aumentarCantidadAnillos(int cantidad);
 		void ponerseEscudo();
 		void quitarseEscudo();

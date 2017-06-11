@@ -62,7 +62,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	negro = {0,0,0};
 	this->fuente2 = TTF_OpenFont("images/font_puntajes.ttf", 30);
 
-
+	pthread_mutex_init(&mutexRenderizar, NULL);
 }
 
 void VistaSDL::validacionesEscenario(jescenario *jescenario)
@@ -323,6 +323,7 @@ VistaSDL::~VistaSDL()
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
+	pthread_mutex_destroy(&mutexRenderizar);
 }
 
 void VistaSDL::mostrarEntidades(SDL_Rect *camara, int indexZ)
@@ -440,7 +441,7 @@ int VistaSDL::mostraMenuInicial(Logger *logger){
 	return seleccion;
 }
 
-void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado, bool &pausa){
+void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado){
 	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Iniciado.",2);
 	Textura imagenEspera = Textura();
 
@@ -459,6 +460,7 @@ void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado, bool
 	imagenMostrar.w = camara.w;
 	imagenMostrar.h = camara.h;
 
+	cout << "Renderizo 1\n";
 	imagenEspera.renderizar(&camara,&imagenMostrar);
 	SDL_RenderPresent(this->renderizador);
 
@@ -466,21 +468,24 @@ void VistaSDL::mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado, bool
 	SDL_Event e;
 	while(!juegoIniciado)
 	{
-		//if(!pausa){
-			//manejar eventos en la cola
-			while( SDL_PollEvent( &e ) != 0 )
+		pthread_mutex_lock(&mutexRenderizar);
+		//manejar eventos en la cola
+		while( SDL_PollEvent( &e ) != 0 )
+		{
+			if( e.type == SDL_QUIT )
 			{
-				if( e.type == SDL_QUIT )
-				{
-					salir = true;
-					//Esto no va a hacer nada ni salir. Por ahora dejemoslo asi.
-					//Sale de este while cuando se conectan todos los jugadores.
-					this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Saliendo del menu.",3);
-				}
+				salir = true;
+				//Esto no va a hacer nada ni salir. Por ahora dejemoslo asi.
+				//Sale de este while cuando se conectan todos los jugadores.
+				this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Saliendo del menu.",3);
 			}
-			/*imagenEspera.renderizar(&camara,&imagenMostrar);
-			SDL_RenderPresent(this->renderizador);
-		}*/
+
+		}
+		//imagenEspera.renderizar(&camara,&imagenMostrar);
+		//SDL_RenderPresent(this->renderizador);
+
+		pthread_mutex_unlock(&mutexRenderizar);
+
 	}
 
 	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Terminado.\n",2);
@@ -546,6 +551,10 @@ void VistaSDL::mostrarServidorDesconectado()
 }
 
 int VistaSDL::mostrarGrupos(Logger *logger){
+
+	pthread_mutex_lock(&mutexRenderizar); //Quiero que haga todo esto sin que se meta el mostrarEsperarJugadores
+
+	cout << "Render 2\n";
 	this->log->addLogMessage("[MOSTRAR MENU GRUPOS] Iniciado.",2);
 	Textura menuInicial = Textura();
 	Textura texturaGrupo1 = Textura();
@@ -558,6 +567,8 @@ int VistaSDL::mostrarGrupos(Logger *logger){
 	bool salir = false;
 	SDL_Event e;
 	int seleccion = 0;
+	SDL_Rect camara;
+	SDL_Rect imagenMostrar;
 
 	while( !salir ){
 	//manejar eventos en la cola
@@ -594,10 +605,8 @@ int VistaSDL::mostrarGrupos(Logger *logger){
 				}
 
 		}
-		SDL_Rect camara;
-		SDL_Rect imagenMostrar;
 
-		SDL_SetRenderDrawColor(this->obtenerRender(),0xff,0xff,0xff,0xff);
+		SDL_SetRenderDrawColor(this->renderizador,0xff,0xff,0xff,0xff);
 		SDL_RenderClear(this->obtenerRender());
 
 		camara.x = 0;
@@ -630,6 +639,20 @@ int VistaSDL::mostrarGrupos(Logger *logger){
 
 		SDL_RenderPresent(this->renderizador);
 	}
+
+	camara.x = 0;
+	camara.y = 0;
+	camara.w = menuInicial.obtenerAnchoTextura();
+	camara.h = menuInicial.obtenerAltoTextura();
+
+	imagenMostrar.x = 0;
+	imagenMostrar.y = 0;
+	imagenMostrar.w = anchoVentana;
+	imagenMostrar.h = altoVentana;
+
+	menuInicial.renderizar(&camara,&imagenMostrar);
+
+	pthread_mutex_unlock(&mutexRenderizar);
 
 	this->log->addLogMessage("[MOSTRAR MENU INICIAL] Terminado.",2);
 	cout<<"termino elegir grupo"<<endl;
