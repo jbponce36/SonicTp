@@ -6,12 +6,13 @@
  */
 
 #include "AdministradorDeNiveles.h"
-
+#include "ControlServidor.h"
 
 
 AdministradorDeNiveles::AdministradorDeNiveles(){
 
 	this->nivelActual = 0;
+	this->nivelServidor = 0;
 }
 
 void AdministradorDeNiveles::pasarDeNivel(){
@@ -109,4 +110,26 @@ void AdministradorDeNiveles::mostrarPunConPan(VistaSDL* vista,vector<Personaje*>
 		SDL_RenderPresent(vista->getRenderizador());
 
 		sleep(3);
+}
+void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor* controlSevidor){
+
+
+	nivelServidor++;
+	jescenarioJuego* jjuego = vista->obtenerNivel(nivelServidor);
+	controlSevidor->CreoAnillas(jjuego->getAnillo()->getMinimoran(),jjuego->getAnillo()->getMaximoran());
+	controlSevidor->CreoPiedras(jjuego->getPiedra()->getMinimoran(),jjuego->getPiedra()->getMaximoran());
+	controlSevidor->CreoPinche(jjuego->getPinche()->getMinimoran(),jjuego->getPinche()->getMaximoran());
+	jjuego->getEscenario()->getentidades()
+
+
+}
+
+void AdministradorDeNiveles::pasarNivelReset(VistaSDL*vista){
+
+	for(int i = 0 ; i < 3; i++)
+	{
+		vista->getJjuego();
+
+       // control->CreoAnillas();
+	}
 }

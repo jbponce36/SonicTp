@@ -28,10 +28,14 @@ JuegoServidor::~JuegoServidor()
 	delete vista;
 }
 
-void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
+void JuegoServidor::inicializarJuegoServidor(/*std::jescenarioJuego *jparseador*/)
 {
-	vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, true);
+	parseadorJson* parseador = new parseadorJson(log);
+	char *file=(char*)"configuracion/configuracion.json";
+	jescenarioJuego* jparseador = parseador->parsearArchivo(file);
+	parser.push_back(jparseador);
 
+	vista = new VistaSDL(jparseador->getVentana(),jparseador->getConfiguracion(),jparseador->getEscenario(), log, true);
 	velocidad = jparseador->getConfiguracion()->getvelscroll();
 	altoEscenario = jparseador->getEscenario()->getalto();
 
@@ -41,12 +45,51 @@ void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
 		sonics[id] = sonic;
 	}
 
-
 	control = new ControlServidor(0, 0, vista, &sonics, &hilosEnviar, &hilosRecibir, server,log);
 
 	control->setAnill(jparseador->getAnillo());
 	control->setJpied(jparseador->getPiedra());
-    control->setJpin(jparseador->getPinche());
+	control->setJpin(jparseador->getPinche());
+
+
+/*	vector<janillos*> anillos;
+	vector<jpiedra*> piedras;
+	vector<jpinche*> pinches;
+
+	vector<jcangrejo*> cangrejos;
+	vector<jmosca*> moscas;
+	vector<jpescado*> pescados;
+*/
+	//vector<jescenarioJuego*> parser;
+
+
+	//cargarNiveles(jparseador,anillos,piedras,pinches,cangrejos,moscas,pescados);
+
+
+	std::string ruta = "configuracion/configuracion";
+	for(int i=1; i < CANTIDAD_NIVELES;i++){
+		cout<<"cout1loop archivos"<<endl;
+		std::string rutaCompleta = ruta + Util::intToString(i) + ".json";
+		char *rutaChar = (char*)rutaCompleta.c_str();
+		cout<<"antes ruta"<<endl;
+		//strcpy(rutaChar,rutaCompleta.c_str());
+			//	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
+			//		strcpy(buffer, mensaje.c_str());
+		cout<<"ruta: "<<rutaChar<<endl;
+		jparseador = parseador->parsearArchivo(rutaChar);
+
+		parser.push_back(jparseador);
+
+	}
+
+	cout<<"cout1"<<endl;
+    vista->setJjuego(parser);
+
+
+	/*control->setAnill(jparseador->getAnillo());
+	control->setJpied(jparseador->getPiedra());
+    control->setJpin(jparseador->getPinche());*/
+
 
    // cout<<"PRUEBA CANGREJO MAXIMO"<<endl;
     //cout<<jparseador->getCangrejo()->getMaximoran()<<endl;
@@ -78,23 +121,17 @@ void JuegoServidor::iniciarJuego()
 {
 	//Se leen los datos del json
 
-	parseadorJson* parseador = new parseadorJson(log);
-
-	char *file=(char*)"configuracion/configuracion.json";
-	jescenarioJuego* jparseador = parseador->parsearArchivo(file);
-
 	log->setModulo("JUEGO_SERVIDOR");
 	log->addLogMessage("Se inicia el juego.",1);
 
 	//Inicia el juego
-	inicializarJuegoServidor(jparseador); //Inicializa vista y control.
+	inicializarJuegoServidor(); //Inicializa vista y control.
 
 	iniciarJuegoControlServidor();
 
 	log->setModulo("JUEGO_SERVIDOR");
 	log->addLogMessage("Se termina el juego.",1);
 
-	delete parseador;
 
 }
 
@@ -205,4 +242,23 @@ void JuegoServidor::reconectar(int sock, ConexServidor *servidor)
 	control->enviarDatosEnemigosInicialesAUno(henviar);
 	control->enviarAUno(FIN_MENSAJES_ENEMIGOS, henviar);
 	control->enviarAnillasPiedrasYPinches(henviar);
+}
+void JuegoServidor::cargarNiveles(jescenarioJuego *jparseador,vector<jescenarioJuego*> parser){
+
+	/*anillos.push_back(jparseador->getAnillo());
+	piedras.push_back(jparseador->getPiedra());
+	pinches.push_back(jparseador->getPinche());
+
+
+	cangrejos.push_back(jparseador->getCangrejo());
+	moscas.push_back(jparseador->getMosca());
+	pescados.push_back(jparseador->getPescado());
+	*/
+
+
+
+
+	/*control->setAnill(jparseador->getAnillo());
+	control->setJpied(jparseador->getPiedra());
+	control->setJpin(jparseador->getPinche());*/
 }

@@ -10,7 +10,9 @@
 #include "VistaSDL.h"
 #include "Camara.h"
 #include "Personaje.h"
+//#include "ControlServidor.h"
 
+class ControlServidor;
 class AdministradorDeNiveles {
 
 	public:
@@ -23,11 +25,16 @@ class AdministradorDeNiveles {
 		bool EsUltimoNivel();
 		~AdministradorDeNiveles();
 		void mostrarPunConPan(VistaSDL*,vector<Personaje*>*);
+		void pasarNivelReset(VistaSDL*);
+		void pasarNivelServidor(VistaSDL* vista,ControlServidor*);
 
 	private:
 		int nivelActual;
+		int nivelServidor;
 		Textura* capa0;
 		Textura* capa1;
 		Textura* pantallaPuntos;
+
+
 };
 #endif /* ADMINISTRADORDENIVELES_H_ */

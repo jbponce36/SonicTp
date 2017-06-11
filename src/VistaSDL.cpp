@@ -717,3 +717,15 @@ void VistaSDL::mostrarScoJueIndTodosFinNiv(vector<Personaje*>* sonics){
 	//this->dibujarTexto(textoscore,0,100);
 }
 
+vector<jescenarioJuego*> VistaSDL::getJjuego(){
+		return jjuego;
+	}
+
+void VistaSDL::setJjuego(vector<jescenarioJuego*> Jjuego) {
+		this->jjuego = Jjuego;
+	}
+
+jescenarioJuego* VistaSDL::obtenerNivel(int nivel){
+
+	return this->jjuego[nivel];
+}

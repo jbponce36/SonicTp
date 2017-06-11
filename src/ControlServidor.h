@@ -38,11 +38,13 @@
 #include "jcangrejo.h"
 #include "jmosca.h"
 #include "jpescado.h"
+#include "AdministradorDeNiveles.h"
 
 #define FPS_SERVER 25
 #define MAXFILAS 4000
 #define MAXCOLS  800
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
+
 
 class ControlServidor {
 
@@ -60,6 +62,7 @@ private:
     jcangrejo* jcang;
     jmosca* jmos;
     jpescado* jpes;
+    vector<jescenarioJuego*> jjuego;
 
 
 	bool pasarNivel;
@@ -91,6 +94,7 @@ private:
 	Mundo mundo; //Contiene todos los elementos del mundo y los sonics. Asi queda todo mas separado.
 
 	vector<Enemigo*> enemigos;
+	AdministradorDeNiveles administradorNiveles;
 
 public:
 	list<Anillos*> anillos;
@@ -107,9 +111,9 @@ public:
 	void enviarAUno(std::string mensaje, Hiloenviar *hiloEnviar);
 	int mostrarMenuServer();
 
-	void CreoAnillas();
-	void CreoPiedras();
-	void CreoPinche();
+	void CreoAnillas(int minRam, int maxRam);
+	void CreoPiedras(int minRam, int maxRam);
+	void CreoPinche(int minRam, int maxRam);
 	void enviarAnillasPiedrasYPinches(Hiloenviar *hiloEnviar);
 	std::string obtenerMensajeNivel();
 
@@ -155,6 +159,10 @@ public:
 
 
 	void gameOverJugador(int idDesconectado);
+
+	vector<jescenarioJuego*> getJjuego();
+
+	void setJjuego(vector<jescenarioJuego*> jjuego);
 
 private:
 

@@ -9,6 +9,7 @@
 #include "Colicion.h"
 #include "debug.h"
 
+
 ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, std::map<int, Personaje*> *sonics,
 	std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
 	ConexServidor *server, Logger *log)
@@ -228,6 +229,8 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 				//aca debemos resetear todos los valores para comenzar el nuevo nivel
 				//if(this-> pasarNivel = true)
 
+				administradorNiveles.pasarNivelServidor(vista,this);
+
 				Personaje* sonic = (*pos).second;
 				sonic->posicionarseConAnimacion(-250,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
 
@@ -351,9 +354,9 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	this->enviarDatosEnemigosIniciales();
 	this->enviarATodos(FIN_MENSAJES_ENEMIGOS);
 
-	this->CreoAnillas();
-	this->CreoPiedras();
-	this->CreoPinche();
+	this->CreoAnillas(this->getAnill()->getMinimoran(),this->getAnill()->getMaximoran());
+	this->CreoPiedras(this->getJpied()->getMinimoran(),this->getJpied()->getMaximoran());
+	this->CreoPinche(this->getJpin()->getMaximoran(),this->getJpin()->getMaximoran());
 
 	Colicion *colicion = new Colicion();
 
@@ -385,10 +388,11 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
 }
 
-void ControlServidor::CreoPinche(){
+void ControlServidor::CreoPinche(int minRam, int maxRam){
 
-	int cantidadpinche = Util::numeroRandomEntre(this->getJpin()->getMinimoran(), this->getJpin()->getMaximoran());
-	//int cantidadpinche = (rand() % this->getJpin()->getMaximoran()) + this->getJpin()->getMinimoran();
+	//int cantidadpinche = Util::numeroRandomEntre(this->getJpin()->getMinimoran(), this->getJpin()->getMaximoran());
+	int cantidadpinche = Util::numeroRandomEntre(minRam, maxRam);
+
 	 debug(0,"ControlServidor::CREO PINCHES","Valor Random %d", cantidadpinche);
 
 	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
@@ -451,10 +455,11 @@ jescenarioJuego* ControlServidor::getEscenarioJuego(){
 }
 
 
-void ControlServidor::CreoAnillas(){
+void ControlServidor::CreoAnillas(int minRam, int maxRam){
 
-	int cantidadAnillas = Util::numeroRandomEntre(this->getAnill()->getMinimoran(), this->getAnill()->getMaximoran());
- // int cantidadAnillas = (rand() % this->getAnill()->getMaximoran()) + this->getAnill()->getMinimoran();
+//	int cantidadAnillas = Util::numeroRandomEntre(this->getAnill()->getMinimoran(), this->getAnill()->getMaximoran());
+	int cantidadAnillas = Util::numeroRandomEntre(minRam, maxRam);
+
   debug(0,"ControlServidor::CreoAnillas","CANTIDAD ANILLAS RANDOM %d", cantidadAnillas);
 
   int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
@@ -498,12 +503,13 @@ void ControlServidor::CreoAnillas(){
 	}
 }
 
-void ControlServidor::CreoPiedras(){
+void ControlServidor::CreoPiedras(int minRam, int maxRam){
 
 	 int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
 	 int AnchoEscenario = vista->obtenerAnchoEscenario();
 
-	 int cantidadPiedras = Util::numeroRandomEntre(this->getJpied()->getMinimoran(), this->getJpied()->getMaximoran());
+	// int cantidadPiedras = Util::numeroRandomEntre(this->getJpied()->getMinimoran(), this->getJpied()->getMaximoran());
+	 int cantidadPiedras = Util::numeroRandomEntre(minRam, maxRam);
 	 debug(0,"ControlServidor::CreoPiedras","Minimo Random %d", this->getJpied()->getMinimoran());
 	 debug(0,"ControlServidor::CreoPiedras","Maximo Random %d", this->getJpied()->getMaximoran());
 	 debug(0,"ControlServidor::CreoPiedras","Valor Random %d", cantidadPiedras);
@@ -918,3 +924,12 @@ void ControlServidor::gameOverJugador(int id)
 	}
 
 }
+
+vector<jescenarioJuego*> ControlServidor::getJjuego(){
+		return jjuego;
+	}
+
+void ControlServidor::setJjuego(vector<jescenarioJuego*> Jjuego) {
+		this->jjuego = Jjuego;
+	}
+
