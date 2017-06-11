@@ -64,6 +64,11 @@ void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
 				{
 					//Recibe "DES1"
 					this->log->addLogMessage("[RECIBIR GRUPO] Error. Cliente desconectado. Se asignara al grupo 1." ,1);
+					//Vuelvo a agregar el mensaje de desconexion del cliente asi lo desconecta luego
+					char buffer[6];
+					strcpy(buffer, mensaje.c_str());
+					(*pos)->parametros.colaDeMensajes.agregar(buffer);
+
 					mensaje = MENSAJE_EQUIPO + mensaje.substr(3,1) + "1";
 					break;
 				}
@@ -72,7 +77,8 @@ void JuegoServidor::inicializarJuegoServidor(std::jescenarioJuego *jparseador)
 			int idSonic = atoi(mensaje.substr(3,1).c_str());
 			grupo = atoi(mensaje.substr(4,1).c_str());
 
-
+			sonics.at(idSonic)->setGrupo(grupo);
+			cout << "Sonic id: " << idSonic << " Grupo: " << grupo << "\n";
 
 		}
     }

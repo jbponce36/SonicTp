@@ -36,6 +36,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 
     this->velocidadX = 0;
     this->velocidadY = 0;
+    this->grupo = 1;
 
     this->orientacion = DERECHA;
 
@@ -706,6 +707,11 @@ Puntos* Personaje::getPuntos() {
 
 void Personaje::setPuntos(Puntos* puntaje) {
 	this->puntos = puntaje;
+}
+
+void Personaje::setGrupo(int grupo)
+{
+	this->grupo = grupo;
 }
 
 std::string Personaje::obtenerMensajeEstado()
