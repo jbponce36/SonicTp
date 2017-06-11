@@ -20,6 +20,7 @@
 #include "Hilorecibir.h"
 #include "HilolatidoSer.h"
 #include <vector>
+#include "Util.h"
 #include <map>
 
 
@@ -42,7 +43,7 @@ private:
 	int modoJuego;
 
 public:
-
+	vector<jescenarioJuego*> parser;
 	JuegoServidor(ConexServidor *server, std::vector<Hiloenviar*> &hiloEnviar,
 			std::vector<Hilorecibir*> &hiloRecibir, Logger *log, bool &juegoTerminado,
 			int modoJuego);
@@ -54,10 +55,11 @@ public:
 	int obtenerIdLibre();
 	void obtenerPosicionValida(int &x, int &y);
 	void reconectar(int socket, ConexServidor *servidor);
+	void cargarNiveles(jescenarioJuego *jparseador,vector<jescenarioJuego*> parser);
 
 private:
 	static void* iniciarJuegoServidor(void *datos);
-	void inicializarJuegoServidor(std::jescenarioJuego *jparseador);
+	void inicializarJuegoServidor(/*std::jescenarioJuego *jparseador*/);
 	void iniciarJuegoControlServidor();
 };
 
