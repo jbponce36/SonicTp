@@ -42,7 +42,7 @@ JuegoCliente::~JuegoCliente() {
 JuegoCliente::JuegoCliente(ConexCliente *cliente, Logger *log, int &opcionMenu)
 : vista(NULL), sonic(NULL), control(NULL), cliente(cliente), log(log),
   hiloRecibir(NULL), hiloEnviar(NULL), hiloJuego(NULL), hiloLatido(NULL), maxJugadores(0), sonics(),
-  juegoIniciado(false), opcionMenu(opcionMenu), pausaMostrarEsperar(false){
+  juegoIniciado(false), opcionMenu(opcionMenu){
 	//Vista, sonic y control se setean al llamar a iniciarJuegoCliente desde el thread
 	this->log = log;
 	this->log->setModulo("JUEGO CLIENTE");
@@ -86,7 +86,7 @@ void JuegoCliente::iniciarHilos(Logger *log)
 
 	this->log->addLogMessage("[INICIAR JUEGO CLIENTE] Terminado.",2);
 
-	vista->mostrarEsperarJugadores(log, juegoIniciado, pausaMostrarEsperar);
+	vista->mostrarEsperarJugadores(log, juegoIniciado);
 	this->log->addLogMessage("[INICIAR HILOS] Terminado.",2);
 }
 
@@ -185,7 +185,6 @@ int JuegoCliente::inicializarJuegoCliente()
 
 	int modo = atoi(mensaje.substr(3,1).c_str());
 	cout << "Modo: " << modo << endl;
-
 	if(control != NULL){
 		delete control;
 	}
@@ -194,8 +193,9 @@ int JuegoCliente::inicializarJuegoCliente()
 	if(modo == 3)
 	{
 		cout << "Modo grupal: Elija un grupo.\n";
-		pausaMostrarEsperar = true;
 		int eleccion = vista->mostrarGrupos(log);
+		//int eleccion = 0;
+		//sleep(5);
 		eleccion++;
 
 		cout << "Termine de mostrar el menu grupos\n";
@@ -207,7 +207,6 @@ int JuegoCliente::inicializarJuegoCliente()
 		strcpy(buffer, eleccionGrupo.c_str());
 
 		hiloEnviar->enviarDato(buffer);
-		pausaMostrarEsperar = false;
 	}
 
 	this->log->addLogMessage("[INICIALIZAR JUEGO CLIENTE] Terminado. \n",2);

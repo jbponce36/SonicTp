@@ -46,7 +46,6 @@ private:
 	bool juegoIniciado;
 
 	int &opcionMenu;
-	bool pausaMostrarEsperar;
 
 public:
 	virtual ~JuegoCliente();

@@ -40,7 +40,7 @@ char* getJson(int argc, char *argv[]){
 int main(int argc, char *argv[]) {
 
 	//char *clientConfig = getJson(argc, argv);
-	char *archivoLog=(char*)"log/logCliente.txt";
+	char *archivoLog=(char*)"logs/logCliente.txt";
 	Logger *log = new Logger(archivoLog, getNivelLogger(argc,argv ), "CLIENTE");
 
 	log->iniciarLog("INICIAR LOGGER");

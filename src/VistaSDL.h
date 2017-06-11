@@ -66,7 +66,9 @@ private:
     vector <SDL_Color> colores;
     SDL_Color negro;
     TTF_Font* fuente2;
+    pthread_mutex_t mutexRenderizar; //Lo uso entre mostrar esperar jugadores y el menu de grupos
     vector<jescenarioJuego*> jjuego;
+
 
 public:
     //vector<jescenarioJuego*> parser;
@@ -93,7 +95,8 @@ public:
     int obtenerVelocidadDeScroll();
     void validacionesVentana();
     int mostraMenuInicial(Logger *logger);
-    void mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado, bool &pausa);
+    void mostrarGameOver(Logger *logger);
+    void mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado);
     void mostrarServidorDesconectado();
     int mostrarGrupos(Logger *logger);
     void cerrar();
