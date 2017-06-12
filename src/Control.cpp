@@ -400,7 +400,8 @@ void Control::controlDeMensajes(Personaje* sonic,
 		else if(mensaje.substr(0,3).compare("sco") == 0){
 		//	cout<<"MENSAJE PUNTOS:  "<< mensaje<<endl;
 			int id = atoi(mensaje.substr(3,1).c_str());
-			int puntos = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
+			//en la ultim a posicion del mensaje esta el equipo sco------1
+			int puntos = Util::stringConPaddingToInt(mensaje.substr(4, 6).c_str());
 			//cout<<"puntos:  "<<puntos<<"id:   "<<id<<endl;
 			if( sonic->getId() == id){
 				sonic->getPuntos()->setPuntos(puntos);
