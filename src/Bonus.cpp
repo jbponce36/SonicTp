@@ -44,6 +44,7 @@ void Bonus::interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar)
 		{
 			case RING: {
 				sonic->aumentarCantidadAnillos(CANTIDAD_ANILLOS);
+				mundo->enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
 				break;
 			}
 			case ESCUDO: {

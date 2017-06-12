@@ -19,6 +19,7 @@ private:
 	int maximoX;
 	int minimoX;
 	Uint32 tiempo;
+	int puntaje;
 public:
 //lado servidor
 	Cangrejo(int x, int y,int maxX,int minX);

@@ -683,9 +683,11 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 					if(enemigos[i]->getVivo()){
 						if((*pos).second->estaAtacando()){
 							enemigos[i]->setVivo(false);
+							sonic->getPuntos()->sumarXpuntos(enemigos[i]->getPuntaje());
+							enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoPuntos(sonic->getId(),sonic->getEquipo()));
 							cout<<"mato a un enemigo"<<endl;
 						}else{
-							//(*pos).second->herir(this);
+							(*pos).second->herir(this);
 
 							cout<<"golpeo a sonic"<<endl;
 
