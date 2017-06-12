@@ -48,6 +48,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->esInmortal = false;
     this->esInvencible = false;
     this->estaVivo = true;
+    this->duracionInvencibilidad = 20.0;
 
     this->puntaje = new Puntaje(id, render,log);
 
@@ -97,6 +98,7 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 	else if (posicionY + this->personajeAlto >  maximoAlto){
 		this->posicionY = maximoAlto-this->personajeAlto;
 		saltando = false; //Al tocar el piso deja de saltar
+		resbalando = false;
 		parar();
 	}
 
@@ -391,6 +393,7 @@ void Personaje::herir(ControlServidor *control)
 	{
 		//Sonic tiene anillos. Sacarselos
 		puntos->setCantAnillos(0);
+		//Titilar
 	}
 	else
 	{
@@ -399,6 +402,7 @@ void Personaje::herir(ControlServidor *control)
 			if (esInmortal)
 			{
 				return;
+				//Titilar quizas
 			}
 			else
 			{
@@ -412,6 +416,7 @@ void Personaje::herir(ControlServidor *control)
 		{
 			//Sonic no tiene anillos pero tiene vidas
 			puntos->restarUnaVida();
+			serInvencible(1);
 		}
 	}
 }
@@ -766,10 +771,20 @@ void Personaje::quitarseEscudo()
 
 void Personaje::serInvencible()
 {
+	//Para el cliente
+	esInvencible = true;
+	tieneEscudo = false;
+	animacionBonus = &animacionInvencible;
+}
+
+void Personaje::serInvencible(int segundos)
+{
+	//Para el servidor
 	time(&tiempoInicioInvencible);
 	esInvencible = true;
 	tieneEscudo = false;
 	animacionBonus = &animacionInvencible;
+	duracionInvencibilidad = segundos;
 }
 
 void Personaje::dejarDeSerInvencible()
@@ -787,7 +802,7 @@ bool Personaje::sigueSiendoInvencible()
 	tiempoTranscurrido = difftime(tiempoFin, tiempoInicioInvencible);
 	tiempoTranscurrido = fabs(tiempoTranscurrido);
 
-	if (tiempoTranscurrido < DURACION_INVENCIBILIDAD)
+	if (tiempoTranscurrido < duracionInvencibilidad)
 	{
 		return true;
 	}
