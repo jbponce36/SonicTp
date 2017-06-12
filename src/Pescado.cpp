@@ -36,23 +36,18 @@ void Pescado::actualizarPosicion(){
 	//cout<<"maximo: "<<this->maximoX<<endl;
 	//cout<<"minimo: "<<this->minimoX<<endl;
 	Uint32 timeActual= SDL_GetTicks();
+	//int velocidadaConstante = 50;
 	this->calcularNumeroDeSprite();
 	float timeStep = (timeActual - this->tiempo) / 1000.f;
 	//cout<<"timeStep: "<<timeStep<<endl;
 	float auxPosicion = this->getPosicionesY() + ((this->velocidad)*timeStep);
 	//cout<<"auxPosicion: "<<auxPosicion<<endl;
-	if(this->velocidad > 0){
-		if(auxPosicion > this->maximoY){
-			this->velocidad = this->velocidad*(-1);
-		}else{
-			this->setPosicionesY(auxPosicion);
-		}
+	if(auxPosicion > this->maximoY){
+		this->velocidad = -70;
+	}else if(auxPosicion < this->minimoY){
+		this->velocidad = 120;
 	}else{
-		if(auxPosicion < this->minimoY){
-			this->velocidad = this->velocidad*(-1);
-		}else{
-			this->setPosicionesY(auxPosicion);
-		}
+		this->setPosicionesY(auxPosicion);
 	}
 	this->tiempo = SDL_GetTicks();
 }
