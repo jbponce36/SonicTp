@@ -28,6 +28,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 		this->ultimasPosiciones[(*pos).second->getId()] = ultimasPosiciones;
 	}
 	this->log->setModulo("CONTRON SERVIDOR");
+	this->envioModoDeJuego = false;
 }
 
 ControlServidor::~ControlServidor() {
@@ -189,6 +190,9 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 	std::map<int, Personaje*>::iterator pos;
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
+		//cout<<"grupo: "<<(*pos).second->getEquipo()<<"ID"<<(*pos).second->getId()<<endl;
+
+
 		teclasPresionadas t = teclas.at((*pos).first);
 		Personaje* sonic = (*pos).second;
 
@@ -248,8 +252,15 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 				administradorNiveles.pasarNivelServidor(vista,this);
 
 				Personaje* sonic = (*pos).second;
-				sonic->posicionarseConAnimacion(-250,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
-
+				//sonic->posicionarseConAnimacion(-250,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
+				sonic->posicionarseEn(0, 4*vista->getAltoEscenario()/5 - 150);
+				sonic->parar();
+				int id = sonic->getId();
+				teclas.at(id).teclaAbajo = false;
+				teclas.at(id).teclaArriba = false;
+				teclas.at(id).teclaDerecha = false;
+				teclas.at(id).teclaIzquierda = false;
+				teclas.at(id).teclaCorrer = false;
 				//this->pasarNivel = false;
 			}
 			camara->actualizarXY(0,0);
@@ -283,14 +294,28 @@ void ControlServidor::actualizarVistaServidor(Camara *camara)
 {
 	//Aca le envio a todos los clientes la posicion y sprite de todos los otros clientes.
 	std::map<int, Personaje*>::iterator pos;
+	std::string mensj ="mod";
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
 		if ((*pos).second->sigueVivo()){
 			std::string mensaje = (*pos).second->obtenerMensajeEstado();
 			enviarATodos(mensaje);
-		}
-	}
+			//envia una vez sola el modo de juego al inicio de la partida
+			if( envioModoDeJuego == 0 )
+			{
+				mensj = mensj+intToString((*pos).second->getId())+intToString((*pos).second->getEquipo());
 
+
+			}
+		}
+
+	}
+	if(envioModoDeJuego == 0)
+	{
+		enviarATodos(mensj);
+		envioModoDeJuego = true;
+		cout<<mensj<<endl;
+	}
 	//envio las posiciones de los enemigos
 	for(int i=0; i <this->enemigos.size(); i++){
 		if(enemigos[i]->getSeguirEnviandoMensajes()){

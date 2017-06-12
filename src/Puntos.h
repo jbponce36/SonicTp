@@ -12,6 +12,7 @@
 #include <string>
 #include<iostream>
 
+
 class Puntos {
 
 private:
@@ -37,7 +38,7 @@ public:
 		std::string obtenerMensajeEstadoAnillos(int);
 		std::string enteroToString(int number);
 		std::string obtenerMensajeEstadoVidas(int id);
-		std::string obtenerMensajeEstadoPuntos(int id);
+		std::string obtenerMensajeEstadoPuntos(int id,int);
 
 
 private:

@@ -83,7 +83,7 @@ class Personaje
         bool resbalando;
         bool estaVivo;
 		time_t tiempoInicioInvencible;
-
+		int duracionInvencibilidad;
 		Logger *log;
 
 		//bool cargaAtaque;
@@ -95,6 +95,7 @@ class Personaje
 		void dejarDeEstarQuieto();
 
 		std::string intToStringConPadding(int number);
+
 
     public:
 
@@ -159,10 +160,12 @@ class Personaje
 		void ponerseEscudo();
 		void quitarseEscudo();
 		void serInvencible();
+		void serInvencible(int segundos);
 		void dejarDeSerInvencible();
 		bool sigueSiendoInvencible();
 		bool agarroBonusInvencible();
 		void serInmortalODejarDeSerlo();
+		int getEquipo();
 
 		void atacar();
 		bool getAtaque();
@@ -171,6 +174,8 @@ class Personaje
 		void ataqueMover();*/
 		bool sigueAtaque();
 		void dejarDeAtacar();
+
+
 };
 
 #endif

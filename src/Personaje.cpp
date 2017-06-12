@@ -50,6 +50,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->esInmortal = false;
     this->esInvencible = false;
     this->estaVivo = true;
+    this->duracionInvencibilidad = 20.0;
 
     this->puntaje = new Puntaje(id, render,log);
 
@@ -101,6 +102,7 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 	else if (posicionY + this->personajeAlto >  maximoAlto){
 		this->posicionY = maximoAlto-this->personajeAlto;
 		saltando = false; //Al tocar el piso deja de saltar
+		resbalando = false;
 		parar();
 	}
 
@@ -405,6 +407,7 @@ void Personaje::herir(ControlServidor *control)
 	{
 		//Sonic tiene anillos. Sacarselos
 		puntos->setCantAnillos(0);
+		//Titilar
 	}
 	else
 	{
@@ -413,6 +416,7 @@ void Personaje::herir(ControlServidor *control)
 			if (esInmortal)
 			{
 				return;
+				//Titilar quizas
 			}
 			else
 			{
@@ -426,6 +430,7 @@ void Personaje::herir(ControlServidor *control)
 		{
 			//Sonic no tiene anillos pero tiene vidas
 			puntos->restarUnaVida();
+			serInvencible(1);
 		}
 	}
 }
@@ -697,7 +702,7 @@ std::string Personaje::intToString(int number)
 }
 
 void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje)
-{
+{int getGrupo();
 	mensaje = intToString(id) + mensaje + "x" + intToStringConPadding(posicionX) + "y" + intToStringConPadding(posicionY);
 
 	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
@@ -765,6 +770,7 @@ SDL_Rect Personaje::obtenerLimites(){
 void Personaje::aumentarCantidadAnillos(int cantidad)
 {
 	puntaje->setCantAnillos(puntaje->getCantAnillos()+cantidad);
+	puntos->sumarXanillos(cantidad);
 }
 
 void Personaje::ponerseEscudo()
@@ -782,10 +788,20 @@ void Personaje::quitarseEscudo()
 
 void Personaje::serInvencible()
 {
+	//Para el cliente
+	esInvencible = true;
+	tieneEscudo = false;
+	animacionBonus = &animacionInvencible;
+}
+
+void Personaje::serInvencible(int segundos)
+{
+	//Para el servidor
 	time(&tiempoInicioInvencible);
 	esInvencible = true;
 	tieneEscudo = false;
 	animacionBonus = &animacionInvencible;
+	duracionInvencibilidad = segundos;
 }
 
 void Personaje::dejarDeSerInvencible()
@@ -803,7 +819,7 @@ bool Personaje::sigueSiendoInvencible()
 	tiempoTranscurrido = difftime(tiempoFin, tiempoInicioInvencible);
 	tiempoTranscurrido = fabs(tiempoTranscurrido);
 
-	if (tiempoTranscurrido < DURACION_INVENCIBILIDAD)
+	if (tiempoTranscurrido < duracionInvencibilidad)
 	{
 		return true;
 	}
@@ -821,6 +837,11 @@ void Personaje::serInmortalODejarDeSerlo()
 		esInmortal = false;
 	else
 		esInmortal = true;
+}
+int Personaje::getEquipo(){
+
+	return this->grupo;
+
 }
 void Personaje::atacar(){
 	if(!this->ataque){
