@@ -398,19 +398,51 @@ void Control::controlDeMensajes(Personaje* sonic,
 			}
 		}
 		else if(mensaje.substr(0,3).compare("sco") == 0){
-		//	cout<<"MENSAJE PUNTOS:  "<< mensaje<<endl;
+			//cout<<"MENSAJE PUNTOS:  "<< mensaje<<endl;
 			int id = atoi(mensaje.substr(3,1).c_str());
+
 			//en la ultim a posicion del mensaje esta el equipo sco------1
 			int puntos = Util::stringConPaddingToInt(mensaje.substr(4, 6).c_str());
-			//cout<<"puntos:  "<<puntos<<"id:   "<<id<<endl;
-			if( sonic->getId() == id){
-				sonic->getPuntos()->setPuntos(puntos);
-			}
+			//(9,1 puede estar mal ver eso)
+			int equipo = atoi(mensaje.substr(9,1).c_str());
+			if(this->modoDeJuego == 1)
+			{
+				if( sonic->getId() == id){
+					sonic->getPuntos()->setPuntos(puntos);
+				}
 
-			std::vector<Personaje*>::iterator pos;
-			for (pos = sonics->begin(); pos != sonics->end(); pos++) {
-				if((*pos)->getId() == id ){
-					(*pos)->getPuntos()->setPuntos(puntos);
+				std::vector<Personaje*>::iterator pos;
+				for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+					if((*pos)->getId() == id ){
+						(*pos)->getPuntos()->setPuntos(puntos);
+					}
+				}
+
+			}
+			else if(this->modoDeJuego == 2 ){
+
+				if( sonic->getId() == id){
+					sonic->getPuntos()->setPuntos(puntos);
+				}
+
+				std::vector<Personaje*>::iterator pos;
+				for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+						(*pos)->getPuntos()->setPuntos(puntos);
+				}
+
+			}
+			else if(this->modoDeJuego == 3){
+
+				if( sonic->getEquipo() == equipo){
+					sonic->getPuntos()->setPuntos(puntos);
+				}
+
+				std::vector<Personaje*>::iterator pos;
+				for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+					if((*pos)->getEquipo() == equipo){
+						(*pos)->getPuntos()->setPuntos(puntos);
+
+					}
 				}
 			}
 		}

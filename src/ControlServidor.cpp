@@ -712,6 +712,8 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 
 					sonic->getPuntos()->sumarXanillos(1);
 					enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
+				//	sonic->getPuntos()->sumarXpuntos(10);
+				//	enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoPuntos(sonic->getId(),sonic->getEquipo()));
 				}
 				numeroAnilla++;
 			}
@@ -746,6 +748,7 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 					enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
 					enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoVidas(sonic->getId()));
 					enviarATodos(sonic->obtenerMensajeEstadoBonus());
+
 				}
 			}
 		}
