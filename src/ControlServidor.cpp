@@ -225,6 +225,28 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 
 		if( this->pasarNivel == true )
 		{
+			this->nivelActual++;
+			char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
+				std::string msjPasarNivel = "PASARNIVEL" ;
+				//cout<<"mensaje sin: "<<mensaje.size()<<endl;
+				msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
+				//cout<<"mensaje con: "<<mensaje.size()<<endl;
+				//cout<<"server envio: "<<mensaje<<endl;
+				strcpy(buffer, msjPasarNivel.c_str());
+				//cout<<"mensaje con buff: "<<strlen(buffer)<<endl;
+				int id = 1;
+				std::vector<Hiloenviar*>::iterator poshilo;
+				for(poshilo = hilosEnviar->begin();poshilo != hilosEnviar->end();poshilo++)
+				{
+					if(!sonics->at(id)->estaCongelado())
+					{
+						//(*pos)->vaciar();
+						(*poshilo)->enviarDato(buffer);
+					}
+					id++;
+				}
+
+
 			for(pos = sonics->begin();pos != sonics->end();pos++)
 			{
 				//aca debemos resetear todos los valores para comenzar el nuevo nivel
@@ -239,26 +261,6 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 			}
 			camara->actualizarXY(0,0);
 			this->pasarNivel =false;
-			this->nivelActual++;
-			char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
-				std::string msjPasarNivel = "PASARNIVEL" ;
-				//cout<<"mensaje sin: "<<mensaje.size()<<endl;
-				msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
-				//cout<<"mensaje con: "<<mensaje.size()<<endl;
-				//cout<<"server envio: "<<mensaje<<endl;
-				strcpy(buffer, msjPasarNivel.c_str());
-				//cout<<"mensaje con buff: "<<strlen(buffer)<<endl;
-				int id = 1;
-				std::vector<Hiloenviar*>::iterator pos;
-				for(pos = hilosEnviar->begin();pos != hilosEnviar->end();pos++)
-				{
-					if(!sonics->at(id)->estaCongelado())
-					{
-						//(*pos)->vaciar();
-						(*pos)->enviarDato(buffer);
-					}
-					id++;
-				}
 				sleep(3);
 		}
 	}
@@ -440,7 +442,7 @@ void ControlServidor::CreoPinche(int minRam, int maxRam){
      list<Pinche*>:: iterator pos;
 	 for(pos = this->pinche.begin(); pos!= this->pinche.end();pos++){
 		 std::string mensaje = (*pos)->obtenerMensajeEstado();
-		 debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+		// debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
 		 enviarATodos(mensaje);
 	}
 
@@ -457,9 +459,9 @@ jescenarioJuego* ControlServidor::getEscenarioJuego(){
 
 
 void ControlServidor::CreoAnillas(int minRam, int maxRam){
-
+	debug(0,"ControlServidor::CreoAnillas", "Creo Anillas", 0);
 //	int cantidadAnillas = Util::numeroRandomEntre(this->getAnill()->getMinimoran(), this->getAnill()->getMaximoran());
-	int cantidadAnillas = Util::numeroRandomEntre(minRam, maxRam);
+  int cantidadAnillas = Util::numeroRandomEntre(minRam, maxRam);
 
   debug(0,"ControlServidor::CreoAnillas","CANTIDAD ANILLAS RANDOM %d", cantidadAnillas);
 
@@ -499,8 +501,9 @@ void ControlServidor::CreoAnillas(int minRam, int maxRam){
 	//Vendria a ser el metodo ActualizarVistaServidor......
 	list<Anillos*>:: iterator posanillo;
 		for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
-		  std::string mensaje = (*posanillo)->obtenerMensajeEstado();
-	      debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+
+	      std::string mensaje = (*posanillo)->obtenerMensajeEstado();
+	      debug(1,"ControlServidor::CreoAnillas",  (char*)mensaje.c_str(), 1);
 		  enviarATodos(mensaje);
 	}
 }
@@ -513,8 +516,8 @@ void ControlServidor::CreoPiedras(int minRam, int maxRam){
 
 	// int cantidadPiedras = Util::numeroRandomEntre(this->getJpied()->getMinimoran(), this->getJpied()->getMaximoran());
 	 int cantidadPiedras = Util::numeroRandomEntre(minRam, maxRam);
-	 debug(0,"ControlServidor::CreoPiedras","Minimo Random %d", this->getJpied()->getMinimoran());
-	 debug(0,"ControlServidor::CreoPiedras","Maximo Random %d", this->getJpied()->getMaximoran());
+	// debug(0,"ControlServidor::CreoPiedras","Minimo Random %d", this->getJpied()->getMinimoran());
+	// debug(0,"ControlServidor::CreoPiedras","Maximo Random %d", this->getJpied()->getMaximoran());
 	 debug(0,"ControlServidor::CreoPiedras","Valor Random %d", cantidadPiedras);
 
 	  std::vector<int> myvector;
@@ -543,7 +546,7 @@ void ControlServidor::CreoPiedras(int minRam, int maxRam){
 
 			  int coordY = 4*vista->getAltoEscenario()/5 - alto;
 
-			  debug(0, "ControlServidor::CreoPiedras", "Creando piedra en pos X: %d", coordX);
+			  //debug(0, "ControlServidor::CreoPiedras", "Creando piedra en pos X: %d", coordX);
 
 			  std::string rutaImagen = "images/piedra2.png";
 			  int indexZ = 99;
@@ -561,12 +564,12 @@ void ControlServidor::CreoPiedras(int minRam, int maxRam){
 		  }
 		}
 
-		debug(0, "ControlServidor::CreoPiedras", "Cantidad de Piedras Mostradas: %d", cantidadPiedrasMostradas);
+		//debug(0, "ControlServidor::CreoPiedras", "Cantidad de Piedras Mostradas: %d", cantidadPiedrasMostradas);
 
 		list<Piedra*>::iterator pos;
 	    for(pos = this->piedra.begin();pos!=this->piedra.end();pos++){
 	    	std::string mensaje = (*pos)->obtenerMensajeEstado();
-	    	debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+	    	//debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
 	    	enviarATodos(mensaje);
 	    }
 }
@@ -582,21 +585,21 @@ void ControlServidor::enviarAnillasPiedrasYPinches(Hiloenviar *hiloEnviar)
 	list<Anillos*>:: iterator posanillo;
 	for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
 		   std::string mensaje = (*posanillo)->obtenerMensajeEstado();
-		   debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+		 //  debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
 		   enviarAUno(mensaje, hiloEnviar);
 	}
 
 	list<Piedra*>::iterator pospiedra;
 	for(pospiedra = this->piedra.begin();pospiedra!=this->piedra.end();pospiedra++){
 		std::string mensaje = (*pospiedra)->obtenerMensajeEstado();
-		debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+	//	debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
 		enviarAUno(mensaje, hiloEnviar);
 	}
 
 	list<Pinche*>:: iterator pospinche;
 	 for(pospinche = this->pinche.begin(); pospinche != this->pinche.end();pospinche++){
 		 std::string mensaje = (*pospinche)->obtenerMensajeEstado();
-		 debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
+		// debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
 		 enviarAUno(mensaje, hiloEnviar);
 	}
 }
