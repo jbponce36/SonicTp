@@ -34,6 +34,8 @@ class Personaje
 		Textura *texturaEscudo;
 		Textura *texturaInvencible;
 
+		Textura *texturaAtaque;
+
 		int id;
 		int personajeAncho;
 		int personajeAlto;
@@ -60,6 +62,10 @@ class Personaje
 
 		Animacion *animacionBonus; //Se suponerpone
 
+
+		Animacion animacionAtaqueDer;
+		Animacion animacionAtaqueIzq;
+
 		Orientacion orientacion;
 		Puntaje *puntaje;
 		Puntos *puntos;
@@ -77,14 +83,19 @@ class Personaje
         bool resbalando;
         bool estaVivo;
 		time_t tiempoInicioInvencible;
-
+		int duracionInvencibilidad;
 		Logger *log;
+
+		//bool cargaAtaque;
+		bool ataque;
+		time_t tiempoDeAtaque;
 
 		void animarSalto();
 		void cargarSpriteSonic();
 		void dejarDeEstarQuieto();
 
 		std::string intToStringConPadding(int number);
+
 
     public:
 
@@ -149,10 +160,22 @@ class Personaje
 		void ponerseEscudo();
 		void quitarseEscudo();
 		void serInvencible();
+		void serInvencible(int segundos);
 		void dejarDeSerInvencible();
 		bool sigueSiendoInvencible();
 		bool agarroBonusInvencible();
 		void serInmortalODejarDeSerlo();
+		int getEquipo();
+
+		void atacar();
+		bool getAtaque();
+		/*void detenerAtaque();
+		void inicializarTiempoAtaque();
+		void ataqueMover();*/
+		bool sigueAtaque();
+		void dejarDeAtacar();
+
+
 };
 
 #endif

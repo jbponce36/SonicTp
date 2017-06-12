@@ -63,7 +63,7 @@ private:
     jmosca* jmos;
     jpescado* jpes;
     vector<jescenarioJuego*> jjuego;
-
+    bool envioModoDeJuego;
 
 	bool pasarNivel;
 	int nivelActual;
@@ -87,6 +87,7 @@ private:
 		bool teclaIzquierda;
 		bool teclaDerecha;
 		bool teclaCorrer;
+		bool teclaAtaque;
 	}teclasPresionadas;
 
 	std::map<int, teclasPresionadas> teclas; //Cada elemento le corresponde a un sonic
@@ -165,7 +166,7 @@ public:
 	void setJjuego(vector<jescenarioJuego*> jjuego);
 
 	void limpiarObstaculos();
-
+	void resetEnemigosPorNivel(int,int,int,int,int,int);
 private:
 
 	void administrarTeclasServidor();
@@ -175,6 +176,7 @@ private:
 	void verificarDuracionBonus(Personaje* sonic);
 	void volverInmortalesTodosLosSonics();
 	std::string intToString(int number);
+	void verificarDuracionAtaque(Personaje *sonic);
 
 };
 

@@ -97,6 +97,7 @@ public:
     int mostraMenuInicial(Logger *logger);
     void mostrarGameOver(Logger *logger);
     void mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado);
+    void mostrarImagenEsperarJugadores(); //Solo renderiza la imagen
     void mostrarServidorDesconectado();
     int mostrarGrupos(Logger *logger);
     void cerrar();
@@ -124,6 +125,12 @@ public:
 	void dibujarTextoColorFuente(std::string texto, int posX, int posY,SDL_Color color,TTF_Font* fuente);
 	void mostrarScoJueIndTodosFinNiv(vector<Personaje*>* sonics);
 	jescenarioJuego* obtenerNivel(int);
+	void mostrarScoModoDosJuego(vector<Personaje*>* sonics);
+	void mostrarScodosFinLv(vector<Personaje*>* sonics);
+	void mostrarScoModoTresJuego(vector<Personaje*>* sonics);
+	void mostrarScoTresFinLv(vector<Personaje*>* sonics);
+	void mostrarPuntPartida(int modo,vector<Personaje*>* sonics);
+	void mostrarPuntFinNivel(int modo,vector<Personaje*>* sonics);
 };
 
 

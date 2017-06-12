@@ -64,7 +64,7 @@ void AdministradorDeNiveles::mostrarPunConPan(VistaSDL* vista,vector<Personaje*>
 
 	// ACA CARGAMOS LA PANTALLA DE PUNTOS
 		this->pantallaPuntos = new Textura();
-		this->pantallaPuntos->cargarImagen("images/entidad1.png","images/entidad1.png",vista->getRenderizador(),vista->getLog());
+		this->pantallaPuntos->cargarImagen("images/Puntajes.jpg","images/entidad1.png",vista->getRenderizador(),vista->getLog());
 		SDL_Rect cuadventana;
 		cuadventana.x = 0;
 		cuadventana.y = 0;
@@ -121,6 +121,9 @@ void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor*
 	controlSevidor->CreoAnillas(jjuego->getAnillo()->getMinimoran(),jjuego->getAnillo()->getMaximoran());
 	controlSevidor->CreoPiedras(jjuego->getPiedra()->getMinimoran(),jjuego->getPiedra()->getMaximoran());
 	controlSevidor->CreoPinche(jjuego->getPinche()->getMinimoran(),jjuego->getPinche()->getMaximoran());
+
+	vista->getConstructorEntidades()->cargarEntidades(jjuego->getEscenario()->getentidades(),vista->getRenderizador());
+	//jjuego->getEscenario()->getentidades();
 
 	list<jentidades>:: iterator pos;
 

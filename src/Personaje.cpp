@@ -15,6 +15,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->texturaCongelado = new Textura();
 	this->texturaEscudo = new Textura();
 	this->texturaInvencible = new Textura();
+	this->texturaAtaque = new Textura();
 
 	std::string rutaImagen = "images/sonicSprite" + intToString(id) +".png";
 	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
@@ -22,6 +23,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->texturaEscudo->cargarImagen("images/BonusEscudo.png", "images/BonusEscudo.png", render, log);
 	this->texturaInvencible->cargarImagen("images/BonusInvencibilidad.png", "images/BonusInvencibilidad.png", render, log);
 
+	this->texturaAtaque->cargarImagen("images/ataque.png", "images/ataque.png", render, log);
 	//dimensiones del personaje por defecto
 	this->personajeAncho = 150;
 	this->personajeAlto= 150;
@@ -48,6 +50,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->esInmortal = false;
     this->esInvencible = false;
     this->estaVivo = true;
+    this->duracionInvencibilidad = 20.0;
 
     this->puntaje = new Puntaje(id, render,log);
 
@@ -58,6 +61,8 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->puedeIrIzquierda = true;
     this->colisionando = false;
     this->resbalando = false;
+
+    this->ataque = false;
 }
 
 void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
@@ -97,6 +102,7 @@ void Personaje::mover(SDL_Rect *limites, float tiempoDeJuego)
 	else if (posicionY + this->personajeAlto >  maximoAlto){
 		this->posicionY = maximoAlto-this->personajeAlto;
 		saltando = false; //Al tocar el piso deja de saltar
+		resbalando = false;
 		parar();
 	}
 
@@ -119,15 +125,18 @@ void Personaje::cargarSpriteSonic(){
 	animacionQuietoDer = Animacion(texturaSonic, personajeAncho, 7, ANIMACION_QUIETO_DERECHA);
 	animacionCaminarDer = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CAMINAR_DERECHA);
 	animacionCorrerDer = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CORRER_DERECHA);
-	animacionSaltarDer = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_SALTAR_DERECHA);
+	animacionSaltarDer = Animacion(texturaAtaque, personajeAncho, 2, ANIMACION_SALTAR_DERECHA);
 	animacionQuietoIzq = Animacion(texturaSonic, personajeAncho, 7, ANIMACION_QUIETO_IZQUIERDA);
 	animacionCaminarIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CAMINAR_IZQUIERDA);
 	animacionCorrerIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CORRER_IZQUIERDA);
-	animacionSaltarIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_SALTAR_IZQUIERDA);
+	animacionSaltarIzq = Animacion(texturaAtaque, personajeAncho, 2, ANIMACION_SALTAR_IZQUIERDA);
 	animacionCongelado = Animacion(texturaCongelado, personajeAncho, 1, ANIMACION_CONGELADO);
 	animacionEscudo = Animacion(texturaEscudo, personajeAncho + 50, 2, ANIMACION_ESCUDO);
 	animacionInvencible = Animacion(texturaInvencible, personajeAncho + 50, 2, ANIMACION_INVENCIBLE);
 	puntaje->setAnimacionPuntaje(Animacion(puntaje->getTexturaPuntaje(), puntaje->getAlto(), 1, ANIMACION_PUNTAJE));
+
+	animacionAtaqueDer = Animacion(texturaAtaque, personajeAncho, 1, ANIMACION_ATAQUE_DERECHA);
+	animacionAtaqueIzq = Animacion(texturaAtaque, personajeAncho, 1, ANIMACION_ATAQUE_IZQUIERDA);
 
 	//for (int i=0; i<10; i++){
 	//	animacionQuietoDer.cargarSprites(0, 0, 1);
@@ -155,12 +164,14 @@ void Personaje::cargarSpriteSonic(){
 	animacionQuietoDer.cargarSprites(0, 0, 1);
 	animacionCaminarDer.cargarSprites(1, 0, 9);
 	animacionCorrerDer.cargarSprites(0, 1, 4);
-	animacionSaltarDer.cargarSprites(0, 2, 9);
+	animacionSaltarDer.cargarSprites(0, 0, 9);
+	animacionAtaqueDer.cargarSprites(0, 0, 9);
 
 	animacionQuietoIzq.cargarSpritesAlReves(9, 3, 1);
 	animacionCaminarIzq.cargarSpritesAlReves(0, 3, 9);
 	animacionCorrerIzq.cargarSpritesAlReves(6, 4, 4);
-	animacionSaltarIzq.cargarSpritesAlReves(1, 5, 9);
+	animacionSaltarIzq.cargarSpritesAlReves(1, 1, 9);
+	animacionAtaqueIzq.cargarSprites(1, 1, 9);
 
 	animacionCongelado.cargarSprites(0, 0, 1);
 
@@ -241,6 +252,11 @@ void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, in
 	}
 	else if(animacion.compare(ANIMACION_CONGELADO) == 0){
 		animacionActual = &animacionCongelado;
+	}
+	else if(animacion.compare(ANIMACION_ATAQUE_DERECHA) == 0){
+		animacionActual = &animacionAtaqueDer;
+	}else if(animacion.compare(ANIMACION_ATAQUE_IZQUIERDA) == 0){
+		animacionActual = &animacionAtaqueIzq;
 	}
 	else
 	{
@@ -391,6 +407,7 @@ void Personaje::herir(ControlServidor *control)
 	{
 		//Sonic tiene anillos. Sacarselos
 		puntos->setCantAnillos(0);
+		//Titilar
 	}
 	else
 	{
@@ -399,6 +416,7 @@ void Personaje::herir(ControlServidor *control)
 			if (esInmortal)
 			{
 				return;
+				//Titilar quizas
 			}
 			else
 			{
@@ -412,6 +430,7 @@ void Personaje::herir(ControlServidor *control)
 		{
 			//Sonic no tiene anillos pero tiene vidas
 			puntos->restarUnaVida();
+			serInvencible(1);
 		}
 	}
 }
@@ -436,8 +455,9 @@ void Personaje::irIzquierda()
 	if (this->puedeIrIzquierda)
 	{
 		dejarDeEstarQuieto();
-
-		if (corriendo){
+		if(this->ataque){
+			animacionActual = &animacionAtaqueIzq;
+		}else if (corriendo){
 			/*this->velocidadX -= 2*personajeAceleracion;
 			if(velocidadX < (-2*personajeVelocidad))
 			{
@@ -467,8 +487,9 @@ void Personaje::irDerecha()
 	if (this->puedeIrDerecha){
 
 		dejarDeEstarQuieto();
-
-		if (corriendo){
+		if(this->ataque){
+			animacionActual = &animacionAtaqueDer;
+		}else if (corriendo){
 			/*this->velocidadX += 2*personajeAceleracion;
 			if(velocidadX > 2*personajeVelocidad)
 			{
@@ -639,7 +660,7 @@ bool Personaje::estaParado()
 bool Personaje::estaAtacando()
 {
 	//Agregar cuando este haciendo el SpinAttack
-	if (saltando)
+	if (saltando or ataque)
 	{
 		return true;
 	}
@@ -681,7 +702,7 @@ std::string Personaje::intToString(int number)
 }
 
 void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje)
-{
+{int getGrupo();
 	mensaje = intToString(id) + mensaje + "x" + intToStringConPadding(posicionX) + "y" + intToStringConPadding(posicionY);
 
 	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
@@ -749,6 +770,7 @@ SDL_Rect Personaje::obtenerLimites(){
 void Personaje::aumentarCantidadAnillos(int cantidad)
 {
 	puntaje->setCantAnillos(puntaje->getCantAnillos()+cantidad);
+	puntos->sumarXanillos(cantidad);
 }
 
 void Personaje::ponerseEscudo()
@@ -766,10 +788,20 @@ void Personaje::quitarseEscudo()
 
 void Personaje::serInvencible()
 {
+	//Para el cliente
+	esInvencible = true;
+	tieneEscudo = false;
+	animacionBonus = &animacionInvencible;
+}
+
+void Personaje::serInvencible(int segundos)
+{
+	//Para el servidor
 	time(&tiempoInicioInvencible);
 	esInvencible = true;
 	tieneEscudo = false;
 	animacionBonus = &animacionInvencible;
+	duracionInvencibilidad = segundos;
 }
 
 void Personaje::dejarDeSerInvencible()
@@ -787,7 +819,7 @@ bool Personaje::sigueSiendoInvencible()
 	tiempoTranscurrido = difftime(tiempoFin, tiempoInicioInvencible);
 	tiempoTranscurrido = fabs(tiempoTranscurrido);
 
-	if (tiempoTranscurrido < DURACION_INVENCIBILIDAD)
+	if (tiempoTranscurrido < duracionInvencibilidad)
 	{
 		return true;
 	}
@@ -805,4 +837,64 @@ void Personaje::serInmortalODejarDeSerlo()
 		esInmortal = false;
 	else
 		esInmortal = true;
+}
+int Personaje::getEquipo(){
+
+	return this->grupo;
+
+}
+void Personaje::atacar(){
+	if(!this->ataque){
+		this->ataque = true;
+		//this->cargaAtaque = true;
+		time(&tiempoDeAtaque);
+		//dejarDeEstarQuietoAtaque();
+		dejarDeEstarQuieto();
+		//animacionActual = &animacionSaltarIzq;
+
+		//this->velocidadX = 2*personajeVelocidad;
+		//animacionActual = &animacionCorrerDer;
+
+		switch (orientacion)
+		{
+			case IZQUIERDA:
+				animacionActual = &animacionAtaqueIzq;
+				this->velocidadX = -2*personajeVelocidad;
+
+				break;
+			case DERECHA:
+				animacionActual = &animacionAtaqueDer;
+				this->velocidadX = 2*personajeVelocidad;
+				break;
+		}
+		animacionActual->comenzar();
+	}
+}
+bool Personaje::getAtaque(){
+	return this->ataque;
+}
+/*void Personaje::ataqueMover(){
+	this->cargaAtaque = false;
+}
+void Personaje::inicializarTiempoAtaque(){
+	time(&tiempoDeAtaque);
+	this->cargaAtaque = false;
+}*/
+bool Personaje::sigueAtaque()
+{
+	time_t tiempoFin;
+	time(&tiempoFin);
+	double tiempoTranscurrido;
+
+	tiempoTranscurrido = difftime(tiempoFin, tiempoDeAtaque);
+	tiempoTranscurrido = fabs(tiempoTranscurrido);
+	//cout<<"valor de hora: "<<tiempoTranscurrido<<endl;
+	if (tiempoTranscurrido < DURACION_ATAQUE)
+	{
+		return true;
+	}
+	return false;
+}
+void Personaje::dejarDeAtacar(){
+	this->ataque = false;
 }

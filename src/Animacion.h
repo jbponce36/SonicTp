@@ -37,6 +37,7 @@ public:
 	std::string obtenerNombre();
 	int obtenerIndiceSprite();
 	void cambiarSprite(int indice);
+	bool esFotogramaPar();
 	virtual ~Animacion();
 
 private:

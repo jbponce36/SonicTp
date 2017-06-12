@@ -44,6 +44,7 @@ void Bonus::interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar)
 		{
 			case RING: {
 				sonic->aumentarCantidadAnillos(CANTIDAD_ANILLOS);
+				mundo->enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
 				break;
 			}
 			case ESCUDO: {
@@ -56,7 +57,7 @@ void Bonus::interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar)
 				break;
 			}
 			case INVENCIBILIDAD: {
-				sonic->serInvencible();
+				sonic->serInvencible(20);
 				std::string mensaje = Util::intToString(sonic->getId())
 					+ "x" + Util::intToStringConPadding(sonic->getPosicionX())
 					+ "y" + Util::intToStringConPadding(sonic->getPosicionY())

@@ -361,6 +361,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 			camara->actualizarXY(nuevoX, nuevoY);
 		}else if (mensaje.substr(0,1) ==  "/"){
 					//cout<<"mesaje enemigo: "<<mensaje<<endl;
+
 					this->parsearMensajeEnemigo(mensaje);
 		}
 		else if(mensaje.substr(0,1).compare("E") == 0) //Recibo un mensaje para quitar una entidad
@@ -402,20 +403,66 @@ void Control::controlDeMensajes(Personaje* sonic,
 			}
 		}
 		else if(mensaje.substr(0,3).compare("sco") == 0){
-		//	cout<<"MENSAJE PUNTOS:  "<< mensaje<<endl;
+			//cout<<"MENSAJE PUNTOS:  "<< mensaje<<endl;
 			int id = atoi(mensaje.substr(3,1).c_str());
-			int puntos = Util::stringConPaddingToInt(mensaje.substr(4, 3).c_str());
-			//cout<<"puntos:  "<<puntos<<"id:   "<<id<<endl;
-			if( sonic->getId() == id){
-				sonic->getPuntos()->setPuntos(puntos);
-			}
 
-			std::vector<Personaje*>::iterator pos;
-			for (pos = sonics->begin(); pos != sonics->end(); pos++) {
-				if((*pos)->getId() == id ){
-					(*pos)->getPuntos()->setPuntos(puntos);
+			//en la ultim a posicion del mensaje esta el equipo sco------1
+			int puntos = Util::stringConPaddingToInt(mensaje.substr(4, 6).c_str());
+			//(9,1 puede estar mal ver eso)
+			int equipo = atoi(mensaje.substr(9,1).c_str());
+			if(this->modoDeJuego == 1)
+			{
+				if( sonic->getId() == id){
+					sonic->getPuntos()->setPuntos(puntos);
+				}
+
+				std::vector<Personaje*>::iterator pos;
+				for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+					if((*pos)->getId() == id ){
+						(*pos)->getPuntos()->setPuntos(puntos);
+					}
+				}
+
+			}
+			else if(this->modoDeJuego == 2 ){
+
+				if( sonic->getId() == id){
+					sonic->getPuntos()->setPuntos(puntos);
+				}
+
+				std::vector<Personaje*>::iterator pos;
+				for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+						(*pos)->getPuntos()->setPuntos(puntos);
+				}
+
+			}
+			else if(this->modoDeJuego == 3){
+
+				if( sonic->getEquipo() == equipo){
+					sonic->getPuntos()->setPuntos(puntos);
+				}
+
+				std::vector<Personaje*>::iterator pos;
+				for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+					if((*pos)->getEquipo() == equipo){
+						(*pos)->getPuntos()->setPuntos(puntos);
+
+					}
 				}
 			}
+		}
+		else if(mensaje.substr(0,3).compare("mod") == 0){
+			int indice = 0;
+			int posi = 4;
+			for (indice = 0; indice < sonics->size(); indice++) {
+
+				//cout<<"tamaño: "<<sonics->size();
+				//cout<<"grupo: "<<sonics->at(indice)->getEquipo()<<"ID"<<sonics->at(indice)->getId()<<endl;
+				sonics->at(indice)->setGrupo(atoi(mensaje.substr(posi,1).c_str()));
+				posi = posi +2;
+
+			}
+
 		}
 		else if(mensaje.substr(0, 3) == MENSAJE_PERDIO_JUGADOR)
 		{
@@ -492,7 +539,7 @@ void Control::parsearMensajePosicion(mensajePosicion& msj,
 void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 		SDL_Rect *imagenMostrar, Personaje *sonic) {
 	admNiveles.mostrarNivel(camara, vista, imagenMostrar);
-	vista->mostrarScoJueIndTodos(sonics);
+	vista->mostrarPuntPartida(this->modoDeJuego,this->sonics);
 
 	for (int contador = 0; contador < vista->cantidadCapasCargadas();
 			contador++) {

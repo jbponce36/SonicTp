@@ -16,12 +16,22 @@ Mosca::Mosca(int x, int y,int maxX,int minX) :
 	this->minimoX = x-minX;
 	this->contadorSprite = 0;
 	this->velocidad = 50;
-	this->numeroMaximoSprites=4;
+	this->numeroMaximoSprites=8;
+	this->setPuntaje(500);
 
 }
 void Mosca::calcularNumeroDeSprite(){
 	int numSprite = 0;
 	numSprite = this->contadorSprite/4;
+	if(this->velocidad < 0){
+		if( numSprite > 3 ){
+			numSprite = 0;
+		}
+	}else{
+		if( numSprite < 4 ){
+			numSprite = 4;
+		}
+	}
 	this->setNumeroSprite(numSprite);
 	(this->contadorSprite)++;
 	if( this->contadorSprite / 4 >= this->numeroMaximoSprites)
@@ -56,7 +66,7 @@ void Mosca::actualizarPosicion(){
 }
 SDL_Rect Mosca::obtenerDimensiones(){
 	//SDL_Rect recta = {this->getPosicionesX() ,this->getPosicionesY(),90,90};
-	SDL_Rect recta = {this->getPosicionesX() + 10,this->getPosicionesY() + 36, 130, 80};
+	SDL_Rect recta = {this->getPosicionesX() + 30,this->getPosicionesY() + 55, 95, 38};
 	return recta;
 }
 
@@ -79,23 +89,23 @@ Mosca::Mosca(std::string mensaje, std::string tipo,VistaSDL *vista): Enemigo(0,0
 }
 void Mosca::cargarSprites(int x, int y, int cantidad)
 {
-	//Carga los sprites de izquierda a derecha --->
-	/*SDL_Rect sprite = {0,0,45 , 28};
-	sprites.push_back(sprite);
+	int dimension = 150;
+	SDL_Rect sprite = {0,0, dimension, dimension};
 
-	sprite.x = 47;
-	sprite.w = 48;
-	sprites.push_back(sprite);
+	for (int i=0; i<4; i++)
+	{
+		sprites.push_back(sprite);
+		sprite.x += dimension;
+	}
+	sprite.y = 150;
+	sprite.x = 0;
+	for (int i=4; i<8; i++)
+	{
+		sprites.push_back(sprite);
+		sprite.x += dimension;
+	}
 
-	sprite.x = 97;
-	sprite.w = 46;
-	sprites.push_back(sprite);
-
-	sprite.x = 146;
-	sprite.w = 46;
-	sprites.push_back(sprite);*/
-
-	SDL_Rect sprite = {0,0,150,150};
+	/*SDL_Rect sprite = {0,0,150,150};
 	sprites.push_back(sprite);
 
 	sprite.x = 150;
@@ -105,7 +115,7 @@ void Mosca::cargarSprites(int x, int y, int cantidad)
 	sprites.push_back(sprite);
 
 	sprite.x = 450;
-	sprites.push_back(sprite);
+	sprites.push_back(sprite);*/
 
 }
 /*Cangrejo::Cangrejo(VistaSDL *vista,int dimension,Logger *log) :
