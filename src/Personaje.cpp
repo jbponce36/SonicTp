@@ -47,6 +47,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
     this->tieneEscudo = false;
     this->esInmortal = false;
     this->esInvencible = false;
+    this->herido = false;
     this->estaVivo = true;
     this->duracionInvencibilidad = 20.0;
 
@@ -181,6 +182,12 @@ void Personaje::cargarSpriteSonic(){
 
 void Personaje::render( int camX, int camY){
 
+	if(herido){
+		if(animacionActual->esFotogramaPar()){
+			return;
+		}
+	}
+
 	SDL_Rect cuadroDeVentana;
 
 	cuadroDeVentana.x=(this->posicionX-camX);
@@ -207,6 +214,7 @@ void Personaje::posicionarseEn(int x, int y)
 
 void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, int indiceAnimacion)
 {
+	//Esto lo usa el cliente!
 	posicionarseEn(x, y);
 
 	std::string animacionAnterior = animacionActual->obtenerNombre();
@@ -243,6 +251,12 @@ void Personaje::posicionarseConAnimacion(int x, int y, std::string animacion, in
 	}
 	else if(animacion.compare(ANIMACION_CONGELADO) == 0){
 		animacionActual = &animacionCongelado;
+	}
+	else if(animacion.compare(ANIMACION_TITILAR) == 0){
+		herido = true;
+	}
+	else if(animacion.compare(ANIMACION_NO_TITILAR) == 0){
+		herido = false;
 	}
 	else
 	{
@@ -383,6 +397,9 @@ void Personaje::rebotar()
 
 void Personaje::herir(ControlServidor *control)
 {
+	if (esInvencible)
+		return;
+
 	if (tieneEscudo)
 	{
 		quitarseEscudo();
@@ -393,6 +410,7 @@ void Personaje::herir(ControlServidor *control)
 	{
 		//Sonic tiene anillos. Sacarselos
 		puntos->setCantAnillos(0);
+		titilarPorHerida(control);
 		//Titilar
 	}
 	else
@@ -401,8 +419,9 @@ void Personaje::herir(ControlServidor *control)
 		{
 			if (esInmortal)
 			{
+				titilarPorHerida(control);
 				return;
-				//Titilar quizas
+				//Titilar
 			}
 			else
 			{
@@ -416,7 +435,7 @@ void Personaje::herir(ControlServidor *control)
 		{
 			//Sonic no tiene anillos pero tiene vidas
 			puntos->restarUnaVida();
-			serInvencible(1);
+			serInvencible(DURACION_INVENCIBLE_HERIDO);
 		}
 	}
 }
@@ -826,4 +845,41 @@ void Personaje::serInmortalODejarDeSerlo()
 int Personaje::getEquipo(){
 
 	return this->grupo;
+}
+
+void Personaje::estarHerido(bool herida)
+{
+	herido = herida;
+}
+
+bool Personaje::estaHerido()
+{
+	return herido;
+}
+
+bool Personaje::sigueEstandoHerido()
+{
+	time_t tiempoFin;
+	time(&tiempoFin);
+	double tiempoTranscurrido;
+
+	tiempoTranscurrido = difftime(tiempoFin, tiempoInicioHerida);
+	tiempoTranscurrido = fabs(tiempoTranscurrido);
+
+	if (tiempoTranscurrido < DURACION_HERIDA)
+	{
+		return true;
+	}
+	return false;
+}
+
+void Personaje::titilarPorHerida(ControlServidor *control)
+{
+	herido = true;
+	time(&tiempoInicioHerida);
+	std::string mensaje = Util::intToString(id)
+		+ "x" + Util::intToStringConPadding(posicionX)
+		+ "y" + Util::intToStringConPadding(posicionY)
+		+ ANIMACION_TITILAR + PADDING;
+	control->enviarATodos(mensaje);
 }

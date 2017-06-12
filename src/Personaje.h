@@ -75,9 +75,11 @@ class Personaje
 		bool esInmortal; //No pierde la ultima vida pero pierde vidas y anillos.
         bool colisionando;
         bool resbalando;
+        bool herido; //Para que titile la animacion
         bool estaVivo;
 		time_t tiempoInicioInvencible;
 		int duracionInvencibilidad;
+		time_t tiempoInicioHerida;
 		Logger *log;
 
 		void animarSalto();
@@ -156,6 +158,10 @@ class Personaje
 		bool agarroBonusInvencible();
 		void serInmortalODejarDeSerlo();
 		int getEquipo();
+		void estarHerido(bool herida);
+		bool estaHerido();
+		bool sigueEstandoHerido();
+		void titilarPorHerida(ControlServidor *control);
 
 };
 

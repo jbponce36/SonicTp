@@ -157,6 +157,9 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 		}
 	}
 
+	//Plataforma *plataforma = new Plataforma(262, 81, 99, "Verde", "images/Plataforma.png", 200, 300, 98, log);
+	//entidades.push_back(plataforma);
+
 	cargarImagenes(renderizador);
 	ordenarSegunIndexZ();
 
