@@ -356,6 +356,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 			camara->actualizarXY(nuevoX, nuevoY);
 		}else if (mensaje.substr(0,1) ==  "/"){
 					//cout<<"mesaje enemigo: "<<mensaje<<endl;
+
 					this->parsearMensajeEnemigo(mensaje);
 		}
 		else if(mensaje.substr(0,1).compare("E") == 0) //Recibo un mensaje para quitar una entidad
@@ -411,6 +412,19 @@ void Control::controlDeMensajes(Personaje* sonic,
 					(*pos)->getPuntos()->setPuntos(puntos);
 				}
 			}
+		}
+		else if(mensaje.substr(0,3).compare("mod") == 0){
+			int indice = 0;
+			int posi = 4;
+			for (indice = 0; indice < sonics->size(); indice++) {
+
+				//cout<<"tamaño: "<<sonics->size();
+				//cout<<"grupo: "<<sonics->at(indice)->getEquipo()<<"ID"<<sonics->at(indice)->getId()<<endl;
+				sonics->at(indice)->setGrupo(atoi(mensaje.substr(posi,1).c_str()));
+				posi = posi +2;
+
+			}
+
 		}
 		else if(mensaje.substr(0, 3) == MENSAJE_PERDIO_JUGADOR)
 		{

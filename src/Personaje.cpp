@@ -681,7 +681,7 @@ std::string Personaje::intToString(int number)
 }
 
 void Personaje::enviarAServer(HiloEnviarCliente *hiloEnviar, std::string mensaje)
-{
+{int getGrupo();
 	mensaje = intToString(id) + mensaje + "x" + intToStringConPadding(posicionX) + "y" + intToStringConPadding(posicionY);
 
 	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
@@ -805,4 +805,9 @@ void Personaje::serInmortalODejarDeSerlo()
 		esInmortal = false;
 	else
 		esInmortal = true;
+}
+
+int Personaje::getEquipo(){
+
+	return this->grupo;
 }
