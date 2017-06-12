@@ -44,6 +44,10 @@ private:
 	vector <Enemigo*> enemigos;
 	int idpropio;
 	int modoDeJuego;
+	vector<int> puntos1;
+	vector<int> puntos2;
+	int equipo1;
+	//int equipo1;
 
 public:
 	typedef struct mensajePosicion{
