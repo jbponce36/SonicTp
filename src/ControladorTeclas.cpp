@@ -8,7 +8,7 @@
 #include "ControladorTeclas.h"
 
 ControladorTeclas::ControladorTeclas()
-: teclaArriba(false), teclaAbajo(false), teclaIzquierda(false), teclaDerecha(false), teclaCorrer(false)
+: teclaArriba(false), teclaAbajo(false), teclaIzquierda(false), teclaDerecha(false), teclaCorrer(false),teclaAtaque(false)
 {
 
 }
@@ -66,6 +66,11 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 			case SDLK_i:{
 				mensaje = TECLA_INMORTAL_PRESIONADA;
 				sonic->enviarAServer(hiloEnviar, TECLA_INMORTAL_PRESIONADA);
+				break;}
+			case SDLK_s:{
+				mensaje = TECLA_ATAQUE_PRESIONADA;
+				sonic->enviarAServer(hiloEnviar, TECLA_ATAQUE_PRESIONADA);
+				teclaAtaque = true;
 				break;}
 			/*case SDLK_n:{
 				//tecla pasar de nivel luego pasara cuando se mate al monstruo de cada nivel o al finalizar el nivel
@@ -154,6 +159,11 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 			mensaje = TECLA_CORRER_LIBERADA;
 			sonic->enviarAServer(hiloEnviar, TECLA_CORRER_LIBERADA);
 			teclaCorrer = false;
+			break;}
+		case SDLK_s:{
+			mensaje = TECLA_ATAQUE_LIBERADA;
+			sonic->enviarAServer(hiloEnviar, TECLA_ATAQUE_LIBERADA);
+			teclaAtaque = false;
 			break;}
 		default:
 			return;

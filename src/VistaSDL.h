@@ -125,6 +125,7 @@ public:
 	void dibujarTextoColorFuente(std::string texto, int posX, int posY,SDL_Color color,TTF_Font* fuente);
 	void mostrarScoJueIndTodosFinNiv(vector<Personaje*>* sonics);
 	jescenarioJuego* obtenerNivel(int);
+	void mostrarScoModoDosJuego();
 };
 
 

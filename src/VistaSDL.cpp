@@ -817,7 +817,7 @@ void VistaSDL::dibujarTextoColorFuente(std::string texto, int posX, int posY,SDL
 		}
 }
 void VistaSDL::mostrarScoJueIndTodos(vector<Personaje*>* sonics){
-
+//este es para el modo 1 mientras esta jugando
 		//std::vector<Personaje*>::iterator pos;
 
 		//sonics->size();
@@ -845,7 +845,7 @@ void VistaSDL::mostrarScoJueIndTodos(vector<Personaje*>* sonics){
 }
 
 void VistaSDL::mostrarScoJueIndTodosFinNiv(vector<Personaje*>* sonics){
-
+// modo 1 cuando termina el nivel
 		//std::vector<Personaje*>::iterator pos;
 
 		//sonics->size();
@@ -883,4 +883,9 @@ void VistaSDL::setJjuego(vector<jescenarioJuego*> Jjuego) {
 jescenarioJuego* VistaSDL::obtenerNivel(int nivel){
 
 	return this->jjuego[nivel];
+}
+
+void VistaSDL::mostrarScoModoDosJuego(){
+
+
 }
