@@ -165,7 +165,7 @@ public:
 	void setJjuego(vector<jescenarioJuego*> jjuego);
 
 	void limpiarObstaculos();
-
+	void resetEnemigosPorNivel(int,int,int,int,int,int);
 private:
 
 	void administrarTeclasServidor();
