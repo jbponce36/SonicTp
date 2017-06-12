@@ -237,8 +237,15 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 				administradorNiveles.pasarNivelServidor(vista,this);
 
 				Personaje* sonic = (*pos).second;
-				sonic->posicionarseConAnimacion(-250,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
-
+				//sonic->posicionarseConAnimacion(-250,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
+				sonic->posicionarseEn(0, 4*vista->getAltoEscenario()/5 - 150);
+				sonic->parar();
+				int id = sonic->getId();
+				teclas.at(id).teclaAbajo = false;
+				teclas.at(id).teclaArriba = false;
+				teclas.at(id).teclaDerecha = false;
+				teclas.at(id).teclaIzquierda = false;
+				teclas.at(id).teclaCorrer = false;
 				//this->pasarNivel = false;
 			}
 			camara->actualizarXY(0,0);

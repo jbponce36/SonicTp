@@ -754,6 +754,7 @@ SDL_Rect Personaje::obtenerLimites(){
 void Personaje::aumentarCantidadAnillos(int cantidad)
 {
 	puntaje->setCantAnillos(puntaje->getCantAnillos()+cantidad);
+	puntos->sumarXanillos(cantidad);
 }
 
 void Personaje::ponerseEscudo()
