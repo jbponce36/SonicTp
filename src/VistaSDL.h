@@ -127,6 +127,8 @@ public:
 	jescenarioJuego* obtenerNivel(int);
 	void mostrarScoModoDosJuego(vector<Personaje*>* sonics);
 	void mostrarScodosFinLv(vector<Personaje*>* sonics);
+	void mostrarScoModoTresJuego(vector<Personaje*>* sonics);
+	void mostrarScoTresFinLv(vector<Personaje*>* sonics);
 };
 
 
