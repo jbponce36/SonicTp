@@ -534,7 +534,7 @@ void Control::parsearMensajePosicion(mensajePosicion& msj,
 void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 		SDL_Rect *imagenMostrar, Personaje *sonic) {
 	admNiveles.mostrarNivel(camara, vista, imagenMostrar);
-	vista->mostrarScoJueIndTodos(sonics);
+	vista->mostrarPuntPartida(this->modoDeJuego,this->sonics);
 
 	for (int contador = 0; contador < vista->cantidadCapasCargadas();
 			contador++) {

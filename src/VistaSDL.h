@@ -129,6 +129,8 @@ public:
 	void mostrarScodosFinLv(vector<Personaje*>* sonics);
 	void mostrarScoModoTresJuego(vector<Personaje*>* sonics);
 	void mostrarScoTresFinLv(vector<Personaje*>* sonics);
+	void mostrarPuntPartida(int modo,vector<Personaje*>* sonics);
+	void mostrarPuntFinNivel(int modo,vector<Personaje*>* sonics);
 };
 
 
