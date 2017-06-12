@@ -77,7 +77,7 @@ class Personaje
         bool resbalando;
         bool estaVivo;
 		time_t tiempoInicioInvencible;
-
+		int duracionInvencibilidad;
 		Logger *log;
 
 		void animarSalto();
@@ -149,6 +149,7 @@ class Personaje
 		void ponerseEscudo();
 		void quitarseEscudo();
 		void serInvencible();
+		void serInvencible(int segundos);
 		void dejarDeSerInvencible();
 		bool sigueSiendoInvencible();
 		bool agarroBonusInvencible();

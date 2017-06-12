@@ -108,3 +108,8 @@ void Animacion::cambiarSprite(int indice)
 {
 	indiceSprite = indice;
 }
+
+bool Animacion::esFotogramaPar()
+{
+	return (fotogramaActual % 2 == 0);
+}
