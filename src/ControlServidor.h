@@ -87,6 +87,7 @@ private:
 		bool teclaIzquierda;
 		bool teclaDerecha;
 		bool teclaCorrer;
+		bool teclaAtaque;
 	}teclasPresionadas;
 
 	std::map<int, teclasPresionadas> teclas; //Cada elemento le corresponde a un sonic
@@ -175,6 +176,7 @@ private:
 	void verificarDuracionBonus(Personaje* sonic);
 	void volverInmortalesTodosLosSonics();
 	std::string intToString(int number);
+	void verificarDuracionAtaque(Personaje *sonic);
 
 };
 

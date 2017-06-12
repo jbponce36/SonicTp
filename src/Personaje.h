@@ -34,6 +34,8 @@ class Personaje
 		Textura *texturaEscudo;
 		Textura *texturaInvencible;
 
+		Textura *texturaAtaque;
+
 		int id;
 		int personajeAncho;
 		int personajeAlto;
@@ -60,6 +62,10 @@ class Personaje
 
 		Animacion *animacionBonus; //Se suponerpone
 
+
+		Animacion animacionAtaqueDer;
+		Animacion animacionAtaqueIzq;
+
 		Orientacion orientacion;
 		Puntaje *puntaje;
 		Puntos *puntos;
@@ -79,6 +85,10 @@ class Personaje
 		time_t tiempoInicioInvencible;
 		int duracionInvencibilidad;
 		Logger *log;
+
+		//bool cargaAtaque;
+		bool ataque;
+		time_t tiempoDeAtaque;
 
 		void animarSalto();
 		void cargarSpriteSonic();
@@ -156,6 +166,15 @@ class Personaje
 		bool agarroBonusInvencible();
 		void serInmortalODejarDeSerlo();
 		int getEquipo();
+
+		void atacar();
+		bool getAtaque();
+		/*void detenerAtaque();
+		void inicializarTiempoAtaque();
+		void ataqueMover();*/
+		bool sigueAtaque();
+		void dejarDeAtacar();
+
 
 };
 

@@ -27,6 +27,8 @@ private:
 	bool teclaDerecha;
 	bool teclaCorrer; //A
 
+	bool teclaAtaque;
+
 public:
 	ControladorTeclas();
 	virtual ~ControladorTeclas();

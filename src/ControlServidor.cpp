@@ -70,6 +70,10 @@ void ControlServidor::administrarTeclasServidor()
 				else if(msj.tecla.compare(TECLA_CORRER_PRESIONADA) == 0){
 					teclas.at(indice).teclaCorrer = true;
 				}
+				else if(msj.tecla.compare(TECLA_ATAQUE_PRESIONADA) == 0){
+					//cout<<"ataque presionado"<<endl;
+					teclas.at(indice).teclaAtaque = true;
+				}
 				else if(msj.tecla.compare(TECLA_ARRIBA_LIBERADA) == 0){
 					teclas.at(indice).teclaArriba = false;
 					sonics->at(indice)->dejarDeSaltar();
@@ -94,6 +98,10 @@ void ControlServidor::administrarTeclasServidor()
 				else if(msj.tecla.compare(TECLA_CORRER_LIBERADA) == 0){
 					teclas.at(indice).teclaCorrer = false;
 				}
+				else if(msj.tecla.compare(TECLA_ATAQUE_LIBERADA) == 0){
+					//cout<<"ataque liberado"<<endl;
+					teclas.at(indice).teclaAtaque = false;
+				}
 				else if(msj.tecla.compare(TECLA_INMORTAL_PRESIONADA) == 0){
 					volverInmortalesTodosLosSonics();
 				}
@@ -115,6 +123,7 @@ void ControlServidor::administrarTeclasServidor()
 					teclas.at(idDesconectado).teclaDerecha = false;
 					teclas.at(idDesconectado).teclaIzquierda = false;
 					teclas.at(idDesconectado).teclaCorrer = false;
+					teclas.at(idDesconectado).teclaAtaque = false;
 				}
 				catch(std::out_of_range &e)
 				{
@@ -187,8 +196,13 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		teclasPresionadas t = teclas.at((*pos).first);
 		Personaje* sonic = (*pos).second;
 
+		if(t.teclaAtaque){
+			sonic->atacar();
+		}
 		if((!t.teclaArriba) && (!t.teclaAbajo) && (!t.teclaDerecha) && (!t.teclaIzquierda)){
-			sonic->parar();
+			if(!sonic->getAtaque()){
+				sonic->parar();
+			}
 		}
 
 		sonic->correr(t.teclaCorrer);
@@ -216,6 +230,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		(*pos).second->mover(camara->devolverCamara(), REGULADOR_ALTURA_SALTO); //Se mueve segun los limites de la camara
 
 		verificarDuracionBonus((*pos).second);
+		verificarDuracionAtaque((*pos).second);
 		//tiempoDeJuego = SDL_GetTicks();
 
 		//Mueve la camara segun los sonics
@@ -659,20 +674,25 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 			int numeroAnilla  = 0;
 			int posAnillaColisionada = 0;
 			Anillos* colisionada = NULL;
+			SDL_Rect sonicRect = (*pos).second->obtenerLimites();
 			for(int i = 0; i<enemigos.size(); i++){
 				SDL_bool colision;
 				SDL_Rect enemigoRec = enemigos[i]->obtenerDimensiones();
-				SDL_Rect sonicRect = (*pos).second->obtenerLimites();
 				colision = SDL_HasIntersection(&sonicRect,&enemigoRec);
 				if(colision == SDL_TRUE){
-					// aca falta me logica de q hace el sonic cuado
-					//closiona con el enemigo(le quita vida al sonic,
-					//mata al enemigo, es protegico por el bonus, etc)
+					if(enemigos[i]->getVivo()){
+						if((*pos).second->estaAtacando()){
+							enemigos[i]->setVivo(false);
+							cout<<"mato a un enemigo"<<endl;
+						}else{
+							//(*pos).second->herir(this);
 
-					//descomenta la linea de abajo si queres matar al bicho
-					//enemigo->setVivo(false);
-					//cout<<"colision con enemigo"<<endl;
+							cout<<"golpeo a sonic"<<endl;
+
+						}
+					}
 				}
+
 			}
 
 			for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
@@ -977,4 +997,16 @@ void ControlServidor::limpiarObstaculos(){
 void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez,int maxPez,int minCangrejo,int maxCangrejo){
 
 
+}
+void ControlServidor::verificarDuracionAtaque(Personaje *sonic)
+{
+	if(sonic->getAtaque())
+	{
+		if (!sonic->sigueAtaque())
+		{
+			cout<<"se acabo la duracion de ataque"<<endl;
+			sonic->dejarDeAtacar();
+			sonic->parar();
+		}
+	}
 }
