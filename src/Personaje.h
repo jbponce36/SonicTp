@@ -86,6 +86,7 @@ class Personaje
 
 		std::string intToStringConPadding(int number);
 
+
     public:
 
 		Personaje(int id, int velocidad,SDL_Renderer *render, int altoEscenario, Logger *log);
@@ -154,6 +155,8 @@ class Personaje
 		bool sigueSiendoInvencible();
 		bool agarroBonusInvencible();
 		void serInmortalODejarDeSerlo();
+		int getEquipo();
+
 };
 
 #endif

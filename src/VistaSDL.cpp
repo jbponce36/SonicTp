@@ -826,6 +826,8 @@ void VistaSDL::mostrarScoJueIndTodos(vector<Personaje*>* sonics){
 		int alto = 0;
 		for (indice = 0; indice < sonics->size(); indice++) {
 
+			//cout<<"tamaño: "<<sonics->size();
+			//cout<<"grupo: "<<sonics->at(indice)->getEquipo()<<"ID"<<sonics->at(indice)->getId()<<endl;
 
 			//Personaje* personaje = (*Personaje) pos;
 			std::string textovidas = "VIDAS: " + Util::intToString(sonics->at(indice)->getPuntos()->getVidas())+

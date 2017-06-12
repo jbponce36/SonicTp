@@ -63,7 +63,7 @@ private:
     jmosca* jmos;
     jpescado* jpes;
     vector<jescenarioJuego*> jjuego;
-
+    bool envioModoDeJuego;
 
 	bool pasarNivel;
 	int nivelActual;
