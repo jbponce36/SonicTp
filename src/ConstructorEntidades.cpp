@@ -131,6 +131,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			else if ((*pos).getruta() == "images/Bonus.png")
 			{
 				//generarBonus(ancho, alto, color, rutaImagen, indexZ,minimor,maximor);
+				cout << "cargar Entidades::: Voy a generar los Bonus\n";
                   generarBonus(minimor,maximor);
 			}
 			else
@@ -163,6 +164,9 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			this->log->addLogMessage("[CARGAR ENTIDADES] Circulo->"+circulo->toString(), 3);
 		}
 	}
+
+	//Plataforma *plataforma = new Plataforma(262, 81, 99, "Verde", "images/Plataforma.png", 200, 300, 98, log);
+	//entidades.push_back(plataforma);
 
 	cargarImagenes(renderizador);
 	ordenarSegunIndexZ();
@@ -517,6 +521,7 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 			x = x * 1000 + 700;
 			//Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::ESCUDO);
 
+
 			int tipoBono = Util::numeroRandomEntre(1, 3);
 			Bonus* nuevoBonus = NULL;
 			if (tipoBono==1)
@@ -534,6 +539,10 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 				debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus invencibilidad en %d", x);
 			    nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::INVENCIBILIDAD);
 			}
+
+
+			Bonus* nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::ESCUDO);
+			cout<< "Agregue Bonus Escudo\n";
 
 			entidades.push_back(nuevoBonus);
 			c++;
@@ -559,6 +568,7 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 					//+ Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
 			//Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::RING);
 			Bonus* nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::RING);
+			cout<< "Agregue Bonus Anillo\n";
 			entidades.push_back(nuevoBonus);
 			c++;
 		}
@@ -583,6 +593,7 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 					//Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
 			//Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::INVENCIBILIDAD);
 	      Bonus* nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::INVENCIBILIDAD);
+	      cout<< "Agregue Bonus Invencible\n";
 			entidades.push_back(nuevoBonus);
 			c++;
 		}

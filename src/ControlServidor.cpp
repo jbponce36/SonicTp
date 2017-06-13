@@ -230,6 +230,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		(*pos).second->mover(camara->devolverCamara(), REGULADOR_ALTURA_SALTO); //Se mueve segun los limites de la camara
 
 		verificarDuracionBonus((*pos).second);
+		verificarDuracionHerida((*pos).second);
 		verificarDuracionAtaque((*pos).second);
 		//tiempoDeJuego = SDL_GetTicks();
 
@@ -247,36 +248,40 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 
 			this->nivelActual++;
 			char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
-				std::string msjPasarNivel = "PASARNIVEL" ;
-				//cout<<"mensaje sin: "<<mensaje.size()<<endl;
-				msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
-				//cout<<"mensaje con: "<<mensaje.size()<<endl;
-				//cout<<"server envio: "<<mensaje<<endl;
-				strcpy(buffer, msjPasarNivel.c_str());
-				//cout<<"mensaje con buff: "<<strlen(buffer)<<endl;
-				int id = 1;
-				std::vector<Hiloenviar*>::iterator poshilo;
-				for(poshilo = hilosEnviar->begin();poshilo != hilosEnviar->end();poshilo++)
+			std::string msjPasarNivel = "PASARNIVEL" ;
+			msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
+			strcpy(buffer, msjPasarNivel.c_str());
+			int id = 1;
+			std::vector<Hiloenviar*>::iterator poshilo;
+			for(poshilo = hilosEnviar->begin();poshilo != hilosEnviar->end();poshilo++)
+			{
+				if(!sonics->at(id)->estaCongelado())
 				{
-					if(!sonics->at(id)->estaCongelado())
-					{
-						//(*pos)->vaciar();
-						(*poshilo)->enviarDato(buffer);
-					}
-					id++;
+					(*poshilo)->enviarDato(buffer);
 				}
+				id++;
+			}
 
+			administradorNiveles.pasarNivelServidor(vista,this);
 
 			for(pos = sonics->begin();pos != sonics->end();pos++)
 			{
 				//aca debemos resetear todos los valores para comenzar el nuevo nivel
 				//if(this-> pasarNivel = true)
 
-				administradorNiveles.pasarNivelServidor(vista,this);
+				sonic->posicionarseEn(0, 4*vista->getAltoEscenario()/5 - sonic->getAlto());
+				sonic->parar();
+				int id = sonic->getId();
+				teclas.at(id).teclaAbajo = false;
+				teclas.at(id).teclaArriba = false;
+				teclas.at(id).teclaDerecha = false;
+				teclas.at(id).teclaIzquierda = false;
+				teclas.at(id).teclaCorrer = false;
+				teclas.at(id).teclaAtaque = false;
+				sonic->getPuntos()->sumarXpuntos(sonic->getPuntos()->getCantAnillos()*10);
+				sonic->getPuntos()->setCantAnillos(0);
 
-				Personaje* sonic = (*pos).second;
-				//sonic->posicionarseConAnimacion(-250,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
-                sonic->posicionarseEn(0,0);
+
 				//this->pasarNivel = false;
 			}
 			camara->actualizarXY(0,0);
@@ -385,7 +390,8 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	server->comenzarPartida(*hilosEnviar);
 
 	enviarATodos(obtenerMensajeNivel());
-	mundo.enviarDatosEscenario(hilosEnviar);
+	enviarDatosEscenarioATodos();
+	//mundo.enviarDatosEscenario(hilosEnviar);
 
 	this->CreacionEnemigos();
 	this->enviarDatosEnemigosIniciales();
@@ -752,6 +758,10 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				}
 			}
 
+			if(!huboColision){
+				sonic->reanudarLuegoDeColision();
+			}
+
 
 
 			//PINCHE
@@ -895,6 +905,11 @@ void ControlServidor::enviarDatosEscenario(Hiloenviar *hiloEnviar)
 	mundo.enviarDatosEscenario(hiloEnviar);
 }
 
+void ControlServidor::enviarDatosEscenarioATodos()
+{
+	mundo.enviarDatosEscenario(hilosEnviar);
+}
+
 void ControlServidor::verificarDuracionBonus(Personaje *sonic)
 {
 	if(sonic->agarroBonusInvencible())
@@ -912,6 +927,22 @@ void ControlServidor::verificarDuracionBonus(Personaje *sonic)
 	}
 }
 
+void ControlServidor::verificarDuracionHerida(Personaje *sonic)
+{
+	if(sonic->estaHerido())
+	{
+		if (!sonic->sigueEstandoHerido())
+		{
+			//Se acabo la duracion del bonus
+			sonic->estarHerido(false);
+			std::string mensaje = Util::intToString(sonic->getId())
+				+ "x" + Util::intToStringConPadding(sonic->getPosicionX())
+				+ "y" + Util::intToStringConPadding(sonic->getPosicionY())
+				+ ANIMACION_NO_TITILAR + PADDING;
+			mundo.enviarATodos(mensaje);
+		  }
+	}
+}
 
 janillos* ControlServidor::getAnill(){
 		return anill;
@@ -1012,7 +1043,11 @@ void ControlServidor::limpiarObstaculos(){
     this->piedra.clear();
 	this->anillos.clear();
 	this->pinche.clear();
-	//this->vista->getConstructorEntidades()->entidades.clear();
+	this->enemigos.clear();
+	vista->getConstructorEntidades()->anillos.clear();
+	vista->getConstructorEntidades()->piedra.clear();
+	vista->getConstructorEntidades()->pinche.clear();
+	vista->getConstructorEntidades()->entidades.clear();
 
 }
 
