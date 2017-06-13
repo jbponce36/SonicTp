@@ -27,7 +27,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 		this->teclas[(*pos).second->getId()] = t;
 		this->ultimasPosiciones[(*pos).second->getId()] = ultimasPosiciones;
 	}
-	this->log->setModulo("CONTRON SERVIDOR");
+	this->log->setModulo("CONTROL SERVIDOR");
 	this->envioModoDeJuego = false;
 }
 
@@ -211,7 +211,9 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 
 		if((*pos).second->getPosicionX() + (*pos).second->getAncho() >= vista->obtenerAnchoEscenario())
 		{
-			this->pasarNivel =true;
+			if(nivelActual < 2){
+				this->pasarNivel =true;
+			}
 		}
 		//aca posiciona a los sonics en el inicio del mapa
 

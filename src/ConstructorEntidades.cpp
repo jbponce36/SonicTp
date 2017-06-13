@@ -12,8 +12,8 @@
 namespace std
 {
 
-ConstructorEntidades::ConstructorEntidades(int limiteAncho, int limiteAlto, Logger *log)
-: generadorId(0), limiteAncho(limiteAncho), limiteAlto(limiteAlto), entidades()
+ConstructorEntidades::ConstructorEntidades(int limiteAncho, int limiteAlto, int anchoVentana, Logger *log)
+: generadorId(0), limiteAncho(limiteAncho), limiteAlto(limiteAlto), anchoVentana(anchoVentana), entidades()
 {
 	this->log = log;
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
@@ -132,7 +132,11 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			{
 				//generarBonus(ancho, alto, color, rutaImagen, indexZ,minimor,maximor);
 				cout << "cargar Entidades::: Voy a generar los Bonus\n";
-                  generarBonus(minimor,maximor);
+				generarBonus(minimor,maximor);
+			}
+			else if ((*pos).getruta() == "images/Plataforma.png")
+			{
+				generarPlataformas(ancho, alto, color, rutaImagen, indexZ);
 			}
 			else
 			{
@@ -248,6 +252,10 @@ void ConstructorEntidades::cargarEntidadesCliente(list<jentidades> jEntidades, S
 				unBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, coordX, coordY, indexZ, log, Bonus::INVENCIBILIDAD);
 				generadorEntidades[BONUS_INVENCIBILIDAD] = unBonus;
 				this->log->addLogMessage("[CARGAR ENTIDADES] Bonus Invencibilidad", 3);
+			}
+			else if((*pos).getruta() == "images/Plataforma.png")
+			{
+				generarPlataformas(ancho, alto, color, rutaImagen, indexZ);
 			}
 			else
 			{
@@ -579,6 +587,20 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 		}
 	}
 
+}
+
+void ConstructorEntidades::generarPlataformas(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ)
+{
+	cout << "Plataformas generadas\n";
+	int coordX = limiteAncho;
+	int coordY = limiteAlto/2;
+	Plataforma *plataforma = new Plataforma(ancho, alto, generarId(), color, rutaImagen, coordX, coordY, indexZ, log);
+	entidades.push_back(plataforma);
+
+	coordX = limiteAncho + anchoVentana - ancho;
+
+	plataforma = new Plataforma(ancho, alto, generarId(), color, rutaImagen, coordX, coordY, indexZ, log);
+	entidades.push_back(plataforma);
 }
 
 void ConstructorEntidades::cargarImagenesPiedra(SDL_Renderer *renderizador){

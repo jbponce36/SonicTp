@@ -42,6 +42,7 @@ private:
 	int generadorId;
 	int limiteAncho;  //Es el ancho de todo el escenario menos el final
 	int limiteAlto; //Es la altura del pasto
+	int anchoVentana;
 
 	Logger *log;
 	SDL_Renderer *renderizador;
@@ -62,7 +63,7 @@ public:
 	SDL_Renderer* getRenderizador();
 	void setRenderizador(SDL_Renderer* Renderizador);
 
-	ConstructorEntidades(int limiteAncho, int limiteAlto, Logger *log);
+	ConstructorEntidades(int limiteAncho, int limiteAlto, int anchoVentana, Logger *log);
 	int generarId();
 	void cargarEntidades(list<jentidades> entidades, SDL_Renderer *renderizador);
 	void cargarEntidadesCliente(list<jentidades> jEntidades, SDL_Renderer *renderizador);
@@ -80,6 +81,7 @@ public:
 
 	//void generarBonus(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ,int minimor,int maximor);
 	void generarBonus(int minimor,int maximor);
+	void generarPlataformas(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ);
 
 	int getAncho();
 	void setAncho(int ancho);
