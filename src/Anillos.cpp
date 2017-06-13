@@ -12,7 +12,7 @@ Anillos::Anillos(int ancho, int alto, unsigned int id, std::string color, std::s
 : Entidad(id, color, rutaImagen, x, y, indexZ, log), ancho(ancho), alto(alto), texturaAnillo(NULL)
 {
 	getLog()->setModulo("ANILLO");
-
+    this->id = id;
 }
 
 

@@ -26,9 +26,9 @@
 
 
 #define MAX_ID 100
-#define MAX_ANCHO 4000
+#define MAX_ANCHO 8000
 #define MAX_ALTO 500
-#define MAX_COORDX 4000
+#define MAX_COORDX 8000
 #define MAX_COORDY 500
 #define MAX_INDEXZ 99
 #define MAX_RADIO 500
