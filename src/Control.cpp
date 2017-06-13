@@ -347,7 +347,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 				this->admNiveles.pasarDeNivel();
 				this->admNiveles.cargarNivel(vista, sonic);
 			}
-			admNiveles.mostrarPunConPan(vista,sonics);
+			admNiveles.mostrarPunConPan(vista,sonics,this->modoDeJuego);
 			std::vector<Personaje*>::iterator poss;
 			for (poss = sonics->begin(); poss != sonics->end(); poss++) {
 				Personaje * cl2 = (*poss);
