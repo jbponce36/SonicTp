@@ -348,9 +348,14 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 				this->admNiveles.pasarDeNivel();
 				this->admNiveles.cargarNivel(vista, sonic);
+
+
 			}
 			admNiveles.mostrarPunConPan(vista,sonics,this->modoDeJuego);
+			for (int indice = 0; indice < sonics->size(); indice++) {
 
+				sonics->at(indice)->getPuntos()->setCantAnillos(0);
+			}
 			this->inicializarEscenario(hiloRecibir);
 			this->inicializarEnemigos(hiloRecibir);
 			/* El servidor manda las posiciones

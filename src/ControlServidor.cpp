@@ -277,6 +277,8 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 				teclas.at(id).teclaIzquierda = false;
 				teclas.at(id).teclaCorrer = false;
 				teclas.at(id).teclaAtaque = false;
+				sonic->getPuntos()->sumarXpuntos(sonic->getPuntos()->getCantAnillos()*10);
+				sonic->getPuntos()->setCantAnillos(0);
 
 				//this->pasarNivel = false;
 			}
