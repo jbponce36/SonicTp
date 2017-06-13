@@ -56,3 +56,8 @@ void Plataforma::interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar)
 		return;
 	}
 }
+
+std::string Plataforma::getNombre()
+{
+	return PLATAFORMA;
+}

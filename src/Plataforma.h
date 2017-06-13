@@ -19,6 +19,7 @@ public:
 	SDL_Rect obtenerLimites();
 	void interactuar(Personaje *sonic);
 	void interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar);
+	std::string getNombre();
 };
 
 #endif /* PLATAFORMA_H_ */

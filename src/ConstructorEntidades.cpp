@@ -253,10 +253,6 @@ void ConstructorEntidades::cargarEntidadesCliente(list<jentidades> jEntidades, S
 				generadorEntidades[BONUS_INVENCIBILIDAD] = unBonus;
 				this->log->addLogMessage("[CARGAR ENTIDADES] Bonus Invencibilidad", 3);
 			}
-			else if((*pos).getruta() == "images/Plataforma.png")
-			{
-				generarPlataformas(ancho, alto, color, rutaImagen, indexZ);
-			}
 			else
 			{
 
@@ -468,6 +464,12 @@ void ConstructorEntidades::agregarEntidadCliente(std::string nombre, int id, int
 		entidades.push_back(unAnillo);
 		anillos.push_back(unAnillo);
 	}
+	else if (nombre.compare(PLATAFORMA) == 0)
+	{
+		cout << "Genere una plataforma en " << x << " " << y << "\n";
+		Rectangulo *rectangulo = new Rectangulo(262, 81, id, "Verde", "images/Plataforma.png", x, y, 99, this->log);
+		entidades.push_back(rectangulo);
+	}
 	//Agregar mas cosas que reciba del servidor...
 	return;
 }
@@ -592,15 +594,16 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 void ConstructorEntidades::generarPlataformas(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ)
 {
 	cout << "Plataformas generadas\n";
-	int coordX = limiteAncho;
+	int coordX = limiteAncho - anchoVentana;
 	int coordY = limiteAlto/2;
 	Plataforma *plataforma = new Plataforma(ancho, alto, generarId(), color, rutaImagen, coordX, coordY, indexZ, log);
 	entidades.push_back(plataforma);
-
-	coordX = limiteAncho + anchoVentana - ancho;
+	cout << coordX << " " << coordY << "\n";
+	coordX = limiteAncho - ancho;
 
 	plataforma = new Plataforma(ancho, alto, generarId(), color, rutaImagen, coordX, coordY, indexZ, log);
 	entidades.push_back(plataforma);
+	cout << coordX << " " << coordY << "\n";
 }
 
 void ConstructorEntidades::cargarImagenesPiedra(SDL_Renderer *renderizador){

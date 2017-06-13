@@ -62,6 +62,7 @@
 #define BONUS_RING					"E0"
 #define BONUS_ESCUDO				"E1"
 #define BONUS_INVENCIBILIDAD		"E2"
+#define PLATAFORMA					"EP"
 #define RECTANGULO					"ER"
 #define CIRCULO						"EC"
 

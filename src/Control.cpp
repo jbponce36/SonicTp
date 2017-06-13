@@ -337,7 +337,6 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 		//aca recibe el mensaje para pasar de nivel
 		else if (mensaje.compare("PASARNIVEL") == 0) {
-
 			if (!admNiveles.EsUltimoNivel()) {
 				debug(1, "Control::controlDeMensajes", "Paso de nivel y borro las anillas", 0);
 				vista->getConstructorEntidades()->anillos.clear();
@@ -358,12 +357,6 @@ void Control::controlDeMensajes(Personaje* sonic,
 			}
 			this->inicializarEscenario(hiloRecibir);
 			this->inicializarEnemigos(hiloRecibir);
-			/* El servidor manda las posiciones
-			std::vector<Personaje*>::iterator poss;
-			for (poss = sonics->begin(); poss != sonics->end(); poss++) {
-				Personaje * cl2 = (*poss);
-				cl2->posicionarseConAnimacion(0,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1
-			}*/
 
 		} else if (mensaje.substr(0, 3) == MENSAJE_CAMARA) {
 			int nuevoX, nuevoY;
