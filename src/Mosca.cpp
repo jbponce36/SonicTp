@@ -17,6 +17,7 @@ Mosca::Mosca(int x, int y,int maxX,int minX) :
 	this->contadorSprite = 0;
 	this->velocidad = 50;
 	this->numeroMaximoSprites=8;
+	this->setPuntaje(500);
 
 }
 void Mosca::calcularNumeroDeSprite(){

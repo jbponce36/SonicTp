@@ -7,6 +7,7 @@
 
 #include "AdministradorDeNiveles.h"
 #include "ControlServidor.h"
+#include "debug.h"
 
 
 AdministradorDeNiveles::AdministradorDeNiveles(){
@@ -112,7 +113,7 @@ void AdministradorDeNiveles::mostrarPunConPan(VistaSDL* vista,vector<Personaje*>
 		sleep(3);
 }
 void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor* controlSevidor){
-
+   debug(0,"AdministradorDeNiveles::pasarNivelServidor", "Paso de nivel servidor", 0);
 
 	nivelServidor++;
 	jescenarioJuego* jjuego = vista->obtenerNivel(nivelServidor);
@@ -120,9 +121,19 @@ void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor*
 	controlSevidor->CreoAnillas(jjuego->getAnillo()->getMinimoran(),jjuego->getAnillo()->getMaximoran());
 	controlSevidor->CreoPiedras(jjuego->getPiedra()->getMinimoran(),jjuego->getPiedra()->getMaximoran());
 	controlSevidor->CreoPinche(jjuego->getPinche()->getMinimoran(),jjuego->getPinche()->getMaximoran());
+
 	vista->getConstructorEntidades()->cargarEntidades(jjuego->getEscenario()->getentidades(),vista->getRenderizador());
 	//jjuego->getEscenario()->getentidades();
 
+	list<jentidades>:: iterator pos;
+
+	for(pos = jjuego->getEscenario()->getentidades().begin(); pos != jjuego->getEscenario()->getentidades().end();pos++){
+
+		if ((*pos).getruta() == "images/Bonus.png" ){
+
+			entidades->generarBonus((*pos).getMinimor(),(*pos).getMaximor());
+		}
+	}
 
 }
 

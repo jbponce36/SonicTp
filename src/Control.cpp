@@ -243,7 +243,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 					id.erase(std::remove(id.begin(), id.end(), PADDING), id.end());
 
 					int intid = atoi(id.c_str());
-					cout<<"********ID************"<<endl;
+				//	cout<<"********ID************"<<endl;
 					cout<<intid<<endl;
 					//posx
 
@@ -271,9 +271,9 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 		else if (mensaje.substr(0, 1) == "p") {
 
-			debug(1, "Control::controlDeMensajes",
-					"Mensaje piedras parar movimiento sonic", 0);
-			debug(1, "Control::controlDeMensajes", (char*) mensaje.c_str(), 0);
+			//debug(1, "Control::controlDeMensajes",
+				//	"Mensaje piedras parar movimiento sonic", 0);
+			//debug(1, "Control::controlDeMensajes", (char*) mensaje.c_str(), 0);
 
 			std::string animacion = mensaje.substr(1, 3);
 
@@ -283,7 +283,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 		else if (mensaje.substr(0, 5) == "Piedr") {
 
-			debug(1, "MENSAJE PIEDRA", (char*) mensaje.c_str(), 0);
+			//debug(1, "MENSAJE PIEDRA", (char*) mensaje.c_str(), 0);
 
 			std::string pos_pX = mensaje.substr(6, 4);
 			std::string pos_pY = mensaje.substr(12, 3);
@@ -293,8 +293,8 @@ void Control::controlDeMensajes(Personaje* sonic,
 			int iposX = atoi(pos_pX.c_str());
 			int iposY = atoi(pos_pY.c_str());
 
-			debug(0,"Control::controlDeMensajes","Creando Piedra en X: %d",iposX);
-			debug(0,"Control::controlDeMensajes","Creando Piedra en Y: %d",iposY);
+			//debug(0,"Control::controlDeMensajes","Creando Piedra en X: %d",iposX);
+			//debug(0,"Control::controlDeMensajes","Creando Piedra en Y: %d",iposY);
 
 			std::string rutaImagen = "images/piedra2.png";
 
@@ -309,10 +309,10 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 		else if (mensaje.substr(0,5) == "Pinch"){
 
-			debug(1, "MENSAJE PINCHE", (char*) mensaje.c_str(), 0);
+			//debug(1, "MENSAJE PINCHE", (char*) mensaje.c_str(), 0);
 
 
-			debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
+			//debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
 
 
 			std::string posX = mensaje.substr(6, 4);
@@ -323,7 +323,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 			int iposX = atoi(posX.c_str());
 			int iposY = atoi(posY.c_str());
 
-			debug(1,"POSX", (char*) posX.c_str() , 0);
+			//debug(1,"POSX", (char*) posX.c_str() , 0);
 		    debug(1,"POSY", (char*) posY.c_str() , 0);
 
 		    std::string rutaImagen = "images/Pinchos.png";
@@ -339,6 +339,11 @@ void Control::controlDeMensajes(Personaje* sonic,
 		else if (mensaje.compare("PASARNIVEL") == 0) {
 
 			if (!admNiveles.EsUltimoNivel()) {
+				debug(1, "Control::controlDeMensajes", "Paso de nivel y borro las anillas", 0);
+				vista->getConstructorEntidades()->anillos.clear();
+				vista->getConstructorEntidades()->piedra.clear();
+				vista->getConstructorEntidades()->pinche.clear();
+
 				this->admNiveles.pasarDeNivel();
 				this->admNiveles.cargarNivel(vista, sonic);
 			}

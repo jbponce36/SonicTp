@@ -77,7 +77,33 @@ public:
 	void agregarEntidadCliente(std::string nombre, int id, int x, int y);
 	void quitarEntidad(std::string nombre, int id);
 
-	void generarBonus(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ,int minimor,int maximor);
+	//void generarBonus(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ,int minimor,int maximor);
+	void generarBonus(int minimor,int maximor);
+
+	int getAncho();
+	void setAncho(int ancho);
+
+	int getAlto();
+	void setAlto(int alto);
+
+	int getX();
+	void setX(int x);
+
+	int getY();
+	void setY(int y);
+
+	int getId();
+	void setId(int id);
+
+	std::string getRuta();
+	void setRuta(const std::string ruta);
+
+	std::string getColor();
+	void setColor(std::string color);
+
+	int getIndex();
+
+	void setIndex(int index);
 
 private:
 
@@ -88,6 +114,14 @@ private:
 	void validarCuadrado(int &ancho, int &alto);
 	void validar(int &numero, int minimo, int maximo);
 
+	int ancho;
+	int alto;
+	int x;
+	int y;
+    int id;
+    std::string ruta;
+    std::string color;
+    int index;
 
 };
 

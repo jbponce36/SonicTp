@@ -18,6 +18,7 @@ Pescado::Pescado(int x, int y,int maxY,int minY) :
 	this->contadorSprite = 0;
 	this->velocidad = 50;
 	this->numeroMaximoSprites=2;
+	this->setPuntaje(200);
 
 }
 void Pescado::calcularNumeroDeSprite(){
