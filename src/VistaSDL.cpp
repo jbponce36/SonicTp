@@ -979,7 +979,7 @@ void VistaSDL::mostrarScoTresFinLv(vector<Personaje*>* sonics){
 					"  ANILLOS: "+ Util::intToString(sonics->at(indice)->getPuntos()->getCantAnillos())+
 					"  PUNTOS: " + Util::intToString(totalPuntos1);
 			this->dibujarTextoColorFuente(textovidas,200,alto,colores.at(indice),gris,fuente2);
-			alto += 33;
+			alto += 43;
 			}
 		}
 		this->dibujarTextoColorFuente("Puntos Equipo 1: "+ Util::intToString(totalPuntos1),0,alto,negro,gris,fuente2);
@@ -994,7 +994,7 @@ void VistaSDL::mostrarScoTresFinLv(vector<Personaje*>* sonics){
 					"  ANILLOS: "+ Util::intToString(totalAnillos2)+
 					"  PUNTOS: " + Util::intToString(totalPuntos2);
 			this->dibujarTextoColorFuente(textovidas,200,alto,colores.at(indice),gris,fuente2);
-			alto += 33;
+			alto += 43;
 			}
 		}
 		this->dibujarTextoColorFuente("Puntos Equipo 2: "+ Util::intToString(totalPuntos2),0,alto,negro,gris,fuente2);
