@@ -510,44 +510,39 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 
 
 	for(int i = 0; i < cantidadBonus; i++)
-	{
-		if (!myvector.empty()){
-			//Divide el escenario en partes iguales del doble del ancho del bonus para que no se superpongan
-			//Y al sumarle 2*ancho hago que caiga en una de esas divisiones
-			//int x = coordXActual + Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
-			  int x = myvector.back();
- 		      myvector.pop_back();
+		{
+			if (!myvector.empty()){
+				//Divide el escenario en partes iguales del doble del ancho del bonus para que no se superpongan
+				//Y al sumarle 2*ancho hago que caiga en una de esas divisiones
+				//int x = coordXActual + Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+				  int x = myvector.back();
+	 		      myvector.pop_back();
 
-			x = x * 1000 + 700;
-			//Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::ESCUDO);
+				x = x * 1000 + 700;
+				//Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::ESCUDO);
 
+				int tipoBono = Util::numeroRandomEntre(1, 3);
+				Bonus* nuevoBonus = NULL;
+				if (tipoBono==1)
+				{
+					debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus escudo en %d", x);
+					nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::ESCUDO);
+				}
+				else if (tipoBono==2)
+				{
+					debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus anillo en %d", x);
+					nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::RING);
+				}
+				else
+				{
+					debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus invencibilidad en %d", x);
+				    nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::INVENCIBILIDAD);
+				}
 
-			int tipoBono = Util::numeroRandomEntre(1, 3);
-			Bonus* nuevoBonus = NULL;
-			if (tipoBono==1)
-			{
-				debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus escudo en %d", x);
-				nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::ESCUDO);
+				entidades.push_back(nuevoBonus);
+				c++;
+
 			}
-			else if (tipoBono==2)
-			{
-				debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus anillo en %d", x);
-				nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::RING);
-			}
-			else
-			{
-				debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus invencibilidad en %d", x);
-			    nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::INVENCIBILIDAD);
-			}
-
-
-			Bonus* nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::ESCUDO);
-			cout<< "Agregue Bonus Escudo\n";
-
-			entidades.push_back(nuevoBonus);
-			c++;
-
-		}
 	}
 
 	 /*cantidadBonus = Util::numeroRandomEntre(minimor, maximor);
