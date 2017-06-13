@@ -27,7 +27,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 		this->teclas[(*pos).second->getId()] = t;
 		this->ultimasPosiciones[(*pos).second->getId()] = ultimasPosiciones;
 	}
-	this->log->setModulo("CONTRON SERVIDOR");
+	this->log->setModulo("CONTROL SERVIDOR");
 	this->envioModoDeJuego = false;
 }
 
@@ -275,8 +275,8 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 				administradorNiveles.pasarNivelServidor(vista,this);
 
 				Personaje* sonic = (*pos).second;
-				sonic->posicionarseConAnimacion(-250,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
-
+				//sonic->posicionarseConAnimacion(-250,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
+                sonic->posicionarseEn(0,0);
 				//this->pasarNivel = false;
 			}
 			camara->actualizarXY(0,0);
@@ -493,25 +493,43 @@ jescenarioJuego* ControlServidor::getEscenarioJuego(){
 
 
 void ControlServidor::CreoAnillas(int minRam, int maxRam){
-	debug(0,"ControlServidor::CreoAnillas", "Creo Anillas", 0);
-//	int cantidadAnillas = Util::numeroRandomEntre(this->getAnill()->getMinimoran(), this->getAnill()->getMaximoran());
+// agrego al log de errores para que valide
+  this->log->addLogMessage("[CREO ANILLAS] Iniciado.", 2);
+
   int cantidadAnillas = Util::numeroRandomEntre(minRam, maxRam);
+
+  int ancho = 64;
+  int alto = 64;
+
 
   debug(0,"ControlServidor::CreoAnillas","CANTIDAD ANILLAS RANDOM %d", cantidadAnillas);
 
   int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
-  int AnchoEscenario = vista->obtenerAnchoEscenario();
+  int AnchoEscenario = vista->obtenerAnchoEscenario() - (2*ancho);
 
   int coordXActual = 0;
 
-   for(int i=0;i<cantidadAnillas;i++){
+  bool dibujaMenosAnillas = false;
+  while ((AnchoEscenario / cantidadAnillas)<(2*ancho)){
+	  cantidadAnillas--;
+	  dibujaMenosAnillas = true;
+  }
+
+  debug(0,"ControlServidor::CreoAnillas","Cantidad anillas usadas %d", cantidadAnillas);
+
+  if (dibujaMenosAnillas){
+	  //log de errores
+	  debug(0,"ControlServidor::CreoAnillas","ERROR SE USARON MENOS ANILLAS", cantidadAnillas);
+  }
+
+  for(int i=0;i<cantidadAnillas;i++){
 
 	  int	id = i;
 	  std::string color = "rojo";
-	  int ancho = 64;
-	  int alto = 64;
 
 	  int coordX = coordXActual + Util::numeroRandom((AnchoEscenario / cantidadAnillas)/(2*ancho)) * (2*ancho);
+
+
 	  coordXActual = coordXActual + AnchoEscenario / cantidadAnillas;
 
 	  //la coordenada y la voy a dejar en 300 ya que es una buena altura....
@@ -520,7 +538,6 @@ void ControlServidor::CreoAnillas(int minRam, int maxRam){
 	  int indexZ = 99;
 
 	  Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
-
 	  anillo->setAlto(alto);
 	  anillo->setAncho(ancho);
 	  anillo->setCoorx(coordX);
@@ -540,6 +557,8 @@ void ControlServidor::CreoAnillas(int minRam, int maxRam){
 	      debug(1,"ControlServidor::CreoAnillas",  (char*)mensaje.c_str(), 1);
 		  enviarATodos(mensaje);
 	}
+
+	this->log->addLogMessage("[CREO ANILLAS] Terminado.", 2);
 }
 
 
@@ -697,11 +716,13 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 			for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
 				Anillos *cls = (*posanillo);
 				if (colicion->intersectaAnilloPersonaje(cls, sonic)){
-					debug(1,"ControlServidor::chequearColicion","Colision con anilla NUMEROANILLA %d",numeroAnilla);
-					std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(numeroAnilla);
+					//debug(1,"ControlServidor::chequearColicion","Colision con anilla NUMEROANILLA %d",numeroAnilla);
+					//std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(numeroAnilla);
 
-					//debug(1,"ControlServidor::chequearColicion","Colision con anilla GETID %d",cls->getId());
-					//std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(cls->getId());
+
+
+					debug(1,"ControlServidor::chequearColicion","Colision con anilla GETID %d",cls->getId());
+					std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(cls->getId());
 
 
 					this->enviarATodos(mensaje);
@@ -991,6 +1012,8 @@ void ControlServidor::limpiarObstaculos(){
     this->piedra.clear();
 	this->anillos.clear();
 	this->pinche.clear();
+	//this->vista->getConstructorEntidades()->entidades.clear();
+
 }
 
 void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez,int maxPez,int minCangrejo,int maxCangrejo){

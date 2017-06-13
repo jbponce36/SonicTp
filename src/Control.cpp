@@ -170,68 +170,41 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 		else if (mensaje.substr(0, 13) == "BORRAR_ANILLA"){
 
-			//debug(1,"Control::controlDeMensajes_BORRADOANILLAS", (char*) mensaje.c_str() , 0);
+			debug(1,"Control::controlDeMensajes_BORRADOANILLAS", (char*) mensaje.c_str() , 0);
 
 			std::string tid = mensaje.substr(13, 2);
 			tid.erase(std::remove(tid.begin(), tid.end(), PADDING), tid.end());
 
-
 			int numeroAnilla = atoi(tid.c_str());
 
+			debug(1, "Control::controlDeMensajes", "Voy a borrar la anilla con id %d",numeroAnilla);
 
-			debug(1, "Control::controlDeMensajes", "Voy a borrar la anilla %d",numeroAnilla);
+		          /////codigo viejo sin usar el set ni el get
+				   int posAnillaActual = 0;
 
+					list<Anillos*>::iterator pos;
+					Anillos* actual = NULL;
 
+			for(pos= vista->getConstructorEntidades()->anillos.begin();pos!=vista->getConstructorEntidades()->anillos.end();pos++){
 
-	     /*     	list<Anillos*>::iterator pos;
+			 if((*pos)->getId() == numeroAnilla){
 
-	          for(pos= vista->getConstructorEntidades()->anillos.begin();pos!=vista->getConstructorEntidades()->anillos.end();pos++){
+				 actual = (*pos);
+				 debug(1, "Control::controlDeMensajes", "Anilla encontrada Get id %d",(actual)->getId());
 
-		} else if (mensaje.substr(0, 13) == "BORRAR_ANILLA") {
+			   }
+			 }
 
-			std::string id = mensaje.substr(13, 2);
-			id.erase(std::remove(id.begin(), id.end(), PADDING), id.end());
+			if (actual != NULL){
+				vista->getConstructorEntidades()->anillos.remove(actual);
 
-            int numeroAnilla = atoi(id.c_str());
-
-            cout<<"numuero Anilla borrada"<<endl;
-            cout<<numeroAnilla<<endl;
-
-
-     /*      	list<Anillos*>::iterator pos;
-
-          for(pos= vista->getConstructorEntidades()->anillos.begin();pos!=vista->getConstructorEntidades()->anillos.end();pos++){
-
-             if((*pos)->getId()== numeroAnilla){
-
-            	 delete (*pos);
-            	 vista->getConstructorEntidades()->anillos.erase(pos);
-
-            	 //return;
-             }
-          }
-     */
-
-
-           ///////codigo viejo borrado
-		int posAnillaActual = 0;
-
-			list<Anillos*>::iterator pos;
-			Anillos* actual = NULL;
-			for (pos = vista->getConstructorEntidades()->anillos.begin();
-					pos != vista->getConstructorEntidades()->anillos.end();
-					pos++) {
-				if (numeroAnilla == posAnillaActual) {
-					actual = (*pos);
-				}
-				posAnillaActual++;
 			}
 
-			vista->getConstructorEntidades()->anillos.remove(actual);
 
-		}
+	}
 
-         ////codigo viejo borrado
+
+
 		else if (mensaje.substr(0, 3) == "Aid")
 
 				{
@@ -243,8 +216,8 @@ void Control::controlDeMensajes(Personaje* sonic,
 					id.erase(std::remove(id.begin(), id.end(), PADDING), id.end());
 
 					int intid = atoi(id.c_str());
-				//	cout<<"********ID************"<<endl;
-					cout<<intid<<endl;
+					//cout<<"********ID************"<<endl;
+					//cout<<intid<<endl;
 					//posx
 
 					std::string posX = mensaje.substr(6, 4);
@@ -343,6 +316,8 @@ void Control::controlDeMensajes(Personaje* sonic,
 				vista->getConstructorEntidades()->anillos.clear();
 				vista->getConstructorEntidades()->piedra.clear();
 				vista->getConstructorEntidades()->pinche.clear();
+                vista->getConstructorEntidades()->entidades.clear();
+
 
 				this->admNiveles.pasarDeNivel();
 				this->admNiveles.cargarNivel(vista, sonic);

@@ -480,7 +480,6 @@ void ConstructorEntidades::quitarEntidad(std::string nombre, int id)
 //void ConstructorEntidades::generarBonus(int ancho, int alto,
 	//	std::string color, std::string rutaImagen, int indexZ, int minimor,int maximor)
 void ConstructorEntidades::generarBonus(int minimor,int maximor)
-
 {
 	//Genera bonus en posiciones y cantidades aleatorias
 
@@ -492,9 +491,7 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 
 	int cantidadBonus = Util::numeroRandomEntre(minimor, maximor);
 
-
-    cout<<"CANTIDAD DE BONUS GENERADOS ESCUDO"<<endl;
-    cout<<cantidadBonus<<endl;
+	debug(0,"ConstructorEntidades::generarBonus", "Cantidad total de bonus %d", cantidadBonus);
 
 	//int y = limiteAlto - alto;
     int y = limiteAlto - this->getAlto();
@@ -504,7 +501,7 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 
 	std::vector<int> myvector;
 	  // set some values:
-	for (int i=0; i<=3; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
+	for (int i=0; i<=7; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
 	std::random_shuffle ( myvector.begin(), myvector.end() );
 
 
@@ -520,13 +517,31 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 			x = x * 1000 + 700;
 			//Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::ESCUDO);
 
-			Bonus* nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::ESCUDO);
+			int tipoBono = Util::numeroRandomEntre(1, 3);
+			Bonus* nuevoBonus = NULL;
+			if (tipoBono==1)
+			{
+				debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus escudo en %d", x);
+				nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::ESCUDO);
+			}
+			else if (tipoBono==2)
+			{
+				debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus anillo en %d", x);
+				nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::RING);
+			}
+			else
+			{
+				debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus invencibilidad en %d", x);
+			    nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::INVENCIBILIDAD);
+			}
+
 			entidades.push_back(nuevoBonus);
 			c++;
+
 		}
 	}
 
-	 cantidadBonus = Util::numeroRandomEntre(minimor, maximor);
+	 /*cantidadBonus = Util::numeroRandomEntre(minimor, maximor);
 	 cout<<"CANTIDAD DE BONUS GENERADOS ANILLO"<<endl;
 	     cout<<cantidadBonus<<endl;
 	//Agrego bonus de Anillos
@@ -571,7 +586,7 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 			entidades.push_back(nuevoBonus);
 			c++;
 		}
-	}
+	}*/
 
 }
 

@@ -122,18 +122,17 @@ void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor*
 	controlSevidor->CreoPiedras(jjuego->getPiedra()->getMinimoran(),jjuego->getPiedra()->getMaximoran());
 	controlSevidor->CreoPinche(jjuego->getPinche()->getMinimoran(),jjuego->getPinche()->getMaximoran());
 
-	vista->getConstructorEntidades()->cargarEntidades(jjuego->getEscenario()->getentidades(),vista->getRenderizador());
-	//jjuego->getEscenario()->getentidades();
 
 	list<jentidades>:: iterator pos;
 
-	for(pos = jjuego->getEscenario()->getentidades().begin(); pos != jjuego->getEscenario()->getentidades().end();pos++){
+	/*for(pos = jjuego->escenario->je.begin(); pos != jjuego->escenario->je.end();pos++){
 
 		if ((*pos).getruta() == "images/Bonus.png" ){
 
 			entidades->generarBonus((*pos).getMinimor(),(*pos).getMaximor());
 		}
 	}
+*/
 
 }
 

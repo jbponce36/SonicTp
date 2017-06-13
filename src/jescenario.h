@@ -17,6 +17,8 @@ namespace std {
 class jescenario {
 public:
 
+	list<jentidades> je;
+
 	jescenario();
 	virtual ~jescenario();
     //ancho
@@ -42,7 +44,7 @@ private:
 	int ancho;
     int alto;
     list<capas> c;
-    list<jentidades> je;
+
 	std::string intToString(int number);
 };
 
