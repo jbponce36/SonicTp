@@ -610,7 +610,7 @@ void ConstructorEntidades::generarPlataformas(int ancho, int alto, std::string c
 {
 	cout << "Plataformas generadas\n";
 	int coordX = limiteAncho - anchoVentana;
-	int coordY = limiteAlto/2;
+	int coordY = limiteAlto/2 + alto;
 	Plataforma *plataforma = new Plataforma(ancho, alto, generarId(), color, rutaImagen, coordX, coordY, indexZ, log);
 	entidades.push_back(plataforma);
 	cout << coordX << " " << coordY << "\n";
