@@ -284,7 +284,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 			}
 			camara->actualizarXY(0,0);
 			this->pasarNivel =false;
-				sleep(3);
+				sleep(4);
 		}
 	}
 }
