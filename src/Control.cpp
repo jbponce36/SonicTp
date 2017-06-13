@@ -343,17 +343,22 @@ void Control::controlDeMensajes(Personaje* sonic,
 				vista->getConstructorEntidades()->anillos.clear();
 				vista->getConstructorEntidades()->piedra.clear();
 				vista->getConstructorEntidades()->pinche.clear();
+				this->enemigos.clear();
+				vista->getConstructorEntidades()->entidades.clear();
 
 				this->admNiveles.pasarDeNivel();
 				this->admNiveles.cargarNivel(vista, sonic);
 			}
 			admNiveles.mostrarPunConPan(vista,sonics,this->modoDeJuego);
+
+			this->inicializarEscenario(hiloRecibir);
+			this->inicializarEnemigos(hiloRecibir);
+			/* El servidor manda las posiciones
 			std::vector<Personaje*>::iterator poss;
 			for (poss = sonics->begin(); poss != sonics->end(); poss++) {
 				Personaje * cl2 = (*poss);
-				cl2->posicionarseConAnimacion(0,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
-
-			}
+				cl2->posicionarseConAnimacion(0,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1
+			}*/
 
 		} else if (mensaje.substr(0, 3) == MENSAJE_CAMARA) {
 			int nuevoX, nuevoY;

@@ -131,6 +131,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			else if ((*pos).getruta() == "images/Bonus.png")
 			{
 				//generarBonus(ancho, alto, color, rutaImagen, indexZ,minimor,maximor);
+				cout << "cargar Entidades::: Voy a generar los Bonus\n";
                   generarBonus(minimor,maximor);
 			}
 			else
@@ -483,7 +484,6 @@ void ConstructorEntidades::quitarEntidad(std::string nombre, int id)
 //void ConstructorEntidades::generarBonus(int ancho, int alto,
 	//	std::string color, std::string rutaImagen, int indexZ, int minimor,int maximor)
 void ConstructorEntidades::generarBonus(int minimor,int maximor)
-
 {
 	//Genera bonus en posiciones y cantidades aleatorias
 
@@ -524,6 +524,7 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 			//Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::ESCUDO);
 
 			Bonus* nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::ESCUDO);
+			cout<< "Agregue Bonus Escudo\n";
 			entidades.push_back(nuevoBonus);
 			c++;
 		}
@@ -547,6 +548,7 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 					//+ Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
 			//Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::RING);
 			Bonus* nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::RING);
+			cout<< "Agregue Bonus Anillo\n";
 			entidades.push_back(nuevoBonus);
 			c++;
 		}
@@ -571,6 +573,7 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 					//Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
 			//Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::INVENCIBILIDAD);
 	      Bonus* nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::INVENCIBILIDAD);
+	      cout<< "Agregue Bonus Invencible\n";
 			entidades.push_back(nuevoBonus);
 			c++;
 		}

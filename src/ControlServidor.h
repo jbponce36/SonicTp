@@ -128,6 +128,8 @@ public:
 
 	void chequearColicion(Colicion *colicion);
 	void chequearColisiones();
+
+	void enviarDatosEscenarioATodos();
 	void enviarDatosEscenario(Hiloenviar *hiloEnviar);
 
 	void CreacionEnemigos();

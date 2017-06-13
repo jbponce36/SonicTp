@@ -801,7 +801,7 @@ void VistaSDL::setJjuego(vector<jescenarioJuego*> Jjuego) {
 
 jescenarioJuego* VistaSDL::obtenerNivel(int nivel){
 
-	return this->jjuego[nivel];
+	return this->jjuego.at(nivel);
 }
 
 void VistaSDL::mostrarScoModoDosJuego(vector<Personaje*>* sonics){

@@ -248,35 +248,35 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 
 			this->nivelActual++;
 			char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
-				std::string msjPasarNivel = "PASARNIVEL" ;
-				//cout<<"mensaje sin: "<<mensaje.size()<<endl;
-				msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
-				//cout<<"mensaje con: "<<mensaje.size()<<endl;
-				//cout<<"server envio: "<<mensaje<<endl;
-				strcpy(buffer, msjPasarNivel.c_str());
-				//cout<<"mensaje con buff: "<<strlen(buffer)<<endl;
-				int id = 1;
-				std::vector<Hiloenviar*>::iterator poshilo;
-				for(poshilo = hilosEnviar->begin();poshilo != hilosEnviar->end();poshilo++)
+			std::string msjPasarNivel = "PASARNIVEL" ;
+			msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
+			strcpy(buffer, msjPasarNivel.c_str());
+			int id = 1;
+			std::vector<Hiloenviar*>::iterator poshilo;
+			for(poshilo = hilosEnviar->begin();poshilo != hilosEnviar->end();poshilo++)
+			{
+				if(!sonics->at(id)->estaCongelado())
 				{
-					if(!sonics->at(id)->estaCongelado())
-					{
-						//(*pos)->vaciar();
-						(*poshilo)->enviarDato(buffer);
-					}
-					id++;
+					(*poshilo)->enviarDato(buffer);
 				}
+				id++;
+			}
 
+			administradorNiveles.pasarNivelServidor(vista,this);
 
 			for(pos = sonics->begin();pos != sonics->end();pos++)
 			{
 				//aca debemos resetear todos los valores para comenzar el nuevo nivel
 				//if(this-> pasarNivel = true)
-
-				administradorNiveles.pasarNivelServidor(vista,this);
-
-				Personaje* sonic = (*pos).second;
-				sonic->posicionarseConAnimacion(-250,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
+				sonic->posicionarseEn(0, 4*vista->getAltoEscenario()/5 - sonic->getAlto());
+				sonic->parar();
+				int id = sonic->getId();
+				teclas.at(id).teclaAbajo = false;
+				teclas.at(id).teclaArriba = false;
+				teclas.at(id).teclaDerecha = false;
+				teclas.at(id).teclaIzquierda = false;
+				teclas.at(id).teclaCorrer = false;
+				teclas.at(id).teclaAtaque = false;
 
 				//this->pasarNivel = false;
 			}
@@ -386,7 +386,8 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	server->comenzarPartida(*hilosEnviar);
 
 	enviarATodos(obtenerMensajeNivel());
-	mundo.enviarDatosEscenario(hilosEnviar);
+	enviarDatosEscenarioATodos();
+	//mundo.enviarDatosEscenario(hilosEnviar);
 
 	this->CreacionEnemigos();
 	this->enviarDatosEnemigosIniciales();
@@ -879,6 +880,11 @@ void ControlServidor::enviarDatosEscenario(Hiloenviar *hiloEnviar)
 	mundo.enviarDatosEscenario(hiloEnviar);
 }
 
+void ControlServidor::enviarDatosEscenarioATodos()
+{
+	mundo.enviarDatosEscenario(hilosEnviar);
+}
+
 void ControlServidor::verificarDuracionBonus(Personaje *sonic)
 {
 	if(sonic->agarroBonusInvencible())
@@ -1012,6 +1018,12 @@ void ControlServidor::limpiarObstaculos(){
     this->piedra.clear();
 	this->anillos.clear();
 	this->pinche.clear();
+	this->enemigos.clear();
+
+	vista->getConstructorEntidades()->anillos.clear();
+	vista->getConstructorEntidades()->piedra.clear();
+	vista->getConstructorEntidades()->pinche.clear();
+	vista->getConstructorEntidades()->entidades.clear();
 }
 
 void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez,int maxPez,int minCangrejo,int maxCangrejo){
