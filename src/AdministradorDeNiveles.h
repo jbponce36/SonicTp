@@ -10,7 +10,8 @@
 #include "VistaSDL.h"
 #include "Camara.h"
 #include "Personaje.h"
-//#include "ControlServidor.h"
+#include "ConstructorEntidades.h"
+#include "jentidades.h"
 
 class ControlServidor;
 class AdministradorDeNiveles {
@@ -34,6 +35,7 @@ class AdministradorDeNiveles {
 		Textura* capa0;
 		Textura* capa1;
 		Textura* pantallaPuntos;
+		ConstructorEntidades* entidades;
 
 
 };

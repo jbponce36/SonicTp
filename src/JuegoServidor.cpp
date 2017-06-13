@@ -70,10 +70,8 @@ void JuegoServidor::inicializarJuegoServidor(/*std::jescenarioJuego *jparseador*
 
 	std::string ruta = "configuracion/configuracion";
 	for(int i=1; i < CANTIDAD_NIVELES;i++){
-		cout<<"cout1loop archivos"<<endl;
 		std::string rutaCompleta = ruta + Util::intToString(i) + ".json";
 		char *rutaChar = (char*)rutaCompleta.c_str();
-		cout<<"antes ruta"<<endl;
 		//strcpy(rutaChar,rutaCompleta.c_str());
 			//	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
 			//		strcpy(buffer, mensaje.c_str());
