@@ -110,13 +110,12 @@ void AdministradorDeNiveles::mostrarPunConPan(VistaSDL* vista,vector<Personaje*>
 
 		SDL_RenderPresent(vista->getRenderizador());
 
-		sleep(3);
+		sleep(4);
 }
 void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor* controlServidor){
    debug(0,"AdministradorDeNiveles::pasarNivelServidor", "Paso de nivel servidor", 0);
 
 	controlServidor->limpiarObstaculos();
-
 	nivelServidor++;
 	jescenarioJuego* jjuego = vista->obtenerNivel(nivelServidor);
 

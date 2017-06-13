@@ -492,7 +492,7 @@ void Control::parsearMensajePosicion(mensajePosicion& msj,
 void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 		SDL_Rect *imagenMostrar, Personaje *sonic) {
 	admNiveles.mostrarNivel(camara, vista, imagenMostrar);
-	vista->mostrarPuntPartida(this->modoDeJuego,this->sonics);
+
 
 	for (int contador = 0; contador < vista->cantidadCapasCargadas();
 			contador++) {
@@ -530,7 +530,7 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 
 
 	}
-
+	vista->mostrarPuntPartida(this->modoDeJuego,this->sonics);
 	SDL_RenderPresent(vista->obtenerRender());
 
 }

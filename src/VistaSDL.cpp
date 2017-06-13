@@ -36,7 +36,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->velocidadScroll=jconfiguracion->getvelscroll();
 	this->cargarEnemigosTextura();
 
-	this->constructorEntidades = new ConstructorEntidades(anchoescenario, 4*altoescenario/5, logger);
+	this->constructorEntidades = new ConstructorEntidades(anchoescenario, 4*altoescenario/5, anchoVentana, logger);
 	if(oculta)
 	{
 		//Solo el servidor carga las entidades
@@ -60,7 +60,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	colores.push_back(verde);
 	colores.push_back(amarillo);
 	negro = {0,0,0};
-	gris = {185,172,144};
+	gris = {224,224,224};
 	this->fuente2 = TTF_OpenFont("images/arial.ttf", 40);
 
 	pthread_mutex_init(&mutexRenderizar, NULL);
@@ -863,7 +863,7 @@ void VistaSDL::mostrarScodosFinLv(vector<Personaje*>* sonics){
 			this->dibujarTextoColorFuente(textovidas,200,alto,colores.at(indice),gris,fuente2);
 			alto += 43;
 		}
-		this->dibujarTextoColorFuente("TOTAL COLABORATIVO"+Util::intToString(totalPuntos),200,alto,colores.at(0),gris,fuente2);
+		this->dibujarTextoColorFuente("TOTAL COLABORATIVO: "+Util::intToString(totalPuntos),200,alto,colores.at(0),gris,fuente2);
 
 	//std::string textoanillos = "ANILLOS:" + Util::intToString(personaje->getPuntos()->getCantAnillos());
 	//this->dibujarTexto(textoanillos,0,50);
@@ -898,11 +898,12 @@ void VistaSDL::mostrarScoModoTresJuego(vector<Personaje*>* sonics){
 			//cout<<"puntos2: "<<totalPuntos2<<endl;
 		}
 	}
-
+	bool hay1 = false;
 	for (int indice = 0; indice < sonics->size(); indice++) {
 
 
 		if(sonics->at(indice)->getEquipo() == 1){
+		hay1 =true;
 		//Personaje* personaje = (*Personaje) pos;
 		std::string textovidas = "EQUIPO1 VIDAS: " + Util::intToString(sonics->at(indice)->getPuntos()->getVidas())+
 				"  ANILLOS: "+ Util::intToString(totalAnillos1);
@@ -911,23 +912,26 @@ void VistaSDL::mostrarScoModoTresJuego(vector<Personaje*>* sonics){
 		}
 
 	}
-	this->dibujarTextoColorFuente("Puntos : "+ Util::intToString(totalPuntos1),0,alto,negro,gris,fuente);
+	if(hay1)
+		this->dibujarTextoColorFuente("Puntos1: "+ Util::intToString(totalPuntos1),0,alto,negro,gris,fuente);
 		alto += 33;
 	//esto es para separar equipos luego deberia ir un texto que diga equipo 2
-
+	bool hay2 = false;
 	for (int indice = 0; indice < sonics->size(); indice++) {
 
 
 		if(sonics->at(indice)->getEquipo() == 2){
-		//Personaje* personaje = (*Personaje) pos;
-		std::string textovidas = "EQUIPO2 VIDAS: " + Util::intToString(sonics->at(indice)->getPuntos()->getVidas())+
-				"  ANILLOS: "+ Util::intToString(totalAnillos2);
-		this->dibujarTextoColorFuente(textovidas,0,alto,colores.at(indice),gris,fuente);
-		alto += 33;
+			hay2 = true;
+			//Personaje* personaje = (*Personaje) pos;
+			std::string textovidas = "EQUIPO2 VIDAS: " + Util::intToString(sonics->at(indice)->getPuntos()->getVidas())+
+					"  ANILLOS: "+ Util::intToString(totalAnillos2);
+			this->dibujarTextoColorFuente(textovidas,0,alto,colores.at(indice),gris,fuente);
+			alto += 33;
 		}
 
 	}
-	this->dibujarTextoColorFuente("Puntos: "+ Util::intToString(totalPuntos2),0,alto,negro,gris,fuente);
+	if(hay2)
+		this->dibujarTextoColorFuente("Puntos2: "+ Util::intToString(totalPuntos2),0,alto,negro,gris,fuente);
 }
 
 void VistaSDL::mostrarScoTresFinLv(vector<Personaje*>* sonics){
@@ -970,10 +974,12 @@ void VistaSDL::mostrarScoTresFinLv(vector<Personaje*>* sonics){
 		{
 			totalPuntos2 = totalPuntos2*2;
 		}
+		bool hay1 = false;
 		for (int indice = 0; indice < sonics->size(); indice++) {
 
 
 			if(sonics->at(indice)->getEquipo() == 1){
+			hay1 = true;
 			//Personaje* personaje = (*Personaje) pos;
 			std::string textovidas = "VIDAS: " + Util::intToString(sonics->at(indice)->getPuntos()->getVidas())+
 					"  ANILLOS: "+ Util::intToString(sonics->at(indice)->getPuntos()->getCantAnillos())+
@@ -982,22 +988,26 @@ void VistaSDL::mostrarScoTresFinLv(vector<Personaje*>* sonics){
 			alto += 43;
 			}
 		}
-		this->dibujarTextoColorFuente("Puntos Equipo 1: "+ Util::intToString(totalPuntos1),0,alto,negro,gris,fuente2);
+		if(hay1)
+			this->dibujarTextoColorFuente("Puntos Equipo 1: "+ Util::intToString(totalPuntos1),200,alto,negro,gris,fuente2);
 		//esto es para separar equipos luego deberia ir un texto que diga equipo 2
 		alto += 50;
+		bool hay2 = false;
 		for (int indice = 0; indice < sonics->size(); indice++) {
 
 
 			if(sonics->at(indice)->getEquipo() == 2){
-			//Personaje* personaje = (*Personaje) pos;
-			std::string textovidas = "VIDAS: " + Util::intToString(sonics->at(indice)->getPuntos()->getVidas())+
+				hay2 = true;
+				//Personaje* personaje = (*Personaje) pos;
+				std::string textovidas = "VIDAS: " + Util::intToString(sonics->at(indice)->getPuntos()->getVidas())+
 					"  ANILLOS: "+ Util::intToString(totalAnillos2)+
 					"  PUNTOS: " + Util::intToString(totalPuntos2);
-			this->dibujarTextoColorFuente(textovidas,200,alto,colores.at(indice),gris,fuente2);
-			alto += 43;
+				this->dibujarTextoColorFuente(textovidas,200,alto,colores.at(indice),gris,fuente2);
+				alto += 43;
 			}
 		}
-		this->dibujarTextoColorFuente("Puntos Equipo 2: "+ Util::intToString(totalPuntos2),0,alto,negro,gris,fuente2);
+		if(hay2)
+			this->dibujarTextoColorFuente("Puntos Equipo 2: "+ Util::intToString(totalPuntos2),200,alto,negro,gris,fuente2);
 
 
 	//std::string textoanillos = "ANILLOS:" + Util::intToString(personaje->getPuntos()->getCantAnillos());
