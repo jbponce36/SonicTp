@@ -851,10 +851,14 @@ bool Personaje::agarroBonusInvencible()
 
 void Personaje::serInmortalODejarDeSerlo()
 {
-	if (esInmortal)
+	if (esInmortal){
+		cout << "[MODO INMORTAL] Desactivado.\n";
 		esInmortal = false;
-	else
+	}
+	else{
+		cout << "[MODO INMORTAL] Activado.\n";
 		esInmortal = true;
+	}
 }
 int Personaje::getEquipo(){
 

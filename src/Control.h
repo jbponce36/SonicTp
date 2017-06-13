@@ -36,7 +36,6 @@ private:
     Colicion *colicion;
 	std::vector<Personaje*> *sonics; //Tiene todos los sonics
 	int maxJugadores;
-	Anillos *anilla;
 	VistaSDL *vista;
 	ConstructorEntidades *constructorEntidades;
 	AdministradorDeNiveles admNiveles;

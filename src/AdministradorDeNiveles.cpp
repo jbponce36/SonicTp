@@ -115,15 +115,19 @@ void AdministradorDeNiveles::mostrarPunConPan(VistaSDL* vista,vector<Personaje*>
 void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor* controlServidor){
    debug(0,"AdministradorDeNiveles::pasarNivelServidor", "Paso de nivel servidor", 0);
 
+	controlServidor->limpiarObstaculos();
+
 	nivelServidor++;
 	jescenarioJuego* jjuego = vista->obtenerNivel(nivelServidor);
-	controlServidor->limpiarObstaculos();
+
+	vista->getConstructorEntidades()->cargarEntidades(jjuego->getEscenario()->getentidades(),vista->getRenderizador());
+	controlServidor->enviarDatosEscenarioATodos();
+	controlServidor->enviarDatosEnemigosIniciales();
+	controlServidor->enviarATodos(FIN_MENSAJES_ENEMIGOS);
+
 	controlServidor->CreoAnillas(jjuego->getAnillo()->getMinimoran(),jjuego->getAnillo()->getMaximoran());
 	controlServidor->CreoPiedras(jjuego->getPiedra()->getMinimoran(),jjuego->getPiedra()->getMaximoran());
 	controlServidor->CreoPinche(jjuego->getPinche()->getMinimoran(),jjuego->getPinche()->getMaximoran());
-
-	vista->getConstructorEntidades()->cargarEntidades(jjuego->getEscenario()->getentidades(),vista->getRenderizador());
-
 }
 
 void AdministradorDeNiveles::pasarNivelReset(VistaSDL*vista){
