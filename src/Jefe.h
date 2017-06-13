@@ -10,6 +10,8 @@ private:
 	Textura *textura;
 	float velocidad;
 	int numeroMaximoSprites;
+	int contadorSprite;
+	Uint32 tiempo;
 
 public:
 	Jefe(int x, int y, std::string tipo);
