@@ -36,7 +36,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->velocidadScroll=jconfiguracion->getvelscroll();
 	this->cargarEnemigosTextura();
 
-	this->constructorEntidades = new ConstructorEntidades(anchoescenario, 4*altoescenario/5, logger);
+	this->constructorEntidades = new ConstructorEntidades(anchoescenario, 4*altoescenario/5, anchoVentana, logger);
 	if(oculta)
 	{
 		//Solo el servidor carga las entidades

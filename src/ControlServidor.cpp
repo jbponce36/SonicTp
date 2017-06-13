@@ -27,7 +27,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 		this->teclas[(*pos).second->getId()] = t;
 		this->ultimasPosiciones[(*pos).second->getId()] = ultimasPosiciones;
 	}
-	this->log->setModulo("CONTRON SERVIDOR");
+	this->log->setModulo("CONTROL SERVIDOR");
 	this->envioModoDeJuego = false;
 }
 
@@ -71,7 +71,6 @@ void ControlServidor::administrarTeclasServidor()
 					teclas.at(indice).teclaCorrer = true;
 				}
 				else if(msj.tecla.compare(TECLA_ATAQUE_PRESIONADA) == 0){
-					//cout<<"ataque presionado"<<endl;
 					teclas.at(indice).teclaAtaque = true;
 				}
 				else if(msj.tecla.compare(TECLA_ARRIBA_LIBERADA) == 0){
@@ -99,7 +98,6 @@ void ControlServidor::administrarTeclasServidor()
 					teclas.at(indice).teclaCorrer = false;
 				}
 				else if(msj.tecla.compare(TECLA_ATAQUE_LIBERADA) == 0){
-					//cout<<"ataque liberado"<<endl;
 					teclas.at(indice).teclaAtaque = false;
 				}
 				else if(msj.tecla.compare(TECLA_INMORTAL_PRESIONADA) == 0){
@@ -130,32 +128,6 @@ void ControlServidor::administrarTeclasServidor()
 					cout << "El cliente ya se habia desconectado." << endl;
 				}
 			}
-			/*else if(mensaje.compare("PASARNIVEL") == 0)
-			{
-				this->pasarNivel = true;
-				//aca va el mensaje para que pase de nivel el servidor debe reestablecer todos los valores
-				//a la forma en q estaban cuando cada nivel comienza, al inicio del nivel
-				//Envia el mensaje a todos los hilos enviar para que se lo mande a todos los clientes
-
-				char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
-				std::string msjPasarNivel = "PASARNIVEL" ;
-				//cout<<"mensaje sin: "<<mensaje.size()<<endl;
-				msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
-				//cout<<"mensaje con: "<<mensaje.size()<<endl;
-				//cout<<"server envio: "<<mensaje<<endl;
-				strcpy(buffer, msjPasarNivel.c_str());
-				//cout<<"mensaje con buff: "<<strlen(buffer)<<endl;
-				int id = 1;
-				std::vector<Hiloenviar*>::iterator pos;
-				for(pos = hilosEnviar->begin();pos != hilosEnviar->end();pos++)
-				{
-					if(!sonics->at(id)->estaCongelado())
-					{
-						(*pos)->enviarDato(buffer);
-					}
-					id++;
-				}
-			}*/
 			else
 			{
 				//No es un mensaje de tecla apretada. Ver que otros mensajes puede recibir.
@@ -239,7 +211,9 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 
 		if((*pos).second->getPosicionX() + (*pos).second->getAncho() >= vista->obtenerAnchoEscenario())
 		{
-			this->pasarNivel =true;
+			if(nivelActual < 2){
+				this->pasarNivel =true;
+			}
 		}
 		//aca posiciona a los sonics en el inicio del mapa
 
@@ -269,6 +243,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 				//aca debemos resetear todos los valores para comenzar el nuevo nivel
 				//if(this-> pasarNivel = true)
 				sonic->posicionarseEn(0, 4*vista->getAltoEscenario()/5 - sonic->getAlto());
+				sonic->detener();
 				sonic->parar();
 				int id = sonic->getId();
 				teclas.at(id).teclaAbajo = false;
@@ -343,12 +318,8 @@ void ControlServidor::enviarATodos(std::string mensaje)
 {
 	//Envia el mensaje a todos los hilos enviar para que se lo mande a todos los clientes
 	char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
-	//cout<<"mensaje sin: "<<mensaje.size()<<endl;
 	mensaje = mensaje + SEPARADOR_DE_MENSAJE;
-	//cout<<"mensaje con: "<<mensaje.size()<<endl;
-	//cout<<"server envio: "<<mensaje<<endl;
 	strcpy(buffer, mensaje.c_str());
-	//cout<<"mensaje con buff: "<<strlen(buffer)<<endl;
 	int id = 1;
 	std::vector<Hiloenviar*>::iterator pos;
 	for(pos = hilosEnviar->begin();pos != hilosEnviar->end();pos++)
@@ -389,7 +360,6 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 	enviarATodos(obtenerMensajeNivel());
 	enviarDatosEscenarioATodos();
-	//mundo.enviarDatosEscenario(hilosEnviar);
 
 	this->CreacionEnemigos();
 	this->enviarDatosEnemigosIniciales();
@@ -682,14 +652,16 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				colision = SDL_HasIntersection(&sonicRect,&enemigoRec);
 				if(colision == SDL_TRUE){
 					if(enemigos[i]->getVivo()){
-						if((*pos).second->estaAtacando()){
+						if((*pos).second->estaAtacando() || (*pos).second->agarroBonusInvencible()){
 							enemigos[i]->setVivo(false);
 							sonic->getPuntos()->sumarXpuntos(enemigos[i]->getPuntaje());
 							enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoPuntos(sonic->getId(),sonic->getEquipo()));
 							cout<<"mato a un enemigo"<<endl;
 						}else{
 							(*pos).second->herir(this);
-
+							enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
+							enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoVidas(sonic->getId()));
+							enviarATodos(sonic->obtenerMensajeEstadoBonus());
 							cout<<"golpeo a sonic"<<endl;
 
 						}
