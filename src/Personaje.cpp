@@ -540,6 +540,7 @@ void Personaje::reanudarLuegoDeColision()
 	this->puedeIrDerecha = true;
 	this->puedeIrIzquierda = true;
 	this->resbalando = false;
+	velocidadX = 0;
 }
 
 void Personaje::detener()
