@@ -21,6 +21,7 @@
 #include "Util.h"
 #include "Piedra.h"
 #include "Pinche.h"
+#include "Plataforma.h"
 
 
 

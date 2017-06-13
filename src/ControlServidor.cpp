@@ -230,6 +230,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		(*pos).second->mover(camara->devolverCamara(), REGULADOR_ALTURA_SALTO); //Se mueve segun los limites de la camara
 
 		verificarDuracionBonus((*pos).second);
+		verificarDuracionHerida((*pos).second);
 		verificarDuracionAtaque((*pos).second);
 		//tiempoDeJuego = SDL_GetTicks();
 
@@ -731,6 +732,10 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				}
 			}
 
+			if(!huboColision){
+				sonic->reanudarLuegoDeColision();
+			}
+
 
 
 			//PINCHE
@@ -891,6 +896,22 @@ void ControlServidor::verificarDuracionBonus(Personaje *sonic)
 	}
 }
 
+void ControlServidor::verificarDuracionHerida(Personaje *sonic)
+{
+	if(sonic->estaHerido())
+	{
+		if (!sonic->sigueEstandoHerido())
+		{
+			//Se acabo la duracion del bonus
+			sonic->estarHerido(false);
+			std::string mensaje = Util::intToString(sonic->getId())
+				+ "x" + Util::intToStringConPadding(sonic->getPosicionX())
+				+ "y" + Util::intToStringConPadding(sonic->getPosicionY())
+				+ ANIMACION_NO_TITILAR + PADDING;
+			mundo.enviarATodos(mensaje);
+		  }
+	}
+}
 
 janillos* ControlServidor::getAnill(){
 		return anill;

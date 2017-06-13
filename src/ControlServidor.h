@@ -174,6 +174,7 @@ private:
 	void moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara);
 	void actualizarVistaServidor(Camara *camara);
 	void verificarDuracionBonus(Personaje* sonic);
+	void verificarDuracionHerida(Personaje *sonic);
 	void volverInmortalesTodosLosSonics();
 	std::string intToString(int number);
 	void verificarDuracionAtaque(Personaje *sonic);
