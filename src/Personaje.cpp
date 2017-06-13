@@ -15,7 +15,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->texturaCongelado = new Textura();
 	this->texturaEscudo = new Textura();
 	this->texturaInvencible = new Textura();
-	this->texturaAtaque = new Textura();
+	//this->texturaAtaque = new Textura();
 
 	std::string rutaImagen = "images/sonicSprite" + intToString(id) +".png";
 	this->texturaSonic->cargarImagen(rutaImagen, IMAGEN_POR_DEFECTO, render, log);
@@ -23,7 +23,7 @@ Personaje::Personaje(int id, int velocidad,SDL_Renderer *render,int altoEscenari
 	this->texturaEscudo->cargarImagen("images/BonusEscudo.png", "images/BonusEscudo.png", render, log);
 	this->texturaInvencible->cargarImagen("images/BonusInvencibilidad.png", "images/BonusInvencibilidad.png", render, log);
 
-	this->texturaAtaque->cargarImagen("images/ataque.png", "images/ataque.png", render, log);
+	//this->texturaAtaque->cargarImagen("images/ataque.png", "images/ataque.png", render, log);
 	//dimensiones del personaje por defecto
 	this->personajeAncho = 150;
 	this->personajeAlto= 150;
@@ -126,18 +126,18 @@ void Personaje::cargarSpriteSonic(){
 	animacionQuietoDer = Animacion(texturaSonic, personajeAncho, 7, ANIMACION_QUIETO_DERECHA);
 	animacionCaminarDer = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CAMINAR_DERECHA);
 	animacionCorrerDer = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CORRER_DERECHA);
-	animacionSaltarDer = Animacion(texturaAtaque, personajeAncho, 2, ANIMACION_SALTAR_DERECHA);
+	animacionSaltarDer = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_SALTAR_DERECHA);
 	animacionQuietoIzq = Animacion(texturaSonic, personajeAncho, 7, ANIMACION_QUIETO_IZQUIERDA);
 	animacionCaminarIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CAMINAR_IZQUIERDA);
 	animacionCorrerIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_CORRER_IZQUIERDA);
-	animacionSaltarIzq = Animacion(texturaAtaque, personajeAncho, 2, ANIMACION_SALTAR_IZQUIERDA);
+	animacionSaltarIzq = Animacion(texturaSonic, personajeAncho, 2, ANIMACION_SALTAR_IZQUIERDA);
 	animacionCongelado = Animacion(texturaCongelado, personajeAncho, 1, ANIMACION_CONGELADO);
 	animacionEscudo = Animacion(texturaEscudo, personajeAncho + 50, 2, ANIMACION_ESCUDO);
 	animacionInvencible = Animacion(texturaInvencible, personajeAncho + 50, 2, ANIMACION_INVENCIBLE);
 	puntaje->setAnimacionPuntaje(Animacion(puntaje->getTexturaPuntaje(), puntaje->getAlto(), 1, ANIMACION_PUNTAJE));
 
-	animacionAtaqueDer = Animacion(texturaAtaque, personajeAncho, 1, ANIMACION_ATAQUE_DERECHA);
-	animacionAtaqueIzq = Animacion(texturaAtaque, personajeAncho, 1, ANIMACION_ATAQUE_IZQUIERDA);
+	animacionAtaqueDer = Animacion(texturaSonic, personajeAncho, 1, ANIMACION_ATAQUE_DERECHA);
+	animacionAtaqueIzq = Animacion(texturaSonic, personajeAncho, 1, ANIMACION_ATAQUE_IZQUIERDA);
 
 	//for (int i=0; i<10; i++){
 	//	animacionQuietoDer.cargarSprites(0, 0, 1);
@@ -165,14 +165,14 @@ void Personaje::cargarSpriteSonic(){
 	animacionQuietoDer.cargarSprites(0, 0, 1);
 	animacionCaminarDer.cargarSprites(1, 0, 9);
 	animacionCorrerDer.cargarSprites(0, 1, 4);
-	animacionSaltarDer.cargarSprites(0, 0, 9);
-	animacionAtaqueDer.cargarSprites(0, 0, 9);
+	animacionSaltarDer.cargarSprites(0, 2, 9);
+	animacionAtaqueDer.cargarSprites(0, 2, 9);
 
 	animacionQuietoIzq.cargarSpritesAlReves(9, 3, 1);
 	animacionCaminarIzq.cargarSpritesAlReves(0, 3, 9);
 	animacionCorrerIzq.cargarSpritesAlReves(6, 4, 4);
-	animacionSaltarIzq.cargarSpritesAlReves(1, 1, 9);
-	animacionAtaqueIzq.cargarSprites(1, 1, 9);
+	animacionSaltarIzq.cargarSpritesAlReves(1, 5, 9);
+	animacionAtaqueIzq.cargarSpritesAlReves(1, 5, 9);
 
 	animacionCongelado.cargarSprites(0, 0, 1);
 
@@ -536,13 +536,10 @@ void Personaje::irDerecha()
 
 void Personaje::reanudarLuegoDeColision()
 {
-	if (this->colisionando)
-	{
-
-		this->puedeIrDerecha = true;
-		this->puedeIrIzquierda = true;
-		this->resbalando = false;
-	}
+	colisionando = false;
+	this->puedeIrDerecha = true;
+	this->puedeIrIzquierda = true;
+	this->resbalando = false;
 }
 
 void Personaje::detener()

@@ -733,6 +733,10 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				}
 			}
 
+			if(!huboColision){
+				sonic->reanudarLuegoDeColision();
+			}
+
 
 
 			//PINCHE

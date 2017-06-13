@@ -34,7 +34,7 @@ class Personaje
 		Textura *texturaEscudo;
 		Textura *texturaInvencible;
 
-		Textura *texturaAtaque;
+		//Textura *texturaAtaque;
 
 		int id;
 		int personajeAncho;
