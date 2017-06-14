@@ -12,8 +12,8 @@ Mosca::Mosca(int x, int y,int maxX,int minX) :
 {
 	this->textura = NULL;
 	this->tiempo = SDL_GetTicks();
-	this->maximoX = x+maxX;
-	this->minimoX = x-minX;
+	this->maximoX = maxX;
+	this->minimoX = minX;
 	this->contadorSprite = 0;
 	this->velocidad = 50;
 	this->numeroMaximoSprites=8;
@@ -69,6 +69,10 @@ SDL_Rect Mosca::obtenerDimensiones(){
 	SDL_Rect recta = {this->getPosicionesX() + 30,this->getPosicionesY() + 55, 95, 38};
 	return recta;
 }
+int Mosca::getPosicionDeEnemigo(){
+	return this->maximoX;
+}
+
 
 
 

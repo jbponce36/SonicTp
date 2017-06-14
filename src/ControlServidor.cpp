@@ -363,7 +363,13 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	enviarATodos(obtenerMensajeNivel());
 	enviarDatosEscenarioATodos();
 
-	this->CreacionEnemigos();
+	//this->CreacionEnemigos();
+
+
+
+	//this->getJmos()->getMinimoran();
+	//resetEnemigosPorNivel(this->getJmos()->getMinimoran(),this->getJmos()->getMaximoran(),this->getJpes()->getMinimoran(),this->getJpes()->getMaximoran(),this->getJcang()->getMinimoran(),this->getJcang()->getMaximoran());
+	this->resetEnemigosPorNivel(0,0,0,0,0,0);
 	this->enviarDatosEnemigosIniciales();
 	this->enviarATodos(FIN_MENSAJES_ENEMIGOS);
 
@@ -1022,10 +1028,111 @@ void ControlServidor::limpiarObstaculos(){
 	vista->getConstructorEntidades()->entidades.clear();
 
 }
+void ControlServidor::limpiarEnemigos(){
+    for (int i = 0; i<this->enemigos.size();i++){
+    	delete enemigos[i];
+    }
+    enemigos.clear();
+}
+void ControlServidor::resetEnemigosPorNivel(int minMosca1,int maxMosca1,int minPez1,int maxPez1,int minCangrejo1,int maxCangrejo1){
+	int minCangrejo = 3;
+	int maxCangrejo = 7;
+	int minMosca = 3;
+	int maxMosca = 5;
+	int minPez = 2;
+	int maxPez = 5;
 
-void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez,int maxPez,int minCangrejo,int maxCangrejo){
+	int cantidadEnemigos = 0;
+	int	contadorCangrejo = 0;
+	int contadorPescado = 0;
+	int contadorMosaca = 0;
+	srand(time(NULL));
+	int numCangrejo = minCangrejo + rand() % ((maxCangrejo + 1) - minCangrejo);
+	cout <<"numCangrejo: "<<numCangrejo<<endl;
 
+	//srand(time(NULL));
+	int numMosca = minMosca + rand() % ((maxMosca+1) - minMosca);
+	cout <<"numMosca: "<<numMosca<<endl;
+	//srand(time(NULL));
 
+	int numPescado = minPez + rand() % ((maxPez+1) - minPez);
+	cout <<"numPescado: "<<numPescado<<endl;
+	int sumaEnemigos = numCangrejo + numMosca + numPescado;
+	while((cantidadEnemigos < MAXIMO_ENEMIGOS_EN_MAPA) and (cantidadEnemigos<sumaEnemigos)){
+		if((contadorCangrejo < numCangrejo) and (cantidadEnemigos <MAXIMO_ENEMIGOS_EN_MAPA)){
+			int rangoDeMovimientoMinimo = 500 + rand() % ((7300+1) - 500);
+			bool posicionValida = true;
+			for(int i=0;i<enemigos.size();i++){
+				int posicion = enemigos[i]->getPosicionDeEnemigo();
+				if(((posicion + 300)>rangoDeMovimientoMinimo) and ((posicion - 300)<rangoDeMovimientoMinimo)){
+					posicionValida = false;
+				}
+			}
+			if(posicionValida){
+				int posicionX = 0 + rand() % ((300+1) - 0);
+				posicionX = rangoDeMovimientoMinimo + posicionX;
+				int RangoDeMovimientoMaximo = rangoDeMovimientoMinimo + 300;
+				Cangrejo *cangrejo = new Cangrejo(posicionX,ALTURA_Y_CANGREJO,RangoDeMovimientoMaximo,rangoDeMovimientoMinimo);
+				enemigos.push_back(cangrejo);
+
+				contadorCangrejo++;
+				cantidadEnemigos++;
+			}
+		}
+		if((contadorPescado < numPescado) and (cantidadEnemigos <MAXIMO_ENEMIGOS_EN_MAPA)){
+			int rangoDeMovimientoMinimo = 500 + rand() % ((7300+1) - 500);
+			bool posicionValida = true;
+			for(int i=0;i<enemigos.size();i++){
+				int posicion = enemigos[i]->getPosicionDeEnemigo();
+				if(((posicion + 300)>rangoDeMovimientoMinimo) and ((posicion - 300)<rangoDeMovimientoMinimo)){
+					posicionValida = false;
+				}
+			}
+			if(posicionValida){
+				int posicionY = ALTURA_MINIMA_PESCADO + rand() % ((ALTURA_MAXIMA_PESCADO+1) - ALTURA_MINIMA_PESCADO);
+
+				Pescado *pescado = new Pescado(rangoDeMovimientoMinimo,posicionY,ALTURA_MAXIMA_PESCADO,ALTURA_MINIMA_PESCADO);
+				enemigos.push_back(pescado);
+
+				contadorPescado++;
+				cantidadEnemigos++;
+			}
+		}
+		if((contadorMosaca < numMosca) and (cantidadEnemigos <MAXIMO_ENEMIGOS_EN_MAPA)){
+
+			int rangoDeMovimientoMinimo = 500 + rand() % ((7300+1) - 500);
+			bool posicionValida = true;
+			for(int i=0;i<enemigos.size();i++){
+				int posicion = enemigos[i]->getPosicionDeEnemigo();
+				if(((posicion + 300)>rangoDeMovimientoMinimo) and ((posicion - 300)<rangoDeMovimientoMinimo)){
+					posicionValida = false;
+				}
+			}
+			if(posicionValida){
+				int posicionX = 0 + rand() % ((300+1) - 0);
+				posicionX = rangoDeMovimientoMinimo + posicionX;
+				int RangoDeMovimientoMaximo = rangoDeMovimientoMinimo + 300;
+
+				int posicionY = ALTURA_MINIMA_MOSCA + rand() % ((ALTURA_MAXIMA_MOSCA + 1)-ALTURA_MINIMA_MOSCA );
+
+				Mosca *mosca = new Mosca(posicionX,posicionY,RangoDeMovimientoMaximo,rangoDeMovimientoMinimo);
+
+				enemigos.push_back(mosca);
+
+				contadorMosaca++;
+				cantidadEnemigos++;
+			}
+		}
+	}
+	cout <<"contadorCangrejo: "<<contadorCangrejo<<endl;
+	cout <<"contadorMosca: "<<contadorMosaca<<endl;
+	cout <<"contadorPescado: "<<contadorPescado<<endl;
+	cout <<"cantidad de enemigos q se tienen q crear: "<<cantidadEnemigos<<endl;
+	cout <<"'''''''''''''''''''''''''''''''''''''''''' "<<endl;
+	for(int i = 0;i<enemigos.size();i++){
+		cout<<enemigos[i]->getPosicionDeEnemigo()<<endl;
+	}
+	cout <<"'''''''''''''''''''''''''''''''''''''''''' "<<endl;
 }
 void ControlServidor::verificarDuracionAtaque(Personaje *sonic)
 {

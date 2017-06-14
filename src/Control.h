@@ -72,6 +72,7 @@ public:
 	void inicializarEscenario(HiloRecibirCliente *hiloRecibir);
 
 	void inicializarEnemigos(HiloRecibirCliente *hiloRecibir);
+	void limpiarEnemigos();
 	void parsearMensajeEnemigo(std::string mensaje);
 
 	void agregarEntidad(std::string mensaje);
