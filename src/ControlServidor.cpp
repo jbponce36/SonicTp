@@ -820,9 +820,10 @@ void ControlServidor::CreacionEnemigos(){
 
 		*/
 
-	Cangrejo *enemigo1 = new Cangrejo(500,470,100,200);
+	Cangrejo *enemigo1 = new Cangrejo(500,800,100,200);
 	this->enemigos.push_back(enemigo1);
-	Pescado *enemigo2 = new Pescado(900,470,200,100);
+	Pescado *enemigo2 = new Pescado(900,900,200,100);
+
 	this->enemigos.push_back(enemigo2);
 	Mosca *enemigo3 = new Mosca(700,300,200,100);
 	this->enemigos.push_back(enemigo3);

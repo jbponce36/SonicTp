@@ -18,6 +18,7 @@ Cangrejo::Cangrejo(int x, int y,int maxX,int minX) :
 	this->velocidad = 40;
 	this->numeroMaximoSprites=4;
 	this->setPuntaje(100);
+	this->setPosicionesY(700);
 
 }
 void Cangrejo::calcularNumeroDeSprite(){
@@ -86,6 +87,7 @@ Cangrejo::Cangrejo(std::string mensaje, std::string tipo,VistaSDL *vista): Enemi
 	this->minimoX = 0;
 	this->tiempo = 0;
 	this->velocidad = 0;
+	this->setPosicionesY(700);
 
 }
 void Cangrejo::cargarSprites(int x, int y, int cantidad)
