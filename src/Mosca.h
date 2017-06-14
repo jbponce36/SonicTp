@@ -7,8 +7,8 @@
 
 #ifndef MOSCA_H_
 #define MOSCA_H_
-#define ALTURA_MAXIMA_MOSCA 600
-#define ALTURA_MINIMA_MOSCA 200
+#define ALTURA_MAXIMA_MOSCA 580
+#define ALTURA_MINIMA_MOSCA 350
 
 #include "Enemigo.h"
 class Mosca : public Enemigo{

@@ -610,6 +610,7 @@ void Control::inicializarEnemigos(HiloRecibirCliente *hiloRecibir){
 		mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	}
 }
+
 void Control::limpiarEnemigos(){
     for (int i = 0; i<this->enemigos.size();i++){
     	delete enemigos[i];
