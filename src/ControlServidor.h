@@ -29,6 +29,7 @@
 #include "Cangrejo.h"
 #include "Pescado.h"
 #include "Mosca.h"
+#include "Jefe.h"
 #include "Pinche.h"
 #include "parseadorJson.h"
 #include "jescenarioJuego.h"
@@ -39,6 +40,7 @@
 #include "jmosca.h"
 #include "jpescado.h"
 #include "AdministradorDeNiveles.h"
+#include "Bola.h"
 
 #define FPS_SERVER 25
 #define MAXFILAS 4000
@@ -171,6 +173,7 @@ public:
 	void limpiarObstaculos();
 	void limpiarEnemigos();
 	void resetEnemigosPorNivel(int,int,int,int,int,int);
+	void generarEnemigoFianl();
 private:
 
 	void administrarTeclasServidor();

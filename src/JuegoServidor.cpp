@@ -52,6 +52,9 @@ void JuegoServidor::inicializarJuegoServidor(/*std::jescenarioJuego *jparseador*
 	control->setAnill(jparseador->getAnillo());
 	control->setJpied(jparseador->getPiedra());
 	control->setJpin(jparseador->getPinche());
+	control->setJmos(jparseador->getMosca());
+	control->setJpes(jparseador->getPescado());
+	control->setJcang(jparseador->getCangrejo());
 
 
 

@@ -22,7 +22,9 @@
 #include "Cangrejo.h"
 #include "Pescado.h"
 #include "Mosca.h"
+#include "Jefe.h"
 #include "Pinche.h"
+#include "Bola.h"
 
 #define FPS 25
 #define TICKS_POR_FRAME 1000/FPS

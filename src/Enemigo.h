@@ -44,6 +44,7 @@ public:
 	int getNumeroSprite();
 	std::string getTipoEnemigo();
 	void setTipoEnemigo(std::string tipo);
+	virtual void restarVida();
 
 
 	//ladoCliente

@@ -17,6 +17,7 @@ Mosca::Mosca(int x, int y,int maxX,int minX) :
 	this->contadorSprite = 0;
 	this->velocidad = 50;
 	this->numeroMaximoSprites=8;
+	this->vidas = VIDAS_MOSCA;
 	this->setPuntaje(500);
 
 }
@@ -72,7 +73,12 @@ SDL_Rect Mosca::obtenerDimensiones(){
 int Mosca::getPosicionDeEnemigo(){
 	return this->maximoX;
 }
-
+void Mosca::restarVida(){
+	this->vidas = this->vidas - 1;
+	if(this->vidas <=0 ){
+		this->setVivo(false);
+	}
+}
 
 
 
