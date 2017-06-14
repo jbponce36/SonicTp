@@ -36,6 +36,8 @@ public:
 	Jefe(std::string mensaje, std::string tipo, VistaSDL *vista);
 	void cargarSprites(int x, int y, int cantidad);
 	void renderizar(int camaraX, int camaraY);
+
+
 };
 
  /* namespace std */

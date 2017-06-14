@@ -2,6 +2,7 @@
 #include "debug.h"
 #define MODULO 'CONTROL'
 
+
 Control::Control(int posicionX, int posicionY, int maxJugadores,
 		std::vector<Personaje*> *sonics, Logger *log, VistaSDL *vista, int modoDeJuego) :
 		posicionInicialX(posicionX), posicionInicialY(posicionY), log(log), salir(
@@ -321,10 +322,21 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 				this->admNiveles.pasarDeNivel();
 				this->admNiveles.cargarNivel(vista, sonic);
-
-
+				admNiveles.mostrarPunConPan(vista,sonics,this->modoDeJuego);
+				//this->vista->mostraMenuInicial(log);
+				//this->salir = true;
+				cout<<"---------------------------------"<<admNiveles.getNivel()<<endl;
 			}
-			admNiveles.mostrarPunConPan(vista,sonics,this->modoDeJuego);
+
+			else if(admNiveles.EsUltimoNivel()){
+				cout<<"entro en el else----------------"<<endl;
+
+
+				this->admNiveles.mostrarPunConPan(this->vista,sonics,this->modoDeJuego);
+				this->vista->mostraMenuInicial(log);
+				this->salir = true;
+			}
+
 			for (int indice = 0; indice < sonics->size(); indice++) {
 
 				sonics->at(indice)->getPuntos()->setCantAnillos(0);

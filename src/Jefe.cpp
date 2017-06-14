@@ -197,3 +197,4 @@ void Jefe::renderizar(int camaraX, int camaraY){
 Jefe::~Jefe() {
 	// TODO Auto-generated destructor stub
 }
+

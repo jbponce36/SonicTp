@@ -700,6 +700,23 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				SDL_Rect enemigoRec = enemigos[i]->obtenerDimensiones();
 				colision = SDL_HasIntersection(&sonicRect,&enemigoRec);
 				if(colision == SDL_TRUE){
+					if(!enemigos[i]->getVivo()  && enemigos[i]->getTipoEnemigo().compare("j") == 0){
+						char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
+									std::string msjPasarNivel = "PASARNIVEL" ;
+									msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
+									strcpy(buffer, msjPasarNivel.c_str());
+									int id = 1;
+									std::vector<Hiloenviar*>::iterator poshilo;
+									for(poshilo = hilosEnviar->begin();poshilo != hilosEnviar->end();poshilo++)
+									{
+										if(!sonics->at(id)->estaCongelado())
+										{
+											(*poshilo)->enviarDato(buffer);
+										}
+										id++;
+									}
+					}
+
 					if(enemigos[i]->getVivo()){
 						if((*pos).second->estaAtacando() || (*pos).second->agarroBonusInvencible()){
 							enemigos[i]->restarVida();

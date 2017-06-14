@@ -53,7 +53,7 @@ int AdministradorDeNiveles::getNivel(){
 
 bool AdministradorDeNiveles::EsUltimoNivel(){
 
-	return (this->nivelActual == 5);
+	return (this->nivelActual > 5);
 }
 
 AdministradorDeNiveles::~AdministradorDeNiveles(){
