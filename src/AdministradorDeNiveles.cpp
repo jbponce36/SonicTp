@@ -123,8 +123,22 @@ void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor*
 	vista->getConstructorEntidades()->cargarEntidades(jjuego->getEscenario()->getentidades(),vista->getRenderizador());
 	controlServidor->enviarDatosEscenarioATodos();
 	controlServidor->limpiarEnemigos();
-	controlServidor->resetEnemigosPorNivel(0,0,0,0,0,0);
+
+	//cout<<"nivel de juego -------------------------"<<nivelServidor<<endl;
+	if((CANTIDAD_NIVELES-1) == nivelServidor){
+		controlServidor->generarEnemigoFianl();
+	}
+	//controlServidor->generarEnemigoFianl();
+	controlServidor->resetEnemigosPorNivel(jjuego->getMosca()->getMinimoran(),
+			jjuego->getMosca()->getMaximoran(),
+			jjuego->getPescado()->getMinimoran(),
+			jjuego->getPescado()->getMaximoran(),
+			jjuego->getCangrejo()->getMinimoran(),
+			jjuego->getCangrejo()->getMaximoran());
+
 	controlServidor->enviarDatosEnemigosIniciales();
+
+
 	controlServidor->enviarATodos(FIN_MENSAJES_ENEMIGOS);
 
 
