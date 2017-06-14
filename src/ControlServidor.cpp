@@ -12,7 +12,7 @@
 
 ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, std::map<int, Personaje*> *sonics,
 	std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
-	ConexServidor *server, Logger *log)
+	ConexServidor *server, Logger *log,int modo)
 : posicionInicialX(posicionX), posicionInicialY(posicionY), vista(vista), server(server), log(log),
   sonics(sonics), hilosEnviar(hiloEnviar), hilosRecibir(hiloRecibir), teclas(), mundo(sonics, vista, hiloEnviar)
 {
@@ -29,6 +29,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 	}
 	this->log->setModulo("CONTROL SERVIDOR");
 	this->envioModoDeJuego = false;
+	this->modoDeJuego = modo;
 }
 
 ControlServidor::~ControlServidor() {
@@ -220,6 +221,8 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		if( this->pasarNivel == true )
 		{
 
+			cout<<this->modoDeJuego<<"modo je--------------------------------------------- juego"<<endl;
+
 			this->nivelActual++;
 			char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
 			std::string msjPasarNivel = "PASARNIVEL" ;
@@ -242,19 +245,20 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 			{
 				//aca debemos resetear todos los valores para comenzar el nuevo nivel
 				//if(this-> pasarNivel = true)
-
-				sonic->posicionarseEn(0, 4*vista->getAltoEscenario()/5 - sonic->getAlto());
-				sonic->detener();
-				sonic->parar();
-				int id = sonic->getId();
+				cout<<this->modoDeJuego<<"modo je--------------------------------------------- juego"<<endl;
+				(*pos).second->posicionarseEn(0, 4*vista->getAltoEscenario()/5 - sonic->getAlto());
+				(*pos).second->detener();
+				(*pos).second->parar();
+				int id = (*pos).second->getId();
 				teclas.at(id).teclaAbajo = false;
 				teclas.at(id).teclaArriba = false;
 				teclas.at(id).teclaDerecha = false;
 				teclas.at(id).teclaIzquierda = false;
 				teclas.at(id).teclaCorrer = false;
 				teclas.at(id).teclaAtaque = false;
-				sonic->getPuntos()->sumarXpuntos(sonic->getPuntos()->getCantAnillos()*10);
-				sonic->getPuntos()->setCantAnillos(0);
+
+				//(*pos).second->getPuntos()->sumarXpuntos(sonic->getPuntos()->getCantAnillos()*10);
+				(*pos).second->getPuntos()->setCantAnillos(0);
 
 
 				//this->pasarNivel = false;

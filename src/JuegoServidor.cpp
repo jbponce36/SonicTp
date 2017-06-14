@@ -47,7 +47,7 @@ void JuegoServidor::inicializarJuegoServidor(/*std::jescenarioJuego *jparseador*
 	}
 
 
-	control = new ControlServidor(0, 0, vista, &sonics, &hilosEnviar, &hilosRecibir, server,log);
+	control = new ControlServidor(0, 0, vista, &sonics, &hilosEnviar, &hilosRecibir, server,log,modoJuego);
 
 	control->setAnill(jparseador->getAnillo());
 	control->setJpied(jparseador->getPiedra());

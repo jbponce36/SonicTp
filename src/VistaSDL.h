@@ -69,6 +69,7 @@ private:
     pthread_mutex_t mutexRenderizar; //Lo uso entre mostrar esperar jugadores y el menu de grupos
     vector<jescenarioJuego*> jjuego;
     SDL_Color gris;
+    vector<int> pers;
 
 
 public:

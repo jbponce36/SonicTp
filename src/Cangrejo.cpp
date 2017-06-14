@@ -66,7 +66,7 @@ void Cangrejo::actualizarPosicion(){
 	this->tiempo = SDL_GetTicks();
 }
 SDL_Rect Cangrejo::obtenerDimensiones(){
-	SDL_Rect recta = {this->getPosicionesX(),this->getPosicionesY(),90,90};
+	SDL_Rect recta = {this->getPosicionesX() + 20, this->getPosicionesY() + 30, 70, 105};
 	return recta;
 }
 int Cangrejo::getPosicionDeEnemigo(){
@@ -99,8 +99,8 @@ Cangrejo::Cangrejo(std::string mensaje, std::string tipo,VistaSDL *vista): Enemi
 void Cangrejo::cargarSprites(int x, int y, int cantidad)
 {
 	//Carga los sprites de izquierda a derecha --->
-	int dimension = 50;
-	SDL_Rect sprite = {x*dimension, y*dimension, dimension, dimension};
+	int dimension = 150;
+	SDL_Rect sprite = {x*dimension, y*dimension, dimension, dimension - 50};
 
 	for (int i=0; i<cantidad; i++)
 	{
@@ -129,8 +129,8 @@ void Cangrejo::renderizar(int camaraX, int camaraY){
 	//cout<<"numero animacion: "<<this->getNumeroSprite()<<endl;
 	cuadroDeVentana.x=(this->getPosicionesX()-camaraX);
 	cuadroDeVentana.y=(this->getPosicionesY()-camaraY);
-	cuadroDeVentana.w= 90;
-	cuadroDeVentana.h= 90;
+	cuadroDeVentana.w= 150;
+	cuadroDeVentana.h= 100;
 	//cout<<"posicion x: "<<this->posicionesX<<endl;
 	//cout<<"posicion y: "<<this->posicionesX<<endl;
 	//cout<<"ancho: "<<this->posicionesYdimensones.w<<endl;
