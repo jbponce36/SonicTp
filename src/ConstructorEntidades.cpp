@@ -682,7 +682,7 @@ void ConstructorEntidades::mostrarPiedras(SDL_Renderer* renderizador, SDL_Rect *
 				//{
 				  (*pos)->dibujar(renderizador, camara);
 				  SDL_Rect limites = (*pos)->obtenerLimites();
-				  Util::dibujarRecuadro(&limites, renderizador, camara);
+				 // Util::dibujarRecuadro(&limites, renderizador, camara);
 				//}
 		}
 }
@@ -697,7 +697,7 @@ void ConstructorEntidades::mostrarPinches(SDL_Renderer* renderizador, SDL_Rect *
   				//{
   				  (*pos)->dibujar(renderizador, camara);
   				  SDL_Rect limites = (*pos)->obtenerLimites();
-  				  Util::dibujarRecuadro(&limites, renderizador, camara);
+  				  //Util::dibujarRecuadro(&limites, renderizador, camara);
   				//}
   		}
  }
