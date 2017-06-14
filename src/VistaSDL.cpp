@@ -14,8 +14,6 @@ using namespace std;
 #include "Textura.h"
 #include "ConstructorEntidades.h"
 
-
-
 VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario *jescenario, Logger *logger, bool oculta)
 {
 	this->renderizador = NULL;

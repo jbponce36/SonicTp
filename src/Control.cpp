@@ -523,7 +523,7 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 
 			//Dibujar cuadrado sonic
 			SDL_Rect limites = (*pos)->obtenerLimites();
-			Util::dibujarRecuadro(&limites, vista->obtenerRender(), camara->devolverCamara());
+			//Util::dibujarRecuadro(&limites, vista->obtenerRender(), camara->devolverCamara());
 		}
 	}
 
@@ -551,7 +551,7 @@ void Control::animarAnilla(Camara *camara, VistaSDL *vista) {
 
 		//Dibujar cuadrado anillas
 				SDL_Rect limites = (*pos)->obtenerLimites();
-				Util::dibujarRecuadro(&limites, vista->obtenerRender(), camara->devolverCamara());
+				//Util::dibujarRecuadro(&limites, vista->obtenerRender(), camara->devolverCamara());
 	}
 }
 
@@ -607,10 +607,12 @@ void Control::inicializarEnemigos(HiloRecibirCliente *hiloRecibir){
 				Cangrejo *enemigoCangrejo = new Cangrejo(mensaje,"c",vista);
 				//cout<<"posicion x: "<<enemigo->getPosicionesX()<<endl;
 				//cout<<"posicion y: "<<enemigo->getPosicionesY()<<endl;
+				enemigoCangrejo->setPosicionesY(800);
 				this->enemigos.push_back(enemigoCangrejo);
 			}
 			else if (mensaje.substr(1,1) ==  "p"){
 				Pescado *enemigoPescado = new Pescado(mensaje,"p",vista);
+				enemigoPescado->setPosicionesY(900);
 				this->enemigos.push_back(enemigoPescado);
 			}else if (mensaje.substr(1,1) ==  "m"){
 				Mosca *enemigoPescado = new Mosca(mensaje,"m",vista);
@@ -626,6 +628,7 @@ void Control::inicializarEnemigos(HiloRecibirCliente *hiloRecibir){
 		mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	}
 }
+
 void Control::limpiarEnemigos(){
     for (int i = 0; i<this->enemigos.size();i++){
     	delete enemigos[i];

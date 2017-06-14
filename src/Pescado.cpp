@@ -84,6 +84,7 @@ Pescado::Pescado(std::string mensaje, std::string tipo,VistaSDL *vista): Enemigo
 	this->minimoY = 0;
 	this->tiempo = 0;
 	this->velocidad = 0;
+	this->setPosicionesY(900);
 
 }
 void Pescado::cargarSprites(int x, int y, int cantidad)

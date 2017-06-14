@@ -7,9 +7,11 @@
 
 #ifndef PESCADO_H_
 #define PESCADO_H_
-#define ALTURA_MAXIMA_PESCADO 700
-#define ALTURA_MINIMA_PESCADO 300
+
+#define ALTURA_MAXIMA_PESCADO 930
+#define ALTURA_MINIMA_PESCADO 650
 #define VIDAS_PESCADO 1
+
 #include "Enemigo.h"
 class Pescado : public Enemigo{
 private:
