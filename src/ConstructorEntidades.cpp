@@ -535,6 +535,7 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 					x = x * 1000 + 700;
 					debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus escudo en %d", x);
 					nuevoBonus = new Bonus(ancho,alto,generarId() ,color,ruta,x,y,index,log,Bonus::ESCUDO);
+
 				}
 				else if (tipoBono==2)
 				{

@@ -843,7 +843,7 @@ void ControlServidor::CreacionEnemigos(){
 	Pescado *enemigo2 = new Pescado(900,900,200,100);
 
 	this->enemigos.push_back(enemigo2);
-	Mosca *enemigo3 = new Mosca(700,300,200,100);
+	Mosca *enemigo3 = new Mosca(700,400,200,100);
 	this->enemigos.push_back(enemigo3);
 }
 
