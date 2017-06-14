@@ -64,6 +64,7 @@ private:
     jpescado* jpes;
     vector<jescenarioJuego*> jjuego;
     bool envioModoDeJuego;
+    int modoDeJuego;
 
 	bool pasarNivel;
 	int nivelActual;
@@ -104,7 +105,7 @@ public:
 
 	ControlServidor(int altura, int anchura, VistaSDL *vista, std::map<int, Personaje*> *sonics,
 		std::vector<Hiloenviar*> *hiloEnviar, std::vector<Hilorecibir*> *hiloRecibir,
-		ConexServidor *server, Logger *log);
+		ConexServidor *server, Logger *log,int modo);
 	virtual ~ControlServidor();
 
 	void ControlarJuegoServidor(VistaSDL *vista, bool &juegoTerminado);
