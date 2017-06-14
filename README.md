@@ -14,6 +14,7 @@
     SDL2_IMAGE version 2.0, link : https://www.libsdl.org/projects/SDL_image/
     Jannson, version 2.10, link : http://www.digip.org/jansson/releaseg++s/STL
     pthread, libreria standard de ubuntu
+    SDL2_ttf, version 2.0.14, link : https://www.libsdl.org/projects/SDL_ttf/
 # Compilación por consola
     servidor:
        make servidor

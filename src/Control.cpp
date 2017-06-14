@@ -310,13 +310,13 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 		//aca recibe el mensaje para pasar de nivel
 		else if (mensaje.compare("PASARNIVEL") == 0) {
-
 			if (!admNiveles.EsUltimoNivel()) {
 				debug(1, "Control::controlDeMensajes", "Paso de nivel y borro las anillas", 0);
 				vista->getConstructorEntidades()->anillos.clear();
 				vista->getConstructorEntidades()->piedra.clear();
 				vista->getConstructorEntidades()->pinche.clear();
-				this->enemigos.clear();
+				//this->enemigos.clear();
+				this->limpiarEnemigos();
 				vista->getConstructorEntidades()->entidades.clear();
 
 				this->admNiveles.pasarDeNivel();
@@ -331,12 +331,6 @@ void Control::controlDeMensajes(Personaje* sonic,
 			}
 			this->inicializarEscenario(hiloRecibir);
 			this->inicializarEnemigos(hiloRecibir);
-			/* El servidor manda las posiciones
-			std::vector<Personaje*>::iterator poss;
-			for (poss = sonics->begin(); poss != sonics->end(); poss++) {
-				Personaje * cl2 = (*poss);
-				cl2->posicionarseConAnimacion(0,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1
-			}*/
 
 		} else if (mensaje.substr(0, 3) == MENSAJE_CAMARA) {
 			int nuevoX, nuevoY;
@@ -613,6 +607,12 @@ void Control::inicializarEnemigos(HiloRecibirCliente *hiloRecibir){
 		}
 		mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	}
+}
+void Control::limpiarEnemigos(){
+    for (int i = 0; i<this->enemigos.size();i++){
+    	delete enemigos[i];
+    }
+    enemigos.clear();
 }
 void Control::parsearMensajeEnemigo(std::string mensaje){
 	//Ej mensaje: /-1-100-200-2v

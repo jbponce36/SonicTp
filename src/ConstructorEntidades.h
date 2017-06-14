@@ -40,7 +40,7 @@ namespace std{
 class ConstructorEntidades {
 private:
 	int generadorId;
-	int limiteAncho;  //Es el ancho de todo el escenario menos el final
+	int limiteAncho;  //Es el ancho de todo el escenario
 	int limiteAlto; //Es la altura del pasto
 	int anchoVentana;
 

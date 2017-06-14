@@ -7,6 +7,7 @@
 
 #ifndef CANGREJO_H_
 #define CANGREJO_H_
+#define ALTURA_Y_CANGREJO 470
 #include "Enemigo.h"
 class Cangrejo : public Enemigo{
 private:
@@ -27,7 +28,7 @@ public:
 	void actualizarPosicion();
 	void calcularNumeroDeSprite();
 	SDL_Rect obtenerDimensiones();
-
+	int getPosicionDeEnemigo();
 //lado cliente
 	Cangrejo(std::string mensaje, std::string tipo, VistaSDL *vista);
 	void cargarSprites(int x, int y, int cantidad);

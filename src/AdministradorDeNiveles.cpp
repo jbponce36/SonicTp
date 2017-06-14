@@ -122,6 +122,8 @@ void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor*
 
 	vista->getConstructorEntidades()->cargarEntidades(jjuego->getEscenario()->getentidades(),vista->getRenderizador());
 	controlServidor->enviarDatosEscenarioATodos();
+	controlServidor->limpiarEnemigos();
+	controlServidor->resetEnemigosPorNivel(0,0,0,0,0,0);
 	controlServidor->enviarDatosEnemigosIniciales();
 	controlServidor->enviarATodos(FIN_MENSAJES_ENEMIGOS);
 
