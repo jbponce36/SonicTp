@@ -62,7 +62,10 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	negro = {0,0,0};
 	gris = {224,224,224};
 	this->fuente2 = TTF_OpenFont("images/arial.ttf", 40);
-
+	pers.push_back(0);
+	pers.push_back(0);
+	pers.push_back(0);
+	pers.push_back(0);
 	pthread_mutex_init(&mutexRenderizar, NULL);
 }
 
@@ -759,10 +762,11 @@ void VistaSDL::mostrarScoJueIndTodos(vector<Personaje*>* sonics){
 
 			std::string textovidas = "VIDAS: " + Util::intToString(sonics->at(indice)->getPuntos()->getVidas())+
 					"  ANILLOS: "+ Util::intToString(sonics->at(indice)->getPuntos()->getCantAnillos())+
-					"  PUNTOS: " + Util::intToString(sonics->at(indice)->getPuntos()->getPuntos());
+					"  PUNTOS: " + Util::intToString(sonics->at(indice)->getPuntos()->getPuntos()+pers.at(indice));
 			this->dibujarTextoColorFuente(textovidas,0,alto,colores.at(indice),gris,fuente);
 			alto += 23;
 		}
+
 }
 
 void VistaSDL::mostrarScoJueIndTodosFinNiv(vector<Personaje*>* sonics){
@@ -780,11 +784,12 @@ void VistaSDL::mostrarScoJueIndTodosFinNiv(vector<Personaje*>* sonics){
 				punt = punt *2;
 			}
 			//sumamos al puntaje el de los anillos
-			sonics->at(indice)->getPuntos()->sumarXpuntos(punt);
+			//sonics->at(indice)->getPuntos()->sumarXpuntos(punt+pers.at(indice));
 			//Personaje* personaje = (*Personaje) pos;
+			pers.at(indice) = pers.at(indice) + punt;
 			std::string textovidas = "VIDAS: " + Util::intToString(sonics->at(indice)->getPuntos()->getVidas())+
 					"  ANILLOS: "+ Util::intToString(sonics->at(indice)->getPuntos()->getCantAnillos())+
-					"  PUNTOS: " + Util::intToString(sonics->at(indice)->getPuntos()->getPuntos());
+					"  PUNTOS: " + Util::intToString(sonics->at(indice)->getPuntos()->getPuntos()+pers.at(indice));
 			this->dibujarTextoColorFuente(textovidas,150,alto,colores.at(indice),gris,fuente2);
 			alto += 43;
 
