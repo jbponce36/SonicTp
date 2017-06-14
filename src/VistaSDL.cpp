@@ -234,7 +234,7 @@ void VistaSDL::cargarEnemigosTextura(){
 	this->log->addLogMessage("[CARGAR TEXTURA ENEMIGOS] Iniciado.",2);
 
 	Textura *enemigoCangrejo = new Textura();
-	enemigoCangrejo->cargarImagen("images/enemigos/DonCangrejo.png", "no hay", this->renderizador,log);
+	enemigoCangrejo->cargarImagen("images/enemigos/Cangrejo.png", "no hay", this->renderizador,log);
 	this->enemigosTextura.push_back(enemigoCangrejo);
 
 	Textura *enemigoPescado = new Textura();

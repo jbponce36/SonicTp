@@ -784,10 +784,6 @@ std::string Personaje::obtenerMensajeEstadoBonus()
 SDL_Rect Personaje::obtenerLimites(){
 
 	SDL_Rect limites = {this->posicionX+15, this->posicionY+15, this->personajeAncho-30, this->personajeAlto-25};
-	if(estaAtacando()){
-		limites.y +=10;
-		limites.h -=10;
-	}
 	return limites;
 }
 
