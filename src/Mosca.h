@@ -7,6 +7,8 @@
 
 #ifndef MOSCA_H_
 #define MOSCA_H_
+#define ALTURA_MAXIMA_MOSCA 600
+#define ALTURA_MINIMA_MOSCA 200
 
 #include "Enemigo.h"
 class Mosca : public Enemigo{
@@ -27,6 +29,7 @@ public:
 	void actualizarPosicion();
 	void calcularNumeroDeSprite();
 	SDL_Rect obtenerDimensiones();
+	int getPosicionDeEnemigo();
 
 //lado cliente
 	Mosca(std::string mensaje, std::string tipo, VistaSDL *vista);

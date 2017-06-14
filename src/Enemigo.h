@@ -34,6 +34,7 @@ public:
 	std::string intToStringConPadding4(int number);
 	std::string intToStringConPadding2(int number);
 	virtual void actualizarPosicion();
+	virtual int getPosicionDeEnemigo();
 	//void calcularNumeroDeSprite();
 	virtual SDL_Rect obtenerDimensiones();
 	bool getSeguirEnviandoMensajes();

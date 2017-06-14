@@ -97,6 +97,9 @@ void Enemigo::actualizarPosicion(){
 		this->tiempo = SDL_GetTicks();
 	}*/
 }
+int Enemigo::getPosicionDeEnemigo(){
+	return 0;
+}
 /*void Enemigo::calcularNumeroDeSprite(){
 	int numSprite = 0;
 	numSprite = this->contadorSprite/4;
@@ -118,8 +121,8 @@ void Enemigo::actualizarPosicion(){
 
 }*/
 SDL_Rect Enemigo::obtenerDimensiones(){
-	/*SDL_Rect recta = {this->posicionesX,this->posicionesY,90,90};
-	return recta;*/
+	SDL_Rect recta = {0,0,0,0};
+	return recta;
 }
 bool Enemigo::getSeguirEnviandoMensajes(){
 	return this->seguirEnviandoMensajes;

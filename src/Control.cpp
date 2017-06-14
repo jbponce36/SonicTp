@@ -624,6 +624,12 @@ void Control::inicializarEnemigos(HiloRecibirCliente *hiloRecibir){
 		mensaje = hiloRecibir->obtenerElementoDeLaCola();
 	}
 }
+void Control::limpiarEnemigos(){
+    for (int i = 0; i<this->enemigos.size();i++){
+    	delete enemigos[i];
+    }
+    enemigos.clear();
+}
 void Control::parsearMensajeEnemigo(std::string mensaje){
 	//Ej mensaje: /-1-100-200-2v
 	std::string Id = mensaje.substr(1,2);

@@ -13,8 +13,8 @@ Pescado::Pescado(int x, int y,int maxY,int minY) :
 {
 	this->textura = NULL;
 	this->tiempo = SDL_GetTicks();
-	this->maximoY = y+maxY;
-	this->minimoY = y-minY;
+	this->maximoY = maxY;
+	this->minimoY = minY;
 	this->contadorSprite = 0;
 	this->velocidad = 50;
 	this->numeroMaximoSprites=2;
@@ -55,6 +55,9 @@ SDL_Rect Pescado::obtenerDimensiones(){
 	//SDL_Rect recta = {this->getPosicionesX(),this->getPosicionesY(),90,90};
 	SDL_Rect recta = {this->getPosicionesX()+15,this->getPosicionesY(),70,100};
 	return recta;
+}
+int Pescado::getPosicionDeEnemigo(){
+	return this->getPosicionesX();
 }
 
 

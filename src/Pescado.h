@@ -7,6 +7,8 @@
 
 #ifndef PESCADO_H_
 #define PESCADO_H_
+#define ALTURA_MAXIMA_PESCADO 700
+#define ALTURA_MINIMA_PESCADO 300
 #include "Enemigo.h"
 class Pescado : public Enemigo{
 private:
@@ -25,6 +27,7 @@ public:
 	void actualizarPosicion();
 	void calcularNumeroDeSprite();
 	SDL_Rect obtenerDimensiones();
+	int getPosicionDeEnemigo();
 
 
 	Pescado(std::string mensaje, std::string tipo, VistaSDL *vista);

@@ -12,8 +12,8 @@ Cangrejo::Cangrejo(int x, int y,int maxX,int minX) :
 {
 	this->textura = NULL;
 	this->tiempo = SDL_GetTicks();
-	this->maximoX = x+maxX;
-	this->minimoX = x-minX;
+	this->maximoX = maxX;
+	this->minimoX = minX;
 	this->contadorSprite = 0;
 	this->velocidad = 40;
 	this->numeroMaximoSprites=4;
@@ -65,6 +65,9 @@ void Cangrejo::actualizarPosicion(){
 SDL_Rect Cangrejo::obtenerDimensiones(){
 	SDL_Rect recta = {this->getPosicionesX(),this->getPosicionesY(),90,90};
 	return recta;
+}
+int Cangrejo::getPosicionDeEnemigo(){
+	return this->minimoX;
 }
 
 
