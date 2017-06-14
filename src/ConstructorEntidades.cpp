@@ -534,19 +534,19 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 				{
 					x = x * 1000 + 700;
 					debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus escudo en %d", x);
-					nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::ESCUDO);
+					nuevoBonus = new Bonus(ancho,alto,generarId(),color,ruta,x,y,index,log,Bonus::ESCUDO);
 				}
 				else if (tipoBono==2)
 				{
 					x = x * 1000 + 700;
 					debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus anillo en %d", x);
-					nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::RING);
+					nuevoBonus = new Bonus(ancho,alto,generarId(),color,ruta,x,y,index,log,Bonus::RING);
 				}
 				else
 				{
 					x = x * 1000 + 700;
 					debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus invencibilidad en %d", x);
-				    nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::INVENCIBILIDAD);
+				    nuevoBonus = new Bonus(ancho,alto,generarId(),color,ruta,x,y,index,log,Bonus::INVENCIBILIDAD);
 				}
 
 				entidades.push_back(nuevoBonus);
