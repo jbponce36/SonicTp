@@ -57,6 +57,8 @@ void JuegoServidor::inicializarJuegoServidor(/*std::jescenarioJuego *jparseador*
 	control->setJcang(jparseador->getCangrejo());
 
 
+
+
 /*	vector<janillos*> anillos;
 	vector<jpiedra*> piedras;
 	vector<jpinche*> pinches;

@@ -495,15 +495,12 @@ void ConstructorEntidades::quitarEntidad(std::string nombre, int id)
 	//	std::string color, std::string rutaImagen, int indexZ, int minimor,int maximor)
 void ConstructorEntidades::generarBonus(int minimor,int maximor)
 {
-	//Genera bonus en posiciones y cantidades aleatorias
-
-	//Agrego bonus de Escudo
-
-  //tengo que reemplazar el numero random por lo que leeo del json.....
-
-/////////////////////////////////////////////////////////////////////////////////
-
+	this->log->addLogMessage("[CREO BONUS] Iniciado.", 2);
 	int cantidadBonus = Util::numeroRandomEntre(minimor, maximor);
+
+	if (cantidadBonus > 7){
+		 this->log->addLogMessage("[CREO BONUS] ERROR.La Cantidad de Bonus randon" + std::string(" ") + Util::intToString(cantidadBonus) + std::string(" ") + "supera a 7, El numero elegido para fraccionar la pantalla de ancho 8000, por lo tanto se carga el valor por defecto de 7 piedras",1);
+	}
 
 	debug(0,"ConstructorEntidades::generarBonus", "Cantidad total de bonus %d", cantidadBonus);
 
@@ -528,23 +525,26 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 				  int x = myvector.back();
 	 		      myvector.pop_back();
 
-				x = x * 1000 + 700;
+				//x = x * 1000 + 700;
 				//Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::ESCUDO);
 
 				int tipoBono = Util::numeroRandomEntre(1, 3);
 				Bonus* nuevoBonus = NULL;
 				if (tipoBono==1)
 				{
+					x = x * 1000 + 700;
 					debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus escudo en %d", x);
 					nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::ESCUDO);
 				}
 				else if (tipoBono==2)
 				{
+					x = x * 1000 + 700;
 					debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus anillo en %d", x);
 					nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::RING);
 				}
 				else
 				{
+					x = x * 1000 + 700;
 					debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus invencibilidad en %d", x);
 				    nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::INVENCIBILIDAD);
 				}
@@ -603,6 +603,8 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 			c++;
 		}
 	}*/
+
+	this->log->addLogMessage("[CREO BONUS] Terminado.", 2);
 
 }
 
