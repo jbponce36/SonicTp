@@ -170,68 +170,41 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 		else if (mensaje.substr(0, 13) == "BORRAR_ANILLA"){
 
-			//debug(1,"Control::controlDeMensajes_BORRADOANILLAS", (char*) mensaje.c_str() , 0);
+			debug(1,"Control::controlDeMensajes_BORRADOANILLAS", (char*) mensaje.c_str() , 0);
 
 			std::string tid = mensaje.substr(13, 2);
 			tid.erase(std::remove(tid.begin(), tid.end(), PADDING), tid.end());
 
-
 			int numeroAnilla = atoi(tid.c_str());
 
+			debug(1, "Control::controlDeMensajes", "Voy a borrar la anilla con id %d",numeroAnilla);
 
-			debug(1, "Control::controlDeMensajes", "Voy a borrar la anilla %d",numeroAnilla);
+		          /////codigo viejo sin usar el set ni el get
+				   int posAnillaActual = 0;
 
+					list<Anillos*>::iterator pos;
+					Anillos* actual = NULL;
 
+			for(pos= vista->getConstructorEntidades()->anillos.begin();pos!=vista->getConstructorEntidades()->anillos.end();pos++){
 
-	     /*     	list<Anillos*>::iterator pos;
+			 if((*pos)->getId() == numeroAnilla){
 
-	          for(pos= vista->getConstructorEntidades()->anillos.begin();pos!=vista->getConstructorEntidades()->anillos.end();pos++){
+				 actual = (*pos);
+				 debug(1, "Control::controlDeMensajes", "Anilla encontrada Get id %d",(actual)->getId());
 
-		} else if (mensaje.substr(0, 13) == "BORRAR_ANILLA") {
+			   }
+			 }
 
-			std::string id = mensaje.substr(13, 2);
-			id.erase(std::remove(id.begin(), id.end(), PADDING), id.end());
+			if (actual != NULL){
+				vista->getConstructorEntidades()->anillos.remove(actual);
 
-            int numeroAnilla = atoi(id.c_str());
-
-            cout<<"numuero Anilla borrada"<<endl;
-            cout<<numeroAnilla<<endl;
-
-
-     /*      	list<Anillos*>::iterator pos;
-
-          for(pos= vista->getConstructorEntidades()->anillos.begin();pos!=vista->getConstructorEntidades()->anillos.end();pos++){
-
-             if((*pos)->getId()== numeroAnilla){
-
-            	 delete (*pos);
-            	 vista->getConstructorEntidades()->anillos.erase(pos);
-
-            	 //return;
-             }
-          }
-     */
-
-
-           ///////codigo viejo borrado
-		int posAnillaActual = 0;
-
-			list<Anillos*>::iterator pos;
-			Anillos* actual = NULL;
-			for (pos = vista->getConstructorEntidades()->anillos.begin();
-					pos != vista->getConstructorEntidades()->anillos.end();
-					pos++) {
-				if (numeroAnilla == posAnillaActual) {
-					actual = (*pos);
-				}
-				posAnillaActual++;
 			}
 
-			vista->getConstructorEntidades()->anillos.remove(actual);
 
-		}
+	}
 
-         ////codigo viejo borrado
+
+
 		else if (mensaje.substr(0, 3) == "Aid")
 
 				{
@@ -243,8 +216,8 @@ void Control::controlDeMensajes(Personaje* sonic,
 					id.erase(std::remove(id.begin(), id.end(), PADDING), id.end());
 
 					int intid = atoi(id.c_str());
-					cout<<"********ID************"<<endl;
-					cout<<intid<<endl;
+					//cout<<"********ID************"<<endl;
+					//cout<<intid<<endl;
 					//posx
 
 					std::string posX = mensaje.substr(6, 4);
@@ -271,9 +244,9 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 		else if (mensaje.substr(0, 1) == "p") {
 
-			debug(1, "Control::controlDeMensajes",
-					"Mensaje piedras parar movimiento sonic", 0);
-			debug(1, "Control::controlDeMensajes", (char*) mensaje.c_str(), 0);
+			//debug(1, "Control::controlDeMensajes",
+				//	"Mensaje piedras parar movimiento sonic", 0);
+			//debug(1, "Control::controlDeMensajes", (char*) mensaje.c_str(), 0);
 
 			std::string animacion = mensaje.substr(1, 3);
 
@@ -283,7 +256,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 		else if (mensaje.substr(0, 5) == "Piedr") {
 
-			debug(1, "MENSAJE PIEDRA", (char*) mensaje.c_str(), 0);
+			//debug(1, "MENSAJE PIEDRA", (char*) mensaje.c_str(), 0);
 
 			std::string pos_pX = mensaje.substr(6, 4);
 			std::string pos_pY = mensaje.substr(12, 3);
@@ -293,8 +266,8 @@ void Control::controlDeMensajes(Personaje* sonic,
 			int iposX = atoi(pos_pX.c_str());
 			int iposY = atoi(pos_pY.c_str());
 
-			debug(0,"Control::controlDeMensajes","Creando Piedra en X: %d",iposX);
-			debug(0,"Control::controlDeMensajes","Creando Piedra en Y: %d",iposY);
+			//debug(0,"Control::controlDeMensajes","Creando Piedra en X: %d",iposX);
+			//debug(0,"Control::controlDeMensajes","Creando Piedra en Y: %d",iposY);
 
 			std::string rutaImagen = "images/piedra2.png";
 
@@ -309,10 +282,10 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 		else if (mensaje.substr(0,5) == "Pinch"){
 
-			debug(1, "MENSAJE PINCHE", (char*) mensaje.c_str(), 0);
+			//debug(1, "MENSAJE PINCHE", (char*) mensaje.c_str(), 0);
 
 
-			debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
+			//debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
 
 
 			std::string posX = mensaje.substr(6, 4);
@@ -323,7 +296,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 			int iposX = atoi(posX.c_str());
 			int iposY = atoi(posY.c_str());
 
-			debug(1,"POSX", (char*) posX.c_str() , 0);
+			//debug(1,"POSX", (char*) posX.c_str() , 0);
 		    debug(1,"POSY", (char*) posY.c_str() , 0);
 
 		    std::string rutaImagen = "images/Pinchos.png";
@@ -337,18 +310,27 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 		//aca recibe el mensaje para pasar de nivel
 		else if (mensaje.compare("PASARNIVEL") == 0) {
-
 			if (!admNiveles.EsUltimoNivel()) {
+				debug(1, "Control::controlDeMensajes", "Paso de nivel y borro las anillas", 0);
+				vista->getConstructorEntidades()->anillos.clear();
+				vista->getConstructorEntidades()->piedra.clear();
+				vista->getConstructorEntidades()->pinche.clear();
+				//this->enemigos.clear();
+				this->limpiarEnemigos();
+				vista->getConstructorEntidades()->entidades.clear();
+
 				this->admNiveles.pasarDeNivel();
 				this->admNiveles.cargarNivel(vista, sonic);
-			}
-			admNiveles.mostrarPunConPan(vista,sonics);
-			std::vector<Personaje*>::iterator poss;
-			for (poss = sonics->begin(); poss != sonics->end(); poss++) {
-				Personaje * cl2 = (*poss);
-				cl2->posicionarseConAnimacion(0,4*vista->getAltoEscenario()/5 - 150,ANIMACION_QUIETO_DERECHA,1);
+
 
 			}
+			admNiveles.mostrarPunConPan(vista,sonics,this->modoDeJuego);
+			for (int indice = 0; indice < sonics->size(); indice++) {
+
+				sonics->at(indice)->getPuntos()->setCantAnillos(0);
+			}
+			this->inicializarEscenario(hiloRecibir);
+			this->inicializarEnemigos(hiloRecibir);
 
 		} else if (mensaje.substr(0, 3) == MENSAJE_CAMARA) {
 			int nuevoX, nuevoY;
@@ -398,21 +380,23 @@ void Control::controlDeMensajes(Personaje* sonic,
 			}
 		}
 		else if(mensaje.substr(0,3).compare("sco") == 0){
-		//	cout<<"MENSAJE PUNTOS:  "<< mensaje<<endl;
+			//cout<<"MENSAJE PUNTOS:  "<< mensaje<<endl;
 			int id = atoi(mensaje.substr(3,1).c_str());
+
 			//en la ultim a posicion del mensaje esta el equipo sco------1
 			int puntos = Util::stringConPaddingToInt(mensaje.substr(4, 6).c_str());
-			//cout<<"puntos:  "<<puntos<<"id:   "<<id<<endl;
-			if( sonic->getId() == id){
-				sonic->getPuntos()->setPuntos(puntos);
-			}
-
-			std::vector<Personaje*>::iterator pos;
-			for (pos = sonics->begin(); pos != sonics->end(); pos++) {
-				if((*pos)->getId() == id ){
-					(*pos)->getPuntos()->setPuntos(puntos);
+			//(9,1 puede estar mal ver eso)
+			int equipo = atoi(mensaje.substr(9,1).c_str());
+				if( sonic->getId() == id){
+					sonic->getPuntos()->setPuntos(puntos);
 				}
-			}
+
+				std::vector<Personaje*>::iterator pos;
+				for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+					if((*pos)->getId() == id ){
+						(*pos)->getPuntos()->setPuntos(puntos);
+					}
+				}
 		}
 		else if(mensaje.substr(0,3).compare("mod") == 0){
 			int indice = 0;
@@ -502,7 +486,7 @@ void Control::parsearMensajePosicion(mensajePosicion& msj,
 void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 		SDL_Rect *imagenMostrar, Personaje *sonic) {
 	admNiveles.mostrarNivel(camara, vista, imagenMostrar);
-	vista->mostrarScoJueIndTodos(sonics);
+
 
 	for (int contador = 0; contador < vista->cantidadCapasCargadas();
 			contador++) {
@@ -540,7 +524,7 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 
 
 	}
-
+	vista->mostrarPuntPartida(this->modoDeJuego,this->sonics);
 	SDL_RenderPresent(vista->obtenerRender());
 
 }

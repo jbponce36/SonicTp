@@ -12,8 +12,8 @@
 namespace std
 {
 
-ConstructorEntidades::ConstructorEntidades(int limiteAncho, int limiteAlto, Logger *log)
-: generadorId(0), limiteAncho(limiteAncho), limiteAlto(limiteAlto), entidades()
+ConstructorEntidades::ConstructorEntidades(int limiteAncho, int limiteAlto, int anchoVentana, Logger *log)
+: generadorId(0), limiteAncho(limiteAncho), limiteAlto(limiteAlto), anchoVentana(anchoVentana), entidades()
 {
 	this->log = log;
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
@@ -67,16 +67,22 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			color = (*pos).getcolor();
 			ancho = (*pos).getDim()->getvalor1();
 			alto = (*pos).getDim()->getvalor2();
-
 			coordX = (*pos).getcoorx();
-			//debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada X %d\n", coordX);
 			coordY = (*pos).getcoory();
-			//debug(1, "ConstructorEntidades::cargarEntidades", "Cordenada Y %d\n", coordY);
 
 			rutaImagen = (*pos).getruta();
 			indexZ = (*pos).getindex();
 			minimor = (*pos).getMinimor();
 			maximor = (*pos).getMaximor();
+
+			this->setAncho(ancho);
+			this->setAlto(alto);
+			this->setX(coordX);
+			this->setY(coordY);
+			this->setId(id);
+			this->setRuta(rutaImagen);
+			this->setColor(color);
+
 
 			validarDatosNumericos(id, coordX, coordY, indexZ);
 			validar(ancho, 0, MAX_ANCHO);
@@ -124,7 +130,13 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			}
 			else if ((*pos).getruta() == "images/Bonus.png")
 			{
-				generarBonus(ancho, alto, color, rutaImagen, indexZ,minimor,maximor);
+				//generarBonus(ancho, alto, color, rutaImagen, indexZ,minimor,maximor);
+				cout << "cargar Entidades::: Voy a generar los Bonus\n";
+				generarBonus(minimor,maximor);
+			}
+			else if ((*pos).getruta() == "images/Plataforma.png")
+			{
+				generarPlataformas(ancho, alto, color, rutaImagen, indexZ);
 			}
 			else
 			{
@@ -156,6 +168,9 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			this->log->addLogMessage("[CARGAR ENTIDADES] Circulo->"+circulo->toString(), 3);
 		}
 	}
+
+	//Plataforma *plataforma = new Plataforma(262, 81, 99, "Verde", "images/Plataforma.png", 200, 300, 98, log);
+	//entidades.push_back(plataforma);
 
 	cargarImagenes(renderizador);
 	ordenarSegunIndexZ();
@@ -196,6 +211,14 @@ void ConstructorEntidades::cargarEntidadesCliente(list<jentidades> jEntidades, S
 			indexZ = (*pos).getindex();
 			minimor = (*pos).getMinimor();
 			maximor = (*pos).getMaximor();
+
+			this->setAncho(ancho);
+			this->setAlto(alto);
+			this->setX(coordX);
+			this->setY(coordY);
+			this->setId(id);
+			this->setRuta(rutaImagen);
+            this->setColor(color);
 
 
 			validarDatosNumericos(id, coordX, coordY, indexZ);
@@ -441,6 +464,12 @@ void ConstructorEntidades::agregarEntidadCliente(std::string nombre, int id, int
 		entidades.push_back(unAnillo);
 		anillos.push_back(unAnillo);
 	}
+	else if (nombre.compare(PLATAFORMA) == 0)
+	{
+		cout << "Genere una plataforma en " << x << " " << y << "\n";
+		Rectangulo *rectangulo = new Rectangulo(262, 81, id, "Verde", "images/Plataforma.png", x, y, 99, this->log);
+		entidades.push_back(rectangulo);
+	}
 	//Agregar mas cosas que reciba del servidor...
 	return;
 }
@@ -462,8 +491,9 @@ void ConstructorEntidades::quitarEntidad(std::string nombre, int id)
 	//TODO: Si es un anillo fijarse de sacarlo de la lista de anillos!!!!
 }
 
-void ConstructorEntidades::generarBonus(int ancho, int alto,
-		std::string color, std::string rutaImagen, int indexZ, int minimor,int maximor)
+//void ConstructorEntidades::generarBonus(int ancho, int alto,
+	//	std::string color, std::string rutaImagen, int indexZ, int minimor,int maximor)
+void ConstructorEntidades::generarBonus(int minimor,int maximor)
 {
 	//Genera bonus en posiciones y cantidades aleatorias
 
@@ -471,13 +501,14 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 
   //tengo que reemplazar el numero random por lo que leeo del json.....
 
-	 int cantidadBonus = Util::numeroRandomEntre(minimor, maximor);
+/////////////////////////////////////////////////////////////////////////////////
 
+	int cantidadBonus = Util::numeroRandomEntre(minimor, maximor);
 
-    cout<<"CANTIDAD DE BONUS GENERADOS"<<endl;
-    cout<<cantidadBonus<<endl;
+	debug(0,"ConstructorEntidades::generarBonus", "Cantidad total de bonus %d", cantidadBonus);
 
-	int y = limiteAlto - alto;
+	//int y = limiteAlto - alto;
+    int y = limiteAlto - this->getAlto();
 
 	int coordXActual = 2200;
 	int c= 0;
@@ -489,22 +520,44 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 
 
 	for(int i = 0; i < cantidadBonus; i++)
-	{
-		if (!myvector.empty()){
-			//Divide el escenario en partes iguales del doble del ancho del bonus para que no se superpongan
-			//Y al sumarle 2*ancho hago que caiga en una de esas divisiones
-			//int x = coordXActual + Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
-			  int x = myvector.back();
- 		      myvector.pop_back();
+		{
+			if (!myvector.empty()){
+				//Divide el escenario en partes iguales del doble del ancho del bonus para que no se superpongan
+				//Y al sumarle 2*ancho hago que caiga en una de esas divisiones
+				//int x = coordXActual + Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+				  int x = myvector.back();
+	 		      myvector.pop_back();
 
-			x = x * 1000 + 700;
-			debug(0, "ConstructorEntidades::generarBonus", "Creando escudo en pos X: %d", x);
-			Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::ESCUDO);
-			entidades.push_back(nuevoBonus);
-			c++;
-		}
+				x = x * 1000 + 700;
+				//Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::ESCUDO);
+
+				int tipoBono = Util::numeroRandomEntre(1, 3);
+				Bonus* nuevoBonus = NULL;
+				if (tipoBono==1)
+				{
+					debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus escudo en %d", x);
+					nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::ESCUDO);
+				}
+				else if (tipoBono==2)
+				{
+					debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus anillo en %d", x);
+					nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::RING);
+				}
+				else
+				{
+					debug(0,"ConstructorEntidades::generarBonus", "Creo un bonus invencibilidad en %d", x);
+				    nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::INVENCIBILIDAD);
+				}
+
+				entidades.push_back(nuevoBonus);
+				c++;
+
+			}
 	}
 
+	 /*cantidadBonus = Util::numeroRandomEntre(minimor, maximor);
+	 cout<<"CANTIDAD DE BONUS GENERADOS ANILLO"<<endl;
+	     cout<<cantidadBonus<<endl;
 	//Agrego bonus de Anillos
 	//cantidadBonus = 2;
 			//Util::numeroRandom(3);
@@ -518,7 +571,9 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 
 			debug(0, "ConstructorEntidades::generarBonus", "Creando Anillo en pos X: %d", x);
 					//+ Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
-			Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::RING);
+			//Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::RING);
+			Bonus* nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::RING);
+			cout<< "Agregue Bonus Anillo\n";
 			entidades.push_back(nuevoBonus);
 			c++;
 		}
@@ -527,6 +582,9 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 	//Agrego bonus de Invencibilidad
 	//cantidadBonus = 2;
 			//Util::numeroRandom(3);
+	 cantidadBonus = Util::numeroRandomEntre(minimor, maximor);
+	 cout<<"CANTIDAD DE BONUS GENERADOS ANILLO"<<endl;
+		     cout<<cantidadBonus<<endl;
 
 	for(int i = 0; i < cantidadBonus; i++)
 	{
@@ -536,14 +594,31 @@ void ConstructorEntidades::generarBonus(int ancho, int alto,
 
 	      x = x * 1000 + 700;
 
-			debug(0, "ConstructorEntidades::generarBonus", "Creando invencibiilidad en pos X: %d", x);
+			//debug(0, "ConstructorEntidades::generarBonus", "Creando invencibiilidad en pos X: %d", x);
 					//Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
-			Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::INVENCIBILIDAD);
+			//Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::INVENCIBILIDAD);
+	      Bonus* nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::INVENCIBILIDAD);
+	      cout<< "Agregue Bonus Invencible\n";
 			entidades.push_back(nuevoBonus);
 			c++;
 		}
-	}
+	}*/
 
+}
+
+void ConstructorEntidades::generarPlataformas(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ)
+{
+	cout << "Plataformas generadas\n";
+	int coordX = limiteAncho - anchoVentana;
+	int coordY = limiteAlto/2 + alto;
+	Plataforma *plataforma = new Plataforma(ancho, alto, generarId(), color, rutaImagen, coordX, coordY, indexZ, log);
+	entidades.push_back(plataforma);
+	cout << coordX << " " << coordY << "\n";
+	coordX = limiteAncho - ancho;
+
+	plataforma = new Plataforma(ancho, alto, generarId(), color, rutaImagen, coordX, coordY, indexZ, log);
+	entidades.push_back(plataforma);
+	cout << coordX << " " << coordY << "\n";
 }
 
 void ConstructorEntidades::cargarImagenesPiedra(SDL_Renderer *renderizador){
@@ -624,5 +699,68 @@ void ConstructorEntidades::mostrarPinches(SDL_Renderer* renderizador, SDL_Rect *
   				//}
   		}
  }
+
+int ConstructorEntidades::getAncho(){
+		return ancho;
+}
+
+void ConstructorEntidades::setAncho(int ancho) {
+		this->ancho = ancho;
+}
+int ConstructorEntidades::getAlto(){
+		return alto;
+}
+
+void ConstructorEntidades::setAlto(int alto) {
+		this->alto = alto;
+}
+int ConstructorEntidades::getX() {
+		return x;
+}
+
+void ConstructorEntidades::setX(int x) {
+		this->x = x;
+}
+
+int ConstructorEntidades::getY(){
+		return y;
+}
+
+void ConstructorEntidades::setY(int y) {
+		this->y = y;
+}
+
+int ConstructorEntidades::getId() {
+		return id;
+	}
+
+void ConstructorEntidades::setId(int id) {
+		this->id = id;
+}
+
+std::string ConstructorEntidades::getRuta() {
+	 return ruta;
+}
+
+void ConstructorEntidades::setRuta(std::string ruta) {
+		this->ruta = ruta;
+}
+
+std::string ConstructorEntidades::getColor(){
+		return color;
+}
+
+void ConstructorEntidades::setColor(std::string color) {
+		this->color = color;
+}
+
+int ConstructorEntidades::getIndex() {
+		return index;
+}
+
+void ConstructorEntidades::setIndex(int index) {
+		this->index = index;
+}
+
 
 }//Namespace

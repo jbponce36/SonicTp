@@ -36,6 +36,19 @@ void Plataforma::interactuar(Personaje *sonic){
 		int diferenciaY = limitesSonic.y + limitesSonic.h - limitesPlataforma.y;
 		sonic->posicionarseEn(sonic->getPosicionX(), sonic->getPosicionY()- diferenciaY);
 
+		if(limitesSonic.x + limitesSonic.w/2 > limitesPlataforma.x + limitesPlataforma.w)
+		{
+			//Si Sonic esta parado al bordecito derecho de la piedra, se resbala
+			sonic->resbalar(Personaje::DERECHA);
+			return;
+		}
+		else if(limitesSonic.x + limitesSonic.w/2 < limitesPlataforma.x)
+		{
+			//Si Sonic esta parado al bordecito izquierdo de la piedra, se resbala
+			sonic->resbalar(Personaje::IZQUIERDA);
+			return;
+		}
+
 		sonic->detener();
 		return;
 	}
@@ -52,7 +65,25 @@ void Plataforma::interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar)
 		int diferenciaY = limitesSonic.y + limitesSonic.h - limitesPlataforma.y;
 		sonic->posicionarseEn(sonic->getPosicionX(), sonic->getPosicionY()- diferenciaY);
 
+		if(limitesSonic.x + limitesSonic.w/2 > limitesPlataforma.x + limitesPlataforma.w)
+		{
+			//Si Sonic esta parado al bordecito derecho de la piedra, se resbala
+			sonic->resbalar(Personaje::DERECHA);
+			return;
+		}
+		else if(limitesSonic.x + limitesSonic.w/2 < limitesPlataforma.x)
+		{
+			//Si Sonic esta parado al bordecito izquierdo de la piedra, se resbala
+			sonic->resbalar(Personaje::IZQUIERDA);
+			return;
+		}
+
 		sonic->detener();
 		return;
 	}
+}
+
+std::string Plataforma::getNombre()
+{
+	return PLATAFORMA;
 }

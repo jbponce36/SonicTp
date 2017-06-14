@@ -21,13 +21,14 @@
 #include "Util.h"
 #include "Piedra.h"
 #include "Pinche.h"
+#include "Plataforma.h"
 
 
 
 #define MAX_ID 100
-#define MAX_ANCHO 4000
+#define MAX_ANCHO 8000
 #define MAX_ALTO 500
-#define MAX_COORDX 4000
+#define MAX_COORDX 8000
 #define MAX_COORDY 500
 #define MAX_INDEXZ 99
 #define MAX_RADIO 500
@@ -39,8 +40,9 @@ namespace std{
 class ConstructorEntidades {
 private:
 	int generadorId;
-	int limiteAncho;  //Es el ancho de todo el escenario menos el final
+	int limiteAncho;  //Es el ancho de todo el escenario
 	int limiteAlto; //Es la altura del pasto
+	int anchoVentana;
 
 	Logger *log;
 	SDL_Renderer *renderizador;
@@ -61,7 +63,7 @@ public:
 	SDL_Renderer* getRenderizador();
 	void setRenderizador(SDL_Renderer* Renderizador);
 
-	ConstructorEntidades(int limiteAncho, int limiteAlto, Logger *log);
+	ConstructorEntidades(int limiteAncho, int limiteAlto, int anchoVentana, Logger *log);
 	int generarId();
 	void cargarEntidades(list<jentidades> entidades, SDL_Renderer *renderizador);
 	void cargarEntidadesCliente(list<jentidades> jEntidades, SDL_Renderer *renderizador);
@@ -77,7 +79,34 @@ public:
 	void agregarEntidadCliente(std::string nombre, int id, int x, int y);
 	void quitarEntidad(std::string nombre, int id);
 
-	void generarBonus(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ,int minimor,int maximor);
+	//void generarBonus(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ,int minimor,int maximor);
+	void generarBonus(int minimor,int maximor);
+	void generarPlataformas(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ);
+
+	int getAncho();
+	void setAncho(int ancho);
+
+	int getAlto();
+	void setAlto(int alto);
+
+	int getX();
+	void setX(int x);
+
+	int getY();
+	void setY(int y);
+
+	int getId();
+	void setId(int id);
+
+	std::string getRuta();
+	void setRuta(const std::string ruta);
+
+	std::string getColor();
+	void setColor(std::string color);
+
+	int getIndex();
+
+	void setIndex(int index);
 
 private:
 
@@ -88,6 +117,14 @@ private:
 	void validarCuadrado(int &ancho, int &alto);
 	void validar(int &numero, int minimo, int maximo);
 
+	int ancho;
+	int alto;
+	int x;
+	int y;
+    int id;
+    std::string ruta;
+    std::string color;
+    int index;
 
 };
 

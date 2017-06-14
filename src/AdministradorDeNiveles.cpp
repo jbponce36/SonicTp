@@ -7,6 +7,7 @@
 
 #include "AdministradorDeNiveles.h"
 #include "ControlServidor.h"
+#include "debug.h"
 
 
 AdministradorDeNiveles::AdministradorDeNiveles(){
@@ -59,7 +60,7 @@ AdministradorDeNiveles::~AdministradorDeNiveles(){
 
 }
 
-void AdministradorDeNiveles::mostrarPunConPan(VistaSDL* vista,vector<Personaje*>*personajes){
+void AdministradorDeNiveles::mostrarPunConPan(VistaSDL* vista,vector<Personaje*>*personajes,int modo){
 
 	// ACA CARGAMOS LA PANTALLA DE PUNTOS
 		this->pantallaPuntos = new Textura();
@@ -105,25 +106,31 @@ void AdministradorDeNiveles::mostrarPunConPan(VistaSDL* vista,vector<Personaje*>
 			break;
 		}
 		*/
-		vista->mostrarScoJueIndTodosFinNiv(personajes);
+		vista->mostrarPuntFinNivel(modo,personajes);
 
 		SDL_RenderPresent(vista->getRenderizador());
 
-		sleep(3);
+		sleep(4);
 }
-void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor* controlSevidor){
+void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor* controlServidor){
+   debug(0,"AdministradorDeNiveles::pasarNivelServidor", "Paso de nivel servidor", 0);
 
-
+	controlServidor->limpiarObstaculos();
 	nivelServidor++;
 	jescenarioJuego* jjuego = vista->obtenerNivel(nivelServidor);
-	controlSevidor->limpiarObstaculos();
-	controlSevidor->CreoAnillas(jjuego->getAnillo()->getMinimoran(),jjuego->getAnillo()->getMaximoran());
-	controlSevidor->CreoPiedras(jjuego->getPiedra()->getMinimoran(),jjuego->getPiedra()->getMaximoran());
-	controlSevidor->CreoPinche(jjuego->getPinche()->getMinimoran(),jjuego->getPinche()->getMaximoran());
+
+
 	vista->getConstructorEntidades()->cargarEntidades(jjuego->getEscenario()->getentidades(),vista->getRenderizador());
-	//jjuego->getEscenario()->getentidades();
+	controlServidor->enviarDatosEscenarioATodos();
+	controlServidor->limpiarEnemigos();
+	controlServidor->resetEnemigosPorNivel(0,0,0,0,0,0);
+	controlServidor->enviarDatosEnemigosIniciales();
+	controlServidor->enviarATodos(FIN_MENSAJES_ENEMIGOS);
 
 
+	controlServidor->CreoAnillas(jjuego->getAnillo()->getMinimoran(),jjuego->getAnillo()->getMaximoran());
+	controlServidor->CreoPiedras(jjuego->getPiedra()->getMinimoran(),jjuego->getPiedra()->getMaximoran());
+	controlServidor->CreoPinche(jjuego->getPinche()->getMinimoran(),jjuego->getPinche()->getMaximoran());
 }
 
 void AdministradorDeNiveles::pasarNivelReset(VistaSDL*vista){

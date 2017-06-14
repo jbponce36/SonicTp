@@ -68,6 +68,7 @@ private:
     TTF_Font* fuente2;
     pthread_mutex_t mutexRenderizar; //Lo uso entre mostrar esperar jugadores y el menu de grupos
     vector<jescenarioJuego*> jjuego;
+    SDL_Color gris;
 
 
 public:
@@ -120,12 +121,17 @@ public:
 	SDL_Renderer* getRenderizador();
 	int getAltoVentana();
 	int getAnchoVentana();
-	void dibujarTextoColor(std::string texto, int posX, int posY,SDL_Color color);
+	void dibujarTextoColor(std::string texto, int posX, int posY,SDL_Color color,SDL_Color color2);
 	void mostrarScoJueIndTodos(vector<Personaje*>*);
-	void dibujarTextoColorFuente(std::string texto, int posX, int posY,SDL_Color color,TTF_Font* fuente);
+	void dibujarTextoColorFuente(std::string texto, int posX, int posY,SDL_Color color,SDL_Color color1,TTF_Font* fuente);
 	void mostrarScoJueIndTodosFinNiv(vector<Personaje*>* sonics);
 	jescenarioJuego* obtenerNivel(int);
-	void mostrarScoModoDosJuego();
+	void mostrarScoModoDosJuego(vector<Personaje*>* sonics);
+	void mostrarScodosFinLv(vector<Personaje*>* sonics);
+	void mostrarScoModoTresJuego(vector<Personaje*>* sonics);
+	void mostrarScoTresFinLv(vector<Personaje*>* sonics);
+	void mostrarPuntPartida(int modo,vector<Personaje*>* sonics);
+	void mostrarPuntFinNivel(int modo,vector<Personaje*>* sonics);
 };
 
 

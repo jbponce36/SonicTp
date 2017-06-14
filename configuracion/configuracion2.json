@@ -3,7 +3,7 @@
 	"configuracion": {"vel_scroll": 350},
         "servidor":{"puerto": 8080,"clientes":4},
         "cliente":{"puerto": 8080,"IP":"127.0.0.1"},
-        "anillos":{"minimo": 1,"maximo": 5},
+        "anillos":{"minimo": 40,"maximo": 50},
         "pinches":{"minimo": 2,"maximo": 4},   
         "piedras":{"minimo": 3,"maximo": 5},
         "cangrejo":{"minimo": 1,"maximo": 2}, 
@@ -70,8 +70,8 @@
 			"id": 3,
 			"tipo": "rectangulo",
 			"color": "verde",
-                        "minimor": 1,
-                        "maximor": 5,
+                        "minimor": 3,
+                        "maximor": 6,
 			"dimensiones": {"ancho": 100, "alto": 100},
 			"coordenada": {"x": 0, "y": 0},
 			"ruta_imagen": "images/Bonus.png",
@@ -87,6 +87,17 @@
 			"coordenada": {"x": 300, "y": 100},
 			"ruta_imagen": "images/entidad3.png",
 			"index_z": 99
+		},
+		{
+			"id": 5,
+			"tipo": "rectangulo",
+			"color": "verde",
+                        "minimor": 1,
+                        "maximor": 2,
+			"dimensiones": {"ancho": 262, "alto": 81},
+			"coordenada": {"x": 0, "y": 0},
+			"ruta_imagen": "images/Plataforma.png",
+			"index_z": 98
 		}]
 	}
       

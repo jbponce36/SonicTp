@@ -238,4 +238,13 @@ void Enemigo::setPosicionesY(float posicion){
 Enemigo::~Enemigo() {
 	// TODO Auto-generated destructor stub
 }
+void Enemigo::setPuntaje(int puntaje){
+
+	this->puntaje = puntaje;
+}
+
+int Enemigo::getPuntaje(){
+
+	return this->puntaje;
+}
 

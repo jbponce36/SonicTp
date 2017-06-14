@@ -56,11 +56,12 @@ public:
 
     jpescado* getPescado();
     void setPescado(jpescado* ppescado);
+    jescenario* escenario;
 
 private:
 	jventana* ventana;
 	jconfiguracion* configuracion;
-	jescenario* escenario;
+	//jescenario* escenario;
 	jservidor* servidor;
 	janillos* anillo;
 	jpiedra* piedra;

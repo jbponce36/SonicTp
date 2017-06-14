@@ -24,6 +24,7 @@ private:
 
 	int numeroSprite;
 	bool seguirEnviandoMensajes;
+	int puntaje;
 	//Uint32 tiempo;
 public:
 	//ladoServidor
@@ -58,6 +59,8 @@ public:
 	float getPosicionesY();
 	void setPosicionesX(float posicion);
 	void setPosicionesY(float posicion);
+	void setPuntaje(int puntaje);
+	int getPuntaje();
 };
 
 #endif /* ENEMIGO_H_ */

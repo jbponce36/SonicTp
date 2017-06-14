@@ -17,6 +17,7 @@ Cangrejo::Cangrejo(int x, int y,int maxX,int minX) :
 	this->contadorSprite = 0;
 	this->velocidad = 40;
 	this->numeroMaximoSprites=4;
+	this->setPuntaje(100);
 
 }
 void Cangrejo::calcularNumeroDeSprite(){

@@ -36,7 +36,6 @@ private:
     Colicion *colicion;
 	std::vector<Personaje*> *sonics; //Tiene todos los sonics
 	int maxJugadores;
-	Anillos *anilla;
 	VistaSDL *vista;
 	ConstructorEntidades *constructorEntidades;
 	AdministradorDeNiveles admNiveles;
@@ -44,6 +43,10 @@ private:
 	vector <Enemigo*> enemigos;
 	int idpropio;
 	int modoDeJuego;
+	vector<int> puntos1;
+	vector<int> puntos2;
+	int equipo1;
+	//int equipo1;
 
 public:
 	typedef struct mensajePosicion{
