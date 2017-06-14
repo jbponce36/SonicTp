@@ -8,6 +8,7 @@
 #include "Enemigo.h"
 //lado servidor
 Enemigo::Enemigo(int x, int y,std::string tipo) {
+	this->puntaje = 0;
 	this->vivo = true;
 	this->tipoEnemigo = tipo;
 	this->posicioneX = x;
@@ -142,8 +143,9 @@ std::string Enemigo::getTipoEnemigo(){
 void Enemigo::setTipoEnemigo(std::string tipo){
 	this->tipoEnemigo = tipo;
 }
+void Enemigo::restarVida(){
 
-
+}
 
 //lado cliente
 //540 en y en el primer mapa

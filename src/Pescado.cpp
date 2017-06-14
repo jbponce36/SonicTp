@@ -18,6 +18,7 @@ Pescado::Pescado(int x, int y,int maxY,int minY) :
 	this->contadorSprite = 0;
 	this->velocidad = 50;
 	this->numeroMaximoSprites=2;
+	this->vidas = VIDAS_PESCADO;
 	this->setPuntaje(200);
 
 }
@@ -59,6 +60,12 @@ SDL_Rect Pescado::obtenerDimensiones(){
 }
 int Pescado::getPosicionDeEnemigo(){
 	return this->getPosicionesX();
+}
+void Pescado::restarVida(){
+	this->vidas = this->vidas - 1;
+	if(this->vidas <=0 ){
+		this->setVivo(false);
+	}
 }
 
 

@@ -7,8 +7,11 @@
 
 #ifndef PESCADO_H_
 #define PESCADO_H_
-#define ALTURA_MAXIMA_PESCADO 900
-#define ALTURA_MINIMA_PESCADO 600
+
+#define ALTURA_MAXIMA_PESCADO 930
+#define ALTURA_MINIMA_PESCADO 650
+#define VIDAS_PESCADO 1
+
 #include "Enemigo.h"
 class Pescado : public Enemigo{
 private:
@@ -21,6 +24,7 @@ private:
 	int maximoY;
 	int minimoY;
 	Uint32 tiempo;
+	int vidas;
 public:
 	Pescado(int x, int y,int maxY,int minY);
 	~Pescado();
@@ -28,6 +32,7 @@ public:
 	void calcularNumeroDeSprite();
 	SDL_Rect obtenerDimensiones();
 	int getPosicionDeEnemigo();
+	void restarVida();
 
 
 	Pescado(std::string mensaje, std::string tipo, VistaSDL *vista);

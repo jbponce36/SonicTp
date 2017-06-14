@@ -250,6 +250,14 @@ void VistaSDL::cargarEnemigosTextura(){
 	enemigoMosca->cargarImagen("images/enemigos/Mosca.png", "no hay", this->renderizador,log);
 	this->enemigosTextura.push_back(enemigoMosca);
 
+	Textura *enemigoJefe = new Textura();
+	enemigoJefe->cargarImagen("images/enemigos/DrHuevoNave.png", "no hay", this->renderizador,log);
+	this->enemigosTextura.push_back(enemigoJefe);
+
+	Textura *enemigoBola = new Textura();
+	enemigoBola->cargarImagen("images/enemigos/DrHuevoBolaDemolicion.png", "no hay", this->renderizador,log);
+	this->enemigosTextura.push_back(enemigoBola);
+
 	this->log->setModulo("VISTA SDL");
 	this->log->addLogMessage("[CARGAR TEXTURA ENEMIGOS] Terminado.",2);
 }

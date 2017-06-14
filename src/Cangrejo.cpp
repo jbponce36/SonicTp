@@ -17,6 +17,8 @@ Cangrejo::Cangrejo(int x, int y,int maxX,int minX) :
 	this->contadorSprite = 0;
 	this->velocidad = 40;
 	this->numeroMaximoSprites=4;
+	this->puntaje = 0;
+	this->vidas = CANTIDAD_VIDAS_CANGREJO;
 	this->setPuntaje(100);
 	this->setPosicionesY(700);
 
@@ -70,6 +72,12 @@ SDL_Rect Cangrejo::obtenerDimensiones(){
 }
 int Cangrejo::getPosicionDeEnemigo(){
 	return this->minimoX;
+}
+void Cangrejo::restarVida(){
+	this->vidas = this->vidas - 1;
+	if(this->vidas <=0 ){
+		this->setVivo(false);
+	}
 }
 
 

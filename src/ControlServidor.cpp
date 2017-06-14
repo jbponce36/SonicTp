@@ -372,8 +372,9 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 
 	//this->getJmos()->getMinimoran();
-	//resetEnemigosPorNivel(this->getJmos()->getMinimoran(),this->getJmos()->getMaximoran(),this->getJpes()->getMinimoran(),this->getJpes()->getMaximoran(),this->getJcang()->getMinimoran(),this->getJcang()->getMaximoran());
-	this->resetEnemigosPorNivel(0,0,0,0,0,0);
+	//this->generarEnemigoFianl();
+	this->resetEnemigosPorNivel(this->getJmos()->getMinimoran(),this->getJmos()->getMaximoran(),this->getJpes()->getMinimoran(),this->getJpes()->getMaximoran(),this->getJcang()->getMinimoran(),this->getJcang()->getMaximoran());
+	//this->resetEnemigosPorNivel(0,0,0,0,0,0);
 	this->enviarDatosEnemigosIniciales();
 	this->enviarATodos(FIN_MENSAJES_ENEMIGOS);
 
@@ -701,10 +702,10 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				if(colision == SDL_TRUE){
 					if(enemigos[i]->getVivo()){
 						if((*pos).second->estaAtacando() || (*pos).second->agarroBonusInvencible()){
-							enemigos[i]->setVivo(false);
+							enemigos[i]->restarVida();
 							sonic->getPuntos()->sumarXpuntos(enemigos[i]->getPuntaje());
 							enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoPuntos(sonic->getId(),sonic->getEquipo()));
-							cout<<"mato a un enemigo"<<endl;
+							//cout<<"mato a un enemigo"<<endl;
 						}else{
 							(*pos).second->herir(this);
 							enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
@@ -861,6 +862,15 @@ void ControlServidor::enviarDatosEnemigosIniciales(){
 			std::string mensajePescado = "/";
 			mensajePescado = mensajePescado + enemigos[i]->obteneMensajeEstadoInicial();
 			this->enviarATodos(mensajePescado);
+		}else if(this->enemigos[i]->getTipoEnemigo()=="j"){
+			std::string mensajejefe = "/";
+			mensajejefe = mensajejefe + enemigos[i]->obteneMensajeEstadoInicial();
+			this->enviarATodos(mensajejefe);
+		}
+		else if(this->enemigos[i]->getTipoEnemigo()=="b"){
+			std::string mensajejefe = "/";
+			mensajejefe = mensajejefe + enemigos[i]->obteneMensajeEstadoInicial();
+			this->enviarATodos(mensajejefe);
 		}
 	}
 }
@@ -881,6 +891,10 @@ void ControlServidor::enviarDatosEnemigosInicialesAUno(Hiloenviar *hiloEnviar)
 			std::string mensajePescado = "/";
 			mensajePescado = mensajePescado + enemigos[i]->obteneMensajeEstadoInicial();
 			this->enviarAUno(mensajePescado, hiloEnviar);
+		}else if(this->enemigos[i]->getTipoEnemigo()=="j"){
+			std::string mensajejefe = "/";
+			mensajejefe = mensajejefe + enemigos[i]->obteneMensajeEstadoInicial();
+			this->enviarATodos(mensajejefe);
 		}
 	}
 }
@@ -1155,6 +1169,15 @@ void ControlServidor::resetEnemigosPorNivel(int minMosca1,int maxMosca1,int minP
 		cout<<enemigos[i]->getPosicionDeEnemigo()<<endl;
 	}
 	cout <<"'''''''''''''''''''''''''''''''''''''''''' "<<endl;
+}
+void ControlServidor::generarEnemigoFianl(){
+	int posicionX = 7450;
+	int posicionY = 50;
+	Jefe *jefe = new Jefe(posicionX,posicionY);
+	enemigos.push_back(jefe);
+	Bola *bola = new Bola(posicionX,posicionY + 500);
+	jefe->setBola(bola);
+	enemigos.push_back(bola);
 }
 void ControlServidor::verificarDuracionAtaque(Personaje *sonic)
 {
