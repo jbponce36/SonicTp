@@ -413,10 +413,15 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 void ControlServidor::CreoPinche(int minRam, int maxRam){
 
-	//int cantidadpinche = Util::numeroRandomEntre(this->getJpin()->getMinimoran(), this->getJpin()->getMaximoran());
+	this->log->addLogMessage("[CREO PINCHE] Iniciado.", 2);
 	int cantidadpinche = Util::numeroRandomEntre(minRam, maxRam);
 
-	 debug(0,"ControlServidor::CREO PINCHES","Valor Random %d", cantidadpinche);
+	if(cantidadpinche > 7){
+
+	  this->log->addLogMessage("[CREO PINCHE] ERROR.La Cantidad de Pinches randon" + std::string(" ") + Util::intToString(cantidadpinche) + std::string(" ") + "supera a 7, El numero elegido para fraccionar la pantalla de ancho 8000, por lo tanto se carga el valor por defecto de 7 piedras",1);
+	}
+
+	debug(0,"ControlServidor::CREO PINCHES","Valor Random %d", cantidadpinche);
 
 	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
 	int AnchoEscenario = vista->obtenerAnchoEscenario();
@@ -465,7 +470,7 @@ void ControlServidor::CreoPinche(int minRam, int maxRam){
 		// debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
 		 enviarATodos(mensaje);
 	}
-
+	 this->log->addLogMessage("[CREO PINCHES] Terminado.", 2);
 }
 
 void ControlServidor::setEscenarioJuego(jescenarioJuego* esc)
@@ -479,10 +484,13 @@ jescenarioJuego* ControlServidor::getEscenarioJuego(){
 
 
 void ControlServidor::CreoAnillas(int minRam, int maxRam){
+
 // agrego al log de errores para que valide
   this->log->addLogMessage("[CREO ANILLAS] Iniciado.", 2);
+  int CantidadAnillaslogErrores;
 
   int cantidadAnillas = Util::numeroRandomEntre(minRam, maxRam);
+  CantidadAnillaslogErrores = cantidadAnillas;
 
   int ancho = 64;
   int alto = 64;
@@ -505,7 +513,8 @@ void ControlServidor::CreoAnillas(int minRam, int maxRam){
 
   if (dibujaMenosAnillas){
 	  //log de errores
-	  debug(0,"ControlServidor::CreoAnillas","ERROR SE USARON MENOS ANILLAS", cantidadAnillas);
+	 // debug(0,"ControlServidor::CreoAnillas","ERROR SE USARON MENOS ANILLAS", cantidadAnillas);
+	  this->log->addLogMessage("[CREO ANILLAS] ERROR.La Cantidad de Anillas randon" + std::string(" ") + Util::intToString(CantidadAnillaslogErrores) + std::string(" ") + "supera el ancho de la pantalla . Se cargara el valor por defecto soportado por la pantalla de 60 anillas.", 1);
   }
 
   for(int i=0;i<cantidadAnillas;i++){
@@ -549,14 +558,20 @@ void ControlServidor::CreoAnillas(int minRam, int maxRam){
 
 
 void ControlServidor::CreoPiedras(int minRam, int maxRam){
+	 this->log->addLogMessage("[CREO PIEDRAS] Iniciado.", 2);
 
 	 int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
 	 int AnchoEscenario = vista->obtenerAnchoEscenario();
 
 	// int cantidadPiedras = Util::numeroRandomEntre(this->getJpied()->getMinimoran(), this->getJpied()->getMaximoran());
 	 int cantidadPiedras = Util::numeroRandomEntre(minRam, maxRam);
-	// debug(0,"ControlServidor::CreoPiedras","Minimo Random %d", this->getJpied()->getMinimoran());
-	// debug(0,"ControlServidor::CreoPiedras","Maximo Random %d", this->getJpied()->getMaximoran());
+
+	 if(cantidadPiedras > 7){
+
+		 this->log->addLogMessage("[CREO PIEDRAS] ERROR.La Cantidad de Piedras randon" + std::string(" ") + Util::intToString(cantidadPiedras) + std::string(" ") + "supera a 7, El numero elegido para fraccionar la pantalla de ancho 8000, por lo tanto se carga el valor por defecto de 7 piedras",1);
+	 }
+
+
 	 debug(0,"ControlServidor::CreoPiedras","Valor Random %d", cantidadPiedras);
 
 	  std::vector<int> myvector;
@@ -611,6 +626,8 @@ void ControlServidor::CreoPiedras(int minRam, int maxRam){
 	    	//debug(1,"ControlServidor::actualizarVistaServidor",  (char*)mensaje.c_str(), 1);
 	    	enviarATodos(mensaje);
 	    }
+
+	    this->log->addLogMessage("[CREO PIEDRAS] Terminado.", 2);
 }
 
 std::string ControlServidor::obtenerMensajeNivel()

@@ -54,6 +54,8 @@ void JuegoServidor::inicializarJuegoServidor(/*std::jescenarioJuego *jparseador*
 	control->setJpin(jparseador->getPinche());
 
 
+
+
 /*	vector<janillos*> anillos;
 	vector<jpiedra*> piedras;
 	vector<jpinche*> pinches;
