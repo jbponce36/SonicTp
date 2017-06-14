@@ -66,6 +66,10 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	pers.push_back(0);
 	pers.push_back(0);
 	pers.push_back(0);
+	pers.at(0) = 0;
+	pers.at(1) = 0;
+	pers.at(2) = 0;
+	pers.at(3) = 0;
 	pthread_mutex_init(&mutexRenderizar, NULL);
 }
 
@@ -824,6 +828,7 @@ void VistaSDL::mostrarScoModoDosJuego(vector<Personaje*>* sonics){
 			//cout<<"tamaño: "<<sonics->size();
 			//cout<<"grupo: "<<sonics->at(indice)->getEquipo()<<"ID"<<sonics->at(indice)->getId()<<endl;
 	}
+	totalPuntos = totalPuntos + pers.at(0);
 	for (int indice = 0; indice < sonics->size(); indice++) {
 
 
@@ -843,6 +848,7 @@ void VistaSDL::mostrarScodosFinLv(vector<Personaje*>* sonics){
 		//int indice;
 
 		int totalPuntos = 0;
+		int totalPuntosAnillos = 0;
 		int totalAnillos = 0;
 		//int alto = 0;
 		for ( int indice = 0; indice < sonics->size(); indice++) {
@@ -853,27 +859,25 @@ void VistaSDL::mostrarScodosFinLv(vector<Personaje*>* sonics){
 
 
 		}
-		totalPuntos = totalPuntos +(totalAnillos*10);
+		totalPuntosAnillos =  (totalAnillos*10);
 		if(totalAnillos >= 50)
 		{
-			totalPuntos = totalPuntos*2;
+			totalPuntosAnillos = totalPuntosAnillos*2;
 		}
+		pers.at(0) = pers.at(0) + totalPuntosAnillos;
 		this->dibujarTextoColorFuente("PUNTAJES COLABORATIVOS",200,50,colores.at(0),gris,fuente2);
 		for (int indice = 0; indice < sonics->size(); indice++) {
 
 			//Personaje* personaje = (*Personaje) pos;
 			std::string textovidas = "VIDAS: " + Util::intToString(sonics->at(indice)->getPuntos()->getVidas())+
 					"  ANILLOS: "+ Util::intToString(sonics->at(indice)->getPuntos()->getCantAnillos())+
-					"  PUNTOS: " + Util::intToString(totalPuntos);
+					"  PUNTOS: " + Util::intToString(totalPuntos+pers.at(0));
 			this->dibujarTextoColorFuente(textovidas,200,alto,colores.at(indice),gris,fuente2);
 			alto += 43;
 		}
-		this->dibujarTextoColorFuente("TOTAL COLABORATIVO: "+Util::intToString(totalPuntos),200,alto,colores.at(0),gris,fuente2);
+		this->dibujarTextoColorFuente("TOTAL COLABORATIVO: "+Util::intToString(totalPuntos+pers.at(0)),200,alto,colores.at(0),gris,fuente2);
 
-	//std::string textoanillos = "ANILLOS:" + Util::intToString(personaje->getPuntos()->getCantAnillos());
-	//this->dibujarTexto(textoanillos,0,50);
-	//std::string textoscore = "PUNTOS:" + Util::intToString(personaje->getPuntos()->getPuntos());
-	//this->dibujarTexto(textoscore,0,100);
+
 }
 
 void VistaSDL::mostrarScoModoTresJuego(vector<Personaje*>* sonics){
