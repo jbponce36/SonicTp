@@ -51,7 +51,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 	int coordX, coordY, indexZ;
 	std::string rutaImagen;
 	int radio;
-	int minimor,maximor;
+	int minimor,maximor,minimorA,minimorE,maximorA,maximorE;
 
 	this->log->addLogMessage("[CARGA DE ENTIDADES] Iniciado.", 2);
 
@@ -74,6 +74,12 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			indexZ = (*pos).getindex();
 			minimor = (*pos).getMinimor();
 			maximor = (*pos).getMaximor();
+			minimorA = (*pos).getMinimorA();
+			maximorA = (*pos).getMaximorA();
+
+			minimorE = (*pos).getMinimorE();
+			maximorE = (*pos).getMaximorE();
+
 
 			this->setAncho(ancho);
 			this->setAlto(alto);
@@ -119,12 +125,6 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 					indexZ = (*pos).getindex();
 
 
-					//Anillos* anillo = new Anillos(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log/*,vista->obtenerRender()*/);
-
-					//this->anillos.push_back(anillo);
-					//  this->cargarImagenesAnillas(renderizador);
-
-					//entidades.push_back(anillo);
 			    }
 
 			}
@@ -132,7 +132,7 @@ void ConstructorEntidades::cargarEntidades(list<jentidades> jEntidades, SDL_Rend
 			{
 				//generarBonus(ancho, alto, color, rutaImagen, indexZ,minimor,maximor);
 				cout << "cargar Entidades::: Voy a generar los Bonus\n";
-				generarBonus(minimor,maximor);
+				generarBonus(minimor,maximor,minimorA,maximorA,minimorE,maximorE);
 			}
 			else if ((*pos).getruta() == "images/Plataforma.png")
 			{
@@ -192,6 +192,10 @@ void ConstructorEntidades::cargarEntidadesCliente(list<jentidades> jEntidades, S
 	int radio;
     int minimor;
     int maximor;
+    int minimorA;
+    int minimorE;
+    int maximorA;
+    int maximorE;
 
 	this->log->setModulo("CONSTRUCTOR ENTIDADES");
 	this->log->addLogMessage("[CARGA DE ENTIDADES] Iniciado.", 2);
@@ -211,6 +215,11 @@ void ConstructorEntidades::cargarEntidadesCliente(list<jentidades> jEntidades, S
 			indexZ = (*pos).getindex();
 			minimor = (*pos).getMinimor();
 			maximor = (*pos).getMaximor();
+			minimorE = (*pos).getMinimorE();
+			maximorE = (*pos).getMaximorE();
+			minimorA = (*pos).getMinimorA();
+			maximorA = (*pos).getMaximorA();
+
 
 			this->setAncho(ancho);
 			this->setAlto(alto);
@@ -491,11 +500,9 @@ void ConstructorEntidades::quitarEntidad(std::string nombre, int id)
 	//TODO: Si es un anillo fijarse de sacarlo de la lista de anillos!!!!
 }
 
-//void ConstructorEntidades::generarBonus(int ancho, int alto,
-	//	std::string color, std::string rutaImagen, int indexZ, int minimor,int maximor)
-void ConstructorEntidades::generarBonus(int minimor,int maximor)
+void ConstructorEntidades::generarBonus(int minimor,int maximor, int minimorA, int maximorA, int minimorE, int maximorE)
 {
-	this->log->addLogMessage("[CREO BONUS] Iniciado.", 2);
+/*	this->log->addLogMessage("[CREO BONUS] Iniciado.", 2);
 	int cantidadBonus = Util::numeroRandomEntre(minimor, maximor);
 
 	if (cantidadBonus > 7){
@@ -516,7 +523,7 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 	std::random_shuffle ( myvector.begin(), myvector.end() );
 
 
-	for(int i = 0; i < cantidadBonus; i++)
+/*	for(int i = 0; i < cantidadBonus; i++)
 		{
 			if (!myvector.empty()){
 				//Divide el escenario en partes iguales del doble del ancho del bonus para que no se superpongan
@@ -555,57 +562,87 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor)
 
 			}
 	}
-
-	 /*cantidadBonus = Util::numeroRandomEntre(minimor, maximor);
-	 cout<<"CANTIDAD DE BONUS GENERADOS ANILLO"<<endl;
-	     cout<<cantidadBonus<<endl;
-	//Agrego bonus de Anillos
-	//cantidadBonus = 2;
-			//Util::numeroRandom(3);
-	for(int i = 0; i < cantidadBonus; i++)
-	{
-		if (!myvector.empty()){
-		  int x = myvector.back();
-	      myvector.pop_back();
-
-			x = x * 1000 + 700;
-
-			debug(0, "ConstructorEntidades::generarBonus", "Creando Anillo en pos X: %d", x);
-					//+ Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
-			//Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::RING);
-			Bonus* nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::RING);
-			cout<< "Agregue Bonus Anillo\n";
-			entidades.push_back(nuevoBonus);
-			c++;
-		}
-	}
-
-	//Agrego bonus de Invencibilidad
-	//cantidadBonus = 2;
-			//Util::numeroRandom(3);
-	 cantidadBonus = Util::numeroRandomEntre(minimor, maximor);
-	 cout<<"CANTIDAD DE BONUS GENERADOS ANILLO"<<endl;
-		     cout<<cantidadBonus<<endl;
-
-	for(int i = 0; i < cantidadBonus; i++)
-	{
-		if (!myvector.empty()){
-		  int x = myvector.back();
-	      myvector.pop_back();
-
-	      x = x * 1000 + 700;
-
-			//debug(0, "ConstructorEntidades::generarBonus", "Creando invencibiilidad en pos X: %d", x);
-					//Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
-			//Bonus* nuevoBonus = new Bonus(ancho, alto, generarId(), color, rutaImagen, x, y, indexZ, log, Bonus::INVENCIBILIDAD);
-	      Bonus* nuevoBonus = new Bonus(ancho,alto,id,color,ruta,x,y,index,log,Bonus::INVENCIBILIDAD);
-	      cout<< "Agregue Bonus Invencible\n";
-			entidades.push_back(nuevoBonus);
-			c++;
-		}
-	}*/
+*/
 
 	this->log->addLogMessage("[CREO BONUS] Terminado.", 2);
+
+	//////////////////////////////////////////////////////////////////////
+
+
+	    //cout<<"CANTIDAD DE BONUS GENERADOS"<<endl;
+	    //cout<<cantidadBonus<<endl;
+
+		int y = limiteAlto - alto;
+
+		int coordXActual = 2200;
+		int c= 0;
+
+		std::vector<int> myvector;
+		  // set some values:
+		for (int i=0; i<=7; ++i)
+		{
+			myvector.push_back(i * 1000 + 200);
+			myvector.push_back(i * 1000 + 300);
+			myvector.push_back(i * 1000 + 600);
+			myvector.push_back(i * 1000 + 700);
+			myvector.push_back(i * 1000 + 800);
+			myvector.push_back(i * 1000 + 900);
+		}
+		std::random_shuffle ( myvector.begin(), myvector.end() );
+
+		 int cantidadBonus = Util::numeroRandomEntre(minimorE, maximorE); //pasarle aca el minimo y maximo para escudo
+		 debug(0, "ConstructorEntidades::generarBonus", "Creando cantidad bonus escudos: %d", cantidadBonus);
+		for(int i = 0; i < cantidadBonus; i++)
+		{
+			if (!myvector.empty()){
+				//Divide el escenario en partes iguales del doble del ancho del bonus para que no se superpongan
+				//Y al sumarle 2*ancho hago que caiga en una de esas divisiones
+				//int x = coordXActual + Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+				  int x = myvector.back();
+	 		      myvector.pop_back();
+
+				debug(0, "ConstructorEntidades::generarBonus", "Creando escudo en pos X: %d", x);
+				Bonus* nuevoBonus = new Bonus(ancho,alto,generarId(),color,ruta,x,y,index,log,Bonus::ESCUDO);
+				entidades.push_back(nuevoBonus);
+				c++;
+			}
+		}
+
+		 cantidadBonus = Util::numeroRandomEntre(minimorA, maximorA); // pasarle aca el minimo y maximo para ring
+		 debug(0, "ConstructorEntidades::generarBonus", "Creando cantidad bonus anillos: %d", cantidadBonus);
+		for(int i = 0; i < cantidadBonus; i++)
+		{
+			if (!myvector.empty()){
+			  int x = myvector.back();
+		      myvector.pop_back();
+
+				debug(0, "ConstructorEntidades::generarBonus", "Creando Anillo en pos X: %d", x);
+						//+ Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+				Bonus* nuevoBonus = new Bonus(ancho,alto,generarId(),color,ruta,x,y,index,log,Bonus::RING);
+				entidades.push_back(nuevoBonus);
+				c++;
+			}
+		}
+
+		//Agrego bonus de Invencibilidad
+		//cantidadBonus = 2;
+				//Util::numeroRandom(3);
+		 cantidadBonus = Util::numeroRandomEntre(minimor, maximor); // minimor es del "escudo invencibilidad idem maximor"
+		 debug(0, "ConstructorEntidades::generarBonus", "Creando cantidad bonus invencibilidad: %d", cantidadBonus);
+		 for(int i = 0; i < cantidadBonus; i++)
+		{
+			if (!myvector.empty()){
+			  int x = myvector.back();
+		      myvector.pop_back();
+
+				debug(0, "ConstructorEntidades::generarBonus", "Creando invencibiilidad en pos X: %d", x);
+						//Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+				Bonus* nuevoBonus = new Bonus(ancho,alto,generarId(),color,ruta,x,y,index,log,Bonus::INVENCIBILIDAD);
+				entidades.push_back(nuevoBonus);
+				c++;
+			}
+		}
+
 
 }
 

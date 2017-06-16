@@ -510,7 +510,7 @@ void ControlServidor::CreoAnillas(int minRam, int maxRam){
 	  dibujaMenosAnillas = true;
   }
 
-  debug(0,"ControlServidor::CreoAnillas","Cantidad anillas usadas %d", cantidadAnillas);
+ // debug(0,"ControlServidor::CreoAnillas","Cantidad anillas usadas %d", cantidadAnillas);
 
   if (dibujaMenosAnillas){
 	  //log de errores
@@ -550,7 +550,7 @@ void ControlServidor::CreoAnillas(int minRam, int maxRam){
 		for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
 
 	      std::string mensaje = (*posanillo)->obtenerMensajeEstado();
-	      debug(1,"ControlServidor::CreoAnillas",  (char*)mensaje.c_str(), 1);
+	     // debug(1,"ControlServidor::CreoAnillas",  (char*)mensaje.c_str(), 1);
 		  enviarATodos(mensaje);
 	}
 

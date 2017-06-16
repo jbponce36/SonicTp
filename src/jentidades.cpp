@@ -199,4 +199,39 @@ void jentidades::setMaximor(int Maximor) {
 	this->maximor = Maximor;
 }
 
+int jentidades::getMinimorA(){
+	return minimorA;
+}
+
+void jentidades::setMinimorA(int minimorA) {
+	this->minimorA = minimorA;
+}
+
+int jentidades::getMaximorA(){
+	return maximorA;
+}
+
+void jentidades::setMaximorA(int maximorA) {
+	this->maximorA = maximorA;
+}
+
+
+
+int jentidades::getMaximorE(){
+	return this->maximorE;
+}
+
+void jentidades::setMaximorE(int MaximorE){
+	this->maximorE = MaximorE;
+}
+
+int jentidades::getMinimorE(){
+	return this->minimorE;
+}
+void jentidades::setMinimorE(int MinimorE){
+	this->minimorE = MinimorE;
+}
+
+
+
 } /* namespace std */

@@ -209,8 +209,8 @@ void Control::controlDeMensajes(Personaje* sonic,
 		else if (mensaje.substr(0, 3) == "Aid")
 
 				{
-					debug(1,"Control::controlDeMensajes", "Mensaje anillas" , 0);
-					debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
+					//debug(1,"Control::controlDeMensajes", "Mensaje anillas" , 0);
+					//debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
 
 					//ID
 					std::string id = mensaje.substr(3, 2);

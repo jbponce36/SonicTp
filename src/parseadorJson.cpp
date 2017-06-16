@@ -332,6 +332,11 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 			json_t *minimor;
 			json_t *maximor;
 
+			json_t *minimorA;
+			json_t *minimorE;
+			json_t *maximorA;
+			json_t *maximorE;
+
 			//voy creando nuevos objetos entidades
 			jentidades *entidades = new jentidades();
 
@@ -343,12 +348,39 @@ jescenario* parseadorJson::cargarEscenario(json_t* raiz){
 				//entidades->setMinimor(this->leerValorEntero(entidadi,"minimor",1));
 				//entidades->setMaximor(this->leerValorEntero(entidadi,"maximor",1));
 				coordenada = json_object_get(entidadi,"coordenada");
+
                 //el json lo setea correcto
            	    minimor  = json_object_get(entidadi,"minimor");
            	    entidades->setMinimor(json_number_value(minimor));
+
            	    maximor = json_object_get(entidadi,"maximor");
            	    entidades->setMaximor(json_number_value(maximor));
 
+
+           	    minimorA = json_object_get(entidadi,"minimorA");
+           	    entidades->setMinimorA(json_number_value(minimorA));
+
+           	   // cout<<"PARSEADOR JSON MINIMOR A"<<endl;
+           	    //cout<<entidades->getMinimorA()<<endl;
+
+
+           	    maximorA = json_object_get(entidadi,"maximorA");
+                entidades->setMaximorA(json_number_value(maximorA));
+
+               // cout<<"PARSEADOR JSON MAXIMOR A"<<endl;
+                //cout<<entidades->getMaximorA()<<endl;
+
+                 minimorE = json_object_get(entidadi,"minimorE");
+                 entidades->setMinimorE(json_number_value(minimorE));
+
+                 //cout<<"PARSEADOR JSON MINIMOR E"<<endl;
+                 //cout<<entidades->getMinimorE()<<endl;
+
+                 maximorE =  json_object_get(entidadi,"maximorE");
+                 entidades->setMaximorE(json_number_value(maximorE));
+
+                // cout<<"PARSEADOR JSON MINIMOR E"<<endl;
+                // cout<<entidades->getMaximorE()<<endl;
 
 				if (coordenada){
 					double cordx,cordy;

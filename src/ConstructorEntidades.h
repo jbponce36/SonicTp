@@ -80,7 +80,7 @@ public:
 	void quitarEntidad(std::string nombre, int id);
 
 	//void generarBonus(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ,int minimor,int maximor);
-	void generarBonus(int minimor,int maximor);
+	void generarBonus(int minimor,int maximor, int mininorA, int maximorA, int mininmorE, int maximorE);
 	void generarPlataformas(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ);
 
 	int getAncho();

@@ -69,6 +69,22 @@ public:
 	int getMaximor();
 	void setMaximor(int Maximor);
 
+	int getMinimorA();
+	void setMinimorA(int minimorA);
+
+	int getMaximorA();
+	void setMaximorA(int maximorA);
+
+
+	//maximo random
+	int getMaximorE();
+	void setMaximorE(int MaximorE);
+
+	int getMinimorE();
+	void setMinimorE(int MinimorE);
+
+
+
 private:
 	int id;
 	std::string tipo;
@@ -82,6 +98,13 @@ private:
 	dimensiones* dim;
 	int minimor;
 	int maximor;
+
+	int minimorA;
+	int maximorA;
+
+	int minimorE;
+	int maximorE;
+
 	bool hasEnding (string const &fullString, string const &ending);
 	std::string intToString(int number);
 
