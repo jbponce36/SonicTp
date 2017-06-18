@@ -142,12 +142,13 @@ void ControlServidor::administrarTeclasServidor()
 
 ControlServidor::mensajeRecibido ControlServidor::parsearMensajePosicion(std::string mensaje)
 {
+	//1TdPx----1y----5
 	mensajeRecibido msj;
 	msj.id = atoi(mensaje.substr(0, 1).c_str());
 	msj.tecla = mensaje.substr(1, 3);
 
-	std::string posX = mensaje.substr(5, 4);
-	std::string posY = mensaje.substr(10, 4);
+	std::string posX = mensaje.substr(5, MAX_DIGITOS_POSICION);
+	std::string posY = mensaje.substr(11, MAX_DIGITOS_POSICION);
 	posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
 	posY.erase(std::remove(posY.begin(), posY.end(), PADDING), posY.end());
 
@@ -284,8 +285,6 @@ void ControlServidor::actualizarVistaServidor(Camara *camara)
 			if( envioModoDeJuego == 0 )
 			{
 				mensj = mensj+intToString((*pos).second->getId())+intToString((*pos).second->getEquipo());
-
-
 			}
 		}
 
@@ -294,12 +293,12 @@ void ControlServidor::actualizarVistaServidor(Camara *camara)
 	{
 		enviarATodos(mensj);
 		envioModoDeJuego = true;
-		cout<<mensj<<endl;
+		//cout<<mensj<<endl;
 	}
 	//envio las posiciones de los enemigos
 	for(int i=0; i <this->enemigos.size(); i++){
 		if(enemigos[i]->getSeguirEnviandoMensajes()){
-		// mensaje 14 tipo /-1-100-200-1v
+		// mensaje 14 tipo /-1--100--200-1v
 			std::string mensajeEnemigo = "/";
 			mensajeEnemigo = mensajeEnemigo + this->enemigos[i]->intToStringConPadding2(i);
 			mensajeEnemigo = mensajeEnemigo + this->enemigos[i]->obteneMensajeEstado();
@@ -351,7 +350,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 	//Una Sola vez
     int semilla = time(NULL);
-	debug(0, "ControlServidor::ControlarJuegoServidor", "Semilla Usada: %d", semilla);
+	//debug(0, "ControlServidor::ControlarJuegoServidor", "Semilla Usada: %d", semilla);
 
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Iniciado.", 2);
 
@@ -407,7 +406,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 		}
 
 	}
-	cout<<juegoTerminado<<"::juego terminado"<<endl;
+	cout<<"Juego terminado. El servidor se desconectara..."<<endl;
 	delete camara;
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
 }
@@ -633,7 +632,7 @@ void ControlServidor::CreoPiedras(int minRam, int maxRam){
 
 std::string ControlServidor::obtenerMensajeNivel()
 {
-	return ("N" + Util::intToString(nivelActual) + "--------------");
+	return ("N" + Util::intToString(nivelActual) + "----------------");
 }
 
 void ControlServidor::enviarAnillasPiedrasYPinches(Hiloenviar *hiloEnviar)
@@ -871,6 +870,7 @@ void ControlServidor::CreacionEnemigos(){
 
 void ControlServidor::enviarDatosEnemigosIniciales(){
 	//envio la posicion y el tipo De enemigo
+	//Ej:  /c--100--200
 	for(int i=0;i<this->enemigos.size();i++){
 		if(this->enemigos[i]->getTipoEnemigo()=="c"){
 			std::string mensajeCangrejo = "/";
@@ -955,8 +955,8 @@ void ControlServidor::verificarDuracionBonus(Personaje *sonic)
 			//Se acabo la duracion del bonus
 			sonic->dejarDeSerInvencible();
 			std::string mensaje = Util::intToString(sonic->getId())
-				+ "x" + Util::intToStringConPadding(sonic->getPosicionX())
-				+ "y" + Util::intToStringConPadding(sonic->getPosicionY())
+				+ "x" + Util::intToStringConPadding(sonic->getPosicionX(), MAX_DIGITOS_POSICION)
+				+ "y" + Util::intToStringConPadding(sonic->getPosicionY(), MAX_DIGITOS_POSICION)
 				+ ANIMACION_SIN_BONUS + PADDING;
 			mundo.enviarATodos(mensaje);
 		  }
@@ -972,8 +972,8 @@ void ControlServidor::verificarDuracionHerida(Personaje *sonic)
 			//Se acabo la duracion del bonus
 			sonic->estarHerido(false);
 			std::string mensaje = Util::intToString(sonic->getId())
-				+ "x" + Util::intToStringConPadding(sonic->getPosicionX())
-				+ "y" + Util::intToStringConPadding(sonic->getPosicionY())
+				+ "x" + Util::intToStringConPadding(sonic->getPosicionX(), MAX_DIGITOS_POSICION)
+				+ "y" + Util::intToStringConPadding(sonic->getPosicionY(), MAX_DIGITOS_POSICION)
 				+ ANIMACION_NO_TITILAR + PADDING;
 			mundo.enviarATodos(mensaje);
 		  }
@@ -1046,7 +1046,7 @@ void ControlServidor::gameOverJugador(int id)
 	//Detengo la ejecucion de los hilos
 	hilosRecibir->at(id - 1)->parametros.continuar = false;
 
-	std::string mensaje = MENSAJE_PERDIO_JUGADOR + Util::intToString(id) + "-----------";
+	std::string mensaje = MENSAJE_PERDIO_JUGADOR + Util::intToString(id) + "--------------";
 	enviarATodos(mensaje);
 
 	//hilosEnviar->at(id - 1)->parametros.continuar = false;

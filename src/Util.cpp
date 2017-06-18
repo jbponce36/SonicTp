@@ -22,7 +22,7 @@ std::string Util::intToStringConPadding(int number)
 	std::ostringstream oss;
 	oss<< number;
 	std::string numero = oss.str();
-	while(numero.length() < MAX_CANT_DIGITOS_POS){
+	while(numero.length() < MAX_DIGITOS_POSICION - 1){
 	  numero = PADDING + numero;
 	}
 	return numero;

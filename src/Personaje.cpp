@@ -382,8 +382,7 @@ void Personaje::dejarDeSaltar()
 	if(velocidadY < (-personajeVelocidad/2))
 	{
 		//velocidadY = (-personajeVelocidad/2);
-		//Lo comento porque al parecer no les gusta que salte poquito al apretar apenitas la tecla de salto
-		//"""Como en el juego original, chicos."""
+		//Lo comento para que no salte poquito al apretar apenitas la tecla de salto
 	}
 }
 
@@ -714,7 +713,7 @@ std::string Personaje::intToStringConPadding(int number)
   ostringstream oss;
   oss<< number;
   std::string numero = oss.str();
-  while(numero.length() < MAX_CANT_DIGITOS_POS){
+  while(numero.length() < MAX_DIGITOS_POSICION){
 	  numero = PADDING + numero;
   }
   return numero;
@@ -765,8 +764,8 @@ std::string Personaje::obtenerMensajeEstado()
 {
 	//Tamano es 15. Ej: 1x-300y--20AcD1
 	return (intToString(id)
-			+ "x" + intToStringConPadding(posicionX)
-			+ "y" + intToStringConPadding(posicionY)
+			+ "x" + Util::intToStringConPadding(posicionX, MAX_DIGITOS_POSICION)
+			+ "y" + Util::intToStringConPadding(posicionY, MAX_DIGITOS_POSICION)
 			+ getNombreAnimacion() + getEstadoAnimacion());
 }
 
@@ -781,8 +780,8 @@ std::string Personaje::obtenerMensajeEstadoBonus()
 	}
 
 	return ( Util::intToString(getId())
-		+ "x" + Util::intToStringConPadding(getPosicionX())
-		+ "y" + Util::intToStringConPadding(getPosicionY())
+		+ "x" + Util::intToStringConPadding(getPosicionX(), MAX_DIGITOS_POSICION)
+		+ "y" + Util::intToStringConPadding(getPosicionY(), MAX_DIGITOS_POSICION)
 		+ nombreAnimacion + PADDING);
 }
 
@@ -960,8 +959,8 @@ void Personaje::titilarPorHerida(ControlServidor *control)
 	herido = true;
 	time(&tiempoInicioHerida);
 	std::string mensaje = Util::intToString(id)
-		+ "x" + Util::intToStringConPadding(posicionX)
-		+ "y" + Util::intToStringConPadding(posicionY)
+		+ "x" + Util::intToStringConPadding(posicionX, MAX_DIGITOS_POSICION)
+		+ "y" + Util::intToStringConPadding(posicionY, MAX_DIGITOS_POSICION)
 		+ ANIMACION_TITILAR + PADDING;
 	control->enviarATodos(mensaje);
 }

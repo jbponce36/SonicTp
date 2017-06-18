@@ -150,17 +150,16 @@ void Control::controlDeMensajes(Personaje* sonic,
 			this->salir = true;
 
 		}
-
 		else if (mensaje.substr(0, 13) == "BORRAR_ANILLA"){
 
-			debug(1,"Control::controlDeMensajes_BORRADOANILLAS", (char*) mensaje.c_str() , 0);
+			//debug(1,"Control::controlDeMensajes_BORRADOANILLAS", (char*) mensaje.c_str() , 0);
 
 			std::string tid = mensaje.substr(13, 2);
 			tid.erase(std::remove(tid.begin(), tid.end(), PADDING), tid.end());
 
 			int numeroAnilla = atoi(tid.c_str());
 
-			debug(1, "Control::controlDeMensajes", "Voy a borrar la anilla con id %d",numeroAnilla);
+			//debug(1, "Control::controlDeMensajes", "Voy a borrar la anilla con id %d",numeroAnilla);
 
 		          /////codigo viejo sin usar el set ni el get
 				   int posAnillaActual = 0;
@@ -173,7 +172,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 			 if((*pos)->getId() == numeroAnilla){
 
 				 actual = (*pos);
-				 debug(1, "Control::controlDeMensajes", "Anilla encontrada Get id %d",(actual)->getId());
+				 //debug(1, "Control::controlDeMensajes", "Anilla encontrada Get id %d",(actual)->getId());
 
 			   }
 			 }
@@ -182,49 +181,36 @@ void Control::controlDeMensajes(Personaje* sonic,
 				vista->getConstructorEntidades()->anillos.remove(actual);
 
 			}
-
-
-	}
-
-
-
+		}
 		else if (mensaje.substr(0, 3) == "Aid")
+		{
+			//Ej: Aid-1x----1y----1
 
-				{
-					//debug(1,"Control::controlDeMensajes", "Mensaje anillas" , 0);
-					//debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
+			//debug(1,"Control::controlDeMensajes", "Mensaje anillas" , 0);
+			//debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
 
-					//ID
-					std::string id = mensaje.substr(3, 2);
-					id.erase(std::remove(id.begin(), id.end(), PADDING), id.end());
+			//ID
+			std::string id = mensaje.substr(3, 2);
+			id.erase(std::remove(id.begin(), id.end(), PADDING), id.end());
 
-					int intid = atoi(id.c_str());
-					//cout<<"********ID************"<<endl;
-					//cout<<intid<<endl;
-					//posx
+			int intid = atoi(id.c_str());
+			//cout<<"********ID************"<<endl;
+			//cout<<intid<<endl;
+			//posx
 
-					std::string posX = mensaje.substr(6, 4);
-					posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
+			std::string posX = mensaje.substr(6, MAX_DIGITOS_POSICION);
+			posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
 
-					std::string posY = mensaje.substr(12, 3);
+			std::string posY = mensaje.substr(12, MAX_DIGITOS_POSICION);
+			posY.erase(std::remove(posY.begin(), posY.end(), PADDING), posY.end());
 
-					int iposX = atoi(posX.c_str());
-					int iposY = atoi(posY.c_str());
+			int iposX = atoi(posX.c_str());
+			int iposY = atoi(posY.c_str());
 
+			Anillos* anillo = new Anillos(64, 64, intid, "rojo", "images/Anillas.png", iposX, iposY, 99, this->log);
 
-
-
-					Anillos* anillo = new Anillos(64, 64, intid, "rojo", "images/Anillas.png", iposX, iposY, 99, this->log);
-
-
-
-					vista->getConstructorEntidades()->anillos.push_back(anillo);
-
-
-				}
-
-
-
+			vista->getConstructorEntidades()->anillos.push_back(anillo);
+		}
 		else if (mensaje.substr(0, 1) == "p") {
 
 			//debug(1, "Control::controlDeMensajes",
@@ -233,18 +219,17 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 			std::string animacion = mensaje.substr(1, 3);
 
-
-
 		}
 
 		else if (mensaje.substr(0, 5) == "Piedr") {
 
 			//debug(1, "MENSAJE PIEDRA", (char*) mensaje.c_str(), 0);
-
-			std::string pos_pX = mensaje.substr(6, 4);
-			std::string pos_pY = mensaje.substr(12, 3);
+			//Ej: Piedrx----1y----4
+			std::string pos_pX = mensaje.substr(6, MAX_DIGITOS_POSICION);
+			std::string pos_pY = mensaje.substr(12, MAX_DIGITOS_POSICION);
 
 			pos_pX.erase(std::remove(pos_pX.begin(), pos_pX.end(), PADDING), pos_pX.end());
+			pos_pY.erase(std::remove(pos_pY.begin(), pos_pY.end(), PADDING), pos_pY.end());
 
 			int iposX = atoi(pos_pX.c_str());
 			int iposY = atoi(pos_pY.c_str());
@@ -271,16 +256,17 @@ void Control::controlDeMensajes(Personaje* sonic,
 			//debug(1,"Control::controlDeMensajes", (char*) mensaje.c_str() , 0);
 
 
-			std::string posX = mensaje.substr(6, 4);
-			std::string posY = mensaje.substr(12, 3);
+			std::string posX = mensaje.substr(6, MAX_DIGITOS_POSICION);
+			std::string posY = mensaje.substr(12, MAX_DIGITOS_POSICION);
 
 			posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
+			posY.erase(std::remove(posY.begin(), posY.end(), PADDING), posY.end());
 
 			int iposX = atoi(posX.c_str());
 			int iposY = atoi(posY.c_str());
 
 			//debug(1,"POSX", (char*) posX.c_str() , 0);
-		    debug(1,"POSY", (char*) posY.c_str() , 0);
+		   // debug(1,"POSY", (char*) posY.c_str() , 0);
 
 		    std::string rutaImagen = "images/Pinchos.png";
 
@@ -294,7 +280,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 		//aca recibe el mensaje para pasar de nivel
 		else if (mensaje.compare("PASARNIVEL") == 0) {
 			if (!admNiveles.EsUltimoNivel()) {
-				debug(1, "Control::controlDeMensajes", "Paso de nivel y borro las anillas", 0);
+				debug(1, "Control::controlDeMensajes", "Paso de nivel", 0);
 				vista->getConstructorEntidades()->anillos.clear();
 				vista->getConstructorEntidades()->piedra.clear();
 				vista->getConstructorEntidades()->pinche.clear();
@@ -311,7 +297,7 @@ void Control::controlDeMensajes(Personaje* sonic,
 			}
 
 			if(admNiveles.EsUltimoNivel()){
-				cout<<"entro en el else----------------"<<endl;
+				//cout<<"entro en el else----------------"<<endl;
 				//this->admNiveles.mostrarPunConPan(this->vista,sonics,this->modoDeJuego);
 				//this->vista->mostraMenuInicial(log);
 				this->salir = true;
@@ -352,10 +338,9 @@ void Control::controlDeMensajes(Personaje* sonic,
 				if((*pos)->getId() == id ){
 
 					(*pos)->getPuntos()->setCantAnillos(anillos);
-					cout<<"ID:"<<(*pos)->getId()<<"ANILLOS  "<<(*pos)->getPuntos()->getCantAnillos()<<endl;
+					//cout<<"ID:"<<(*pos)->getId()<<"ANILLOS  "<<(*pos)->getPuntos()->getCantAnillos()<<endl;
 				}
 			}
-
 		}
 		else if(mensaje.substr(0,3).compare("liv") == 0){
 		//	cout<<"MENSAJE VIDAS:  "<< mensaje<<endl;
@@ -431,9 +416,9 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 void Control::parsearMensajeCamara(int &xDest, int &yDest,
 		std::string mensaje) {
-	//Mensaje es del tipo: CAMx-100y---0
-	std::string posX = mensaje.substr(4, 4);
-	std::string posY = mensaje.substr(9, 4);
+	//Mensaje es del tipo: CAMx--100y----0
+	std::string posX = mensaje.substr(4, MAX_DIGITOS_POSICION);
+	std::string posY = mensaje.substr(10, MAX_DIGITOS_POSICION);
 	posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
 	posY.erase(std::remove(posY.begin(), posY.end(), PADDING), posY.end());
 
@@ -445,19 +430,20 @@ void Control::parsearMensajeCamara(int &xDest, int &yDest,
 
 void Control::parsearMensajePosicion(mensajePosicion& msj,
 		std::string mensaje) {
+	//1x----1y----2
 	//Son los mensajes de las posiciones de los otros sonics que recibe desde el servidor
 	msj.id = atoi(mensaje.substr(0, 1).c_str());
 
-	std::string posX = mensaje.substr(2, 4);
-	std::string posY = mensaje.substr(7, 4);
+	std::string posX = mensaje.substr(2, MAX_DIGITOS_POSICION);
+	std::string posY = mensaje.substr(8, MAX_DIGITOS_POSICION);
 	posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
 	posY.erase(std::remove(posY.begin(), posY.end(), PADDING), posY.end());
 
 	msj.posX = atoi(posX.c_str());
 	msj.posY = atoi(posY.c_str());
 
-	msj.animacion = mensaje.substr(11, 3);
-	msj.indiceAnimacion = atoi(mensaje.substr(14, 1).c_str());
+	msj.animacion = mensaje.substr(13, 3);
+	msj.indiceAnimacion = atoi(mensaje.substr(16, 1).c_str());
 }
 
 /*void Control::moverPersonaje(Uint32 &tiempoDeJuego, VistaSDL *vista, Personaje *sonic, Camara *camara)
@@ -503,7 +489,7 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 			(*pos)->render(camara->getPosicionX(), camara->getPosicionY());
 
 			//Dibujar cuadrado sonic
-			SDL_Rect limites = (*pos)->obtenerLimites();
+			//SDL_Rect limites = (*pos)->obtenerLimites();
 			//Util::dibujarRecuadro(&limites, vista->obtenerRender(), camara->devolverCamara());
 		}
 	}
@@ -531,8 +517,8 @@ void Control::animarAnilla(Camara *camara, VistaSDL *vista) {
 		(*pos)->render(camara->getPosicionX(), camara->getPosicionY());
 
 		//Dibujar cuadrado anillas
-				SDL_Rect limites = (*pos)->obtenerLimites();
-				//Util::dibujarRecuadro(&limites, vista->obtenerRender(), camara->devolverCamara());
+		//SDL_Rect limites = (*pos)->obtenerLimites();
+		//Util::dibujarRecuadro(&limites, vista->obtenerRender(), camara->devolverCamara());
 	}
 }
 
@@ -541,12 +527,12 @@ void Control::inicializarEscenario(HiloRecibirCliente *hiloRecibir) {
 	 Aca itera sobre todos esos mensajes y crea las entidades */
 	this->log->addLogMessage("[INICIALIZAR ESCENARIO CLIENTE] Iniciado.", 2);
 	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
-	cout << mensaje << "\n";
+	//cout << mensaje << "\n";
 	while (mensaje != FIN_MENSAJE_ESCENARIO)
 	{
 		if(mensaje != "Sin elementos")
 		{
-			cout << mensaje << "\n";
+			//cout << mensaje << "\n";
 			if(mensaje.compare("Servidor Desconectado") == 0)
 			{
 				salir = true;
@@ -572,18 +558,18 @@ void Control::inicializarEscenario(HiloRecibirCliente *hiloRecibir) {
 void Control::inicializarEnemigos(HiloRecibirCliente *hiloRecibir){
 	//Al iniciar el juego en el servidor, este le envia las posiciones de todos los enemigos
 	std::string mensaje = hiloRecibir->obtenerElementoDeLaCola();
-	cout <<"afuera del while" <<endl;
+	//cout <<"afuera del while" <<endl;
 	while (mensaje != FIN_MENSAJES_ENEMIGOS)
 	{
 		if(mensaje != "Sin elementos")
 		{
-			cout <<"mensaje de inicializacion: " <<mensaje << "\n";
+			//cout <<"mensaje de inicializacion: " <<mensaje << "\n";
 			if(mensaje.compare("Servidor Desconectado") == 0)
 			{
 				salir = true;
 				return;
 			}
-			else if (mensaje.substr(1,1) ==  "c") //Los mensajes sobre entidades tienen el prefijo E
+			else if (mensaje.substr(1,1) ==  "c")
 			{
 				Cangrejo *enemigoCangrejo = new Cangrejo(mensaje,"c",vista);
 				//cout<<"posicion x: "<<enemigo->getPosicionesX()<<endl;
@@ -617,23 +603,22 @@ void Control::limpiarEnemigos(){
     enemigos.clear();
 }
 void Control::parsearMensajeEnemigo(std::string mensaje){
-	//Ej mensaje: /-1-100-200-2v
+	//Ej mensaje: /-1--100--200-2v
 	std::string Id = mensaje.substr(1,2);
 	int id = Util::stringConPaddingToInt(mensaje.substr(1, 2).c_str());
-	this->enemigos[id]->parsearMensaje(mensaje.substr(3, 11).c_str());
+	this->enemigos[id]->parsearMensaje(mensaje.substr(3, 13).c_str());
 }
 
 void Control::agregarEntidad(std::string mensaje) {
-	//Ej mensaje: EB--1x--10y--20
+	//Ej mensaje: EB--1x---10y---20
 	std::string nombre = mensaje.substr(0, 2);
 	int id = Util::stringConPaddingToInt(
-			mensaje.substr(2, MAX_CANT_DIGITOS_POS - 1).c_str());
+			mensaje.substr(2, MAX_DIGITOS_POSICION - 2).c_str());
 	int x = Util::stringConPaddingToInt(
-			mensaje.substr(6, MAX_CANT_DIGITOS_POS).c_str());
+			mensaje.substr(6, MAX_DIGITOS_POSICION).c_str());
 	int y = Util::stringConPaddingToInt(
-			mensaje.substr(11, MAX_CANT_DIGITOS_POS).c_str());
-	cout << "Agregar Entidad " << nombre << " con id: " << id << " en x: " << x
-			<< " y: " << y << "\n";
+			mensaje.substr(12, MAX_DIGITOS_POSICION).c_str());
+	//cout << "Agregar Entidad " << nombre << " con id: " << id << " en x: " << x << " y: " << y << "\n";
 
 	constructorEntidades->agregarEntidadCliente(nombre, id, x, y);
 
@@ -643,8 +628,8 @@ void Control::quitarEntidad(std::string mensaje)
 {
 	//Ej mensaje: EB--1---------
 	std::string nombre = mensaje.substr(0,2);
-	int id = Util::stringConPaddingToInt(mensaje.substr(2, MAX_CANT_DIGITOS_POS-1).c_str());
-	cout << "Quitar Entidad " << nombre << " con id: "<< id << "\n";
+	int id = Util::stringConPaddingToInt(mensaje.substr(2, MAX_DIGITOS_POSICION - 2).c_str());
+	//cout << "Quitar Entidad " << nombre << " con id: "<< id << "\n";
 
 	constructorEntidades->quitarEntidad(nombre, id);
 }

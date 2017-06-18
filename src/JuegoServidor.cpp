@@ -79,14 +79,12 @@ void JuegoServidor::inicializarJuegoServidor(/*std::jescenarioJuego *jparseador*
 		//strcpy(rutaChar,rutaCompleta.c_str());
 			//	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
 			//		strcpy(buffer, mensaje.c_str());
-		cout<<"ruta: "<<rutaChar<<endl;
+		//cout<<"ruta: "<<rutaChar<<endl;
 		jparseador = parseador->parsearArchivo(rutaChar);
 
 		parser.push_back(jparseador);
 
 	}
-
-	cout<<"cout1"<<endl;
     vista->setJjuego(parser);
 
 
