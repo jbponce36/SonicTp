@@ -46,7 +46,6 @@ void JuegoServidor::inicializarJuegoServidor(/*std::jescenarioJuego *jparseador*
 		sonics[id] = sonic;
 	}
 
-
 	control = new ControlServidor(0, 0, vista, &sonics, &hilosEnviar, &hilosRecibir, server,log,modoJuego);
 
 	control->setAnill(jparseador->getAnillo());
