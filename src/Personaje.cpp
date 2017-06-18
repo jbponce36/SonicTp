@@ -412,6 +412,9 @@ void Personaje::rebotar()
 
 void Personaje::herir(ControlServidor *control)
 {
+	if (esInmortal)
+		return;
+
 	if (esInvencible)
 		return;
 

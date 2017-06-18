@@ -69,10 +69,7 @@ public:
 	void parsearMensajeCamara(int &xDest, int &yDest, std::string mensaje);
 	void parsearMensajePosicion(mensajePosicion& msjParseado, std::string mens0aje);
 
-
-	void ChequearColicionAnillo(VistaSDL *vista,std::vector<Personaje*> *sonics,Colicion *colicion);
 	void inicializarEscenario(HiloRecibirCliente *hiloRecibir);
-
 	void inicializarEnemigos(HiloRecibirCliente *hiloRecibir);
 	void limpiarEnemigos();
 	void parsearMensajeEnemigo(std::string mensaje);

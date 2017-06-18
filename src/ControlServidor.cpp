@@ -394,7 +394,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 		moverPersonajesServidor(tiempoDeJuego, vista, camara);
 
 		chequearColisiones();///Aca se chequean las colisiones menos con los anillos supongo
-		chequearColicion(colicion); //Con los anillos
+		chequearColicion(colicion, juegoTerminado); //Con los anillos
 		actualizarPosicionesEnemigos();
 		actualizarVistaServidor(camara);
 
@@ -676,7 +676,7 @@ void ControlServidor::enviarAnillasPiedrasYPinches(Hiloenviar *hiloEnviar)
 }
 */
 
-void ControlServidor::chequearColicion(Colicion *colicion){
+void ControlServidor::chequearColicion(Colicion *colicion, bool &juegoTerminado){
 
 	std::map<int, Personaje*>::iterator pos;
 	list<Anillos*>:: iterator posanillo;
@@ -702,19 +702,24 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				if(colision == SDL_TRUE){
 					if(!enemigos[i]->getVivo()  && enemigos[i]->getTipoEnemigo().compare("j") == 0){
 						char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
-									std::string msjPasarNivel = "PASARNIVEL" ;
-									msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
-									strcpy(buffer, msjPasarNivel.c_str());
-									int id = 1;
-									std::vector<Hiloenviar*>::iterator poshilo;
-									for(poshilo = hilosEnviar->begin();poshilo != hilosEnviar->end();poshilo++)
-									{
-										if(!sonics->at(id)->estaCongelado())
-										{
-											(*poshilo)->enviarDato(buffer);
-										}
-										id++;
-									}
+						std::string msjPasarNivel = "PASARNIVEL" ;
+						msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
+						strcpy(buffer, msjPasarNivel.c_str());
+						int id = 1;
+						std::vector<Hiloenviar*>::iterator poshilo;
+						for(poshilo = hilosEnviar->begin();poshilo != hilosEnviar->end();poshilo++)
+						{
+							if(!sonics->at(id)->estaCongelado())
+							{
+								(*poshilo)->enviarDato(buffer);
+							}
+							id++;
+						}
+
+						//Mataron al jefe final. Aca termina el juego
+						juegoTerminado = true;
+						return;
+
 					}
 
 					if(enemigos[i]->getVivo()){

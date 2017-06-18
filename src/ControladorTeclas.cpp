@@ -26,7 +26,8 @@ std::string ControladorTeclas::intToString(int number)
 
 
 void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnviarCliente *hiloEnviar,
-	HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, VistaSDL *vista, int &opcionMenu,AdministradorDeNiveles* adm)
+	HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido, VistaSDL *vista, int &opcionMenu,
+	AdministradorDeNiveles* adm, bool &salir)
 {
 	//Al presionar o soltar una tecla se ejecuta una sola vez el codigo correspondiente
 
@@ -88,7 +89,8 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 				{
 					case 1:
 					{
-						//salir = true;
+						//Desconectar
+						salir = true;
 						char buffer [40];
 						std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + intToString(sonic->getId());
 						strcpy(buffer, msjDesconexion.c_str());
@@ -104,7 +106,8 @@ void ControladorTeclas::procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnvia
 					}
 					case 2:
 					{
-						//salir = true;
+						//Salir
+						salir = true;
 						char buffer [40];
 						std::string msjDesconexion = MENSAJE_DESCONEXION_CLIENTE + intToString(sonic->getId());
 						strcpy(buffer, msjDesconexion.c_str());

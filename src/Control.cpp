@@ -65,6 +65,10 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 		administrarTeclas(&controlador, sonic, vista, hiloEnviar, hiloRecibir,
 				hiloLatido, opcionMenu);
 		controlDeMensajes(sonic, hiloRecibir, vista, camara);
+		if(salir){
+			//Puede que termine el juego por haber usado el menu o matar al jefe.
+			break;
+		}
 		actualizarVista(camara, vista, &imagenMostrar, sonic);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
@@ -79,36 +83,6 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	this->log->addLogMessage("[CONTROLAR JUEGO CLIENTE] Terminado. \n", 2);
 }
 
-void Control::ChequearColicionAnillo(VistaSDL *vista,
-		std::vector<Personaje*> *sonics, Colicion *colicion) {
-
-	list<Anillos*>::iterator pos;
-	//list<Entidad*>:: iterator pos;
-	std::vector<Personaje*>::iterator poss;
-
-	//printf("Voy a entrar al primer for \n");
-	for (poss = sonics->begin(); poss != sonics->end(); poss++) {
-		//printf("Voy a entrar al segundo for \n");
-		//printf("Vista %d \n", vista);
-		//printf("Construstor Entidades %d \n", vista->getConstructorEntidades());
-		//printf("Anillos %d \n", vista->getConstructorEntidades()->anillos);
-		//printf("Cantidad Anillos %d \n", vista->getConstructorEntidades()->anillos.size());
-		//printf("El Begin %d \n", vista->getConstructorEntidades()->anillos.begin());
-		for (pos = vista->getConstructorEntidades()->anillos.begin();
-				pos != vista->getConstructorEntidades()->anillos.end(); pos++) {
-			//printf("Anillo %d", (*pos));
-			//Anillos *cls = dynamic_cast<Anillos*>(*pos);//C2682
-			Anillos *cls = (*pos);
-			//Personaje * cl2 = dynamic_cast<Personaje*>(*poss);
-			Personaje * cl2 = (*poss);
-			//printf("Anillo %d \n", cls);
-			//printf("Personaje %d \n", cl2);
-			if (colicion->intersectaAnilloPersonaje(cls, cl2)) {
-				printf("COLISIONNNNN!!!!");
-			}
-		}
-	}
-}
 std::string Control::intToString(int number) {
 	ostringstream oss;
 	oss << number;
@@ -127,9 +101,17 @@ void Control::administrarTeclas(ControladorTeclas *controlador,
 			salir = true;
 		}
 		controlador->procesarEvento(e, sonic, hiloEnviar, hiloRecibir,
-				hiloLatido, vista, opcionMenu, &admNiveles); //Setea todas las teclas presionadas o liberadas
+				hiloLatido, vista, opcionMenu, &admNiveles, salir); //Setea todas las teclas presionadas o liberadas
 	}
 
+	if(salir){
+		//Significa que eligio salir/desconectar desde el menu o la x
+		vista->getConstructorEntidades()->anillos.clear();
+		vista->getConstructorEntidades()->piedra.clear();
+		vista->getConstructorEntidades()->pinche.clear();
+		this->limpiarEnemigos();
+		vista->getConstructorEntidades()->entidades.clear();
+	}
 	//controlador->administrarTeclas(sonic); //Mueve al sonic de acuerdo a las teclas seteadas
 }
 
@@ -328,13 +310,12 @@ void Control::controlDeMensajes(Personaje* sonic,
 				cout<<"---------------------------------"<<admNiveles.getNivel()<<endl;
 			}
 
-			else if(admNiveles.EsUltimoNivel()){
+			if(admNiveles.EsUltimoNivel()){
 				cout<<"entro en el else----------------"<<endl;
-
-
-				this->admNiveles.mostrarPunConPan(this->vista,sonics,this->modoDeJuego);
-				this->vista->mostraMenuInicial(log);
+				//this->admNiveles.mostrarPunConPan(this->vista,sonics,this->modoDeJuego);
+				//this->vista->mostraMenuInicial(log);
 				this->salir = true;
+				return;
 			}
 
 			for (int indice = 0; indice < sonics->size(); indice++) {
