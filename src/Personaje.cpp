@@ -381,7 +381,9 @@ void Personaje::dejarDeSaltar()
 {
 	if(velocidadY < (-personajeVelocidad/2))
 	{
-		velocidadY = (-personajeVelocidad/2);
+		//velocidadY = (-personajeVelocidad/2);
+		//Lo comento porque al parecer no les gusta que salte poquito al apretar apenitas la tecla de salto
+		//"""Como en el juego original, chicos."""
 	}
 }
 
