@@ -129,7 +129,7 @@ public:
 	}mensajeRecibido;
 
 
-	void chequearColicion(Colicion *colicion);
+	void chequearColicion(Colicion *colicion, bool &juegoTerminado);
 	void chequearColisiones();
 
 	void enviarDatosEscenarioATodos();

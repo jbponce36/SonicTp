@@ -26,11 +26,11 @@ void Enemigo::setVivo(bool cambiarVivo){
 }
 std::string Enemigo::obteneMensajeEstadoInicial(){
 
-	//Tamano es 9. Ej: c-100-200
+	//Tamano es 9. Ej: c--100--200
 	std::string mensaje= "";
 	mensaje = mensaje + this->tipoEnemigo;
-	mensaje = mensaje + this->intToStringConPadding4((int)this->posicioneX);
-	mensaje = mensaje + this->intToStringConPadding4((int)this->posicioneY);
+	mensaje = mensaje + Util::intToStringConPadding((int)this->posicioneX, MAX_DIGITOS_POSICION);
+	mensaje = mensaje + Util::intToStringConPadding((int)this->posicioneY, MAX_DIGITOS_POSICION);
 	//mensaje = mensaje + this->intToStringConPadding(this->numeroSprite);
 	/*if(this->vivo == true){
 		mensaje = mensaje + "v";
@@ -40,11 +40,11 @@ std::string Enemigo::obteneMensajeEstadoInicial(){
 	return mensaje;
 }
 std::string Enemigo::obteneMensajeEstado(){
-	//Tamano es 11. Ej: -100-200-1v
+	//Tamano es 11. Ej: --100--200-1v
 	std::string mensaje= "";
-	mensaje = mensaje + this->intToStringConPadding4((int)this->posicioneX);
-	mensaje = mensaje + this->intToStringConPadding4((int)this->posicioneY);
-	mensaje = mensaje + this->intToStringConPadding2(this->numeroSprite);
+	mensaje = mensaje + Util::intToStringConPadding((int)this->posicioneX, MAX_DIGITOS_POSICION);
+	mensaje = mensaje + Util::intToStringConPadding((int)this->posicioneY, MAX_DIGITOS_POSICION);
+	mensaje = mensaje + Util::intToStringConPadding(this->numeroSprite, 2);
 	if(this->vivo == true){
 		mensaje = mensaje + "v";
 	}else{
@@ -194,30 +194,30 @@ bool Enemigo::getVivo(){
 	return this->vivo;
 }
 void Enemigo::parsearMensajeInicial(std::string mensaje){
-	//Mensaje es del tipo: /c-100-200
-	cout<<"mensaje: "<<mensaje<<endl;
-	std::string posX = mensaje.substr(2, 4);
-	std::string posY = mensaje.substr(6, 4);
+	//Mensaje es del tipo: /c--100--200
+	//cout<<"mensaje: "<<mensaje<<endl;
+	std::string posX = mensaje.substr(2, MAX_DIGITOS_POSICION);
+	std::string posY = mensaje.substr(7, MAX_DIGITOS_POSICION);
 	posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
 	posY.erase(std::remove(posY.begin(), posY.end(), PADDING), posY.end());
 	this->posicioneX = atoi(posX.c_str());
 	this->posicioneY = atoi(posY.c_str());
 }
 void Enemigo::parsearMensaje(std::string mensaje){
-	//Mensaje es del tipo: -100-200-2v
+	//Mensaje es del tipo: --100--200-2v
 	//cout<<"mensaje: "<<mensaje<<endl;
 
 
-	std::string posX = mensaje.substr(0, 4);
-	std::string posY = mensaje.substr(4, 4);
-	std::string numSprite = mensaje.substr(8,2);
+	std::string posX = mensaje.substr(0, MAX_DIGITOS_POSICION);
+	std::string posY = mensaje.substr(5, MAX_DIGITOS_POSICION);
+	std::string numSprite = mensaje.substr(10,2);
 	posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
 	posY.erase(std::remove(posY.begin(), posY.end(), PADDING), posY.end());
 	numSprite.erase(std::remove(numSprite.begin(), numSprite.end(), PADDING), numSprite.end());
 	this->posicioneX = atoi(posX.c_str());
 	this->posicioneY = atoi(posY.c_str());
 	this->numeroSprite = atoi(numSprite.c_str());
-	if(mensaje[10] == 'v'){
+	if(mensaje[12] == 'v'){
 		//cout<<"esta vivo"<<endl;
 	}else{
 		//cout<<"muerto"<<endl;

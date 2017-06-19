@@ -50,8 +50,8 @@ void Bonus::interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar)
 			case ESCUDO: {
 				sonic->ponerseEscudo();
 				std::string mensaje = Util::intToString(sonic->getId())
-					+ "x" + Util::intToStringConPadding(sonic->getPosicionX())
-					+ "y" + Util::intToStringConPadding(sonic->getPosicionY())
+					+ "x" + Util::intToStringConPadding(sonic->getPosicionX(), MAX_DIGITOS_POSICION)
+					+ "y" + Util::intToStringConPadding(sonic->getPosicionY(), MAX_DIGITOS_POSICION)
 					+ ANIMACION_ESCUDO + PADDING;
 				mundo->enviarATodos(mensaje);
 				break;
@@ -59,8 +59,8 @@ void Bonus::interactuar(Personaje *sonic, Mundo* mundo, bool &eliminar)
 			case INVENCIBILIDAD: {
 				sonic->serInvencible(DURACION_INVENCIBLE_BONUS);
 				std::string mensaje = Util::intToString(sonic->getId())
-					+ "x" + Util::intToStringConPadding(sonic->getPosicionX())
-					+ "y" + Util::intToStringConPadding(sonic->getPosicionY())
+					+ "x" + Util::intToStringConPadding(sonic->getPosicionX(), MAX_DIGITOS_POSICION)
+					+ "y" + Util::intToStringConPadding(sonic->getPosicionY(), MAX_DIGITOS_POSICION)
 					+ ANIMACION_INVENCIBLE + PADDING;
 				mundo->enviarATodos(mensaje);
 				break;

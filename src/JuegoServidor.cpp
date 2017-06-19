@@ -46,7 +46,6 @@ void JuegoServidor::inicializarJuegoServidor(/*std::jescenarioJuego *jparseador*
 		sonics[id] = sonic;
 	}
 
-
 	control = new ControlServidor(0, 0, vista, &sonics, &hilosEnviar, &hilosRecibir, server,log,modoJuego);
 
 	control->setAnill(jparseador->getAnillo());
@@ -80,14 +79,12 @@ void JuegoServidor::inicializarJuegoServidor(/*std::jescenarioJuego *jparseador*
 		//strcpy(rutaChar,rutaCompleta.c_str());
 			//	char buffer[LARGO_MENSAJE_POSICION_CLIENTE] = "";
 			//		strcpy(buffer, mensaje.c_str());
-		cout<<"ruta: "<<rutaChar<<endl;
+		//cout<<"ruta: "<<rutaChar<<endl;
 		jparseador = parseador->parsearArchivo(rutaChar);
 
 		parser.push_back(jparseador);
 
 	}
-
-	cout<<"cout1"<<endl;
     vista->setJjuego(parser);
 
 

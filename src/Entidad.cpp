@@ -79,7 +79,8 @@ int Entidad::cargarImagen(SDL_Renderer *renderer, Logger *log)
 	if ((rutaImagen != "") && (imagen != NULL))
 	{
 		//Imagen ya cargada
-		this->log->addLogMessage("[CARGAR IMAGEN] Error cargando imagen en ruta: "+rutaImagen,1);
+		this->log->setModulo("ENTIDAD");
+		this->log->addLogMessage("[CARGAR IMAGEN] Imagen ya cargada",1);
 		return error;
 	}
 
@@ -108,6 +109,7 @@ int Entidad::cargarImagen(SDL_Renderer *renderer, Logger *log)
 
 	imagen = SDL_CreateTextureFromSurface(renderer, imagenCargada);
 	SDL_FreeSurface(imagenCargada);
+	this->log->setModulo("ENTIDAD");
 	this->log->addLogMessage("[CARGAR IMAGEN] Imagen cargada en ruta:"+rutaImagen,3);
 	this->log->addLogMessage("[CARGAR IMAGEN] Terminado.",2);
 	return error;

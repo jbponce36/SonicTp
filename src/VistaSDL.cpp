@@ -33,41 +33,45 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	this->crearVentanaYrenderizador();
 	this->velocidadScroll=jconfiguracion->getvelscroll();
 	this->cargarEnemigosTextura();
+	fuente = NULL;
+	fuente2 = NULL;
 
 	this->constructorEntidades = new ConstructorEntidades(anchoescenario, 4*altoescenario/5, anchoVentana, logger);
 	if(oculta)
 	{
-		//Solo el servidor carga las entidades
+		//Servidor. No carga texturas.
 		constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
 	}
 	else
 	{
+		//Cliente
+		this->fuente = TTF_OpenFont("images/arial.ttf", 20);
+		this->White = {255, 255, 255,0};
+		this->azul = {26,26,227};
+		this->rojo = {202,15,15};
+		this->verde = {32,202,15};
+		this->amarillo = {173,202,12};
+		colores.push_back(azul);
+		colores.push_back(rojo);
+		colores.push_back(verde);
+		colores.push_back(amarillo);
+		negro = {0,0,0};
+		gris = {224,224,224};
+		this->fuente2 = TTF_OpenFont("images/arial.ttf", 40);
+		pers.push_back(0);
+		pers.push_back(0);
+		pers.push_back(0);
+		pers.push_back(0);
+		pers.at(0) = 0;
+		pers.at(1) = 0;
+		pers.at(2) = 0;
+		pers.at(3) = 0;
+		mostrarPantallaCargando();
+
 		constructorEntidades->cargarEntidadesCliente(jescenario->getentidades(), renderizador);
+		this->cargarCapas(jescenario);
 	}
 
-	this->cargarCapas(jescenario);
-
-	this->fuente = TTF_OpenFont("images/arial.ttf", 20);
-	this->White = {255, 255, 255,0};
-	this->azul = {26,26,227};
-	this->rojo = {202,15,15};
-	this->verde = {32,202,15};
-	this->amarillo = {173,202,12};
-	colores.push_back(azul);
-	colores.push_back(rojo);
-	colores.push_back(verde);
-	colores.push_back(amarillo);
-	negro = {0,0,0};
-	gris = {224,224,224};
-	this->fuente2 = TTF_OpenFont("images/arial.ttf", 40);
-	pers.push_back(0);
-	pers.push_back(0);
-	pers.push_back(0);
-	pers.push_back(0);
-	pers.at(0) = 0;
-	pers.at(1) = 0;
-	pers.at(2) = 0;
-	pers.at(3) = 0;
 	pthread_mutex_init(&mutexRenderizar, NULL);
 }
 
@@ -166,8 +170,12 @@ void VistaSDL::crearVentanaYrenderizador()
 				else
 				{
 					//Initialize renderer color
-					SDL_SetRenderDrawColor( renderizador, 0xFF, 0xFF, 0xFF, 0xFF );
-					SDL_RenderClear(this->renderizador);
+					if(!oculta){
+						SDL_SetRenderDrawColor( renderizador, 176, 196, 222, 255);
+						SDL_RenderClear(this->renderizador);
+						SDL_RenderPresent(renderizador);
+					}
+
 					//inicia carga PNG
 					int imgFlags = IMG_INIT_PNG;
 					if( !( IMG_Init( imgFlags ) & imgFlags ) )
@@ -331,13 +339,17 @@ VistaSDL::~VistaSDL()
 	{
 		this->capasFondo[i]->liberarTextura();
 	}
-	this->log->iniciarLog("TERMINAR LOGGER");
-	TTF_CloseFont(fuente);
-	//~this->log;
+	if(fuente != NULL){
+		TTF_CloseFont(fuente);
+	}
+	if(fuente2 != NULL){
+		TTF_CloseFont(fuente2);
+	}
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 	pthread_mutex_destroy(&mutexRenderizar);
+	this->log->iniciarLog("TERMINAR LOGGER");
 }
 
 void VistaSDL::mostrarEntidades(SDL_Rect *camara, int indexZ)
@@ -1070,4 +1082,14 @@ void VistaSDL::mostrarPuntFinNivel(int modo,vector<Personaje*>* sonics){
 
 		this->mostrarScoTresFinLv(sonics);
 	}
+}
+
+void VistaSDL::mostrarPantallaCargando()
+{
+	this->log->addLogMessage("[MOSTRAR CARGANDO JUEGO] Iniciado.",2);
+
+	SDL_Color fondo = {176, 196, 222, 255};
+	this->dibujarTextoColorFuente("Cargando juego...",0,0,azul,fondo,fuente2);
+	SDL_RenderPresent(renderizador);
+	this->log->addLogMessage("[MOSTRAR CARGANDO JUEGO] Terminado.\n",2);
 }

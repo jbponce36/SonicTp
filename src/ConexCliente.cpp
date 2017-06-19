@@ -92,7 +92,7 @@ int ConexCliente::setsocket(){
 int ConexCliente::enviar(char *buf, int size)
 {
 	this->log->setModulo("CONEX CLIENTE");
-	this->log->addLogMessage("[ENVIAR] Iniciado",2);
+	this->log->addLogMessage("[ENVIAR] Iniciado",3);
 	int enviado = 0;
 		int envioParcial = 0;
 		bool socketValido = true;
@@ -123,7 +123,7 @@ int ConexCliente::enviar(char *buf, int size)
 			return envioParcial;
 		}
 		else {
-			this->log->addLogMessage("[ENVIAR] Terminado.", 2);
+			this->log->addLogMessage("[ENVIAR] Terminado.", 3);
 			this->log->imprimirMensajeNivelAlto("[ENVIAR] Se envio el mensaje: ", buf);
 
 			return enviado;
@@ -135,7 +135,7 @@ int ConexCliente::enviar(char *buf, int size)
     int ConexCliente::enviarPosicion(Posicion *posicion, int size)
         {
         	this->log->setModulo("CONEX CLIENTE");
-        	this->log->addLogMessage("[ENVIAR] Iniciado.",2);
+        	this->log->addLogMessage("[ENVIAR] Iniciado.",3);
            /*      bool is_the_socket_valid = true;
             //this->log->addLogMessage("[ENVIAR] Iniciado", 2);
             while(sent < size && is_the_socket_valid){*/
@@ -153,7 +153,7 @@ int ConexCliente::enviar(char *buf, int size)
                 return status;
             }
 
-            this->log->addLogMessage("[ENVIAR] Terminado.", 2);
+            this->log->addLogMessage("[ENVIAR] Terminado.", 3);
 
             return status;
         }
@@ -165,7 +165,7 @@ int ConexCliente::enviar(char *buf, int size)
 
     int ConexCliente::recibir(char *buf, int size){
     	this->log->setModulo("CONEX CLIENTE");
-    	this->log->addLogMessage("[RECIBIR] Iniciado",2);
+    	this->log->addLogMessage("[RECIBIR] Iniciado",3);
     	int bytes = recv(this->fd, buf, size, MSG_NOSIGNAL);
 
     	if(bytes<0){
@@ -175,7 +175,7 @@ int ConexCliente::enviar(char *buf, int size)
 
     	//cout<<"[CONEXCLIENTE] [RECIBIR] Se recibio correctamente"<<endl;
     	this->log->imprimirMensajeNivelAlto("[RECIBIR] Se recibio el mensaje: ",buf);
-    	this->log->addLogMessage("[RECIBIR] Terminado",2);
+    	this->log->addLogMessage("[RECIBIR] Terminado",3);
     	return bytes;
     }
 
