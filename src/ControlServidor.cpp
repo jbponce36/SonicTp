@@ -452,7 +452,7 @@ void ControlServidor::CreoPinche(int minRam, int maxRam){
 	this->log->addLogMessage("[CREO PINCHE] Iniciado.", 2);
 	int cantidadpinche = Util::numeroRandomEntre(minRam, maxRam);
 
-	if(cantidadpinche > 7){
+	if(cantidadpinche > MAX_CANT_PINCHES){
 
 	  this->log->addLogMessage("[CREO PINCHE] ERROR.La Cantidad de Pinches randon" + std::string(" ") + Util::intToString(cantidadpinche) + std::string(" ") + "supera a 7, El numero elegido para fraccionar la pantalla de ancho 8000, por lo tanto se carga el valor por defecto de 7 piedras",1);
 	}
@@ -463,10 +463,11 @@ void ControlServidor::CreoPinche(int minRam, int maxRam){
 	int AnchoEscenario = vista->obtenerAnchoEscenario();
 	cout<<"ANCHO ESCENARIOO: "<<vista->obtenerAnchoEscenario()<<"-------------------"<<endl;
 	
-	int coordXActual = 1500;
+	//int coordXActual = 1500;
+	int coordXActual = 1600;
 	std::vector<int> myvector;
 
-	for (int i=0; i<=14; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
+	for (int i=0; i<=MAX_CANT_PINCHES; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7 8 9 10 
 	std::random_shuffle( myvector.begin(), myvector.end() );
 
 
@@ -479,7 +480,8 @@ void ControlServidor::CreoPinche(int minRam, int maxRam){
 
 			 int coordX = myvector.back();
    		     myvector.pop_back();
-			 coordX = (coordX * 1000) + 400;
+   		     coordX = (coordX * 1400) + 400;
+			 //coordX = (coordX * 1000) + 400;
 			 int coordY = 4*vista->getAltoEscenario()/5 - alto;
 			 coordXActual = coordXActual + 400;
 
@@ -583,25 +585,22 @@ void ControlServidor::CreoAnillas(int minRam, int maxRam){
 
 void ControlServidor::CreoPiedras(int minRam, int maxRam){
 	 this->log->addLogMessage("[CREO PIEDRAS] Iniciado.", 2);
-
-	 int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
-	 int AnchoEscenario = vista->obtenerAnchoEscenario();
-
 	// int cantidadPiedras = Util::numeroRandomEntre(this->getJpied()->getMinimoran(), this->getJpied()->getMaximoran());
 	 int cantidadPiedras = Util::numeroRandomEntre(minRam, maxRam);
 
-	 if(cantidadPiedras > 7){
-
+	 if(cantidadPiedras > MAX_CANT_PIEDRAS){
 		 this->log->addLogMessage("[CREO PIEDRAS] ERROR.La Cantidad de Piedras randon" + std::string(" ") + Util::intToString(cantidadPiedras) + std::string(" ") + "supera a 7, El numero elegido para fraccionar la pantalla de ancho 8000, por lo tanto se carga el valor por defecto de 7 piedras",1);
 	 }
 
 
 	 debug(0,"ControlServidor::CreoPiedras","Valor Random %d", cantidadPiedras);
+	 int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
+	 int AnchoEscenario = vista->obtenerAnchoEscenario();
 
-	  std::vector<int> myvector;
+	 std::vector<int> myvector;
 
-	  for (int i=1; i<=14; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
-	  std::random_shuffle ( myvector.begin(), myvector.end() );
+	 for (int i=1; i<= MAX_CANT_PIEDRAS; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
+	 std::random_shuffle ( myvector.begin(), myvector.end() );
 
 
 	  int cantidadPiedrasMostradas = 0;
@@ -616,11 +615,8 @@ void ControlServidor::CreoPiedras(int minRam, int maxRam){
 			  int coordX = myvector.back();
 			  myvector.pop_back();
 
-			 // debug(0, "ControlServidor::CreoPiedras", "Creando piedra ranrom: %d", coordX);
-			  coordX = coordX * 1000;
-
-			  //debug(0, "ControlServidor::CreoPiedras", "Creando piedra en pos Despues del Randon X: %d", coordX);
-
+			  coordX = coordX * 1400;
+			  //coordX = coordX * 1000;
 
 			  int coordY = 4*vista->getAltoEscenario()/5 - alto;
 

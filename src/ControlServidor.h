@@ -47,6 +47,8 @@
 #define MAXCOLS  800
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
 #define ALTURA_ANILLAS 300
+#define MAX_CANT_PIEDRAS 10
+#define MAX_CANT_PINCHES 10
 
 
 class ControlServidor {

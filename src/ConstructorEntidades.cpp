@@ -563,80 +563,78 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor, int minimorA, i
 
 	//////////////////////////////////////////////////////////////////////
 
+	//cout<<"CANTIDAD DE BONUS GENERADOS"<<endl;
 
-	    //cout<<"CANTIDAD DE BONUS GENERADOS"<<endl;
-	    //cout<<cantidadBonus<<endl;
+	int y = limiteAlto - alto;
 
-		int y = limiteAlto - alto;
+	int coordXActual = 2200;
+	int c= 0;
 
-		int coordXActual = 2200;
-		int c= 0;
+	std::vector<int> myvector;
+	  // set some values:
+	for (int i=0; i<=10; ++i)
+	{
+		myvector.push_back(i * 1400 + 200);
+		myvector.push_back(i * 1400 + 300);
+		myvector.push_back(i * 1400 + 600);
+		myvector.push_back(i * 1400 + 700);
+		myvector.push_back(i * 1400 + 800);
+		myvector.push_back(i * 1400 + 900);
+	}
+	std::random_shuffle ( myvector.begin(), myvector.end() );
 
-		std::vector<int> myvector;
-		  // set some values:
-		for (int i=0; i<=7; ++i)
-		{
-			myvector.push_back(i * 1000 + 200);
-			myvector.push_back(i * 1000 + 300);
-			myvector.push_back(i * 1000 + 600);
-			myvector.push_back(i * 1000 + 700);
-			myvector.push_back(i * 1000 + 800);
-			myvector.push_back(i * 1000 + 900);
-		}
-		std::random_shuffle ( myvector.begin(), myvector.end() );
-
-		int cantidadBonus = Util::numeroRandomEntre(minimorE, maximorE); //pasarle aca el minimo y maximo para escudo
-		debug(0, "ConstructorEntidades::generarBonus", "Creando cantidad bonus escudos: %d", cantidadBonus);
-		for(int i = 0; i < cantidadBonus; i++)
-		{
-			if (!myvector.empty()){
-				//Divide el escenario en partes iguales del doble del ancho del bonus para que no se superpongan
-				//Y al sumarle 2*ancho hago que caiga en una de esas divisiones
-				//int x = coordXActual + Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
-				  int x = myvector.back();
-	 		      myvector.pop_back();
-
-				//debug(0, "ConstructorEntidades::generarBonus", "Creando escudo en pos X: %d", x);
-				Bonus* nuevoBonus = new Bonus(ancho,alto,generarId(),color,ruta,x,y,index,log,Bonus::ESCUDO);
-				entidades.push_back(nuevoBonus);
-				c++;
-			}
-		}
-
-		cantidadBonus = Util::numeroRandomEntre(minimorA, maximorA); // pasarle aca el minimo y maximo para ring
-		debug(0, "ConstructorEntidades::generarBonus", "Creando cantidad bonus anillos: %d", cantidadBonus);
-		for(int i = 0; i < cantidadBonus; i++)
-		{
-			if (!myvector.empty()){
+	int cantidadBonus = Util::numeroRandomEntre(minimorE, maximorE); //pasarle aca el minimo y maximo para escudo
+	debug(0, "ConstructorEntidades::generarBonus", "Creando cantidad bonus escudos: %d", cantidadBonus);
+	for(int i = 0; i < cantidadBonus; i++)
+	{
+		if (!myvector.empty()){
+			//Divide el escenario en partes iguales del doble del ancho del bonus para que no se superpongan
+			//Y al sumarle 2*ancho hago que caiga en una de esas divisiones
+			//int x = coordXActual + Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
 			  int x = myvector.back();
-		      myvector.pop_back();
+			  myvector.pop_back();
 
-				//debug(0, "ConstructorEntidades::generarBonus", "Creando Anillo en pos X: %d", x);
-						//+ Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
-				Bonus* nuevoBonus = new Bonus(ancho,alto,generarId(),color,ruta,x,y,index,log,Bonus::RING);
-				entidades.push_back(nuevoBonus);
-				c++;
-			}
+			//debug(0, "ConstructorEntidades::generarBonus", "Creando escudo en pos X: %d", x);
+			Bonus* nuevoBonus = new Bonus(ancho,alto,generarId(),color,ruta,x,y,index,log,Bonus::ESCUDO);
+			entidades.push_back(nuevoBonus);
+			c++;
 		}
+	}
 
-		//Agrego bonus de Invencibilidad
-		//cantidadBonus = 2;
-				//Util::numeroRandom(3);
-		 cantidadBonus = Util::numeroRandomEntre(minimor, maximor); // minimor es del "escudo invencibilidad idem maximor"
-		 debug(0, "ConstructorEntidades::generarBonus", "Creando cantidad bonus invencibilidad: %d", cantidadBonus);
-		 for(int i = 0; i < cantidadBonus; i++)
-		{
-			if (!myvector.empty()){
-			  int x = myvector.back();
-		      myvector.pop_back();
+	cantidadBonus = Util::numeroRandomEntre(minimorA, maximorA); // pasarle aca el minimo y maximo para ring
+	debug(0, "ConstructorEntidades::generarBonus", "Creando cantidad bonus anillos: %d", cantidadBonus);
+	for(int i = 0; i < cantidadBonus; i++)
+	{
+		if (!myvector.empty()){
+		  int x = myvector.back();
+		  myvector.pop_back();
 
-				//debug(0, "ConstructorEntidades::generarBonus", "Creando invencibiilidad en pos X: %d", x);
-						//Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
-				Bonus* nuevoBonus = new Bonus(ancho,alto,generarId(),color,ruta,x,y,index,log,Bonus::INVENCIBILIDAD);
-				entidades.push_back(nuevoBonus);
-				c++;
-			}
+			//debug(0, "ConstructorEntidades::generarBonus", "Creando Anillo en pos X: %d", x);
+					//+ Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+			Bonus* nuevoBonus = new Bonus(ancho,alto,generarId(),color,ruta,x,y,index,log,Bonus::RING);
+			entidades.push_back(nuevoBonus);
+			c++;
 		}
+	}
+
+	//Agrego bonus de Invencibilidad
+	//cantidadBonus = 2;
+			//Util::numeroRandom(3);
+	 cantidadBonus = Util::numeroRandomEntre(minimor, maximor); // minimor es del "escudo invencibilidad idem maximor"
+	 debug(0, "ConstructorEntidades::generarBonus", "Creando cantidad bonus invencibilidad: %d", cantidadBonus);
+	 for(int i = 0; i < cantidadBonus; i++)
+	{
+		if (!myvector.empty()){
+		  int x = myvector.back();
+		  myvector.pop_back();
+
+			//debug(0, "ConstructorEntidades::generarBonus", "Creando invencibiilidad en pos X: %d", x);
+					//Util::numeroRandom(limiteAncho/(2*ancho)) * (2*ancho);
+			Bonus* nuevoBonus = new Bonus(ancho,alto,generarId(),color,ruta,x,y,index,log,Bonus::INVENCIBILIDAD);
+			entidades.push_back(nuevoBonus);
+			c++;
+		}
+	}
 
 
 }
