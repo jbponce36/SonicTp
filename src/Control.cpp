@@ -396,6 +396,17 @@ void Control::controlDeMensajes(Personaje* sonic,
 			this->modoDeJuego = atoi(mensaje.substr(2,1).c_str());
 
 		}
+		else if(mensaje.substr(0,3).compare("equ") == 0){
+
+			std::vector<Personaje*>::iterator pos;
+			for (pos = sonics->begin(); pos != sonics->end(); pos++) {
+				if((*pos)->getId() == atoi(mensaje.substr(3,1).c_str()))
+				{
+					(*pos)->setGrupo(atoi(mensaje.substr(4,1).c_str()));
+				}
+			}
+
+		}
 		else if(mensaje.substr(0, 3) == MENSAJE_PERDIO_JUGADOR)
 		{
 			int idPerdedor = atoi(mensaje.substr(3, 1).c_str());
