@@ -1164,7 +1164,8 @@ void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez
 			}
 		}
 		if((contadorPescado < numPescado) and (cantidadEnemigos <MAXIMO_ENEMIGOS_EN_MAPA)){
-			int rangoDeMovimientoMinimo = 500 + rand() % ((7300+1) - 500);
+			//int rangoDeMovimientoMinimo = 500 + rand() % ((7300+1) - 500);
+			int rangoDeMovimientoMinimo = 500 + rand() % ((15300+1) - 500);
 			bool posicionValida = true;
 			for(int i=0;i<enemigos.size();i++){
 				int posicion = enemigos[i]->getPosicionDeEnemigo();
@@ -1184,7 +1185,8 @@ void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez
 		}
 		if((contadorMosaca < numMosca) and (cantidadEnemigos <MAXIMO_ENEMIGOS_EN_MAPA)){
 
-			int rangoDeMovimientoMinimo = 500 + rand() % ((7300+1) - 500);
+			//int rangoDeMovimientoMinimo = 500 + rand() % ((7300+1) - 500);
+			int rangoDeMovimientoMinimo = 500 + rand() % ((15300+1) - 500);
 			bool posicionValida = true;
 			for(int i=0;i<enemigos.size();i++){
 				int posicion = enemigos[i]->getPosicionDeEnemigo();
