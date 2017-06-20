@@ -36,6 +36,7 @@ public:
 	int obtenerAltoTextura();
 	int obtenerAnchoTextura();
 	void renderizar(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVentana = NULL);
+	void renderizarCapa(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVentana , int anchoEscenario);
 	void liberarTextura();
 	SDL_Texture* obtenerTextura();
 	void setId(int);

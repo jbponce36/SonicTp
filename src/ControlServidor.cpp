@@ -461,12 +461,13 @@ void ControlServidor::CreoPinche(int minRam, int maxRam){
 
 	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
 	int AnchoEscenario = vista->obtenerAnchoEscenario();
+	cout<<"ANCHO ESCENARIOO: "<<vista->obtenerAnchoEscenario()<<"-------------------"<<endl;
+	
 	int coordXActual = 1500;
+	std::vector<int> myvector;
 
-	  std::vector<int> myvector;
-
-	  for (int i=0; i<=7; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
-	  std::random_shuffle ( myvector.begin(), myvector.end() );
+	for (int i=0; i<=14; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
+	std::random_shuffle( myvector.begin(), myvector.end() );
 
 
 	for(int i=0;i<cantidadpinche;i++){
@@ -478,17 +479,12 @@ void ControlServidor::CreoPinche(int minRam, int maxRam){
 
 			 int coordX = myvector.back();
    		     myvector.pop_back();
-   		     // debug(0, "ControlServidor::CreoPinche", "Creando pinche en Random: %d", coordX);
-			  coordX = (coordX * 1000) + 400;
-			// debug(0, "ControlServidor::CreoPinche", "Creando pinche en pos X: %d", coordX);
-
+			 coordX = (coordX * 1000) + 400;
 			 int coordY = 4*vista->getAltoEscenario()/5 - alto;
 			 coordXActual = coordXActual + 400;
 
 			 std::string rutaImagen = "images/Pinchos.png";
 			 int indexZ = 99;
-
-
 
 			 Pinche* pinche = new Pinche(ancho, alto, id, color, rutaImagen, coordX, coordY, indexZ, this->log);
 			 pinche->setAlto(alto);
@@ -545,26 +541,21 @@ void ControlServidor::CreoAnillas(int minRam, int maxRam){
 	  dibujaMenosAnillas = true;
   }
 
- // debug(0,"ControlServidor::CreoAnillas","Cantidad anillas usadas %d", cantidadAnillas);
-
   if (dibujaMenosAnillas){
-	  //log de errores
-	 // debug(0,"ControlServidor::CreoAnillas","ERROR SE USARON MENOS ANILLAS", cantidadAnillas);
 	  this->log->addLogMessage("[CREO ANILLAS] ERROR.La Cantidad de Anillas randon" + std::string(" ") + Util::intToString(CantidadAnillaslogErrores) + std::string(" ") + "supera el ancho de la pantalla . Se cargara el valor por defecto soportado por la pantalla de 60 anillas.", 1);
   }
 
   for(int i=0;i<cantidadAnillas;i++){
-
-	  int	id = i;
+	  int id = i;
 	  std::string color = "rojo";
 
-	  int coordX = coordXActual + Util::numeroRandom((AnchoEscenario / cantidadAnillas)/(2*ancho)) * (2*ancho);
-
+	  int coordX = coordXActual + Util::numeroRandom((AnchoEscenario / cantidadAnillas)/(2*ancho))
+	  * (2*ancho);
 
 	  coordXActual = coordXActual + AnchoEscenario / cantidadAnillas;
 
 	  //la coordenada y la voy a dejar en 300 ya que es una buena altura....
-	  int coordY =  300;
+	  int coordY =  ALTURA_ANILLAS;
 	  std::string rutaImagen = "images/Anillas.png";
 	  int indexZ = 99;
 
@@ -576,16 +567,13 @@ void ControlServidor::CreoAnillas(int minRam, int maxRam){
 	  anillo->setId(id);
 
 	  this->anillos.push_back(anillo);
-
    }
-
 
 	//Vendria a ser el metodo ActualizarVistaServidor......
 	list<Anillos*>:: iterator posanillo;
-		for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
+	for(posanillo = this->anillos.begin(); posanillo!= this->anillos.end();posanillo++){
 
 	      std::string mensaje = (*posanillo)->obtenerMensajeEstado();
-	     // debug(1,"ControlServidor::CreoAnillas",  (char*)mensaje.c_str(), 1);
 		  enviarATodos(mensaje);
 	}
 
@@ -612,7 +600,7 @@ void ControlServidor::CreoPiedras(int minRam, int maxRam){
 
 	  std::vector<int> myvector;
 
-	  for (int i=1; i<=7; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
+	  for (int i=1; i<=14; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
 	  std::random_shuffle ( myvector.begin(), myvector.end() );
 
 
@@ -1139,13 +1127,7 @@ void ControlServidor::limpiarEnemigos(){
     }
     enemigos.clear();
 }
-void ControlServidor::resetEnemigosPorNivel(int minMosca1,int maxMosca1,int minPez1,int maxPez1,int minCangrejo1,int maxCangrejo1){
-	int minCangrejo = 3;
-	int maxCangrejo = 7;
-	int minMosca = 3;
-	int maxMosca = 5;
-	int minPez = 2;
-	int maxPez = 5;
+void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez,int maxPez,int minCangrejo,int maxCangrejo){
 
 	int cantidadEnemigos = 0;
 	int	contadorCangrejo = 0;
