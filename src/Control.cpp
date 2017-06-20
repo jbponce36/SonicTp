@@ -390,6 +390,12 @@ void Control::controlDeMensajes(Personaje* sonic,
 			}
 
 		}
+		else if(mensaje.substr(0,2).compare("MJ") == 0){
+			int indice = 0;
+			int posi = 4;
+			this->modoDeJuego = atoi(mensaje.substr(2,1).c_str());
+
+		}
 		else if(mensaje.substr(0, 3) == MENSAJE_PERDIO_JUGADOR)
 		{
 			int idPerdedor = atoi(mensaje.substr(3, 1).c_str());

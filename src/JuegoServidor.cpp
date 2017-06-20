@@ -282,6 +282,7 @@ void JuegoServidor::reconectar(int sock, ConexServidor *servidor)
 			control->enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoPuntos(sonic->getId(),sonic->getEquipo()));
 			control->enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
 			control->enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoVidas(sonic->getId()));
+			control->enviarATodos("MJ"+ Util::intToString(this->modoJuego));
 	}
 
 
