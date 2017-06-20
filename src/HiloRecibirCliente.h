@@ -33,7 +33,7 @@ public:
 		//list<ProcesadorCliente>pcliente;
 		int skt;
 		//queue<char*> colaPaquete;
-		Paquete colaPaquete;
+		Paquete *colaPaquete;
 		bool continuar;
 		VariableCondicional *vcIniciarJuego;
 		//AdministradorLatidoCliente *alc;

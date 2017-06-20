@@ -184,5 +184,6 @@ int Camara::getPosicionY(){
 Camara::~Camara() {
 	// TODO Auto-generated destructor stub
 	delete camaraImagen;
+	camaraImagen = NULL;
 }
 

@@ -21,6 +21,7 @@ HilolatidoSer::HilolatidoSer(Logger *log) : hilo(NULL){
 
 HilolatidoSer::~HilolatidoSer() {
 	delete hilo;
+	hilo = NULL;
 }
 void HilolatidoSer::IniciarHilo(){
 

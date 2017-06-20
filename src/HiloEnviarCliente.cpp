@@ -18,6 +18,7 @@ HiloEnviarCliente::HiloEnviarCliente(Logger *log) : hilo(NULL){
 HiloEnviarCliente::~HiloEnviarCliente() {
 	// TODO Auto-generated destructor stub
 	delete hilo;
+	hilo = NULL;
 }
 
 void HiloEnviarCliente::IniciarHilo(/*struct parametrosEnviar *parametros*/){
