@@ -888,12 +888,12 @@ void Personaje::atacar(){
 		{
 			case IZQUIERDA:
 				animacionActual = &animacionAtaqueIzq;
-				this->velocidadX = -2*personajeVelocidad;
+				this->velocidadX = -3*personajeVelocidad;
 
 				break;
 			case DERECHA:
 				animacionActual = &animacionAtaqueDer;
-				this->velocidadX = 2*personajeVelocidad;
+				this->velocidadX = 3*personajeVelocidad;
 				break;
 		}
 		animacionActual->comenzar();
