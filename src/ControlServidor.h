@@ -46,6 +46,7 @@
 #define MAXFILAS 4000
 #define MAXCOLS  800
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
+#define ALTURA_ANILLAS 300
 
 
 class ControlServidor {
