@@ -279,10 +279,12 @@ void JuegoServidor::reconectar(int sock, ConexServidor *servidor)
 		{
 			//cout<<"grupo: "<<(*pos).second->getEquipo()<<"ID"<<(*pos).second->getId()<<endl;
 			Personaje* sonic = (*pos).second;
-			control->enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoPuntos(sonic->getId(),sonic->getEquipo()));
-			control->enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
-			control->enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoVidas(sonic->getId()));
-			control->enviarATodos("MJ"+ Util::intToString(this->modoJuego));
+			control->enviarAUno(sonic->getPuntos()->obtenerMensajeEstadoPuntos(sonic->getId(),sonic->getEquipo()),henviar);
+			control->enviarAUno(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()),henviar);
+			control->enviarAUno(sonic->getPuntos()->obtenerMensajeEstadoVidas(sonic->getId()),henviar);
+			control->enviarAUno("MJ"+ Util::intToString(this->modoJuego),henviar);
+			control->enviarAUno("equ"+ Util::intToString(sonic->getId())+ Util::intToString(sonic->getEquipo()),henviar);
+
 	}
 
 
