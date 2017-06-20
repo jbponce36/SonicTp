@@ -284,6 +284,7 @@ void JuegoServidor::reconectar(int sock, ConexServidor *servidor)
 			control->enviarAUno(sonic->getPuntos()->obtenerMensajeEstadoVidas(sonic->getId()),henviar);
 			control->enviarAUno("MJ"+ Util::intToString(this->modoJuego),henviar);
 			control->enviarAUno("equ"+ Util::intToString(sonic->getId())+ Util::intToString(sonic->getEquipo()),henviar);
+			cout<<"el sonic con id:  "<<Util::intToString(sonic->getId())<<"es equipo:  "<<Util::intToString(sonic->getEquipo())<<endl;
 
 	}
 
