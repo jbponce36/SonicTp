@@ -67,7 +67,7 @@ private:
     vector<jescenarioJuego*> jjuego;
     bool envioModoDeJuego;
     int modoDeJuego;
-
+    int anillosColav;
 	bool pasarNivel;
 	int nivelActual;
 

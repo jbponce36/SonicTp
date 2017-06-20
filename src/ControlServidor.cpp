@@ -30,6 +30,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 	this->log->setModulo("CONTROL SERVIDOR");
 	this->envioModoDeJuego = false;
 	this->modoDeJuego = modo;
+
 }
 
 ControlServidor::~ControlServidor() {
@@ -138,6 +139,18 @@ void ControlServidor::administrarTeclasServidor()
 
 		}
 	}
+	anillosColav = 0;
+	/*
+	if(this->modoDeJuego == 2){
+		anillosColav = 0;
+		for (int indice = 0; indice < sonics->size(); indice++) {
+
+			anillosColav = anillosColav + sonics->at(indice)->getPuntos()->getCantAnillos();
+		}
+		if(anillosColav >= 50){
+			anillosColav = anillosColav*20;
+		}
+	}*/
 }
 
 ControlServidor::mensajeRecibido ControlServidor::parsearMensajePosicion(std::string mensaje)
@@ -161,6 +174,9 @@ ControlServidor::mensajeRecibido ControlServidor::parsearMensajePosicion(std::st
 
 void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara)
 {
+
+
+
 	std::map<int, Personaje*>::iterator pos;
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
@@ -241,7 +257,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 			}
 
 			administradorNiveles.pasarNivelServidor(vista,this);
-
+			anillosColav = 0;
 			for(pos = sonics->begin();pos != sonics->end();pos++)
 			{
 				//aca debemos resetear todos los valores para comenzar el nuevo nivel
@@ -259,9 +275,26 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 				teclas.at(id).teclaAtaque = false;
 
 				//(*pos).second->getPuntos()->sumarXpuntos(sonic->getPuntos()->getCantAnillos()*10);
+
+
+
+					int anillo= 0;
+					if((*pos).second->getPuntos()->getCantAnillos()>= 50){
+						anillo = (*pos).second->getPuntos()->getCantAnillos() *20;
+					}
+					else if((*pos).second->getPuntos()->getCantAnillos() < 50){
+						anillo = (*pos).second->getPuntos()->getCantAnillos()*10;
+					}
+					(*pos).second->getPuntos()->sumarXpuntos(anillo);
+
+
+
+
+
+				enviarATodos((*pos).second->getPuntos()->obtenerMensajeEstadoPuntos((*pos).second->getId(),(*pos).second->getEquipo()));
+
+//aca arriba envio vidas puntos
 				(*pos).second->getPuntos()->setCantAnillos(0);
-
-
 				//this->pasarNivel = false;
 			}
 			camara->actualizarXY(0,0);
