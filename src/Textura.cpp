@@ -129,7 +129,7 @@ void Textura::renderizar(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVentana
 void Textura::renderizarCapa(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVentana, int anchoEscenario)
 {
 	/*
-	 anchoEsc = 8000  rectVent.w = 1800  rectIm.w =
+	 anchoEsc = 8000  rectVent.w = 1800
 
 	 aEsc-cam.w	     rectIm.x         aTotal
 	  -------------------------------
@@ -139,25 +139,26 @@ void Textura::renderizarCapa(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVen
 	 * */
 
 	SDL_Rect nuevaImagen = *rectanguloImagen;
-	cout<<"rectanguloImagen.x "<<rectanguloImagen->x <<" rectanguloImagen.w "<< rectanguloImagen->w <<endl;
-	cout<<"rectanguloVentana.x "<<rectanguloVentana->x <<" rectanguloVentana.w "<< rectanguloVentana->w <<endl;
+	cout<<"rectanguloImagen.x "<<rectanguloImagen->x <<" rectanguloImagen.w "<< rectanguloImagen->w <<"\n"<<endl;
+	cout<<"rectanguloVentana.x "<<rectanguloVentana->x <<" rectanguloVentana.w "<< rectanguloVentana->w <<"\n"<<endl;
 
 
-	if(  rectanguloVentana->x + rectanguloImagen->w >= 8000){
+	if(  rectanguloImagen->x + rectanguloVentana->w >= 8000){
 		nuevaImagen.w = anchoEscenario - rectanguloImagen->x;
 		SDL_RenderCopy( renderizador,this->textura, &nuevaImagen, &nuevaImagen);
 
 		SDL_Rect nuevaImagen2 = *rectanguloImagen;
-		nuevaImagen2.w = rectanguloImagen->x + rectanguloImagen->w -anchoEscenario;
+		nuevaImagen2.w = rectanguloImagen->x + rectanguloVentana->w -anchoEscenario;
 		nuevaImagen2.x = 0;
 
 		SDL_Rect nuevaVentana2 = *rectanguloVentana;
-		nuevaVentana2.w = rectanguloImagen->x + rectanguloImagen->w -anchoEscenario;
-		nuevaVentana2.x = rectanguloVentana->w - nuevaVentana2.w;
+		nuevaVentana2.w = rectanguloImagen->x + rectanguloVentana->w -anchoEscenario;
+		nuevaVentana2.x = anchoEscenario;
 
-		SDL_RenderCopy( renderizador,this->textura, &nuevaImagen2, &nuevaImagen2);
-		cout<<"nuevaImagen2.x"<<nuevaImagen2.x <<" nuevaImagen2.w "<<nuevaImagen2.w <<endl;
-		cout<<"nuevaVentana2.x"<<nuevaVentana2.x <<" nuevaVentana2.w "<<nuevaVentana2.w <<endl;
+		SDL_RenderCopy( renderizador,this->textura, &nuevaImagen2, &nuevaVentana2);
+		cout<<"nuevaImagen2.x"<<nuevaImagen2.x <<" nuevaImagen2.w "<<nuevaImagen2.w <<"\n"<<endl;
+
+		cout<<"nuevaVentana2.x"<<nuevaVentana2.x <<" nuevaVentana2.w "<<nuevaVentana2.w <<"\n"<<endl;
 	}
 	else{
 		renderizar(rectanguloImagen, rectanguloVentana);

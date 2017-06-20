@@ -377,9 +377,9 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	this->enviarDatosEnemigosIniciales();
 	this->enviarATodos(FIN_MENSAJES_ENEMIGOS);
 
-	this->CreoAnillas(this->getAnill()->getMinimoran(),this->getAnill()->getMaximoran());
-	this->CreoPiedras(this->getJpied()->getMinimoran(),this->getJpied()->getMaximoran());
-	this->CreoPinche(this->getJpin()->getMaximoran(),this->getJpin()->getMaximoran());
+	//this->CreoAnillas(this->getAnill()->getMinimoran(),this->getAnill()->getMaximoran());
+	//this->CreoPiedras(this->getJpied()->getMinimoran(),this->getJpied()->getMaximoran());
+	//this->CreoPinche(this->getJpin()->getMaximoran(),this->getJpin()->getMaximoran());
 
 	Colicion *colicion = new Colicion();
 
@@ -425,6 +425,8 @@ void ControlServidor::CreoPinche(int minRam, int maxRam){
 
 	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
 	int AnchoEscenario = vista->obtenerAnchoEscenario();
+
+	cout<<"ANCHO ESCENARIOO: "<<vista->obtenerAnchoEscenario()<<"-------------------"<<endl;
 	int coordXActual = 1500;
 
 	  std::vector<int> myvector;
