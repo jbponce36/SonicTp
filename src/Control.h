@@ -42,6 +42,9 @@ private:
 	ConstructorEntidades *constructorEntidades;
 	AdministradorDeNiveles admNiveles;
 
+	std::map<int, float> tablaSeno;
+	std::map<int, float> tablaCoseno;
+
 	vector <Enemigo*> enemigos;
 	int idpropio;
 	int modoDeJuego;
@@ -79,6 +82,8 @@ public:
 
 	void agregarEntidad(std::string mensaje);
 	void quitarEntidad(std::string mensaje);
+	Jefe *encontratJefe();
+	void calcularTablasCosenoSeno();
 
 private:
 	void administrarTeclas(ControladorTeclas *controlador, Personaje *sonic, VistaSDL *vista,

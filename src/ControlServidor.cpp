@@ -30,6 +30,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 	this->log->setModulo("CONTROL SERVIDOR");
 	this->envioModoDeJuego = false;
 	this->modoDeJuego = modo;
+	this->calcularTablasCosenoSeno();
 }
 
 ControlServidor::~ControlServidor() {
@@ -392,10 +393,10 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 		administrarTeclasServidor();
 
 		moverPersonajesServidor(tiempoDeJuego, vista, camara);
-
+		actualizarPosicionesEnemigos();
 		chequearColisiones();///Aca se chequean las colisiones menos con los anillos supongo
 		chequearColicion(colicion); //Con los anillos
-		actualizarPosicionesEnemigos();
+
 		actualizarVistaServidor(camara);
 
 		//Mantiene los FPS constantes durmiendo los milisegundos sobrantes
@@ -718,7 +719,14 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 					}
 
 					if(enemigos[i]->getVivo()){
-						if((*pos).second->estaAtacando() || (*pos).second->agarroBonusInvencible()){
+						if(enemigos[i]->getTipoEnemigo().compare("b") == 0){
+							(*pos).second->herir(this);
+							enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()));
+							enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoVidas(sonic->getId()));
+							enviarATodos(sonic->obtenerMensajeEstadoBonus());
+							cout<<"golpeo a sonic la bola"<<endl;
+						}
+						else if((*pos).second->estaAtacando() || (*pos).second->agarroBonusInvencible()){
 							enemigos[i]->restarVida();
 							sonic->getPuntos()->sumarXpuntos(enemigos[i]->getPuntaje());
 							enviarATodos(sonic->getPuntos()->obtenerMensajeEstadoPuntos(sonic->getId(),sonic->getEquipo()));
@@ -855,13 +863,13 @@ void ControlServidor::CreacionEnemigos(){
 
 		*/
 
-	Cangrejo *enemigo1 = new Cangrejo(500,800,100,200);
+	/*Cangrejo *enemigo1 = new Cangrejo(500,800,100,200);
 	this->enemigos.push_back(enemigo1);
 	Pescado *enemigo2 = new Pescado(900,900,200,100);
 
 	this->enemigos.push_back(enemigo2);
 	Mosca *enemigo3 = new Mosca(700,400,200,100);
-	this->enemigos.push_back(enemigo3);
+	this->enemigos.push_back(enemigo3);*/
 }
 
 void ControlServidor::enviarDatosEnemigosIniciales(){
@@ -912,6 +920,10 @@ void ControlServidor::enviarDatosEnemigosInicialesAUno(Hiloenviar *hiloEnviar)
 			std::string mensajejefe = "/";
 			mensajejefe = mensajejefe + enemigos[i]->obteneMensajeEstadoInicial();
 			this->enviarATodos(mensajejefe);
+		}else if(this->enemigos[i]->getTipoEnemigo()=="b"){
+			std::string mensajeBola = "/";
+			mensajeBola = mensajeBola + enemigos[i]->obteneMensajeEstadoInicial();
+			this->enviarATodos(mensajeBola);
 		}
 	}
 }
@@ -1125,7 +1137,7 @@ void ControlServidor::resetEnemigosPorNivel(int minMosca1,int maxMosca1,int minP
 				int posicionX = 0 + rand() % ((300+1) - 0);
 				posicionX = rangoDeMovimientoMinimo + posicionX;
 				int RangoDeMovimientoMaximo = rangoDeMovimientoMinimo + 300;
-				Cangrejo *cangrejo = new Cangrejo(posicionX,ALTURA_Y_CANGREJO,RangoDeMovimientoMaximo,rangoDeMovimientoMinimo);
+				Cangrejo *cangrejo = new Cangrejo(rangoDeMovimientoMinimo,ALTURA_Y_CANGREJO);
 				enemigos.push_back(cangrejo);
 
 				contadorCangrejo++;
@@ -1189,10 +1201,11 @@ void ControlServidor::resetEnemigosPorNivel(int minMosca1,int maxMosca1,int minP
 }
 void ControlServidor::generarEnemigoFianl(){
 	int posicionX = 7450;
+	//int posicionX = 500;
 	int posicionY = 50;
 	Jefe *jefe = new Jefe(posicionX,posicionY);
 	enemigos.push_back(jefe);
-	Bola *bola = new Bola(posicionX,posicionY + 500);
+	Bola *bola = new Bola(90,220,this->tablaSeno,this->tablaCoseno);
 	jefe->setBola(bola);
 	enemigos.push_back(bola);
 }
@@ -1206,5 +1219,13 @@ void ControlServidor::verificarDuracionAtaque(Personaje *sonic)
 			sonic->dejarDeAtacar();
 			sonic->parar();
 		}
+	}
+}
+void ControlServidor::calcularTablasCosenoSeno(){
+	for(int i= 0;i<=180;i++){
+		tablaSeno[i] = sin(PI*(i/180.0));
+	}
+	for(int i= 0;i<=180;i++){
+		tablaCoseno[i] = cos(PI*(i/180.0));
 	}
 }

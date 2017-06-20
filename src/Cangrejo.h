@@ -25,7 +25,7 @@ private:
 	int puntaje;
 public:
 //lado servidor
-	Cangrejo(int x, int y,int maxX,int minX);
+	Cangrejo(int x, int y);
 	~Cangrejo();
 	void actualizarPosicion();
 	void calcularNumeroDeSprite();

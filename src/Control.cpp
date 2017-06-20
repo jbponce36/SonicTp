@@ -56,6 +56,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 
 	inicializarEscenario(hiloRecibir);
 	admNiveles.cargarNivel(vista, sonic);
+	this->calcularTablasCosenoSeno();
 	inicializarEnemigos(hiloRecibir);
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
@@ -621,7 +622,8 @@ void Control::inicializarEnemigos(HiloRecibirCliente *hiloRecibir){
 				Jefe *jefe = new Jefe(mensaje,"j",vista);
 				this->enemigos.push_back(jefe);
 			}else if (mensaje.substr(1,1) ==  "b"){
-				Bola *bola = new Bola(mensaje,"b",vista);
+				Bola *bola = new Bola(mensaje,"b",vista,this->tablaSeno,this->tablaCoseno);
+				this->encontratJefe()->setBola(bola);
 				this->enemigos.push_back(bola);
 			}
 		}
@@ -667,4 +669,20 @@ void Control::quitarEntidad(std::string mensaje)
 
 	constructorEntidades->quitarEntidad(nombre, id);
 }
-
+Jefe *Control::encontratJefe(){
+	for(int i = 0;i<this->enemigos.size(); i++){
+		if(enemigos[i]->getTipoEnemigo() == "j"){
+			Jefe *jefe = (Jefe*)enemigos[i];
+			return jefe;
+		}
+	}
+	return NULL;
+}
+void Control::calcularTablasCosenoSeno(){
+	for(int i= 0;i<=180;i++){
+		tablaSeno[i] = sin(PI*(i/180.0));
+	}
+	for(int i= 0;i<=180;i++){
+		tablaCoseno[i] = cos(PI*(i/180.0));
+	}
+}

@@ -258,6 +258,10 @@ void VistaSDL::cargarEnemigosTextura(){
 	enemigoBola->cargarImagen("images/enemigos/DrHuevoBolaDemolicion.png", "no hay", this->renderizador,log);
 	this->enemigosTextura.push_back(enemigoBola);
 
+	Textura *enemigoAnilla = new Textura();
+	enemigoAnilla->cargarImagen("images/enemigos/DrHuevoAnilla.png", "no hay", this->renderizador,log);
+	this->enemigosTextura.push_back(enemigoAnilla);
+
 	this->log->setModulo("VISTA SDL");
 	this->log->addLogMessage("[CARGAR TEXTURA ENEMIGOS] Terminado.",2);
 }
