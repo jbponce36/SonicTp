@@ -67,7 +67,7 @@ private:
     vector<jescenarioJuego*> jjuego;
     bool envioModoDeJuego;
     int modoDeJuego;
-
+    int anillosColav;
 	bool pasarNivel;
 	int nivelActual;
 
@@ -132,7 +132,7 @@ public:
 	}mensajeRecibido;
 
 
-	void chequearColicion(Colicion *colicion);
+	void chequearColicion(Colicion *colicion, bool &juegoTerminado);
 	void chequearColisiones();
 
 	void enviarDatosEscenarioATodos();

@@ -59,14 +59,14 @@ void Mundo::enviarDatosEscenario(std::vector<Hiloenviar*> *hilosEnviar)
 	//Le envia a todos los clientes las posiciones de los objetos al principio de la partida
 	std::string mensaje;
 
-	cout << "Voy a enviar datos escenario\n";
+	//cout << "Voy a enviar datos escenario\n";
 	std::list<Entidad*>::iterator pos;
 	for(pos = constructorEntidades->entidades.begin();pos != constructorEntidades->entidades.end();pos++){
-		mensaje = (*pos)->getNombre() + Util::intToStringConPadding((*pos)->getId(), MAX_CANT_DIGITOS_POS - 1)
-			+ "x" + Util::intToStringConPadding((*pos)->obtenerX())
-			+ "y" + Util::intToStringConPadding((*pos)->obtenerY());
+		mensaje = (*pos)->getNombre() + Util::intToStringConPadding((*pos)->getId(), MAX_DIGITOS_POSICION - 2)
+			+ "x" + Util::intToStringConPadding((*pos)->obtenerX(), MAX_DIGITOS_POSICION)
+			+ "y" + Util::intToStringConPadding((*pos)->obtenerY(), MAX_DIGITOS_POSICION);
 		enviarATodos(mensaje);
-	} //Ej: EA--1x--10y--20   Este mensaje lo recibe el cliente y dibuja el bonus donde corresponda.
+	} //Ej: EA--1x---10y---20   Este mensaje lo recibe el cliente y dibuja el bonus donde corresponda.
 
 	mensaje = FIN_MENSAJE_ESCENARIO;
 	enviarATodos(mensaje);
@@ -80,11 +80,11 @@ void Mundo::enviarDatosEscenario(Hiloenviar *unHilo)
 
 	std::list<Entidad*>::iterator pos;
 	for(pos = constructorEntidades->entidades.begin();pos != constructorEntidades->entidades.end();pos++){
-		mensaje = (*pos)->getNombre() + Util::intToStringConPadding((*pos)->getId(), MAX_CANT_DIGITOS_POS - 1)
-			+ "x" + Util::intToStringConPadding((*pos)->obtenerX())
-			+ "y" + Util::intToStringConPadding((*pos)->obtenerY());
+		mensaje = (*pos)->getNombre() + Util::intToStringConPadding((*pos)->getId(), MAX_DIGITOS_POSICION - 2)
+			+ "x" + Util::intToStringConPadding((*pos)->obtenerX(), MAX_DIGITOS_POSICION)
+			+ "y" + Util::intToStringConPadding((*pos)->obtenerY(), MAX_DIGITOS_POSICION);
 		enviarAUno(mensaje, unHilo);
-	} //Ej: EA--1x--10y--20   Este mensaje lo recibe el cliente y dibuja el bonus donde corresponda.
+	} //Ej: EA--1x---10y---20   Este mensaje lo recibe el cliente y dibuja el bonus donde corresponda.
 
 	mensaje = FIN_MENSAJE_ESCENARIO;
 	enviarAUno(mensaje, unHilo);
@@ -132,7 +132,7 @@ void Mundo::eliminarEntidad(std::string nombre, int id)
 	constructorEntidades->quitarEntidad(nombre, id);
 
 	std::string mensaje;
-	mensaje = nombre + Util::intToStringConPadding(id, MAX_CANT_DIGITOS_POS - 1) + "-----------";
+	mensaje = nombre + Util::intToStringConPadding(id, MAX_DIGITOS_POSICION - 2) + "-----------";
 	enviarATodos(mensaje);
 }
 

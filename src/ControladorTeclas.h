@@ -33,7 +33,8 @@ public:
 	ControladorTeclas();
 	virtual ~ControladorTeclas();
 	void procesarEvento(SDL_Event &e, Personaje *sonic, HiloEnviarCliente *hiloEnviar,
-		HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido,  VistaSDL *vista,int &opcionMenu,AdministradorDeNiveles* adm);
+		HiloRecibirCliente *hiloRecibir, HilolatidoSer* hiloLatido,  VistaSDL *vista,int &opcionMenu,
+		AdministradorDeNiveles* adm, bool &salir);
 	void administrarTeclas(Personaje *sonic);
 
 private:

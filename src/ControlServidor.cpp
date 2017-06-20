@@ -30,7 +30,9 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 	this->log->setModulo("CONTROL SERVIDOR");
 	this->envioModoDeJuego = false;
 	this->modoDeJuego = modo;
+
 	this->calcularTablasCosenoSeno();
+
 }
 
 ControlServidor::~ControlServidor() {
@@ -139,16 +141,29 @@ void ControlServidor::administrarTeclasServidor()
 
 		}
 	}
+	anillosColav = 0;
+	/*
+	if(this->modoDeJuego == 2){
+		anillosColav = 0;
+		for (int indice = 0; indice < sonics->size(); indice++) {
+
+			anillosColav = anillosColav + sonics->at(indice)->getPuntos()->getCantAnillos();
+		}
+		if(anillosColav >= 50){
+			anillosColav = anillosColav*20;
+		}
+	}*/
 }
 
 ControlServidor::mensajeRecibido ControlServidor::parsearMensajePosicion(std::string mensaje)
 {
+	//1TdPx----1y----5
 	mensajeRecibido msj;
 	msj.id = atoi(mensaje.substr(0, 1).c_str());
 	msj.tecla = mensaje.substr(1, 3);
 
-	std::string posX = mensaje.substr(5, 4);
-	std::string posY = mensaje.substr(10, 4);
+	std::string posX = mensaje.substr(5, MAX_DIGITOS_POSICION);
+	std::string posY = mensaje.substr(11, MAX_DIGITOS_POSICION);
 	posX.erase(std::remove(posX.begin(), posX.end(), PADDING), posX.end());
 	posY.erase(std::remove(posY.begin(), posY.end(), PADDING), posY.end());
 
@@ -161,6 +176,9 @@ ControlServidor::mensajeRecibido ControlServidor::parsearMensajePosicion(std::st
 
 void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *vista, Camara *camara)
 {
+
+
+
 	std::map<int, Personaje*>::iterator pos;
 	for(pos = sonics->begin();pos != sonics->end();pos++)
 	{
@@ -241,7 +259,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 			}
 
 			administradorNiveles.pasarNivelServidor(vista,this);
-
+			anillosColav = 0;
 			for(pos = sonics->begin();pos != sonics->end();pos++)
 			{
 				//aca debemos resetear todos los valores para comenzar el nuevo nivel
@@ -259,9 +277,26 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 				teclas.at(id).teclaAtaque = false;
 
 				//(*pos).second->getPuntos()->sumarXpuntos(sonic->getPuntos()->getCantAnillos()*10);
+
+
+
+					int anillo= 0;
+					if((*pos).second->getPuntos()->getCantAnillos()>= 50){
+						anillo = (*pos).second->getPuntos()->getCantAnillos() *20;
+					}
+					else if((*pos).second->getPuntos()->getCantAnillos() < 50){
+						anillo = (*pos).second->getPuntos()->getCantAnillos()*10;
+					}
+					(*pos).second->getPuntos()->sumarXpuntos(anillo);
+
+
+
+
+
+				enviarATodos((*pos).second->getPuntos()->obtenerMensajeEstadoPuntos((*pos).second->getId(),(*pos).second->getEquipo()));
+
+//aca arriba envio vidas puntos
 				(*pos).second->getPuntos()->setCantAnillos(0);
-
-
 				//this->pasarNivel = false;
 			}
 			camara->actualizarXY(0,0);
@@ -285,8 +320,6 @@ void ControlServidor::actualizarVistaServidor(Camara *camara)
 			if( envioModoDeJuego == 0 )
 			{
 				mensj = mensj+intToString((*pos).second->getId())+intToString((*pos).second->getEquipo());
-
-
 			}
 		}
 
@@ -295,12 +328,12 @@ void ControlServidor::actualizarVistaServidor(Camara *camara)
 	{
 		enviarATodos(mensj);
 		envioModoDeJuego = true;
-		cout<<mensj<<endl;
+		//cout<<mensj<<endl;
 	}
 	//envio las posiciones de los enemigos
 	for(int i=0; i <this->enemigos.size(); i++){
 		if(enemigos[i]->getSeguirEnviandoMensajes()){
-		// mensaje 14 tipo /-1-100-200-1v
+		// mensaje 14 tipo /-1--100--200-1v
 			std::string mensajeEnemigo = "/";
 			mensajeEnemigo = mensajeEnemigo + this->enemigos[i]->intToStringConPadding2(i);
 			mensajeEnemigo = mensajeEnemigo + this->enemigos[i]->obteneMensajeEstado();
@@ -352,7 +385,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 	//Una Sola vez
     int semilla = time(NULL);
-	debug(0, "ControlServidor::ControlarJuegoServidor", "Semilla Usada: %d", semilla);
+	//debug(0, "ControlServidor::ControlarJuegoServidor", "Semilla Usada: %d", semilla);
 
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Iniciado.", 2);
 
@@ -395,7 +428,8 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 		moverPersonajesServidor(tiempoDeJuego, vista, camara);
 		actualizarPosicionesEnemigos();
 		chequearColisiones();///Aca se chequean las colisiones menos con los anillos supongo
-		chequearColicion(colicion); //Con los anillos
+
+		chequearColicion(colicion, juegoTerminado); //Con los anillos
 
 		actualizarVistaServidor(camara);
 
@@ -408,7 +442,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 		}
 
 	}
-	cout<<juegoTerminado<<"::juego terminado"<<endl;
+	cout<<"Juego terminado. El servidor se desconectara..."<<endl;
 	delete camara;
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
 }
@@ -634,7 +668,7 @@ void ControlServidor::CreoPiedras(int minRam, int maxRam){
 
 std::string ControlServidor::obtenerMensajeNivel()
 {
-	return ("N" + Util::intToString(nivelActual) + "--------------");
+	return ("N" + Util::intToString(nivelActual) + "----------------");
 }
 
 void ControlServidor::enviarAnillasPiedrasYPinches(Hiloenviar *hiloEnviar)
@@ -677,7 +711,7 @@ void ControlServidor::enviarAnillasPiedrasYPinches(Hiloenviar *hiloEnviar)
 }
 */
 
-void ControlServidor::chequearColicion(Colicion *colicion){
+void ControlServidor::chequearColicion(Colicion *colicion, bool &juegoTerminado){
 
 	std::map<int, Personaje*>::iterator pos;
 	list<Anillos*>:: iterator posanillo;
@@ -703,19 +737,24 @@ void ControlServidor::chequearColicion(Colicion *colicion){
 				if(colision == SDL_TRUE){
 					if(!enemigos[i]->getVivo()  && enemigos[i]->getTipoEnemigo().compare("j") == 0){
 						char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
-									std::string msjPasarNivel = "PASARNIVEL" ;
-									msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
-									strcpy(buffer, msjPasarNivel.c_str());
-									int id = 1;
-									std::vector<Hiloenviar*>::iterator poshilo;
-									for(poshilo = hilosEnviar->begin();poshilo != hilosEnviar->end();poshilo++)
-									{
-										if(!sonics->at(id)->estaCongelado())
-										{
-											(*poshilo)->enviarDato(buffer);
-										}
-										id++;
-									}
+						std::string msjPasarNivel = "PASARNIVEL" ;
+						msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
+						strcpy(buffer, msjPasarNivel.c_str());
+						int id = 1;
+						std::vector<Hiloenviar*>::iterator poshilo;
+						for(poshilo = hilosEnviar->begin();poshilo != hilosEnviar->end();poshilo++)
+						{
+							if(!sonics->at(id)->estaCongelado())
+							{
+								(*poshilo)->enviarDato(buffer);
+							}
+							id++;
+						}
+
+						//Mataron al jefe final. Aca termina el juego
+						juegoTerminado = true;
+						return;
+
 					}
 
 					if(enemigos[i]->getVivo()){
@@ -874,6 +913,7 @@ void ControlServidor::CreacionEnemigos(){
 
 void ControlServidor::enviarDatosEnemigosIniciales(){
 	//envio la posicion y el tipo De enemigo
+	//Ej:  /c--100--200
 	for(int i=0;i<this->enemigos.size();i++){
 		if(this->enemigos[i]->getTipoEnemigo()=="c"){
 			std::string mensajeCangrejo = "/";
@@ -962,8 +1002,8 @@ void ControlServidor::verificarDuracionBonus(Personaje *sonic)
 			//Se acabo la duracion del bonus
 			sonic->dejarDeSerInvencible();
 			std::string mensaje = Util::intToString(sonic->getId())
-				+ "x" + Util::intToStringConPadding(sonic->getPosicionX())
-				+ "y" + Util::intToStringConPadding(sonic->getPosicionY())
+				+ "x" + Util::intToStringConPadding(sonic->getPosicionX(), MAX_DIGITOS_POSICION)
+				+ "y" + Util::intToStringConPadding(sonic->getPosicionY(), MAX_DIGITOS_POSICION)
 				+ ANIMACION_SIN_BONUS + PADDING;
 			mundo.enviarATodos(mensaje);
 		  }
@@ -979,8 +1019,8 @@ void ControlServidor::verificarDuracionHerida(Personaje *sonic)
 			//Se acabo la duracion del bonus
 			sonic->estarHerido(false);
 			std::string mensaje = Util::intToString(sonic->getId())
-				+ "x" + Util::intToStringConPadding(sonic->getPosicionX())
-				+ "y" + Util::intToStringConPadding(sonic->getPosicionY())
+				+ "x" + Util::intToStringConPadding(sonic->getPosicionX(), MAX_DIGITOS_POSICION)
+				+ "y" + Util::intToStringConPadding(sonic->getPosicionY(), MAX_DIGITOS_POSICION)
 				+ ANIMACION_NO_TITILAR + PADDING;
 			mundo.enviarATodos(mensaje);
 		  }
@@ -1053,7 +1093,7 @@ void ControlServidor::gameOverJugador(int id)
 	//Detengo la ejecucion de los hilos
 	hilosRecibir->at(id - 1)->parametros.continuar = false;
 
-	std::string mensaje = MENSAJE_PERDIO_JUGADOR + Util::intToString(id) + "-----------";
+	std::string mensaje = MENSAJE_PERDIO_JUGADOR + Util::intToString(id) + "--------------";
 	enviarATodos(mensaje);
 
 	//hilosEnviar->at(id - 1)->parametros.continuar = false;

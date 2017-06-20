@@ -159,7 +159,7 @@ std::string Pinche::intToStringConPadding(int number)
 	ostringstream oss;
 	oss<< number;
 	std::string numero = oss.str();
-	while(numero.length() < MAX_CANT_DIGITOS_POS){
+	while(numero.length() < MAX_DIGITOS_POSICION){
 		numero = PADDING + numero;
 	}
 	return numero;

@@ -31,7 +31,7 @@ void Anillos::setRuta(std::string Ruta) {
 
 void Anillos::cargardatos(SDL_Renderer *render){
 	if(texturaAnillo == NULL){
-		cout<<"ANILLOS"<<endl;
+		//cout<<"ANILLOS"<<endl;
 		this->texturaAnillo = new Textura();
 
 		this->texturaAnillo->cargarImagen(getRutaImagen(),getRutaImagen(),render,this->getLog());
@@ -210,7 +210,7 @@ std::string Anillos::intToStringConPadding(int number)
   ostringstream oss;
   oss<< number;
   std::string numero = oss.str();
-  while(numero.length() < MAX_CANT_DIGITOS_POS){
+  while(numero.length() < MAX_DIGITOS_POSICION){
 	  numero = PADDING + numero;
   }
   return numero;
@@ -241,8 +241,8 @@ std::string Anillos::obtenerMensajeEstado(){
    std::string a = "Aid";
    std::string numx = "x";
    std::string numy = "y";
-
-	return(a + this->intToStringConPaddingID(id) + numx + intToStringConPadding(x) + numy + intToStringConPadding(y));
+   //Ej: Aid-1x----1y----1
+   return(a + this->intToStringConPaddingID(id) + numx + intToStringConPadding(x) + numy + intToStringConPadding(y));
 }
 
 std::string Anillos::obtenerMsjAnillaBorrada(int numero){
