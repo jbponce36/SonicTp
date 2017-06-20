@@ -11,6 +11,7 @@
 
 HiloRecibirCliente::HiloRecibirCliente(Logger *log) : hilo(NULL) {
 	parametros.vcIniciarJuego = NULL;
+	parametros.colaPaquete = new Paquete();
 	this->log = log;
 	log->setModulo("HILO RECIBIR CLIENTE");
 
@@ -19,6 +20,9 @@ HiloRecibirCliente::HiloRecibirCliente(Logger *log) : hilo(NULL) {
 HiloRecibirCliente::~HiloRecibirCliente(){
 	// TODO Auto-generated destructor stub
 	delete hilo;
+	delete parametros.colaPaquete;
+	hilo = NULL;
+	parametros.colaPaquete = NULL;
 }
 
 void HiloRecibirCliente::setVariableCondicional(VariableCondicional *varCond)
@@ -36,9 +40,9 @@ void HiloRecibirCliente::IniciarHilo(){
 void *HiloRecibirCliente::clienteRecibir(void *args){
 	Serparametros *parametros = (Serparametros*) args;
 	parametros->cliente->getLog()->addLogMessage("",2);
-	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(&parametros->colaPaquete);
+	AdministradorLatidoCliente *alc = new AdministradorLatidoCliente(parametros->colaPaquete);
     alc->setSkt(parametros->cliente->getFd());
-    parametros->colaPaquete.colaInicializar();
+    parametros->colaPaquete->colaInicializar();
 	char buffer[100];
 	//parametros->alc->actualizarTiempoLatido();
 	while(parametros->continuar){
@@ -56,10 +60,10 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					//cout<<"Cliente recibio: "<<buffer<<endl;
 					//alc->setCadena("");
 					alc->actualizarTiempoLatido();
-					parametros->colaPaquete.agregarAlaColaSoloUnProceso(result,buffer);
+					parametros->colaPaquete->agregarAlaColaSoloUnProceso(result,buffer);
 					//parametros->alc->actualizarTiempoLatido();
 
-					if (strcmp(parametros->colaPaquete.obtenerUltimoElementoDelaCola(),CONEXION_RECHAZADA)==0 ){
+					if (strcmp(parametros->colaPaquete->obtenerUltimoElementoDelaCola(),CONEXION_RECHAZADA)==0 ){
 					    printf("****** La conexion fue rechazada por el servidor ******* \n");
 					    parametros->continuar = false;
 
@@ -71,7 +75,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 					}
 
 
-					if (strcmp(parametros->colaPaquete.obtenerUltimoElementoDelaCola(),INICIO_JUEGO)==0){
+					if (strcmp(parametros->colaPaquete->obtenerUltimoElementoDelaCola(),INICIO_JUEGO)==0){
 				         printf("****** VOY A INICIAR EL JUEGO ******* \n");
 				         //alc->setCadena("INICIAR JUEGO");
 				         //alc->actualizarTiempoLatido();
@@ -90,7 +94,7 @@ void *HiloRecibirCliente::clienteRecibir(void *args){
 				if (result<=0){
 
 					printf("El cliente se desconecto satisfactoriamente. \n");
-					parametros->colaPaquete.agregar("Servidor Desconectado");
+					parametros->colaPaquete->agregar("Servidor Desconectado");
 					parametros->continuar = false;
 
 					if(parametros->vcIniciarJuego != NULL)
@@ -122,13 +126,13 @@ void HiloRecibirCliente::Join()
 std::string HiloRecibirCliente::obtenerElementoDeLaCola()
 {
 	//Obtiene el primer elemento de la cola y lo saca.
-	if(!parametros.colaPaquete.estaVacia())
+	if(!parametros.colaPaquete->estaVacia())
 	{
 		//Posicion *pos = parametros.colaPaquete.obtenerElementoDelaCola();
 		//std::string str = pos->getCoordenadas();
-		char *cadena = parametros.colaPaquete.obtenerElementoDelaCola();
+		char *cadena = parametros.colaPaquete->obtenerElementoDelaCola();
 		std::string str = std::string(cadena);
-		parametros.colaPaquete.eliminarElPrimetoDeLaCola();
+		parametros.colaPaquete->eliminarElPrimetoDeLaCola();
 		return str;
 	}
 	return "Sin elementos";
@@ -137,13 +141,13 @@ std::string HiloRecibirCliente::obtenerElementoDeLaCola()
 std::string HiloRecibirCliente::obtenerPosicionDeLaCola()
 {
 	//Obtiene el primer elemento de la cola y lo saca.
-	if(! parametros.colaPaquete.getColaPaquetes().empty())
+	if(! parametros.colaPaquete->getColaPaquetes().empty())
 	{
 		//Posicion *pos = parametros.colaPaquete.obtenerElementoDelaCola();
 		//std::string str = pos->getCoordenadas();
-		char *cadena = parametros.colaPaquete.obtenerElementoDelaCola();
+		char *cadena = parametros.colaPaquete->obtenerElementoDelaCola();
 		std::string str = std::string(cadena);
-		parametros.colaPaquete.eliminarElPrimetoDeLaCola();
+		parametros.colaPaquete->eliminarElPrimetoDeLaCola();
 		return str;
 	}
 	return "Sin elementos";
@@ -152,9 +156,9 @@ std::string HiloRecibirCliente::obtenerPosicionDeLaCola()
 std::string HiloRecibirCliente::mirarPrimerElementoDeLaCola()
 {
 	//Obtiene el primer elemento de la cola sin sacarlo.
-	if(!parametros.colaPaquete.estaVacia())
+	if(!parametros.colaPaquete->estaVacia())
 	{
-		char *cadena = parametros.colaPaquete.obtenerElementoDelaCola();
+		char *cadena = parametros.colaPaquete->obtenerElementoDelaCola();
 		std::string str = std::string(cadena);
 		return str;
 	}
