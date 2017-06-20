@@ -1143,7 +1143,8 @@ void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez
 	int sumaEnemigos = numCangrejo + numMosca + numPescado;
 	while((cantidadEnemigos < MAXIMO_ENEMIGOS_EN_MAPA) and (cantidadEnemigos<sumaEnemigos)){
 		if((contadorCangrejo < numCangrejo) and (cantidadEnemigos <MAXIMO_ENEMIGOS_EN_MAPA)){
-			int rangoDeMovimientoMinimo = 500 + rand() % ((7300+1) - 500);
+			//int rangoDeMovimientoMinimo = 500 + rand() % ((7300+1) - 500);
+			int rangoDeMovimientoMinimo = 500 + rand() % ((15300+1) - 500);
 			bool posicionValida = true;
 			for(int i=0;i<enemigos.size();i++){
 				int posicion = enemigos[i]->getPosicionDeEnemigo();
