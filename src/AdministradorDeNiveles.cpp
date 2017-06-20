@@ -37,8 +37,9 @@ void AdministradorDeNiveles::cargarNivel(VistaSDL* vista,Personaje* sonic){
 
 void AdministradorDeNiveles::mostrarNivel(Camara *camara, VistaSDL *vista, SDL_Rect *imagenMostrar){
 
-	capa0->renderizar(camara->devolverCamara(),imagenMostrar);
-	capa1->renderizar(camara->devolverCamara(),imagenMostrar);
+	capa0->renderizarCapa(camara->devolverCamara(),imagenMostrar, 8000);
+	capa1->renderizarCapa(camara->devolverCamara(),imagenMostrar,8000);
+
 }
 
 void AdministradorDeNiveles::setNivel(int nivel){

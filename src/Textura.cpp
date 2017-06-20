@@ -32,13 +32,13 @@ void Textura::cargarImagenCapa(std::string path,SDL_Renderer* render, Logger *lo
 	{
 		superficie = IMG_Load( "images/capa0default.png" );
 		log->addLogMessage("[CARGAR IMAGEN] Error cargando capa 0, se cargara la capa 0 por default", 1);
-		//printf( "incapaz de crear imagen %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
+		printf( "incapaz de crear imagen %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
 	}
 	if( superficie == NULL && this->index_z == 98 )
 	{
 		superficie = IMG_Load( "images/capa1default.png" );
 		log->addLogMessage("[CARGAR IMAGEN] Error cargando capa 1, se cargara la capa 1 por default", 1);
-		//printf( "incapaz de crear imagen %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
+		printf( "incapaz de crear imagen %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
 	}
 	/*if(superficie == NULL)
 	{
@@ -61,7 +61,7 @@ void Textura::cargarImagenCapa(std::string path,SDL_Renderer* render, Logger *lo
 		//Get image dimensions
 		anchoTextura = superficie->w;
 		altoTextura = superficie->h;
-		log->addLogMessage("[CARGAR IMAGEN] Textura-> Ancho: "+intToString(anchoTextura)+", Alto:"+intToString(altoTextura)+".", 3);
+		log->addLogMessage("[CARGAR IMAGEN] Se cargo la Textura: "+  path +" con ancho: "+intToString(anchoTextura)+", Alto:"+intToString(altoTextura)+".", 3);
 	}
 	//liberar memoria de superficie creada
 	SDL_FreeSurface( superficie );
@@ -124,6 +124,45 @@ void Textura::renderizar(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVentana
 	//cout<<rectanguloImagen.y<<endl;
 
 	SDL_RenderCopy( renderizador,this->textura, rectanguloImagen, rectanguloVentana);
+}
+
+void Textura::renderizarCapa(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVentana, int anchoEscenario)
+{
+	/*
+	 anchoEsc = 8000  rectVent.w = 1800  rectIm.w =
+
+	 aEsc-cam.w	     rectIm.x         aTotal
+	  -------------------------------
+	 |	vieja			| nueva	     |
+	 |				    |	 	     |
+	  -------------------------------
+	 * */
+
+	SDL_Rect nuevaImagen = *rectanguloImagen;
+	cout<<"rectanguloImagen.x "<<rectanguloImagen->x <<" rectanguloImagen.w "<< rectanguloImagen->w <<endl;
+	cout<<"rectanguloVentana.x "<<rectanguloVentana->x <<" rectanguloVentana.w "<< rectanguloVentana->w <<endl;
+
+
+	if(  rectanguloVentana->x + rectanguloImagen->w >= 8000){
+		nuevaImagen.w = anchoEscenario - rectanguloImagen->x;
+		SDL_RenderCopy( renderizador,this->textura, &nuevaImagen, &nuevaImagen);
+
+		SDL_Rect nuevaImagen2 = *rectanguloImagen;
+		nuevaImagen2.w = rectanguloImagen->x + rectanguloImagen->w -anchoEscenario;
+		nuevaImagen2.x = 0;
+
+		SDL_Rect nuevaVentana2 = *rectanguloVentana;
+		nuevaVentana2.w = rectanguloImagen->x + rectanguloImagen->w -anchoEscenario;
+		nuevaVentana2.x = rectanguloVentana->w - nuevaVentana2.w;
+
+		SDL_RenderCopy( renderizador,this->textura, &nuevaImagen2, &nuevaImagen2);
+		cout<<"nuevaImagen2.x"<<nuevaImagen2.x <<" nuevaImagen2.w "<<nuevaImagen2.w <<endl;
+		cout<<"nuevaVentana2.x"<<nuevaVentana2.x <<" nuevaVentana2.w "<<nuevaVentana2.w <<endl;
+	}
+	else{
+		renderizar(rectanguloImagen, rectanguloVentana);
+	}
+
 }
 
 
