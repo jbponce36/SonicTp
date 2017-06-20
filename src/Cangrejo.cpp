@@ -7,20 +7,21 @@
 
 #include "Cangrejo.h"
 //ladoServidor
-Cangrejo::Cangrejo(int x, int y,int maxX,int minX) :
+Cangrejo::Cangrejo(int x, int y) :
 	Enemigo(x,y,"c")
 {
 	this->textura = NULL;
 	this->tiempo = SDL_GetTicks();
-	this->maximoX = maxX;
-	this->minimoX = minX;
+	this->maximoX = x+300;
+	this->minimoX = x;
 	this->contadorSprite = 0;
 	this->velocidad = 40;
 	this->numeroMaximoSprites=4;
 	this->puntaje = 0;
 	this->vidas = CANTIDAD_VIDAS_CANGREJO;
 	this->setPuntaje(100);
-	this->setPosicionesY(700);
+	//this->setPosicionesY(700);
+	this->setPosicionesY(500);
 
 }
 void Cangrejo::calcularNumeroDeSprite(){

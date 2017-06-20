@@ -8,12 +8,14 @@
 class Jefe: public Enemigo {
 private:
 	std::vector<SDL_Rect> sprites;
+	SDL_Rect spriteAnilla;
 	Textura *textura;
+	Textura *anilla;
 	float velocidad;
 	int maximoX;
 	int minimoX;
-	float velocidadBolaX;
-	float velocidadBolaY;
+	float velocidadBola;
+	//float velocidadBolaY;
 	int numeroMaximoSprites;
 	int contadorSprite;
 	int vidas;

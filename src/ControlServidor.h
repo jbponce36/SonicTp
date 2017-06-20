@@ -68,7 +68,7 @@ private:
     vector<jescenarioJuego*> jjuego;
     bool envioModoDeJuego;
     int modoDeJuego;
-
+    int anillosColav;
 	bool pasarNivel;
 	int nivelActual;
 
@@ -77,6 +77,9 @@ private:
 	std::map<int, Personaje*> *sonics;
 	std::vector<Hiloenviar*> *hilosEnviar;
 	std::vector<Hilorecibir*> *hilosRecibir;
+
+	std::map<int, float> tablaSeno;
+	std::map<int, float> tablaCoseno;
 
 	typedef struct posSonic{
 		int ultimaPosicionX;
@@ -175,6 +178,7 @@ public:
 	void limpiarEnemigos();
 	void resetEnemigosPorNivel(int,int,int,int,int,int);
 	void generarEnemigoFianl();
+	void calcularTablasCosenoSeno();
 private:
 
 	void administrarTeclasServidor();

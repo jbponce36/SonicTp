@@ -85,5 +85,6 @@
 #define DURACION_ATAQUE				2
 
 #define CANTIDAD_NIVELES			3
+#define PI 							3.14159265
 
 #endif
