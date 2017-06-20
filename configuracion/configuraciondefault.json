@@ -15,12 +15,12 @@
 			{
 			"id": 1,
 			"index_z": 99,
-			"ruta_imagen":"images/capa0nivel1.png"
+			"ruta_imagen":"images/capa0nivel1g10.png"
 			},
 			{
 			"id": 2,
 			"index_z": 98,
-			"ruta_imagen":"images/capa1rnueva.png"
+			"ruta_imagen":"images/capa1rnuevag.png"
 			},
 			{
 			"id": 3,
