@@ -21,7 +21,7 @@ Cangrejo::Cangrejo(int x, int y) :
 	this->vidas = CANTIDAD_VIDAS_CANGREJO;
 	this->setPuntaje(100);
 	//this->setPosicionesY(500);
-	this->setPosicionesY(700);
+	//this->setPosicionesY(700);
 
 }
 void Cangrejo::calcularNumeroDeSprite(){

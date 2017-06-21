@@ -73,6 +73,7 @@ private:
     int anillosColav;
 	bool pasarNivel;
 	int nivelActual;
+	bool combateJefe;
 
 	bool colpiedra;
 

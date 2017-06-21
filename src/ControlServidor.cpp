@@ -33,6 +33,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 
 	this->calcularTablasCosenoSeno();
 	cantEnemigos = 0;
+	combateJefe = false;
 }
 
 ControlServidor::~ControlServidor() {
@@ -227,12 +228,20 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		//tiempoDeJuego = SDL_GetTicks();
 
 		//Mueve la camara segun los sonics
-		camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
-
+		if(!this->nivelActual == 2){
+			camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
+		}else{
+			if(!this->combateJefe){
+				camara->actualizar(vista->obtenerAnchoEscenario(),vista->obtenerAltoEscenario());
+			}
+		}
 		if((*pos).second->getPosicionX() + (*pos).second->getAncho() >= vista->obtenerAnchoEscenario())
 		{
 			if(nivelActual < 2){
 				this->pasarNivel =true;
+			}
+			else if(nivelActual==2){
+				this->combateJefe = true;
 			}
 		}
 		//aca posiciona a los sonics en el inicio del mapa
@@ -514,9 +523,9 @@ void ControlServidor::creoCangrejo(int minRam, int maxRam){
 	this->log->addLogMessage("[CREO CANGREJO] Iniciado.", 2);
 	int cantidadCangrejo = Util::numeroRandomEntre(minRam, maxRam);
 
-	if(cantidadCangrejo > MAX_CANT_CANGREJOS){
+	if(cantidadCangrejo > 20){
 	  this->log->addLogMessage("[CREO CANGREJO] ERROR.La Cantidad de cangrejos randon" + std::string(" ") + Util::intToString(cantidadCangrejo) + std::string(" ") + "supera a 20, El numero elegido para fraccionar la pantalla de ancho 1600, por lo tanto se carga el valor por defecto de 7 cangrejos",1);
-	  cantidadCangrejo = 10;
+	  cantidadCangrejo = 20;
 	}
 
 	debug(0,"ControlServidor::CREO CANGREJOS","Valor Random %d", cantidadCangrejo);
@@ -1102,11 +1111,11 @@ void ControlServidor::enviarDatosEnemigosInicialesAUno(Hiloenviar *hiloEnviar)
 		}else if(this->enemigos[i]->getTipoEnemigo()=="j"){
 			std::string mensajejefe = "/";
 			mensajejefe = mensajejefe + enemigos[i]->obteneMensajeEstadoInicial();
-			this->enviarATodos(mensajejefe);
+			this->enviarAUno(mensajejefe, hiloEnviar);
 		}else if(this->enemigos[i]->getTipoEnemigo()=="b"){
 			std::string mensajeBola = "/";
 			mensajeBola = mensajeBola + enemigos[i]->obteneMensajeEstadoInicial();
-			this->enviarATodos(mensajeBola);
+			this->enviarAUno(mensajeBola, hiloEnviar);
 		}
 	}
 }
