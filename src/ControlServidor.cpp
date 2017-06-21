@@ -536,7 +536,6 @@ void ControlServidor::creoCangrejo(int minRam, int maxRam){
 	//int coordXActual = 1500;
 	int coordXActual = 1700;
 	std::vector<int> myvector;
-	int contadorCangrejo = 0;
 
 	for (int i=0; i<=cantidadCangrejo; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7 8 9 10
 	std::random_shuffle( myvector.begin(), myvector.end() );
@@ -549,13 +548,11 @@ void ControlServidor::creoCangrejo(int minRam, int maxRam){
 			int rangoDeMovimientoMinimo = (coordX * 1400) + 500;
 			Cangrejo *cangrejo = new Cangrejo(rangoDeMovimientoMinimo,ALTURA_Y_CANGREJO);
 			enemigos.push_back(cangrejo);
-
-			contadorCangrejo++;
 			this->cantEnemigos++;
 		}
 	}
 
-	cout <<"contadorCangrejo: "<<contadorCangrejo<<endl;
+	cout <<"contadorCangrejo: "<<cantidadCangrejo<<endl;
 	this->log->addLogMessage("[CREO CANGREJO] Terminado.", 2);
 }
 
@@ -601,10 +598,6 @@ void ControlServidor::creoPescado(int minRam, int maxRam){
 
 				Pescado *pescado = new Pescado(rangoDeMovimientoMinimo,posicionY,ALTURA_MAXIMA_PESCADO,ALTURA_MINIMA_PESCADO);
 				enemigos.push_back(pescado);
-
-
-
-			contadorPescado++;
 			this->cantEnemigos++;
 			//}
 		}
@@ -940,12 +933,8 @@ void ControlServidor::chequearColicion(Colicion *colicion, bool &juegoTerminado)
 				if (colicion->intersectaAnilloPersonaje(cls, sonic)){
 					//debug(1,"ControlServidor::chequearColicion","Colision con anilla NUMEROANILLA %d",numeroAnilla);
 					//std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(numeroAnilla);
-
-
-
-					debug(1,"ControlServidor::chequearColicion","Colision con anilla GETID %d",cls->getId());
+					//debug(1,"ControlServidor::chequearColicion","Colision con anilla GETID %d",cls->getId());
 					std::string mensaje = (*posanillo)->obtenerMsjAnillaBorrada(cls->getId());
-
 
 					this->enviarATodos(mensaje);
 					colisionada = (*posanillo);
@@ -1399,6 +1388,15 @@ void ControlServidor::generarEnemigoFianl(){
 	jefe->setBola(bola);
 	enemigos.push_back(bola);
 }
+
+int ControlServidor::getCantEnemigos() const {
+	return cantEnemigos;
+}
+
+void ControlServidor::setCantEnemigos(int cantEnemigos) {
+	this->cantEnemigos = cantEnemigos;
+}
+
 void ControlServidor::verificarDuracionAtaque(Personaje *sonic)
 {
 	if(sonic->getAtaque())

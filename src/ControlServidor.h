@@ -186,6 +186,9 @@ public:
 	void resetEnemigosPorNivel(int,int,int,int,int,int);
 	void generarEnemigoFianl();
 	void calcularTablasCosenoSeno();
+	int getCantEnemigos() const;
+	void setCantEnemigos(int cantEnemigos);
+
 private:
 
 	void administrarTeclasServidor();
