@@ -1267,7 +1267,7 @@ void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez
 	cout <<"'''''''''''''''''''''''''''''''''''''''''' "<<endl;
 }
 void ControlServidor::generarEnemigoFianl(){
-	int posicionX = 7450;
+	int posicionX = 7450+8000;
 	//int posicionX = 500;
 	int posicionY = 50;
 	Jefe *jefe = new Jefe(posicionX,posicionY);

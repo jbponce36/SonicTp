@@ -139,7 +139,7 @@ void Textura::renderizarCapa(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVen
 	 * */
 
 
-	cout<<"rCamara: rectanguloImagen.x "<<rectanguloImagen->x <<" rectanguloImagen.w "<< rectanguloImagen->w <<endl;
+	//cout<<"Camara: rectanguloImagen.x "<<rectanguloImagen->x <<" rectanguloImagen.w "<< rectanguloImagen->w <<endl;
 	//cout<<"rectanguloVentana.x "<<rectanguloVentana->x <<" rectanguloVentana.w "<< rectanguloVentana->w <<endl;
 
 
@@ -173,8 +173,8 @@ void Textura::renderizarCapa(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVen
 		nuevaVentana2.x = rectanguloVentana->w - nuevaVentana2.w;
 
 		SDL_RenderCopy( renderizador,this->textura, &nuevaImagen2, &nuevaVentana2);
-		cout<<"Adentro: nuevaImagen2.x"<<nuevaImagen2.x <<" nuevaImagen2.w "<<nuevaImagen2.w <<endl;
-		cout<<"Adentro: nuevaVentana2.x"<<nuevaVentana2.x <<" nuevaVentana2.w "<<nuevaVentana2.w <<endl;
+		//cout<<"Adentro: nuevaImagen2.x"<<nuevaImagen2.x <<" nuevaImagen2.w "<<nuevaImagen2.w <<endl;
+		//cout<<"Adentro: nuevaVentana2.x"<<nuevaVentana2.x <<" nuevaVentana2.w "<<nuevaVentana2.w <<endl;
 	}
 	else{
 		renderizar(rectanguloImagen, rectanguloVentana);
