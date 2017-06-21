@@ -8,7 +8,7 @@
         "piedras":{"minimo": 10,"maximo": 10},
         "cangrejo":{"minimo": 20,"maximo": 20}, 
         "mosca": {"minimo": 0,"maximo":0 },
-        "pescado": {"minimo": 0,"maximo": 0},
+        "pescado": {"minimo": 10,"maximo": 10},
 	"escenario": {
 		"dimensiones": {"ancho": 16000, "alto": 1000},
 		"capas": [
