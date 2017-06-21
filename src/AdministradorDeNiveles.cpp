@@ -129,6 +129,8 @@ void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor*
 	if((CANTIDAD_NIVELES-1) == nivelServidor){
 		controlServidor->generarEnemigoFianl();
 	}
+
+	controlServidor->setCantEnemigos(0);
 	//controlServidor->generarEnemigoFianl();
 	/*controlServidor->resetEnemigosPorNivel(jjuego->getMosca()->getMinimoran(),
 			jjuego->getMosca()->getMaximoran(),
@@ -136,6 +138,7 @@ void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor*
 			jjuego->getPescado()->getMaximoran(),
 			jjuego->getCangrejo()->getMinimoran(),
 			jjuego->getCangrejo()->getMaximoran());*/
+
 
 	controlServidor->creoCangrejo(jjuego->getCangrejo()->getMinimoran(), jjuego->getCangrejo()->getMaximoran());
 	controlServidor->creoPescado(jjuego->getPescado()->getMinimoran(), jjuego->getPescado()->getMaximoran());
