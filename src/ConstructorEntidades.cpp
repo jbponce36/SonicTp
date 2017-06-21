@@ -572,14 +572,14 @@ void ConstructorEntidades::generarBonus(int minimor,int maximor, int minimorA, i
 
 	std::vector<int> myvector;
 	  // set some values:
-	for (int i=0; i<=10; ++i)
+	for (int i=0; i<= 10; ++i)
 	{
-		myvector.push_back(i * 1400 + 200);
-		myvector.push_back(i * 1400 + 300);
-		myvector.push_back(i * 1400 + 600);
-		myvector.push_back(i * 1400 + 700);
-		myvector.push_back(i * 1400 + 800);
-		myvector.push_back(i * 1400 + 900);
+		myvector.push_back(i * 1400 + 870);
+		myvector.push_back(i * 1400 + 960);
+		myvector.push_back(i * 1400 + 1050);
+		myvector.push_back(i * 1400 + 1140);
+		myvector.push_back(i * 1400 + 1230);
+		myvector.push_back(i * 1400 + 1320);
 	}
 	std::random_shuffle ( myvector.begin(), myvector.end() );
 

@@ -9,7 +9,7 @@
 #define MOSCA_H_
 
 #define ALTURA_MAXIMA_MOSCA 580
-#define ALTURA_MINIMA_MOSCA 350
+#define ALTURA_MINIMA_MOSCA 330
 #define VIDAS_MOSCA 1
 
 

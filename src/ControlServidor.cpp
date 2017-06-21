@@ -407,8 +407,9 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 	//this->getJmos()->getMinimoran();
 	//this->generarEnemigoFianl();
-	this->resetEnemigosPorNivel(this->getJmos()->getMinimoran(),this->getJmos()->getMaximoran(),this->getJpes()->getMinimoran(),this->getJpes()->getMaximoran(),this->getJcang()->getMinimoran(),this->getJcang()->getMaximoran());
-	//this->resetEnemigosPorNivel(0,0,0,0,0,0);
+	//this->resetEnemigosPorNivel(this->getJmos()->getMinimoran(),this->getJmos()->getMaximoran(),this->getJpes()->getMinimoran(),this->getJpes()->getMaximoran(),this->getJcang()->getMinimoran(),this->getJcang()->getMaximoran());
+
+	this->CreoCangrejo(this->getJcang()->getMinimoran(), this->getJcang()->getMaximoran());
 	this->enviarDatosEnemigosIniciales();
 	this->enviarATodos(FIN_MENSAJES_ENEMIGOS);
 
@@ -464,7 +465,7 @@ void ControlServidor::CreoPinche(int minRam, int maxRam){
 	cout<<"ANCHO ESCENARIOO: "<<vista->obtenerAnchoEscenario()<<"-------------------"<<endl;
 	
 	//int coordXActual = 1500;
-	int coordXActual = 1600;
+	int coordXActual = 1500;
 	std::vector<int> myvector;
 
 	for (int i=0; i<=MAX_CANT_PINCHES; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7 8 9 10 
@@ -480,7 +481,7 @@ void ControlServidor::CreoPinche(int minRam, int maxRam){
 
 			 int coordX = myvector.back();
    		     myvector.pop_back();
-   		     coordX = (coordX * 1400) + 400;
+   		     coordX = (coordX * 1400) + 300;
 			 //coordX = (coordX * 1000) + 400;
 			 int coordY = 4*vista->getAltoEscenario()/5 - alto;
 			 coordXActual = coordXActual + 400;
@@ -506,6 +507,50 @@ void ControlServidor::CreoPinche(int minRam, int maxRam){
 	}
 	 this->log->addLogMessage("[CREO PINCHES] Terminado.", 2);
 }
+
+
+void ControlServidor::CreoCangrejo(int minRam, int maxRam){
+
+	this->log->addLogMessage("[CREO CANGREJO] Iniciado.", 2);
+	int cantidadpinche = Util::numeroRandomEntre(minRam, maxRam);
+
+	if(cantidadpinche > MAXIMO_ENEMIGOS_EN_MAPA){
+	  this->log->addLogMessage("[CREO CANGREJO] ERROR.La Cantidad de cangrejos randon" + std::string(" ") + Util::intToString(cantidadpinche) + std::string(" ") + "supera a 20, El numero elegido para fraccionar la pantalla de ancho 1600, por lo tanto se carga el valor por defecto de 7 cangrejos",1);
+	}
+
+	debug(0,"ControlServidor::CREO CANGREJOS","Valor Random %d", cantidadpinche);
+
+	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
+	int AnchoEscenario = vista->obtenerAnchoEscenario();
+
+	//int coordXActual = 1500;
+	int coordXActual = 1700;
+	std::vector<int> myvector;
+	int contadorCangrejo = 0;
+	int cantidadEnemigos = 0;
+
+	for (int i=0; i<=cantidadpinche; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7 8 9 10
+	std::random_shuffle( myvector.begin(), myvector.end() );
+
+
+	for(int i=0;i<cantidadpinche;i++){
+		if (!myvector.empty()){
+			int coordX = myvector.back();
+			myvector.pop_back();
+			int rangoDeMovimientoMinimo = (coordX * 1400) + 500;
+			Cangrejo *cangrejo = new Cangrejo(rangoDeMovimientoMinimo,ALTURA_Y_CANGREJO);
+			enemigos.push_back(cangrejo);
+
+			contadorCangrejo++;
+			cantidadEnemigos++;
+		}
+	}
+
+	cout <<"contadorCangrejo: "<<contadorCangrejo<<endl;
+	cout <<"cantidad de enemigos q se tienen q crear: "<<cantidadEnemigos<<endl;
+	this->log->addLogMessage("[CREO PINCHES] Terminado.", 2);
+}
+
 
 void ControlServidor::setEscenarioJuego(jescenarioJuego* esc)
 {
@@ -1123,6 +1168,7 @@ void ControlServidor::limpiarEnemigos(){
     }
     enemigos.clear();
 }
+
 void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez,int maxPez,int minCangrejo,int maxCangrejo){
 
 	int cantidadEnemigos = 0;

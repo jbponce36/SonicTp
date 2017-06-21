@@ -124,6 +124,7 @@ public:
 	void CreoAnillas(int minRam, int maxRam);
 	void CreoPiedras(int minRam, int maxRam);
 	void CreoPinche(int minRam, int maxRam);
+	void CreoCangrejo(int minRam, int maxRam);
 	void enviarAnillasPiedrasYPinches(Hiloenviar *hiloEnviar);
 	std::string obtenerMensajeNivel();
 
