@@ -10,7 +10,7 @@
         "mosca": {"minimo": 6,"maximo": 9},
         "pescado": {"minimo": 6,"maximo": 9},
 	"escenario": {
-		"dimensiones": {"ancho": 8000, "alto": 1000},
+		"dimensiones": {"ancho": 16000, "alto": 1000},
 		"capas": [
 			{
 			"id": 1,
