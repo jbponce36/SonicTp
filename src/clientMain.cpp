@@ -81,6 +81,7 @@ int main(int argc, char *argv[]) {
 			{
 				cliente->cerrar();
 				delete cliente;
+				cliente = NULL;
 				return 0;
 			}
 			case 2:{
@@ -92,6 +93,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	delete cliente;
+	cliente = NULL;
 	return 0;
 }
 

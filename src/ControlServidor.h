@@ -47,6 +47,8 @@
 #define MAXCOLS  800
 #define TICKS_POR_FRAME_SERVER 1000/FPS_SERVER
 #define ALTURA_ANILLAS 300
+#define MAX_CANT_PIEDRAS 10
+#define MAX_CANT_PINCHES 10
 
 
 class ControlServidor {
@@ -103,6 +105,7 @@ private:
 
 	vector<Enemigo*> enemigos;
 	AdministradorDeNiveles administradorNiveles;
+	int cantEnemigos;
 
 public:
 	list<Anillos*> anillos;
@@ -122,6 +125,9 @@ public:
 	void CreoAnillas(int minRam, int maxRam);
 	void CreoPiedras(int minRam, int maxRam);
 	void CreoPinche(int minRam, int maxRam);
+	void creoCangrejo(int minRam, int maxRam);
+	void creoMosca(int minRam, int maxRam);
+	void creoPescado(int minRam, int maxRam);
 	void enviarAnillasPiedrasYPinches(Hiloenviar *hiloEnviar);
 	std::string obtenerMensajeNivel();
 

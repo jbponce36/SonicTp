@@ -4,11 +4,11 @@
         "servidor":{"puerto": 8080,"clientes":4},
         "cliente":{"puerto": 8080,"IP":"127.0.0.1"},
         "anillos":{"minimo": 70,"maximo": 90},
-        "pinches":{"minimo": 14,"maximo": 14},   
-        "piedras":{"minimo": 14,"maximo": 14},
-        "cangrejo":{"minimo": 1,"maximo": 1}, 
-        "mosca": {"minimo": 10,"maximo": 10},
-        "pescado": {"minimo": 1,"maximo": 1},
+        "pinches":{"minimo": 0,"maximo": 0},   
+        "piedras":{"minimo": 0,"maximo": 0},
+        "cangrejo":{"minimo": 0,"maximo": 0}, 
+        "mosca": {"minimo": 0,"maximo":0 },
+        "pescado": {"minimo": 10,"maximo": 10},
 	"escenario": {
 		"dimensiones": {"ancho": 16000, "alto": 1000},
 		"capas": [

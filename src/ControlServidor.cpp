@@ -32,7 +32,7 @@ ControlServidor::ControlServidor(int posicionX, int posicionY, VistaSDL *vista, 
 	this->modoDeJuego = modo;
 
 	this->calcularTablasCosenoSeno();
-
+	cantEnemigos = 0;
 }
 
 ControlServidor::~ControlServidor() {
@@ -403,12 +403,13 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 	//this->CreacionEnemigos();
 
-
-
-	//this->getJmos()->getMinimoran();
 	//this->generarEnemigoFianl();
-	this->resetEnemigosPorNivel(this->getJmos()->getMinimoran(),this->getJmos()->getMaximoran(),this->getJpes()->getMinimoran(),this->getJpes()->getMaximoran(),this->getJcang()->getMinimoran(),this->getJcang()->getMaximoran());
-	//this->resetEnemigosPorNivel(0,0,0,0,0,0);
+	//this->resetEnemigosPorNivel(this->getJmos()->getMinimoran(),this->getJmos()->getMaximoran(),this->getJpes()->getMinimoran(),this->getJpes()->getMaximoran(),this->getJcang()->getMinimoran(),this->getJcang()->getMaximoran());
+
+	this->creoCangrejo(this->getJcang()->getMinimoran(), this->getJcang()->getMaximoran());
+	this->creoPescado(this->getJpes()->getMinimoran(),this->getJpes()->getMaximoran());
+	this->creoMosca(this->getJmos()->getMinimoran(),this->getJmos()->getMaximoran());
+
 	this->enviarDatosEnemigosIniciales();
 	this->enviarATodos(FIN_MENSAJES_ENEMIGOS);
 
@@ -444,6 +445,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	}
 	cout<<"Juego terminado. El servidor se desconectara..."<<endl;
 	delete camara;
+	camara = NULL;
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
 }
 
@@ -452,7 +454,7 @@ void ControlServidor::CreoPinche(int minRam, int maxRam){
 	this->log->addLogMessage("[CREO PINCHE] Iniciado.", 2);
 	int cantidadpinche = Util::numeroRandomEntre(minRam, maxRam);
 
-	if(cantidadpinche > 7){
+	if(cantidadpinche > MAX_CANT_PINCHES){
 
 	  this->log->addLogMessage("[CREO PINCHE] ERROR.La Cantidad de Pinches randon" + std::string(" ") + Util::intToString(cantidadpinche) + std::string(" ") + "supera a 7, El numero elegido para fraccionar la pantalla de ancho 8000, por lo tanto se carga el valor por defecto de 7 piedras",1);
 	}
@@ -463,10 +465,11 @@ void ControlServidor::CreoPinche(int minRam, int maxRam){
 	int AnchoEscenario = vista->obtenerAnchoEscenario();
 	cout<<"ANCHO ESCENARIOO: "<<vista->obtenerAnchoEscenario()<<"-------------------"<<endl;
 	
+	//int coordXActual = 1500;
 	int coordXActual = 1500;
 	std::vector<int> myvector;
 
-	for (int i=0; i<=14; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
+	for (int i=0; i<=MAX_CANT_PINCHES; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7 8 9 10 
 	std::random_shuffle( myvector.begin(), myvector.end() );
 
 
@@ -479,9 +482,9 @@ void ControlServidor::CreoPinche(int minRam, int maxRam){
 
 			 int coordX = myvector.back();
    		     myvector.pop_back();
-			 coordX = (coordX * 1000) + 400;
+   		     coordX = (coordX * 1400) + 300;
+			 //coordX = (coordX * 1000) + 400;
 			 int coordY = 4*vista->getAltoEscenario()/5 - alto;
-			 coordXActual = coordXActual + 400;
 
 			 std::string rutaImagen = "images/Pinchos.png";
 			 int indexZ = 99;
@@ -504,6 +507,164 @@ void ControlServidor::CreoPinche(int minRam, int maxRam){
 	}
 	 this->log->addLogMessage("[CREO PINCHES] Terminado.", 2);
 }
+
+
+void ControlServidor::creoCangrejo(int minRam, int maxRam){
+
+	this->log->addLogMessage("[CREO CANGREJO] Iniciado.", 2);
+	int cantidadCangrejo = Util::numeroRandomEntre(minRam, maxRam);
+
+	if(cantidadCangrejo > MAX_CANT_CANGREJOS){
+	  this->log->addLogMessage("[CREO CANGREJO] ERROR.La Cantidad de cangrejos randon" + std::string(" ") + Util::intToString(cantidadCangrejo) + std::string(" ") + "supera a 20, El numero elegido para fraccionar la pantalla de ancho 1600, por lo tanto se carga el valor por defecto de 7 cangrejos",1);
+	  cantidadCangrejo = 10;
+	}
+
+	debug(0,"ControlServidor::CREO CANGREJOS","Valor Random %d", cantidadCangrejo);
+
+	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
+	int AnchoEscenario = vista->obtenerAnchoEscenario();
+
+	//int coordXActual = 1500;
+	int coordXActual = 1700;
+	std::vector<int> myvector;
+	int contadorCangrejo = 0;
+
+	for (int i=0; i<=cantidadCangrejo; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7 8 9 10
+	std::random_shuffle( myvector.begin(), myvector.end() );
+
+
+	for(int i=0;i<cantidadCangrejo;i++){
+		if (!myvector.empty()){
+			int coordX = myvector.back();
+			myvector.pop_back();
+			int rangoDeMovimientoMinimo = (coordX * 1400) + 500;
+			Cangrejo *cangrejo = new Cangrejo(rangoDeMovimientoMinimo,ALTURA_Y_CANGREJO);
+			enemigos.push_back(cangrejo);
+
+			contadorCangrejo++;
+			this->cantEnemigos++;
+		}
+	}
+
+	cout <<"contadorCangrejo: "<<contadorCangrejo<<endl;
+	this->log->addLogMessage("[CREO CANGREJO] Terminado.", 2);
+}
+
+
+void ControlServidor::creoPescado(int minRam, int maxRam){
+
+	this->log->addLogMessage("[CREO PESCADO] Iniciado.", 2);
+	int contadorPescado = Util::numeroRandomEntre(minRam, maxRam);
+
+	if(contadorPescado > MAX_CANT_PECES){
+	  this->log->addLogMessage("[CREO PESCADO] ERROR.La Cantidad de pescado randon" + std::string(" ") + Util::intToString(contadorPescado) + std::string(" ") + "supera a 10, El numero elegido para fraccionar la pantalla de ancho 1600, por lo tanto se carga el valor por defecto de 10 pescados",1);
+	  contadorPescado = 10;
+	}
+
+	debug(0,"ControlServidor::CREO PESCADO","Valor Random %d", contadorPescado);
+
+	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
+	int AnchoEscenario = vista->obtenerAnchoEscenario();
+
+	std::vector<int> myvector;
+
+	for (int i=0; i<=contadorPescado; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7 8 9 10
+	std::random_shuffle( myvector.begin(), myvector.end() );
+
+
+	for(int i=0;i<contadorPescado;i++){
+		if (!myvector.empty()){
+			int coordX = myvector.back();
+			myvector.pop_back();
+			int rangoDeMovimientoMinimo = (coordX * 1400) + 200;
+
+			//---------------------------------------------------------
+			//int rangoDeMovimientoMinimo = 500 + rand() % ((15300+1) - 500);
+			/*bool posicionValida = true;
+			for(int i=0;i<enemigos.size();i++){
+				int posicion = enemigos[i]->getPosicionDeEnemigo();
+				if(((posicion + 300)>rangoDeMovimientoMinimo) and ((posicion - 300)<rangoDeMovimientoMinimo)){
+					posicionValida = false;
+				}
+			}
+			if(posicionValida){*/
+				int posicionY = ALTURA_MINIMA_PESCADO + rand() % ((ALTURA_MAXIMA_PESCADO+1) - ALTURA_MINIMA_PESCADO);
+
+				Pescado *pescado = new Pescado(rangoDeMovimientoMinimo,posicionY,ALTURA_MAXIMA_PESCADO,ALTURA_MINIMA_PESCADO);
+				enemigos.push_back(pescado);
+
+
+
+			contadorPescado++;
+			this->cantEnemigos++;
+			//}
+		}
+	}
+
+	cout <<"contadorPescado: "<<contadorPescado<<endl;
+	this->log->addLogMessage("[CREO PESCADO] Terminado.", 2);
+}
+
+
+
+void ControlServidor::creoMosca(int minRam, int maxRam){
+
+	this->log->addLogMessage("[CREO MOSCA] Iniciado.", 2);
+	int cantidadMosca = Util::numeroRandomEntre(minRam, maxRam);
+
+	if(cantidadMosca > MAX_CANT_MOSCAS){
+	  this->log->addLogMessage("[CREO MOSCA] ERROR.La Cantidad de MOSCA randon" + std::string(" ") + Util::intToString(cantidadMosca) + std::string(" ") + "supera a 20, El numero elegido para fraccionar la pantalla de ancho 1600, por lo tanto se carga el valor por defecto de 7 cangrejos",1);
+	  cantidadMosca = MAX_CANT_MOSCAS;
+	}
+
+	debug(0,"ControlServidor::CREO MOSCA","Valor Random %d", cantidadMosca);
+
+	int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
+	int AnchoEscenario = vista->obtenerAnchoEscenario();
+
+	cout<<"ANCHO ESCENARIO: "<<AnchoEscenario<<endl;
+
+	std::vector<int> myvector;
+	int contadorMosca = 0;
+
+	for (int i=0; i<=cantidadMosca; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7 8 9 10
+	std::random_shuffle( myvector.begin(), myvector.end() );
+
+
+	for(int i=0;i<cantidadMosca;i++){
+		if (!myvector.empty()){
+			int coordX = myvector.back();
+			myvector.pop_back();
+
+			int rangoDeMovimientoMinimo = 500 + rand() % ((15300+1) - 500);
+			/*bool posicionValida = true;
+			for(int i=0;i<enemigos.size();i++){
+				int posicion = enemigos[i]->getPosicionDeEnemigo();
+				if(((posicion + 300)>rangoDeMovimientoMinimo) and ((posicion - 300)<rangoDeMovimientoMinimo)){
+					posicionValida = false;
+				}
+			}
+
+			if(posicionValida){*/
+				int posicionX = 0 + rand() % ((300+1) - 0);
+				posicionX = rangoDeMovimientoMinimo + posicionX;
+				int RangoDeMovimientoMaximo = rangoDeMovimientoMinimo + 300;
+
+				int posicionY = ALTURA_MINIMA_MOSCA + rand() % ((ALTURA_MAXIMA_MOSCA + 1)-ALTURA_MINIMA_MOSCA );
+				Mosca *mosca = new Mosca(posicionX,posicionY,RangoDeMovimientoMaximo,rangoDeMovimientoMinimo);
+
+				enemigos.push_back(mosca);
+				this->cantEnemigos++;
+			//}
+		}
+	}
+
+	cout <<"contadorMosca: "<<cantidadMosca<<endl;
+	cout <<"cantidad de enemigos q se tienen q crear: "<<this->cantEnemigos<<endl;
+	this->log->addLogMessage("[CREO MOSCA] Terminado.", 2);
+}
+
+
 
 void ControlServidor::setEscenarioJuego(jescenarioJuego* esc)
 {
@@ -583,25 +744,22 @@ void ControlServidor::CreoAnillas(int minRam, int maxRam){
 
 void ControlServidor::CreoPiedras(int minRam, int maxRam){
 	 this->log->addLogMessage("[CREO PIEDRAS] Iniciado.", 2);
-
-	 int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
-	 int AnchoEscenario = vista->obtenerAnchoEscenario();
-
 	// int cantidadPiedras = Util::numeroRandomEntre(this->getJpied()->getMinimoran(), this->getJpied()->getMaximoran());
 	 int cantidadPiedras = Util::numeroRandomEntre(minRam, maxRam);
 
-	 if(cantidadPiedras > 7){
-
+	 if(cantidadPiedras > MAX_CANT_PIEDRAS){
 		 this->log->addLogMessage("[CREO PIEDRAS] ERROR.La Cantidad de Piedras randon" + std::string(" ") + Util::intToString(cantidadPiedras) + std::string(" ") + "supera a 7, El numero elegido para fraccionar la pantalla de ancho 8000, por lo tanto se carga el valor por defecto de 7 piedras",1);
 	 }
 
 
 	 debug(0,"ControlServidor::CreoPiedras","Valor Random %d", cantidadPiedras);
+	 int AltoEscenario = 4*(vista->obtenerAltoEscenario())/5;
+	 int AnchoEscenario = vista->obtenerAnchoEscenario();
 
-	  std::vector<int> myvector;
+	 std::vector<int> myvector;
 
-	  for (int i=1; i<=14; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
-	  std::random_shuffle ( myvector.begin(), myvector.end() );
+	 for (int i=1; i<= MAX_CANT_PIEDRAS; ++i) myvector.push_back(i); // 1 2 3 4 5 6 7
+	 std::random_shuffle ( myvector.begin(), myvector.end() );
 
 
 	  int cantidadPiedrasMostradas = 0;
@@ -616,11 +774,8 @@ void ControlServidor::CreoPiedras(int minRam, int maxRam){
 			  int coordX = myvector.back();
 			  myvector.pop_back();
 
-			 // debug(0, "ControlServidor::CreoPiedras", "Creando piedra ranrom: %d", coordX);
-			  coordX = coordX * 1000;
-
-			  //debug(0, "ControlServidor::CreoPiedras", "Creando piedra en pos Despues del Randon X: %d", coordX);
-
+			  coordX = coordX * 1400;
+			  //coordX = coordX * 1000;
 
 			  int coordY = 4*vista->getAltoEscenario()/5 - alto;
 
@@ -1127,6 +1282,7 @@ void ControlServidor::limpiarEnemigos(){
     }
     enemigos.clear();
 }
+
 void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez,int maxPez,int minCangrejo,int maxCangrejo){
 
 	int cantidadEnemigos = 0;
@@ -1147,7 +1303,8 @@ void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez
 	int sumaEnemigos = numCangrejo + numMosca + numPescado;
 	while((cantidadEnemigos < MAXIMO_ENEMIGOS_EN_MAPA) and (cantidadEnemigos<sumaEnemigos)){
 		if((contadorCangrejo < numCangrejo) and (cantidadEnemigos <MAXIMO_ENEMIGOS_EN_MAPA)){
-			int rangoDeMovimientoMinimo = 500 + rand() % ((7300+1) - 500);
+			//int rangoDeMovimientoMinimo = 500 + rand() % ((7300+1) - 500);
+			int rangoDeMovimientoMinimo = 500 + rand() % ((15300+1) - 500);
 			bool posicionValida = true;
 			for(int i=0;i<enemigos.size();i++){
 				int posicion = enemigos[i]->getPosicionDeEnemigo();
@@ -1167,7 +1324,8 @@ void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez
 			}
 		}
 		if((contadorPescado < numPescado) and (cantidadEnemigos <MAXIMO_ENEMIGOS_EN_MAPA)){
-			int rangoDeMovimientoMinimo = 500 + rand() % ((7300+1) - 500);
+			//int rangoDeMovimientoMinimo = 500 + rand() % ((7300+1) - 500);
+			int rangoDeMovimientoMinimo = 500 + rand() % ((15300+1) - 500);
 			bool posicionValida = true;
 			for(int i=0;i<enemigos.size();i++){
 				int posicion = enemigos[i]->getPosicionDeEnemigo();
@@ -1187,7 +1345,8 @@ void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez
 		}
 		if((contadorMosaca < numMosca) and (cantidadEnemigos <MAXIMO_ENEMIGOS_EN_MAPA)){
 
-			int rangoDeMovimientoMinimo = 500 + rand() % ((7300+1) - 500);
+			//int rangoDeMovimientoMinimo = 500 + rand() % ((7300+1) - 500);
+			int rangoDeMovimientoMinimo = 500 + rand() % ((15300+1) - 500);
 			bool posicionValida = true;
 			for(int i=0;i<enemigos.size();i++){
 				int posicion = enemigos[i]->getPosicionDeEnemigo();
@@ -1222,7 +1381,7 @@ void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez
 	cout <<"'''''''''''''''''''''''''''''''''''''''''' "<<endl;
 }
 void ControlServidor::generarEnemigoFianl(){
-	int posicionX = 7450;
+	int posicionX = 7450+8000;
 	//int posicionX = 500;
 	int posicionY = 50;
 	Jefe *jefe = new Jefe(posicionX,posicionY);

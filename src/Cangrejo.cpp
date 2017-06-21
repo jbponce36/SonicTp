@@ -12,7 +12,7 @@ Cangrejo::Cangrejo(int x, int y) :
 {
 	this->textura = NULL;
 	this->tiempo = SDL_GetTicks();
-	this->maximoX = x+300;
+	this->maximoX = x+250;
 	this->minimoX = x;
 	this->contadorSprite = 0;
 	this->velocidad = 40;
@@ -20,8 +20,8 @@ Cangrejo::Cangrejo(int x, int y) :
 	this->puntaje = 0;
 	this->vidas = CANTIDAD_VIDAS_CANGREJO;
 	this->setPuntaje(100);
-	//this->setPosicionesY(700);
-	this->setPosicionesY(500);
+	//this->setPosicionesY(500);
+	this->setPosicionesY(700);
 
 }
 void Cangrejo::calcularNumeroDeSprite(){
