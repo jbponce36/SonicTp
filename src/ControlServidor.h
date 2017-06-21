@@ -125,9 +125,16 @@ public:
 	void CreoAnillas(int minRam, int maxRam);
 	void CreoPiedras(int minRam, int maxRam);
 	void CreoPinche(int minRam, int maxRam);
+	void creoCangrejosExcedentes(int cant);
 	void creoCangrejo(int minRam, int maxRam);
 	void creoMosca(int minRam, int maxRam);
 	void creoPescado(int minRam, int maxRam);
+	void creoPescadosExcedentes(int cant);
+	bool hayPinches();
+	bool hayPiedras();
+	bool hayBonus();
+	bool hayPescados();
+	bool hayCangrejos();
 	void enviarAnillasPiedrasYPinches(Hiloenviar *hiloEnviar);
 	std::string obtenerMensajeNivel();
 
