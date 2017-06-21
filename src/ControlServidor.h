@@ -83,6 +83,9 @@ private:
 
 	std::map<int, float> tablaSeno;
 	std::map<int, float> tablaCoseno;
+	bool tablaEntidades[MAXIMO_ENTIDADES_MAPA];
+	bool tablaEntidadesAereas[MAXIMO_ENTIDADES_MAPA];
+	int cantidadEntidades;
 
 	typedef struct posSonic{
 		int ultimaPosicionX;
@@ -188,6 +191,7 @@ public:
 	void calcularTablasCosenoSeno();
 	int getCantEnemigos() const;
 	void setCantEnemigos(int cantEnemigos);
+	void inicializarTablaEntidades();
 
 private:
 

@@ -65,7 +65,7 @@ public:
 
 	ConstructorEntidades(int limiteAncho, int limiteAlto, int anchoVentana, Logger *log);
 	int generarId();
-	void cargarEntidades(list<jentidades> entidades, SDL_Renderer *renderizador);
+	void cargarEntidades(list<jentidades> entidades, SDL_Renderer *renderizador,bool *tablaEntidades);
 	void cargarEntidadesCliente(list<jentidades> jEntidades, SDL_Renderer *renderizador);
 	void inicializarImagenes(SDL_Renderer *renderizador);
 	void mostrarEntidades(SDL_Renderer* renderizador, SDL_Rect *camara, int indexZ);
@@ -80,7 +80,7 @@ public:
 	void quitarEntidad(std::string nombre, int id);
 
 	//void generarBonus(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ,int minimor,int maximor);
-	void generarBonus(int minimor,int maximor, int mininorA, int maximorA, int mininmorE, int maximorE);
+	void generarBonus(int minimor,int maximor, int mininorA, int maximorA, int mininmorE, int maximorE,bool *tablaEntidades);
 	void generarPlataformas(int ancho, int alto, std::string color, std::string rutaImagen, int indexZ);
 
 	int getAncho();

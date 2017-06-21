@@ -4,9 +4,9 @@
         "servidor":{"puerto": 8080,"clientes":4},
         "cliente":{"puerto": 8080,"IP":"127.0.0.1"},
         "anillos":{"minimo": 40,"maximo": 50},
-        "pinches":{"minimo": 2,"maximo": 4},   
-        "piedras":{"minimo": 3,"maximo": 5},
-        "cangrejo":{"minimo": 1,"maximo": 2}, 
+        "pinches":{"minimo": 2,"maximo": 3},   
+        "piedras":{"minimo": 3,"maximo": 4},
+        "cangrejo":{"minimo": 10,"maximo": 13}, 
         "mosca": {"minimo": 6,"maximo": 9},
         "pescado": {"minimo": 6,"maximo": 9},
 	"escenario": {

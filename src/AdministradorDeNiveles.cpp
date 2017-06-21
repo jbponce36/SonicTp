@@ -113,18 +113,16 @@ void AdministradorDeNiveles::mostrarPunConPan(VistaSDL* vista,vector<Personaje*>
 
 		sleep(4);
 }
-void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor* controlServidor){
+void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor* controlServidor,bool *tablaEntidades){
    debug(0,"AdministradorDeNiveles::pasarNivelServidor", "Paso de nivel servidor", 0);
 
 	controlServidor->limpiarObstaculos();
 	nivelServidor++;
 	jescenarioJuego* jjuego = vista->obtenerNivel(nivelServidor);
-
-
-	vista->getConstructorEntidades()->cargarEntidades(jjuego->getEscenario()->getentidades(),vista->getRenderizador());
+	controlServidor->inicializarTablaEntidades();
+	vista->getConstructorEntidades()->cargarEntidades(jjuego->getEscenario()->getentidades(),vista->getRenderizador(),tablaEntidades);
 	controlServidor->enviarDatosEscenarioATodos();
 	controlServidor->limpiarEnemigos();
-
 	//cout<<"nivel de juego -------------------------"<<nivelServidor<<endl;
 	if((CANTIDAD_NIVELES-1) == nivelServidor){
 		controlServidor->generarEnemigoFianl();
@@ -132,17 +130,17 @@ void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor*
 
 	controlServidor->setCantEnemigos(0);
 	//controlServidor->generarEnemigoFianl();
-	/*controlServidor->resetEnemigosPorNivel(jjuego->getMosca()->getMinimoran(),
+	controlServidor->resetEnemigosPorNivel(jjuego->getMosca()->getMinimoran(),
 			jjuego->getMosca()->getMaximoran(),
 			jjuego->getPescado()->getMinimoran(),
 			jjuego->getPescado()->getMaximoran(),
 			jjuego->getCangrejo()->getMinimoran(),
-			jjuego->getCangrejo()->getMaximoran());*/
+			jjuego->getCangrejo()->getMaximoran());
 
 
-	controlServidor->creoCangrejo(jjuego->getCangrejo()->getMinimoran(), jjuego->getCangrejo()->getMaximoran());
-	controlServidor->creoPescado(jjuego->getPescado()->getMinimoran(), jjuego->getPescado()->getMaximoran());
-	controlServidor->creoMosca(jjuego->getMosca()->getMinimoran(), jjuego->getMosca()->getMaximoran());
+	//controlServidor->creoCangrejo(jjuego->getCangrejo()->getMinimoran(), jjuego->getCangrejo()->getMaximoran());
+	//controlServidor->creoPescado(jjuego->getPescado()->getMinimoran(), jjuego->getPescado()->getMaximoran());
+	//controlServidor->creoMosca(jjuego->getMosca()->getMinimoran(), jjuego->getMosca()->getMaximoran());
 
 	controlServidor->enviarDatosEnemigosIniciales();
 

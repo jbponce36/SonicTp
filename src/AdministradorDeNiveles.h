@@ -27,7 +27,7 @@ class AdministradorDeNiveles {
 		~AdministradorDeNiveles();
 		void mostrarPunConPan(VistaSDL*,vector<Personaje*>*,int modo);
 		void pasarNivelReset(VistaSDL*);
-		void pasarNivelServidor(VistaSDL* vista,ControlServidor*);
+		void pasarNivelServidor(VistaSDL* vista,ControlServidor*,bool *tablaEntidades);
 
 	private:
 		int nivelActual;

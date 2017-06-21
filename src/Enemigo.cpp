@@ -203,10 +203,10 @@ void Enemigo::parsearMensajeInicial(std::string mensaje){
 	this->posicioneX = atoi(posX.c_str());
 	this->posicioneY = atoi(posY.c_str());
 	if(mensaje[12] == 'v'){
-			cout<<"esta vivo"<<endl;
+			//cout<<"esta vivo"<<endl;
 		this->vivo=true;
 	}else{
-			cout<<"muerto"<<endl;
+			//cout<<"muerto"<<endl;
 		this->vivo=false;
 	}
 }

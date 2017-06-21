@@ -40,7 +40,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	if(oculta)
 	{
 		//Servidor. No carga texturas.
-		constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
+		//constructorEntidades->cargarEntidades(jescenario->getentidades(), renderizador);
 	}
 	else
 	{
