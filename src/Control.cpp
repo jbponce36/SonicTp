@@ -10,6 +10,7 @@ Control::Control(int posicionX, int posicionY, int maxJugadores,
 				vista), constructorEntidades(vista->getConstructorEntidades()),
 				modoDeJuego(modoDeJuego) {
 	this->log->setModulo("CONTROL");
+	this->calcularTablasCosenoSeno();
 }
 
 Control::~Control() {
@@ -56,7 +57,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 
 	inicializarEscenario(hiloRecibir);
 	admNiveles.cargarNivel(vista, sonic);
-	this->calcularTablasCosenoSeno();
+	//this->calcularTablasCosenoSeno();
 	inicializarEnemigos(hiloRecibir);
 
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
