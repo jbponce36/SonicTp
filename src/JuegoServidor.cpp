@@ -272,6 +272,25 @@ void JuegoServidor::reconectar(int sock, ConexServidor *servidor)
 	control->enviarDatosEnemigosInicialesAUno(henviar);
 	control->enviarAUno(FIN_MENSAJES_ENEMIGOS, henviar);
 	control->enviarAnillasPiedrasYPinches(henviar);
+
+
+	std::map<int, Personaje*>::iterator pos;
+		for(pos = sonics.begin();pos != sonics.end();pos++)
+		{
+			//cout<<"grupo: "<<(*pos).second->getEquipo()<<"ID"<<(*pos).second->getId()<<endl;
+			Personaje* sonic = (*pos).second;
+			control->enviarAUno(sonic->getPuntos()->obtenerMensajeEstadoPuntos(sonic->getId(),sonic->getEquipo()),henviar);
+			control->enviarAUno(sonic->getPuntos()->obtenerMensajeEstadoAnillos(sonic->getId()),henviar);
+			control->enviarAUno(sonic->getPuntos()->obtenerMensajeEstadoVidas(sonic->getId()),henviar);
+			control->enviarAUno("MJ"+ Util::intToString(this->modoJuego),henviar);
+			control->enviarAUno("equ"+ Util::intToString(sonic->getId())+ Util::intToString(sonic->getEquipo()),henviar);
+			cout<<"el sonic con id:  "<<Util::intToString(sonic->getId())<<"es equipo:  "<<Util::intToString(sonic->getEquipo())<<endl;
+
+	}
+
+
+
+
 }
 void JuegoServidor::cargarNiveles(jescenarioJuego *jparseador,vector<jescenarioJuego*> parser){
 

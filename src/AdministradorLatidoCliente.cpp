@@ -30,6 +30,7 @@ void AdministradorLatidoCliente::setEndT(time_t endT) {
 AdministradorLatidoCliente::~AdministradorLatidoCliente() {
 	// TODO Auto-generated destructor stub
 	delete h;
+	h = NULL;
 }
 
 void AdministradorLatidoCliente::actualizarTiempoLatido(){

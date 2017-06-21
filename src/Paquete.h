@@ -14,11 +14,11 @@
 #include "Definiciones.h"
 
 namespace std{
-struct nodo{
+/*struct nodo{
 	char nodo[40];
 	struct nodo *siguiente;
 };
-typedef struct nodo *Puntero;
+typedef struct nodo *Puntero;*/
 class Paquete {
 public:
 	Paquete();
@@ -41,7 +41,7 @@ public:
 private:
 	std::queue<char*> colaPaquetes;
 	pthread_mutex_t mutex;
-	char buffAuxiliar[16];
+	char *buffAuxiliar;
 	int ContadorBuffAuxiliar;
 	//std::queue<Posicion *> colaPaquetes;
 	//Puntero delante;

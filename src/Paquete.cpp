@@ -11,11 +11,13 @@ namespace std{
 Paquete::Paquete(){
 	//this->delante = NULL;
 	//this->atras = NULL;
+	buffAuxiliar = new char[16];
 	pthread_mutex_init(&mutex, NULL);
 }
 
 Paquete::~Paquete(){
 	pthread_mutex_destroy(&mutex);
+	delete[] buffAuxiliar;
 }
 
 void Paquete::agregar(char *buffer){

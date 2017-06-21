@@ -448,6 +448,7 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 	}
 	cout<<"Juego terminado. El servidor se desconectara..."<<endl;
 	delete camara;
+	camara = NULL;
 	this->log->addLogMessage("[CONTROLAR JUEGO SERVIDOR] Terminado. \n", 2);
 }
 
