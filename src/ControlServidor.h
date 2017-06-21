@@ -105,6 +105,7 @@ private:
 
 	vector<Enemigo*> enemigos;
 	AdministradorDeNiveles administradorNiveles;
+	int cantEnemigos;
 
 public:
 	list<Anillos*> anillos;
@@ -124,7 +125,9 @@ public:
 	void CreoAnillas(int minRam, int maxRam);
 	void CreoPiedras(int minRam, int maxRam);
 	void CreoPinche(int minRam, int maxRam);
-	void CreoCangrejo(int minRam, int maxRam);
+	void creoCangrejo(int minRam, int maxRam);
+	void creoMosca(int minRam, int maxRam);
+	void creoPescado(int minRam, int maxRam);
 	void enviarAnillasPiedrasYPinches(Hiloenviar *hiloEnviar);
 	std::string obtenerMensajeNivel();
 
