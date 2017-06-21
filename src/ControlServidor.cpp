@@ -403,9 +403,6 @@ void ControlServidor::ControlarJuegoServidor(VistaSDL *vista, bool &juegoTermina
 
 	//this->CreacionEnemigos();
 
-
-
-	//this->getJmos()->getMinimoran();
 	//this->generarEnemigoFianl();
 	//this->resetEnemigosPorNivel(this->getJmos()->getMinimoran(),this->getJmos()->getMaximoran(),this->getJpes()->getMinimoran(),this->getJpes()->getMaximoran(),this->getJcang()->getMinimoran(),this->getJcang()->getMaximoran());
 

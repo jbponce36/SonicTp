@@ -128,20 +128,8 @@ void Textura::renderizar(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVentana
 
 void Textura::renderizarCapa(SDL_Rect *rectanguloImagen, SDL_Rect *rectanguloVentana, int anchoEscenario)
 {
-	/*
-	 anchoEsc = 8000  rectVent.w = 1800  rectIm.w =
-
-	 aEsc-cam.w	     rectIm.x         aTotal
-	  -------------------------------
-	 |	vieja			| nueva	     |
-	 |				    |	 	     |
-	  -------------------------------
-	 * */
-
-
 	//cout<<"Camara: rectanguloImagen.x "<<rectanguloImagen->x <<" rectanguloImagen.w "<< rectanguloImagen->w <<endl;
 	//cout<<"rectanguloVentana.x "<<rectanguloVentana->x <<" rectanguloVentana.w "<< rectanguloVentana->w <<endl;
-
 
 	if(  rectanguloImagen->x + rectanguloImagen->w >= 8000){
 		SDL_Rect nuevaImagen = *rectanguloImagen;

@@ -130,12 +130,16 @@ void AdministradorDeNiveles::pasarNivelServidor(VistaSDL* vista,ControlServidor*
 		controlServidor->generarEnemigoFianl();
 	}
 	//controlServidor->generarEnemigoFianl();
-	controlServidor->resetEnemigosPorNivel(jjuego->getMosca()->getMinimoran(),
+	/*controlServidor->resetEnemigosPorNivel(jjuego->getMosca()->getMinimoran(),
 			jjuego->getMosca()->getMaximoran(),
 			jjuego->getPescado()->getMinimoran(),
 			jjuego->getPescado()->getMaximoran(),
 			jjuego->getCangrejo()->getMinimoran(),
-			jjuego->getCangrejo()->getMaximoran());
+			jjuego->getCangrejo()->getMaximoran());*/
+
+	controlServidor->creoCangrejo(jjuego->getCangrejo()->getMinimoran(), jjuego->getCangrejo()->getMaximoran());
+	controlServidor->creoPescado(jjuego->getPescado()->getMinimoran(), jjuego->getPescado()->getMaximoran());
+	controlServidor->creoMosca(jjuego->getMosca()->getMinimoran(), jjuego->getMosca()->getMaximoran());
 
 	controlServidor->enviarDatosEnemigosIniciales();
 
