@@ -153,6 +153,7 @@ public:
 	void enviarDatosEnemigosIniciales();
 	void enviarDatosEnemigosInicialesAUno(Hiloenviar *hiloEnviar);
 	void actualizarPosicionesEnemigos();
+	void InicializarJefeFinal();
 	void setEscenarioJuego(jescenarioJuego* esc);
 	jescenarioJuego* getEscenarioJuego();
 

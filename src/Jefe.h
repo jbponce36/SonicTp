@@ -4,6 +4,8 @@
 #include "Enemigo.h"
 #include "Bola.h"
 #define CANTIDAD_VIDAS_JEFE 5
+#define POSICION_JEFE_FINAL 15450
+#define RANGO_DE_JEFE 200
 
 class Jefe: public Enemigo {
 private:
@@ -20,9 +22,12 @@ private:
 	int contadorSprite;
 	int vidas;
 	bool herido;
+	bool iniciar;
+	bool movido;
 	Bola *bola;
 	Uint32 tiempo;
 	time_t duracionHerido;
+	bool inmortal;
 
 public:
 	Jefe(int x, int y);
@@ -32,6 +37,7 @@ public:
 	void actualizarPosicionBola();
 	SDL_Rect obtenerDimensiones();
 	void restarVida();
+	void comienzo();
 
 
 	~Jefe();

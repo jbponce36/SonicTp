@@ -11,12 +11,12 @@ Jefe::Jefe(int x, int y) :Enemigo(x,y,"j"){
 	this->numeroMaximoSprites = 3;
 	this->vidas = CANTIDAD_VIDAS_JEFE;
 	this->velocidad = 100;
-	int rango = 200;
-	float tiempo = (rango*2)/(this->velocidad);
+	//int rango = 200;
+	float tiempo = (RANGO_DE_JEFE*2)/(this->velocidad);
 	this->velocidadBola = 160/tiempo;
 	//this->velocidadBolaY = -30;
-	this->minimoX = x - rango;
-	this->maximoX = rango + x;
+	this->minimoX = x - RANGO_DE_JEFE;
+	this->maximoX = RANGO_DE_JEFE + x;
 	this->tiempo = SDL_GetTicks();
 	this->duracionHerido = 0;
 	this->herido = false;
@@ -24,6 +24,9 @@ Jefe::Jefe(int x, int y) :Enemigo(x,y,"j"){
 	this->textura = NULL;
 	this->anilla = NULL;
 	this->bola = NULL;
+	this->iniciar = false;
+	this->movido = false;
+	this->inmortal = true;
 }
 void Jefe::setBola(Bola *bol){
 	this->bola = bol;
@@ -62,41 +65,59 @@ void Jefe::calcularNumeroDeSprite(){
 void Jefe::actualizarPosicion(){
 	//cout<<"maximo: "<<this->maximoX<<endl;
 	//cout<<"minimo: "<<this->minimoX<<endl;
-
-	time_t tiempoFin;
-	time(&tiempoFin);
-	double tiempoTranscurrido;
-	tiempoTranscurrido = difftime(tiempoFin, this->duracionHerido);
-	tiempoTranscurrido = fabs(tiempoTranscurrido);
-	if (tiempoTranscurrido > 3)
-	{
-		this->herido = false;
-	}
-	Uint32 timeActual= SDL_GetTicks();
-	this->calcularNumeroDeSprite();
-	float timeStep = (timeActual - this->tiempo) / 1000.f;
-	//cout<<"timeStep: "<<timeStep<<endl;
-	float auxPosicion = this->getPosicionesX() + ((this->velocidad)*timeStep);
-	//cout<<"auxPosicion: "<<auxPosicion<<endl;
-	if(this->velocidad > 0){
-		if(auxPosicion > this->maximoX){
-			this->velocidad = this->velocidad*(-1);
-			this->bola->setPosicionesX(10);
+	if(this->iniciar){
+		if(this->getPosicionesX()<(POSICION_JEFE_FINAL)){
+			this->iniciar = false;
+			this->setPosicionesX(POSICION_JEFE_FINAL);
+			this->maximoX = POSICION_JEFE_FINAL + RANGO_DE_JEFE;
+			this->minimoX = POSICION_JEFE_FINAL - RANGO_DE_JEFE;
+			this->inmortal = false;
 		}else{
+			//cout<<"posicion jefe X: "<<this->getPosicionesX()<<endl;
+			Uint32 timeActual= SDL_GetTicks();
+			this->setNumeroSprite(0);
+			this->bola->setPosicionJefeX(90);
+			float timeStep = (timeActual - this->tiempo) / 1000.f;
+			float auxPosicion = this->getPosicionesX() + ((-50)*timeStep);
 			this->setPosicionesX(auxPosicion);
+			this->tiempo = SDL_GetTicks();
 		}
 	}else{
-		if(auxPosicion < this->minimoX){
-			this->velocidad = this->velocidad*(-1);
-			this->bola->setPosicionesX(170);
-		}else{
-			this->setPosicionesX(auxPosicion);
+		time_t tiempoFin;
+		time(&tiempoFin);
+		double tiempoTranscurrido;
+		tiempoTranscurrido = difftime(tiempoFin, this->duracionHerido);
+		tiempoTranscurrido = fabs(tiempoTranscurrido);
+		if (tiempoTranscurrido > 3)
+		{
+			this->herido = false;
 		}
+		Uint32 timeActual= SDL_GetTicks();
+		this->calcularNumeroDeSprite();
+		float timeStep = (timeActual - this->tiempo) / 1000.f;
+		//cout<<"timeStep: "<<timeStep<<endl;
+		float auxPosicion = this->getPosicionesX() + ((this->velocidad)*timeStep);
+		//cout<<"auxPosicion: "<<auxPosicion<<endl;
+		if(this->velocidad > 0){
+			if(auxPosicion > this->maximoX){
+				this->velocidad = this->velocidad*(-1);
+				this->bola->setPosicionesX(10);
+			}else{
+				this->setPosicionesX(auxPosicion);
+			}
+		}else{
+			if(auxPosicion < this->minimoX){
+				this->velocidad = this->velocidad*(-1);
+				this->bola->setPosicionesX(170);
+			}else{
+				this->setPosicionesX(auxPosicion);
+			}
+		}
+		this->bola->setPosicionJefeX(this->getPosicionesX());
+		this->bola->setPosicionJefeY(this->getPosicionesY());
+		this->actualizarPosicionBola();
+		this->tiempo = SDL_GetTicks();
 	}
-	this->bola->setPosicionJefeX(this->getPosicionesX());
-	this->bola->setPosicionJefeY(this->getPosicionesY());
-	this->actualizarPosicionBola();
-	this->tiempo = SDL_GetTicks();
 }
 
 
@@ -135,7 +156,7 @@ SDL_Rect Jefe::obtenerDimensiones(){
 	return this->minimoX;
 }*/
 void Jefe::restarVida(){
-	if(!this->herido){
+	if(!(this->herido) and !(this->inmortal)){
 		time(&this->duracionHerido);
 		this->herido = true;
 		this->vidas = this->vidas - 1;
@@ -144,6 +165,14 @@ void Jefe::restarVida(){
 			cout<<"mato al jefe"<<endl;
 			this->setVivo(false);
 		}
+	}
+}
+void Jefe::comienzo(){
+	if(this->movido == false){
+		this->iniciar = true;
+		this->movido = true;
+		this->tiempo = SDL_GetTicks();
+		cout<<"entro en comezar enemigo"<<endl;
 	}
 }
 
@@ -162,6 +191,8 @@ Jefe::Jefe(std::string mensaje, std::string tipo, VistaSDL *vista): Enemigo(0,0 
 	this->minimoX = 0;
 	this->tiempo = 0;
 	this->velocidad = 0;
+	this->iniciar = false;
+	this->movido = false;
 }
 void Jefe::cargarSprites(int x, int y, int cantidad)
 {

@@ -146,6 +146,10 @@ void Enemigo::setTipoEnemigo(std::string tipo){
 void Enemigo::restarVida(){
 
 }
+void Enemigo::comienzo(){
+
+}
+
 
 //lado cliente
 //540 en y en el primer mapa

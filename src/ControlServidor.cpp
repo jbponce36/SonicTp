@@ -244,6 +244,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 			}
 			else if(nivelActual==2){
 				this->combateJefe = true;
+				this->InicializarJefeFinal();
 			}
 		}
 		//aca posiciona a los sonics en el inicio del mapa
@@ -1475,8 +1476,8 @@ void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez
 	cout <<"'''''''''''''''''''''''''''''''''''''''''' "<<endl;
 }
 void ControlServidor::generarEnemigoFianl(){
-	int posicionX = 7450+8000;
-	//int posicionX = 500;
+	int posicionX = POSICION_JEFE_FINAL+500;
+	//int posicionX = 1000;
 	int posicionY = 50;
 	Jefe *jefe = new Jefe(posicionX,posicionY);
 	enemigos.push_back(jefe);
@@ -1519,5 +1520,13 @@ void ControlServidor::inicializarTablaEntidades(){
 	}
 	for(int i= 0 ; i< 80;i++){
 		this->tablaEntidadesAereas[i] = false;
+	}
+}
+void ControlServidor::InicializarJefeFinal(){
+	//cout<<"entro aca"<<endl;
+	for(int i = 0; i<this->enemigos.size();i++){
+		if(this->enemigos[i]->getTipoEnemigo().compare("j") == 0){
+			this->enemigos[i]->comienzo();
+		}
 	}
 }

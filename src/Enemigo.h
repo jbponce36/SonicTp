@@ -46,6 +46,7 @@ public:
 	std::string getTipoEnemigo();
 	void setTipoEnemigo(std::string tipo);
 	virtual void restarVida();
+	virtual void comienzo();
 
 
 	//ladoCliente
