@@ -1069,9 +1069,14 @@ void VistaSDL::mostrarPantallaCargando()
 	this->log->addLogMessage("[MOSTRAR CARGANDO JUEGO] Terminado.\n",2);
 }
 
-void VistaSDL::cargarBandera(int camaraX,int camaraY){
+void VistaSDL::cargarImagenBandera(){
 
 	bandera->cargarImagen("images/bandera.png", "images/bandera.png",this->renderizador, log);
+}
+
+void VistaSDL::cargarBandera(int camaraX,int camaraY){
+
+
 
 		camara1.x = 0;
 		camara1.y = 0;

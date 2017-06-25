@@ -60,7 +60,7 @@ void Control::ControlarJuegoCliente(VistaSDL *vista, Personaje *sonic,
 	admNiveles.cargarNivel(vista, sonic);
 	//this->calcularTablasCosenoSeno();
 	inicializarEnemigos(hiloRecibir);
-
+	vista->cargarImagenBandera();
 	/*----LOOP PRINCIPAL DEL JUEGO----*/
 	while (!salir) {
 		tiempoInicio = SDL_GetTicks(); //Inicio contador de ticks para mantener los FPS constantes

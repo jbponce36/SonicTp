@@ -137,6 +137,7 @@ public:
 	void mostrarPuntPartida(int modo,vector<Personaje*>* sonics);
 	void mostrarPuntFinNivel(int modo,vector<Personaje*>* sonics);
 	void mostrarPantallaCargando();
+	void cargarImagenBandera();
 	void cargarBandera(int camaraX,int camaraY);
 };
 
