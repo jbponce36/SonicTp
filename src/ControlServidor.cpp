@@ -964,7 +964,7 @@ void ControlServidor::chequearColicion(Colicion *colicion, bool &juegoTerminado)
 				if(colision == SDL_TRUE){
 					if(!enemigos[i]->getVivo()  && enemigos[i]->getTipoEnemigo().compare("j") == 0){
 						char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";
-						std::string msjPasarNivel = "PASARNIVEL" ;
+						std::string msjPasarNivel = "PASARNIVEL"+ Util::intToString(sonic->getId()) ;
 						msjPasarNivel = msjPasarNivel + SEPARADOR_DE_MENSAJE;
 						strcpy(buffer, msjPasarNivel.c_str());
 						int id = 1;

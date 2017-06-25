@@ -437,7 +437,7 @@ void Personaje::herir(ControlServidor *control)
 	}
 	else
 	{
-		if(puntos->getVidas() <= 0)
+		if(puntos->getVidas() <= 1)
 		{
 			if (esInmortal)
 			{

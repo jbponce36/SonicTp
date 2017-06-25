@@ -11,6 +11,7 @@ Control::Control(int posicionX, int posicionY, int maxJugadores,
 				modoDeJuego(modoDeJuego) {
 	this->log->setModulo("CONTROL");
 	this->calcularTablasCosenoSeno();
+	this->nivel = 0;
 }
 
 Control::~Control() {
@@ -280,7 +281,8 @@ void Control::controlDeMensajes(Personaje* sonic,
 		}
 
 		//aca recibe el mensaje para pasar de nivel
-		else if (mensaje.compare("PASARNIVEL") == 0) {
+		else if (mensaje.substr(0,10) == "PASARNIVEL") {
+			nivel++;
 			if (!admNiveles.EsUltimoNivel()) {
 				debug(1, "Control::controlDeMensajes", "Paso de nivel", 0);
 				vista->getConstructorEntidades()->anillos.clear();
@@ -289,17 +291,31 @@ void Control::controlDeMensajes(Personaje* sonic,
 				//this->enemigos.clear();
 				this->limpiarEnemigos();
 				vista->getConstructorEntidades()->entidades.clear();
+			//	cout<<nivel<<";:  11111111111entro aca para sumar los puntos a los sonics al final del juego"<<endl;
+				if(nivel==3){
+					int s = atoi(mensaje.substr(10, 1).c_str());
+					//cout<<"valor id ;  "<<s<<"::::11111111111entro aca para sumar los puntos a los sonics al final del juego"<<endl;
+					for (int indice = 0; indice < sonics->size(); indice++) {
+						if(sonics->at(indice)->getId() == s){
+							//cout<<"forrrrrrentro aca para sumar los puntos a los sonics al final del juego"<<endl;
+							sonics->at(indice)->getPuntos()->sumarXpuntos(1000);
+						}
+					}
 
+				}
+				vista->mostrarPuntPartida(this->modoDeJuego,this->sonics);
+				SDL_RenderPresent(vista->obtenerRender());
 				this->admNiveles.pasarDeNivel();
 				this->admNiveles.cargarNivel(vista, sonic);
 				admNiveles.mostrarPunConPan(vista,sonics,this->modoDeJuego);
+
 				//this->vista->mostraMenuInicial(log);
 				//this->salir = true;
 				cout<<"---------------------------------"<<admNiveles.getNivel()<<endl;
 			}
 
 			if(admNiveles.EsUltimoNivel()){
-				//cout<<"entro en el else----------------"<<endl;
+				cout<<"entro en el else----------------"<<endl;
 				//this->admNiveles.mostrarPunConPan(this->vista,sonics,this->modoDeJuego);
 				//this->vista->mostraMenuInicial(log);
 				this->salir = true;
@@ -415,6 +431,10 @@ void Control::controlDeMensajes(Personaje* sonic,
 			{
 				//Perdio este jugador
 				printf("Game Over. Cerrando el juego...\n");
+				sonic->getPuntos()->restarUnaVida();
+				vista->mostrarPuntPartida(this->modoDeJuego,this->sonics);
+				SDL_RenderPresent(vista->obtenerRender());
+
 				this->salir = true;
 				this->vista->mostrarGameOver(log);
 			}
@@ -422,6 +442,10 @@ void Control::controlDeMensajes(Personaje* sonic,
 			{
 				//Perdio otro jugador
 				sonics->at(idPerdedor - 1)->dejarDeEstarVivo();
+				sonics->at(idPerdedor - 1)->getPuntos()->restarUnaVida();
+				vista->mostrarPuntPartida(this->modoDeJuego,this->sonics);
+				SDL_RenderPresent(vista->obtenerRender());
+
 			}
 		}
 		else {

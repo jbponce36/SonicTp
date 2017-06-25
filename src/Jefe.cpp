@@ -27,6 +27,7 @@ Jefe::Jefe(int x, int y) :Enemigo(x,y,"j"){
 	this->iniciar = false;
 	this->movido = false;
 	this->inmortal = true;
+	this->setPuntaje(0);
 }
 void Jefe::setBola(Bola *bol){
 	this->bola = bol;

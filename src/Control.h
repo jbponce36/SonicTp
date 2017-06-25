@@ -44,7 +44,7 @@ private:
 
 	std::map<int, float> tablaSeno;
 	std::map<int, float> tablaCoseno;
-
+	int nivel;
 	vector <Enemigo*> enemigos;
 	int idpropio;
 	int modoDeJuego;
