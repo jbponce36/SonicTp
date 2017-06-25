@@ -70,6 +70,9 @@ private:
     vector<jescenarioJuego*> jjuego;
     SDL_Color gris;
     vector<int> pers;
+    Textura* bandera;
+    SDL_Rect imagenMostrar1;
+    SDL_Rect camara1;
 
 
 public:
@@ -134,6 +137,7 @@ public:
 	void mostrarPuntPartida(int modo,vector<Personaje*>* sonics);
 	void mostrarPuntFinNivel(int modo,vector<Personaje*>* sonics);
 	void mostrarPantallaCargando();
+	void cargarBandera(int camaraX,int camaraY);
 };
 
 

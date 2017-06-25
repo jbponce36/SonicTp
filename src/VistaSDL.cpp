@@ -73,6 +73,7 @@ VistaSDL::VistaSDL(jventana* jventana,jconfiguracion *jconfiguracion,jescenario 
 	}
 
 	pthread_mutex_init(&mutexRenderizar, NULL);
+	this->bandera = new Textura();
 }
 
 void VistaSDL::validacionesEscenario(jescenario *jescenario)
@@ -1066,4 +1067,40 @@ void VistaSDL::mostrarPantallaCargando()
 	this->dibujarTextoColorFuente("Cargando juego...",0,0,azul,fondo,fuente2);
 	SDL_RenderPresent(renderizador);
 	this->log->addLogMessage("[MOSTRAR CARGANDO JUEGO] Terminado.\n",2);
+}
+
+void VistaSDL::cargarBandera(int camaraX,int camaraY){
+
+	bandera->cargarImagen("images/bandera.png", "images/bandera.png",this->renderizador, log);
+
+		camara1.x = 0;
+		camara1.y = 0;
+		camara1.w = bandera->obtenerAnchoTextura();
+		camara1.h = bandera->obtenerAltoTextura();
+
+		imagenMostrar1.x = (15800-camaraX);
+		imagenMostrar1.y = ((4*this->getAltoEscenario()/5) - 150-camaraY);
+		//imagenMostrar.w = menuInicial->obtenerAnchoTextura();
+		//imagenMostrar.h = menuInicial->obtenerAltoTextura();
+
+		imagenMostrar1.w = 150;
+		imagenMostrar1.h = 150;
+		bandera->renderizar(&camara1,&imagenMostrar1);
+
+		/*SDL_Rect cuadroDeVentana;
+		//cout<<"entro en renderizar"<<endl;
+		//cout<<"numero animacion: "<<this->getNumeroSprite()<<endl;
+		cuadroDeVentana.x=(this->getPosicionesX()-camaraX);
+		cuadroDeVentana.y=(this->getPosicionesY()-camaraY);
+		cuadroDeVentana.w= 150;
+		cuadroDeVentana.h= 100;
+		//cout<<"posicion x: "<<this->posicionesX<<endl;
+		//cout<<"posicion y: "<<this->posicionesX<<endl;
+		//cout<<"ancho: "<<this->posicionesYdimensones.w<<endl;
+		//cout<<"largo: "<<this->posicionesYdimensones.h<<endl;
+		//this->animacionEnemigo.renderizar(cuadroDeVentana);
+
+
+		this->textura->renderizar(&sprites[this->getNumeroSprite()],&cuadroDeVentana);
+	*/
 }

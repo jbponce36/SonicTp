@@ -252,7 +252,7 @@ void ControlServidor::moverPersonajesServidor(Uint32 &tiempoDeJuego, VistaSDL *v
 		if( this->pasarNivel == true )
 		{
 
-			cout<<this->modoDeJuego<<"modo je--------------------------------------------- juego"<<endl;
+			//cout<<this->modoDeJuego<<"modo je--------------------------------------------- juego"<<endl;
 
 			this->nivelActual++;
 			char buffer[LARGO_MENSAJE_POSICION_SERVIDOR] = "";

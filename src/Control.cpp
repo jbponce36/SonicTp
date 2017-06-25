@@ -522,7 +522,10 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 				vista->obtenerTextura(contador)->getIndex_z());
 
 	}
-
+	if( this->nivel < 2 )
+		{
+			vista->cargarBandera(camara->getPosicionX(),camara->getPosicionY());
+		}
 	//dibujo todos los sonics
 	std::vector<Personaje*>::iterator pos;
 	for (pos = sonics->begin(); pos != sonics->end(); pos++)
@@ -546,7 +549,9 @@ void Control::actualizarVista(Camara *camara, VistaSDL *vista,
 
 
 	}
+
 	vista->mostrarPuntPartida(this->modoDeJuego,this->sonics);
+
 	SDL_RenderPresent(vista->obtenerRender());
 
 }
