@@ -1,6 +1,6 @@
 {
-	"ventana": {"dimensiones": {"ancho": 900, "alto": 700}},
-	"configuracion": {"vel_scroll": 350},
+	"ventana": {"dimensiones": {"ancho": 900, "alto": 1900}},
+	"configuracion": {"vel_scroll": 400},
         "servidor":{"puerto": 8080,"clientes":4},
         "cliente":{"puerto": 8080,"IP":"127.0.0.1"},
         "anillos":{"minimo": 70,"maximo": 90},
