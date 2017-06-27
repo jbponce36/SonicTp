@@ -372,7 +372,7 @@ void Personaje::saltar()
 {
 	if (!saltando)
 	{
-		velocidadY = -personajeVelocidad;
+		velocidadY = -2.5*personajeVelocidad;
 		saltando = true;
 	}
 }
