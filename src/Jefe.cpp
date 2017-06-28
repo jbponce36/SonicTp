@@ -66,7 +66,7 @@ void Jefe::calcularNumeroDeSprite(){
 void Jefe::actualizarPosicion(){
 	//cout<<"maximo: "<<this->maximoX<<endl;
 	//cout<<"minimo: "<<this->minimoX<<endl;
-	if(this->iniciar){
+	/*if(this->iniciar){
 		if(this->getPosicionesX()<(POSICION_JEFE_FINAL)){
 			this->iniciar = false;
 			this->setPosicionesX(POSICION_JEFE_FINAL);
@@ -83,7 +83,7 @@ void Jefe::actualizarPosicion(){
 			this->setPosicionesX(auxPosicion);
 			this->tiempo = SDL_GetTicks();
 		}
-	}else{
+	}else{*/
 		time_t tiempoFin;
 		time(&tiempoFin);
 		double tiempoTranscurrido;
@@ -118,7 +118,7 @@ void Jefe::actualizarPosicion(){
 		this->bola->setPosicionJefeY(this->getPosicionesY());
 		this->actualizarPosicionBola();
 		this->tiempo = SDL_GetTicks();
-	}
+	//}
 }
 
 
@@ -157,7 +157,7 @@ SDL_Rect Jefe::obtenerDimensiones(){
 	return this->minimoX;
 }*/
 void Jefe::restarVida(){
-	if(!(this->herido) and !(this->inmortal)){
+	if(!(this->herido)){
 		time(&this->duracionHerido);
 		this->herido = true;
 		this->vidas = this->vidas - 1;
