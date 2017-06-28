@@ -145,6 +145,7 @@ class Personaje
 		bool estaCongelado();
 		bool estaParado();
 		bool estaAtacando();
+		bool estaSaltando();
 		bool sigueVivo();
 		void dejarDeEstarVivo();
 

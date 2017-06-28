@@ -436,15 +436,15 @@ void Control::controlDeMensajes(Personaje* sonic,
 				this->salir = true;
 				sonic->getPuntos()->restarUnaVida();
 				//vista->mostrarPuntPartida(this->modoDeJuego,this->sonics);
-				SDL_Rect imagenMostrar;
-				imagenMostrar.x = 0;
-				imagenMostrar.y = 0;
-				imagenMostrar.w = vista->obtenerAnchoVentana();
-				imagenMostrar.h = vista->getAltoEscenario();
 
-				//this->actualizarVista(camara, vista,&imagenMostrar, sonic);
 				this->vista->mostrarGameOver(log, this->modoDeJuego,this->sonics);
 				//SDL_RenderPresent(vista->obtenerRender());
+				vista->getConstructorEntidades()->anillos.clear();
+				vista->getConstructorEntidades()->piedra.clear();
+				vista->getConstructorEntidades()->pinche.clear();
+				this->limpiarEnemigos();
+				vista->getConstructorEntidades()->entidades.clear();
+
 
 			}
 			else

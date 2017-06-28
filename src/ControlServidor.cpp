@@ -1392,6 +1392,7 @@ void ControlServidor::resetEnemigosPorNivel(int minMosca,int maxMosca,int minPez
 		posicionX = rangoDeMovimientoMinimo + posicionX;
 		int RangoDeMovimientoMaximo = rangoDeMovimientoMinimo + 300;
 		Cangrejo *cangrejo = new Cangrejo(posicionX,ALTURA_Y_CANGREJO,rangoDeMovimientoMinimo,RangoDeMovimientoMaximo);
+		cangrejo->setPosicionesY(4*vista->getAltoEscenario()/5 - 100);
 		enemigos.push_back(cangrejo);
 		tablaEntidades[posicionVector] = true;
 		tablaEntidades[posicionVector+1] = true;
