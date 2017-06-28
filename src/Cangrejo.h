@@ -8,8 +8,8 @@
 #ifndef CANGREJO_H_
 #define CANGREJO_H_
 
-//#define ALTURA_Y_CANGREJO 780
-#define ALTURA_Y_CANGREJO 470
+//#define ALTURA_Y_CANGREJO 700
+#define ALTURA_Y_CANGREJO 410
 #define CANTIDAD_VIDAS_CANGREJO 1
 #include "Enemigo.h"
 class Cangrejo : public Enemigo{
