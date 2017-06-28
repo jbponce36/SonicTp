@@ -166,17 +166,16 @@ std::string Pinche::intToStringConPadding(int number)
 }
 
 void Pinche::interactuar(Personaje *sonic, bool &fueHerido){
+	SDL_Rect limitesPinche = obtenerLimites();
+	SDL_Rect limitesSonic = sonic->obtenerLimites();
 
-	if(colisionaArriba(sonic)) //Si el Sonic esta arriba del pinche
+	if (sonic->estaSaltando())
+	//if(colisionaArriba(sonic)) //Si el Sonic esta arriba del pinche
 	{
-		SDL_Rect limitesPinche = obtenerLimites();
-		SDL_Rect limitesSonic = sonic->obtenerLimites();
-
 		//Esto posiciona bien al Sonic justo encima del pinche asi no lo hiere mas de una vez
 		int diferenciaY = limitesSonic.y + limitesSonic.h - limitesPinche.y;
 		sonic->posicionarseEn(sonic->getPosicionX(), sonic->getPosicionY()- diferenciaY);
 
-		//sonic->herir();
 		fueHerido = true;
 		sonic->rebotar();
 		return;

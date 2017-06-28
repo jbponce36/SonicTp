@@ -437,6 +437,12 @@ void Control::controlDeMensajes(Personaje* sonic,
 
 				this->salir = true;
 				this->vista->mostrarGameOver(log);
+
+				vista->getConstructorEntidades()->anillos.clear();
+				vista->getConstructorEntidades()->piedra.clear();
+				vista->getConstructorEntidades()->pinche.clear();
+				this->limpiarEnemigos();
+				vista->getConstructorEntidades()->entidades.clear();
 			}
 			else
 			{

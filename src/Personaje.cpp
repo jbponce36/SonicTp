@@ -408,7 +408,10 @@ void Personaje::resbalar(Orientacion haciaDonde)
 
 void Personaje::rebotar()
 {
-	velocidadY = -velocidadY;
+	if(velocidadY > 0){
+		//Velocidad negativa es hacia arriba
+		velocidadY = -velocidadY;
+	}
 }
 
 void Personaje::herir(ControlServidor *control)
@@ -690,6 +693,11 @@ bool Personaje::estaAtacando()
 		return true;
 	}
 	return false;
+}
+
+bool Personaje::estaSaltando()
+{
+	return saltando;
 }
 
 bool Personaje::sigueVivo()
