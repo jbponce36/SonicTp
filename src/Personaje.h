@@ -14,7 +14,7 @@
 #include <time.h>
 #include "Puntos.h"
 
-#define GRAVEDAD 60
+#define GRAVEDAD 35
 #define IMAGEN_POR_DEFECTO "images/sonicSprite.png"
 #define REGULADOR_ALTURA_SALTO 0.04 //Regula la altura del salto (Es como un "promedio" de tiempoDeJuego)
 
