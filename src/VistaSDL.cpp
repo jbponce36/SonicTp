@@ -525,7 +525,7 @@ void VistaSDL::mostrarImagenEsperarJugadores()
 	this->log->addLogMessage("[MOSTRAR ESPERAR JUGADORES] Terminado.\n",2);
 }
 
-void VistaSDL::mostrarGameOver(Logger *logger){
+void VistaSDL::mostrarGameOver(Logger *logger, int modoDeJuego,vector<Personaje*>* sonics){
 	this->log->addLogMessage("[MOSTRAR GAME OVER] Iniciado.",2);
 	Textura gameOverTextura = Textura();
 
@@ -544,8 +544,9 @@ void VistaSDL::mostrarGameOver(Logger *logger){
 	imagenMostrar.w = camara.w;
 	imagenMostrar.h = camara.h;
 
-
+	mostrarPuntPartida(modoDeJuego,sonics);
 	gameOverTextura.renderizar(&camara,&imagenMostrar);
+
 	SDL_RenderPresent(this->renderizador);
 
 	sleep(5);

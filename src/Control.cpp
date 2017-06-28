@@ -431,12 +431,21 @@ void Control::controlDeMensajes(Personaje* sonic,
 			{
 				//Perdio este jugador
 				printf("Game Over. Cerrando el juego...\n");
-				sonic->getPuntos()->restarUnaVida();
-				vista->mostrarPuntPartida(this->modoDeJuego,this->sonics);
-				SDL_RenderPresent(vista->obtenerRender());
+
 
 				this->salir = true;
-				this->vista->mostrarGameOver(log);
+				sonic->getPuntos()->restarUnaVida();
+				//vista->mostrarPuntPartida(this->modoDeJuego,this->sonics);
+				SDL_Rect imagenMostrar;
+				imagenMostrar.x = 0;
+				imagenMostrar.y = 0;
+				imagenMostrar.w = vista->obtenerAnchoVentana();
+				imagenMostrar.h = vista->getAltoEscenario();
+
+				//this->actualizarVista(camara, vista,&imagenMostrar, sonic);
+				this->vista->mostrarGameOver(log, this->modoDeJuego,this->sonics);
+				//SDL_RenderPresent(vista->obtenerRender());
+
 			}
 			else
 			{

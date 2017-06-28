@@ -100,7 +100,7 @@ public:
     int obtenerVelocidadDeScroll();
     void validacionesVentana();
     int mostraMenuInicial(Logger *logger);
-    void mostrarGameOver(Logger *logger);
+    void mostrarGameOver(Logger *logger,int modoDeJuego,vector<Personaje*>* sonics);
     void mostrarEsperarJugadores(Logger *logger, bool &juegoIniciado);
     void mostrarImagenEsperarJugadores(); //Solo renderiza la imagen
     void mostrarServidorDesconectado();

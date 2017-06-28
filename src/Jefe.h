@@ -4,8 +4,8 @@
 #include "Enemigo.h"
 #include "Bola.h"
 #define CANTIDAD_VIDAS_JEFE 5
-#define POSICION_JEFE_FINAL 15450
-#define RANGO_DE_JEFE 200
+#define POSICION_JEFE_FINAL 15000
+#define RANGO_DE_JEFE 300
 
 class Jefe: public Enemigo {
 private:

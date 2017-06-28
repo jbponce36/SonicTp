@@ -22,7 +22,7 @@ Cangrejo::Cangrejo(int x, int y,int minimo,int maximo) :
 	this->setPuntaje(100);
 	//this->setPosicionesY((4*(700/5))-150);
 	//this->setPosicionesY(500);
-	this->setPosicionesY(500);
+	this->setPosicionesY(700);
 
 }
 void Cangrejo::calcularNumeroDeSprite(){
